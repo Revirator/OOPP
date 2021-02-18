@@ -9,6 +9,9 @@ This information can be added throughout the course, except for the names of the
 Add your own name (do not add the names for others!) to the section below.
 
 ## Description of project
+This project aims to create a brand new desktop application to support lecturers during online lectures.
+This piece of software is a platform to be used by students, where they can ask questions and give live feedback to the lectures. 
+Replacement for Zoom chat during live lectures. (as clutter-free as possible)
 
 ## Group members
 
