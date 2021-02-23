@@ -35,7 +35,7 @@
 | --- | --- | --- |
 | Multiple lectures can run at the same time in separated rooms. | All | Each lecture can have its own set of messages, users etc. when multiple lectures are given simultaneously, keeping different course content separated for everyone. | 
 | Having the option to see all current participants (nicknames) in the lecture. | All | All users can have an overview of who  they are in the meeting with currently. |
-| Choose rate of questions. (certain number of questions per time unit) | Teacher/TA | Teacher can limit the number of questions to his/her personal liking and thereby reduces server load. | 
+| Limit rate of questions. (certain number of questions per time unit) | System admin | System admin can configure the number of questions per time unit and thereby reduce server load. | 
 | Teachers should be able to see whether they are going to fast or slow. | Teacher | Teacher can adapt his/her speed according to feedback given by students, improving, lecture quality. |
 | Rephrase questions sent by students. | Teacher/TA | Keeps content appropriate and understandable for everyone. | 
 | Moderators can answer questions in text. | (Teacher)/TA | Questions can be answered without the lecturer (by the TAs) | 
