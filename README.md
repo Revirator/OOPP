@@ -13,12 +13,19 @@ This project aims to create a brand new desktop application to support lecturers
 This piece of software is a platform to be used by students, where they can ask questions and give live feedback to the lectures. 
 Replacement for Zoom chat during live lectures. (as clutter-free as possible)
 
-## Group members
+This is a project for the course CSE1105 OOPP.
+
+
+## Group members (group 43)
 
 | 📸 | Name | Email |
 |---|---|---|
-| ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Your Name Here | Y.NameHere@student.tudelft.nl |
-
+| ![](https://eu.ui-avatars.com/api/?name=SB&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Senne Van den Broeck   | S.M.Z.VandenBroeck@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=PG&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Pavel Germanov   | P.Germanov@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=BG&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Bora Göral   | B.Goral@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=EG&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Emke de Groot   | E.A.deGroot-1@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=NK&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Nadine Kuo   | H.N.Kuo@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=DT&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Denis Tsvetkov   | D.R.Tsvetkov@student.tudelft.nl |
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
 <!-- - Mention your *student* email address -->
