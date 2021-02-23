@@ -1,7 +1,7 @@
 ## Backlog group 43
 
 * This backlog is our "to-do-list" containing all user stories/requirements based on the CTA interview in week 2.
-* All user stories are assigned a MOWCOW label: either "must", "should", "could", or "won't".
+* All user stories are assigned a MOSCOW label: either "must", "should", "could", or "won't".
 * All user stories are converted to GitLab Issues.
 
 | MUST feature | Stakeholder | Value | 
@@ -14,7 +14,7 @@
 | Lecture/meeting starts automatically after user presses “Create new room”. | All | Users don’t have to start a meeting manually. | 
 | Lecture/meeting starts automatically when assigned lecture time slot starts. | All | Users don’t have to start a meeting manually. | 
 | The application should refresh messages constantly and display them to users. | All | New questions that are still on the server are loaded onto the client and thus can be seen by all users. |
-| See all questions sent by any user with nicknames of their owner. | All | Users can see whom a question/feedback message belongs to. | 
+| See all (updated) questions sent by any user with nicknames of their owner. | All | Users can see whom a question/feedback message belongs to. | 
 | See most relevant questions on top, i.e., having most upvotes.  | All  | Keeps the lecture well-organized for both teacher and student. | 
 | Have a separate view for all answered questions (with answers, if answered in text) | All | Users can look back at questions that have been answered (with their answers.) |
 | Give live feedback or ask questions to teacher. | Student | Lectures in the future can be improved based on received feedback. Students can get answers to things that are not clear. | 
@@ -55,7 +55,8 @@
 | --- | --- | --- |
 | Questions could be prioritized more efficiently, based on something other than upvotes. (age, length e.g.) | All | Makes sure that questions are prioritized in a way that is even more efficient than only regarding upvotes, I.e. always valid. | 
 | Questions could be refreshed by pressing a button, pushing down from server or refreshing periodically. | All  | New questions that are still on the server are loaded on the client and thus can be seen by all users. | 
-| Teachers have the option to do a MC poll at any time. | Teacher | Teachers can test students’ knowledge in an interactive manner or get other feedback. | 
+| Teachers have the option to open a MC poll at any time. | Teacher/(TA) | Teachers can test students’ knowledge in an interactive manner or get other feedback. |
+| Have the option to open a MC poll at any time. | Teacher/(TA) | Teachers can stop students from sending answers whenever he/she wants to.| 
 | Students can answer polls. | Student | Students get to share their opinion/answer. | 
 | Teachers can show poll results to all students. | Teacher | Students can see how they performed compared to others or simply see results to a general poll. |
 
