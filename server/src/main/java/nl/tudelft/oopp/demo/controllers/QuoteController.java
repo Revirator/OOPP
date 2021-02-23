@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class QuoteController {
+
+
     /**
      * GET Endpoint to retrieve a random quote.
-     *
      * @return randomly selected {@link Quote}.
      */
     @GetMapping("quote")
@@ -42,5 +43,11 @@ public class QuoteController {
         quotes.add(q3);
 
         return quotes.get(new Random().nextInt(quotes.size()));
+    }
+
+    @GetMapping("welcome")
+    @ResponseBody
+    public Quote getServerResponse() {
+        return new Quote(4, "Welcome to our brand new app!", "Group 43");
     }
 }
