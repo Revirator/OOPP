@@ -1,7 +1,7 @@
 ## Backlog group 43
 
 * This backlog is our "to-do-list" containing all user stories/requirements based on the CTA interview in week 2.
-* All user stories are assigned a MOWCOW label: either "must", "should", "could", or "won't".
+* All user stories are assigned a MOSCOW label: either "must", "should", "could", or "won't".
 * All user stories are converted to GitLab Issues.
 
 | MUST feature | Stakeholder | Value | 
