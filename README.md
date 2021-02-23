@@ -20,7 +20,7 @@ This is a project for the course CSE1105 OOPP.
 
 | 📸 | Name | Email |
 |---|---|---|
-| ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) |   YOUR NAME HERE   | YOUR.EMAIL.HERE@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=DT&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Denis Tsvetkov  | D.R.Tsvetkov@student.tudelft.nl |
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
 <!-- - Mention your *student* email address -->
