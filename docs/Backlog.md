@@ -17,7 +17,7 @@
 | See all (updated) questions sent by any user with nicknames of their owner. | All | Users can see whom a question/feedback message belongs to. | 
 | See most relevant questions on top, i.e., having most upvotes.  | All  | Keeps the lecture well-organized for both teacher and student. | 
 | Have a separate view for all answered questions (with answers, if answered in text) | All | Users can look back at questions that have been answered (with their answers.) |
-| Give live feedback to teacher. | Student | Lectures in the future can be improved based on received feedback. Students can get answers to things that are not clear. | 
+| Give live feedback to teacher. | Student | Lectures in the future can be improved based on received feedback. | 
 | Can ask questions during the lecture time slot only. | Student | Students can get answers to lecture material that is not clear to them. | 
 | Upvote questions from others. (or their own) | Student | Makes sure questions are prioritized, keeping content relevant. |
 | Edit own questions only. | Student | Students can rephrase their questions to make them clearer e.g. |
