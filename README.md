@@ -13,7 +13,10 @@ This project aims to create a brand new desktop application to support lecturers
 This piece of software is a platform to be used by students, where they can ask questions and give live feedback to the lectures. 
 Replacement for Zoom chat during live lectures. (as clutter-free as possible)
 
-## Group members
+This is a project for the course CSE1105 OOPP.
+
+
+## Group members (group 43)
 
 | 📸 | Name | Email |
 |---|---|---|
