@@ -46,8 +46,8 @@
 | After re-entering a room, moderators can export all questions and answers. | Teacher/TA | Helps the staff to store old questions on their machines. |
 | Having event logs keep track of and display system events. | System admin | Helps admins maintain the system and recover from system crashes (by accessing server logs, they can see where errors occurred). | 
 | Admins can recover after a system crash, without losing data. | System admin | All messages sent will not be lost. | 
-| After a system crash, admins can let all participants join again. | System admin | Helps to restore the lecture faster in case of crash. | 
-| After a system crash, admins can put all sent questions back, thereby linking them to their owner. | System admin | After recovering, users will be able to see all messages that had been sent before again. | 
+| After a system crash, all participants can join again using the same room code. | System admin | Helps to restore the lecture faster in case of crash. | 
+| After a system crash, all questions are visible again. | System admin | After recovering, users will be able to see all messages that had been sent before again. | 
 
 
 
@@ -59,6 +59,7 @@
 | Have the option to open a MC poll at any time. | Teacher/(TA) | Teachers can stop students from sending answers whenever he/she wants to.| 
 | Students can answer polls. | Student | Students get to share their opinion/answer. | 
 | Teachers can show poll results to all students. | Teacher | Students can see how they performed compared to others or simply see results to a general poll. |
+| After a system crash, all questions, linked to their owner, are visible again. | System admin | After recovering, users will be able to see all messages that had been sent before again, with their owner. | 
 
 | WON'T feature |
 | --- | 
