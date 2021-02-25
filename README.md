@@ -22,6 +22,7 @@ This is a project for the course CSE1105 OOPP.
 |---|---|---|
 | ![](https://eu.ui-avatars.com/api/?name=NK&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Nadine Kuo   | H.N.Kuo@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=SB&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Senne Van den Broeck   | S.M.Z.VandenBroeck@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=PG&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Pavel Germanov   | P.Germanov@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=BG&length=4&size=50&color=DDD&background=777&font-size=0.325) |   Bora Göral   | B.Goral@student.tudelft.nl |
 
 
