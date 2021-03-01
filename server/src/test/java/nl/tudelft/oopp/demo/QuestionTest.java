@@ -23,10 +23,9 @@ public class QuestionTest {
 
         Question expected = new Question(
                 5,
+                "ROOM2",
                 "What is the basis of the zero subspace?",
-                "Nadine",
-                LocalDateTime.now()
-                , 0
+                "Nadine"
         );
         questionRepository.save(expected);
 

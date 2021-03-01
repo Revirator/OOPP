@@ -32,7 +32,7 @@ public class QuestionController {
     @GetMapping("example")   // http://localhost:8080/questions/example
     @ResponseBody               // automatically serialized into JSON
     public Question getExampleQuestion() {
-        return new Question(1,  "What is the basis of the zero subspace?", "Nadine", LocalDateTime.now());
+        return new Question(1, "ROOM1",  "What is the basis of the zero subspace?", "Nadine");
     }
 
     @PostMapping   // http://localhost:8080/questions
