@@ -25,5 +25,4 @@ public class LoginSceneController {
         quoteList.getItems().clear();
         quoteList.getItems().addAll(result);
     }
-
 }

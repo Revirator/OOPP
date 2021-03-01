@@ -20,50 +20,44 @@ public class QuestionConfig {
 
             Question senne = new Question(
                     1,
+                    "ROOM1",
                     "How do we get a remote psql database?",
-                    "Senne",
-                    LocalDateTime.now(),
-                    19
+                    "Senne"
             );
 
             Question pavel = new Question(
                     2,
+                    "ROOM1",
                     "What is the meaning of life?",
-                    "Pavel",
-                    LocalDateTime.now()
-                    , 99
+                    "Pavel"
             );
 
             Question bora = new Question(
                     3,
+                    "ROOM1",
                     "What has to be included in our presentation?",
-                    "Bora",
-                    LocalDateTime.now()
-                    , 4
+                    "Bora"
             );
 
             Question emke = new Question(
                     4,
+                    "ROOM2",
                     "Why is the invertible matrix theorem so long?",
-                    "Emke",
-                    LocalDateTime.now()
-                    , 19
+                    "Emke"
             );
 
             Question nadine = new Question(
                     5,
+                    "ROOM2",
                     "What is the basis of the zero subspace?",
-                    "Nadine",
-                    LocalDateTime.now()
-                    , 0
+                    "Nadine"
             );
 
             Question denis = new Question(
                     6,
+                    "ROOM2",
                     "When are the grades out??",
-                    "Denis",
-                    LocalDateTime.now()
-                    , 98
+                    "Denis"
             );
 
             repository.saveAll(List.of(senne, pavel, bora, emke, nadine, denis));
