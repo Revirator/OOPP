@@ -13,10 +13,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class SplashView extends Application{
+public class SplashView extends Application {
 
     /**
-     * Font sizes
+     * Font sizes for splash screen.
      */
     private DoubleProperty subTitleFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty preBoxFontSize = new SimpleDoubleProperty(10);
@@ -24,7 +24,7 @@ public class SplashView extends Application{
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
 
     /**
-     * Creates the splash screen scene
+     * Creates the splash screen scene and loads it on the primary stage.
      * @param primaryStage primary stage of the app
      * @throws IOException if FXMLLoader fails to load the url
      */
@@ -46,25 +46,35 @@ public class SplashView extends Application{
 
         // Bind font sizes to screen size
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(65));
-        preBoxFontSize.bind(Bindings.min(20, scene.widthProperty().add(scene.heightProperty()).divide(85)));
-        boxFontSize.bind(Bindings.min(15, scene.widthProperty().add(scene.heightProperty()).divide(100)));
-        buttonFontSize.bind(Bindings.min(12, scene.widthProperty().add(scene.heightProperty()).divide(100)));
+
+        preBoxFontSize.bind(Bindings.min(20,
+                scene.widthProperty().add(scene.heightProperty()).divide(85)));
+
+        boxFontSize.bind(Bindings.min(15,
+                scene.widthProperty().add(scene.heightProperty()).divide(100)));
+
+        buttonFontSize.bind(Bindings.min(12,
+                scene.widthProperty().add(scene.heightProperty()).divide(100)));
 
         // Put the font sizes on all according nodes
         for (Node node : root.lookupAll(".subTitle")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ", subTitleFontSize.asString(), ";"));
+            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
+                    subTitleFontSize.asString(), ";"));
         }
 
         for (Node node : root.lookupAll(".preBoxText")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ", preBoxFontSize.asString(), ";"));
+            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
+                    preBoxFontSize.asString(), ";"));
         }
 
         for (Node node : root.lookupAll(".boxText")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ", boxFontSize.asString(), ";"));
+            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
+                    boxFontSize.asString(), ";"));
         }
 
         for (Node node : root.lookupAll(".buttonText")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ", buttonFontSize.asString(), ";"));
+            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
+                    buttonFontSize.asString(), ";"));
         }
 
     }
