@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @DataJpaTest
 public class QuestionTest {
@@ -22,15 +20,14 @@ public class QuestionTest {
     public void saveAndRetrieveQuestionTest() {
 
         Question expected = new Question(
-                5,
                 1,
                 "What is the basis of the zero subspace?",
                 "Nadine"
         );
         questionRepository.save(expected);
 
-        Question output = questionRepository.getOne((long) 5);
-        assertEquals(output, expected);
+        Question output = questionRepository.getOne((long) 1);
+        assertEquals(expected, output);
 
     }
 

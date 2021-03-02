@@ -1,9 +1,5 @@
 package nl.tudelft.oopp.demo.config;
 
-// QuoteConfig (commandlinerunner)
-// Load stuff in database
-// Only to be used during development!! Not production
-
 import nl.tudelft.oopp.demo.entities.Quote;
 import nl.tudelft.oopp.demo.repositories.QuoteRepository;
 import org.springframework.stereotype.Service;
@@ -11,6 +7,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class DatabaseLoader {
 
+    /** QuoteConfig.
+     *  Load stuff in database -  Only to be used during development!! Not production
+     * @param repository - QuoteRepository (JPA connection to DB)
+     */
     public DatabaseLoader(QuoteRepository repository) {
 
         Quote q1 = new Quote(

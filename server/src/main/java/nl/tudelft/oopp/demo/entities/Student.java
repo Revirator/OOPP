@@ -2,16 +2,16 @@ package nl.tudelft.oopp.demo.entities;
 
 public class Student extends User {
 
-    public Student(long id, String username, long roomId) {
-        super(id, username, roomId);
+    public Student(String username, long roomId) {
+        super(username, roomId);
     }
 
-    public Student(long id, long roomId) {
-        super(id, roomId);
+    public Student(long roomId) {
+        super(roomId);
     }
 
     @Override
     public String toString() {
-        return "Student " + super.getUsername() + " in room " + super.getRoomId();
+        return "Student " + super.getNickname() + " in room " + super.getRoomId();
     }
 }
