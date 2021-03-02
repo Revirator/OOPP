@@ -1,14 +1,16 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class Room {
-    private String roomCode; // primary key for the DB
-    private String studentsLink;
-    private String staffLink;
-    private LocalDateTime startingTime;
-    private String roomName; // Not needed ?
+    private final String roomCode; // primary key for the DB
+    private final URL studentsLink;
+    private final URL staffLink;
+    private final LocalDateTime startingTime;
+    private String roomName;
     private boolean ongoing;
     // List of Users > DB ?
     private List<User> participants;
@@ -16,12 +18,13 @@ public class Room {
     // Or not needed at all because we have the DB
     private Set<Question> questions; // ?
 
-    public Room(String roomCode, LocalDateTime startingTime, String roomName) {
+    public Room(String roomCode, LocalDateTime startingTime, String roomName) throws MalformedURLException {
         // Maybe the roomCode can also be generated
         this.roomCode = roomCode;
         // Some way to generate 2 links
-        //this.studentsLink = ;
-        //this.staffLink = ;
+        // Example:
+        this.studentsLink = new URL("http://localhost:8080/rooms/" + roomCode + "S");
+        this.staffLink = new URL("http://localhost:8080/rooms/" + roomCode + "TL");
         this.startingTime = startingTime;
         this.roomName = roomName;
         this.ongoing = false;
@@ -33,11 +36,11 @@ public class Room {
         return roomCode;
     }
 
-    public String getStudentsLink() {
+    public URL getStudentsLink() {
         return studentsLink;
     }
 
-    public String getStaffLink() {
+    public URL getStaffLink() {
         return staffLink;
     }
 
@@ -45,12 +48,10 @@ public class Room {
         return startingTime;
     }
 
-    // ?
     public String getRoomName() {
         return roomName;
     }
 
-    // ?
     public void setRoomName(String roomName) {
         this.roomName = roomName;
     }
@@ -78,7 +79,7 @@ public class Room {
     public void addParticipant(User user) {
         this.participants.add(user);
         // Sort by nicknames
-        //this.participants.sort();
+        // this.participants.sort();
     }
 
     public void removeParticipant (User user) {

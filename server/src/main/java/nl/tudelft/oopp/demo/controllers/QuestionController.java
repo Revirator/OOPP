@@ -52,12 +52,4 @@ public class QuestionController {
     ) {
         questionService.updateQuestion(questionId, question);
     }
-
-
-
-
-
-
-
-
 }
