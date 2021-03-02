@@ -2,22 +2,22 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.util.Objects;
 
-public class User {
+public abstract class User {
     // However I dont think we should store them in a DB
     private long id;
     private String username;
-    private String roomCode;
+    private long roomId;
 
-    public User(long id, String username, String roomCode) {
+    public User(long id, String username, long roomId) {
         this.id = id;
         this.username = username;
-        this.roomCode = roomCode;
+        this.roomId = roomId;
     }
 
-    public User(long id, String roomCode) {
+    public User(long id, long roomId) {
         this.id = id;
         this.username = "Anonymous";
-        this.roomCode = roomCode;
+        this.roomId = roomId;
     }
 
     public long getId() {
@@ -28,8 +28,8 @@ public class User {
         return username;
     }
 
-    public String getRoomCode() {
-        return roomCode;
+    public long getRoomId() {
+        return roomId;
     }
 
     public void setUsername(String username) {
@@ -41,11 +41,11 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getId() == user.getId() && getUsername().equals(user.getUsername()) && getRoomCode().equals(user.getRoomCode());
+        return getId() == user.getId() && getUsername().equals(user.getUsername()) && getRoomId() == user.getRoomId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getRoomCode());
+        return Objects.hash(getId(), getUsername(), getRoomId());
     }
 }

@@ -23,7 +23,7 @@ public class QuestionTest {
 
         Question expected = new Question(
                 5,
-                "ROOM2",
+                1,
                 "What is the basis of the zero subspace?",
                 "Nadine"
         );

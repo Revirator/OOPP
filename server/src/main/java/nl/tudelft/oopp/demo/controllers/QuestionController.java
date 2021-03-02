@@ -32,7 +32,7 @@ public class QuestionController {
     @GetMapping("example")   // http://localhost:8080/questions/example
     @ResponseBody               // automatically serialized into JSON
     public Question getExampleQuestion() {
-        return new Question(1, "ROOM1",  "What is the basis of the zero subspace?", "Nadine");
+        return new Question(1, 1,  "What is the basis of the zero subspace?", "Nadine");
     }
 
     @PostMapping   // http://localhost:8080/questions
@@ -40,12 +40,12 @@ public class QuestionController {
         questionService.addNewQuestion(question);
     }
 
-    @DeleteMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
+    @DeleteMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId} --> EXAMPLE: http://localhost:8080/questions/2
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {
         questionService.deleteQuestion(questionId);
     }
 
-    @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}?question=new question?
+    @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}?question=new question? --> EXAMPLE: http://localhost:8080/questions/6?question=Can I refrain from what I said before?
     public void updateQuestion(
             @PathVariable("questionId") Long questionId,
             @RequestParam String question

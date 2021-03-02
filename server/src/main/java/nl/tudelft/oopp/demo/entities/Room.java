@@ -1,44 +1,66 @@
 package nl.tudelft.oopp.demo.entities;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Entity
+@Table
 public class Room {
-    private String roomCode; // primary key for the DB
-    private String studentsLink;
-    private String staffLink;
-    private LocalDateTime startingTime;
-    private String roomName; // Not needed ?
-    private boolean ongoing;
-    // List of Users > DB ?
-    private List<User> participants;
-    // Maybe ArrayList and sort by upvotes
-    // Or not needed at all because we have the DB
-    private Set<Question> questions; // ?
 
-    public Room(String roomCode, LocalDateTime startingTime, String roomName) {
+    // transient = no column in DB
+
+    @Id
+    @SequenceGenerator(
+            name = "room_sequence",
+            sequenceName = "room_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy =GenerationType.SEQUENCE,
+            generator = "room_sequence"
+    )
+    private long roomId;
+    private String studentsLink;
+    private String moderatorLink;
+    private LocalDateTime startingTime;
+    private String roomName;                    // course name e.g.
+    @Transient
+    private boolean active;
+    @Transient
+    private List<User> participants;            // List of Users > DB ?
+    @Transient
+    private Set<Question> questions;          // Or not needed at all because we have the DB
+
+
+    public Room() {
+
+    }
+
+    public Room(long id, LocalDateTime startingTime, String roomName) {
         // Maybe the roomCode can also be generated
-        this.roomCode = roomCode;
+        this.roomId = id;
         // Some way to generate 2 links
         //this.studentsLink = ;
-        //this.staffLink = ;
+        //this.moderatorLink = ;
         this.startingTime = startingTime;
         this.roomName = roomName;
-        this.ongoing = false;
+        this.active = false;
         this.participants = new ArrayList<>();
         this.questions = new HashSet<>();
     }
 
-    public String getRoomCode() {
-        return roomCode;
+
+    public long getRoomId() {
+        return roomId;
     }
 
     public String getStudentsLink() {
         return studentsLink;
     }
 
-    public String getStaffLink() {
-        return staffLink;
+    public String getModeratorLink() {
+        return moderatorLink;
     }
 
     public LocalDateTime getStartingTime() {
@@ -55,12 +77,12 @@ public class Room {
         this.roomName = roomName;
     }
 
-    public boolean isOngoing() {
-        return ongoing;
+    public boolean isActive() {
+        return active;
     }
 
     public void hasEnded() {
-        this.ongoing = false;
+        this.active = false;
         // A function that closes the window for the students, etc. ...
         while(!this.participants.isEmpty()) this.participants.remove(0);
     }
@@ -94,16 +116,16 @@ public class Room {
         if (this == o) return true;
         if (!(o instanceof Room)) return false;
         Room room = (Room) o;
-        return isOngoing() == room.isOngoing() && getRoomCode().equals(room.getRoomCode()) && getStudentsLink().equals(room.getStudentsLink()) && getStaffLink().equals(room.getStaffLink()) && getStartingTime().equals(room.getStartingTime()) && getRoomName().equals(room.getRoomName()) && getParticipants().equals(room.getParticipants()) && getQuestions().equals(room.getQuestions());
+        return isActive() == room.isActive() && getRoomId() == room.getRoomId() && getStudentsLink().equals(room.getStudentsLink()) && getModeratorLink().equals(room.getModeratorLink()) && getStartingTime().equals(room.getStartingTime()) && getRoomName().equals(room.getRoomName()) && getParticipants().equals(room.getParticipants()) && getQuestions().equals(room.getQuestions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRoomCode(), getStudentsLink(), getStaffLink(), getStartingTime(), getRoomName(), isOngoing(), getParticipants(), getQuestions());
+        return Objects.hash(getRoomId(), getStudentsLink(), getModeratorLink(), getStartingTime(), getRoomName(), isActive(), getParticipants(), getQuestions());
     }
 
     @Override
     public String toString() {
-        return "Room " + roomCode + (ongoing ? "" : " starting at " + startingTime);
+        return "Room " + roomId + (active ? "" : " starting at " + startingTime);
     }
 }

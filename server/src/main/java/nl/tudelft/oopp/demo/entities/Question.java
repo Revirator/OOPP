@@ -1,39 +1,37 @@
 package nl.tudelft.oopp.demo.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
-@Table (name = "questions")
 public class Question {
 
     @Id
-    @Column(name = "id")
+    @SequenceGenerator(
+            name = "question_sequence",
+            sequenceName = "question_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy =GenerationType.SEQUENCE,
+            generator = "question_sequence"
+    )
     private long id;
-    @Column(name = "room")
-    private String roomCode;
-    @Column(name = "question")
+    private long roomId;
     private String question;
-    @Column(name = "answer")
     private String answer;
-    @Column(name = "owner")
     private String owner;
-    @Column(name = "time")
     private String time;
-    @Column (name = "upvotes")
     private Integer upvotes;
 
     public Question() {
 
     }
 
-    public Question(long id, String roomCode, String question, String owner) {
+    public Question(long id, long roomId, String question, String owner) {
         this.id = id;
-        this.roomCode = roomCode;
+        this.roomId = roomId;
         this.question = question;
         this.answer = "";
         this.owner = owner;
@@ -41,12 +39,23 @@ public class Question {
         this.upvotes = 0;
     }
 
-    public long getId() {
+    // constructor with upvotes for testing purposes
+    public Question(long id, String roomCode, String question, String owner, int upvotes) {
+        this.id = id;
+        this.roomId = roomId;
+        this.question = question;
+        this.answer = "";
+        this.owner = owner;
+        this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
+        this.upvotes = upvotes;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public String getRoomCode() {
-        return roomCode;
+    public long getRoomId() {
+        return roomId;
     }
 
     public String getQuestion() {
@@ -73,6 +82,10 @@ public class Question {
         return time;
     }
 
+    public int getUpvotes() {
+        return upvotes;
+    }
+
     public void upvote() {
         upvotes++;
     }
@@ -82,16 +95,16 @@ public class Question {
         if (this == o) return true;
         if (!(o instanceof Question)) return false;
         Question question1 = (Question) o;
-        return getId() == question1.getId() && getRoomCode().equals(question1.getRoomCode()) && getQuestion().equals(question1.getQuestion()) && getAnswer().equals(question1.getAnswer()) && getOwner().equals(question1.getOwner()) && getTime().equals(question1.getTime()) && upvotes.equals(question1.upvotes);
+        return getId() == question1.getId() && getRoomId() == question1.getRoomId() && getQuestion().equals(question1.getQuestion()) && getAnswer().equals(question1.getAnswer()) && getOwner().equals(question1.getOwner()) && getTime().equals(question1.getTime()) && upvotes.equals(question1.upvotes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getRoomCode(), getQuestion(), getAnswer(), getOwner(), getTime(), upvotes);
+        return Objects.hash(getId(), getRoomId(), getQuestion(), getAnswer(), getOwner(), getTime(), upvotes);
     }
 
     @Override
     public String toString() {
-        return question + (!answer.equals("") ? "- " + answer : "");
+        return time + " -- " + question + (!answer.equals("") ? "- " + answer : "");
     }
 }
