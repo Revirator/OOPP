@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table
+@Table(name = "rooms")
 public class Room {
 
     // transient = no column in DB

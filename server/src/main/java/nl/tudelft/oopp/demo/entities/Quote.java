@@ -6,16 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "quotes")
+@Table
 public class Quote {
     @Id
-    @Column(name = "id")
     private long id;
-
-    @Column(name = "text")
     private String quote;
-
-    @Column(name = "author")
     private String author;
 
     public Quote() {
