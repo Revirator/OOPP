@@ -1,0 +1,6 @@
+.pollButton:hover{
+    -fx-text-fill: #b3b3b3;
+}
+.pollButton:focused{
+    -fx-text-fill: black;
+}

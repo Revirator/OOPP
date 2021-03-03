@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <AnchorPane prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="WHITE" layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QuestionMe">
+               <font>
+                  <Font name="Arial" size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <GridPane hgap="10.0" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="407.6000122070312" minWidth="10.0" percentWidth="60" prefWidth="367.200048828125" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="211.99995117187495" minWidth="10.0" percentWidth="40" prefWidth="211.99995117187495" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <GridPane style="-fx-background-color: #E5E5E5;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="105.59998168945313" minHeight="10.0" prefHeight="50.399993896484375" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="206.39999809265137" minHeight="10.0" prefHeight="70.80000457763671" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="227.20004119873045" minHeight="10.0" prefHeight="113.19998168945312" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="227.20004119873045" minHeight="10.0" prefHeight="102.00001831054689" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="40.599981689453124" minHeight="10.0" prefHeight="28.80001220703125" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="73.59998779296876" minHeight="10.0" prefHeight="73.59998779296876" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </GridPane.margin>
+                     <children>
+                        <Label styleClass="subTitleText" text="Poll: Poll question here?" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </Label>
+                        <GridPane GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="A" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="B" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="C" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="D" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="E" textFill="WHITE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="F" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="G" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="H" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="I" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <Button minHeight="25.0" minWidth="25.0" mnemonicParsing="false" style="-fx-background-color: #00A6D6; -fx-background-radius: 50;" styleClass="pollButton" stylesheets="@pollButtonStyle.css" text="J" textFill="WHITE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </GridPane>
+                  <GridPane style="-fx-background-color: white;" GridPane.rowIndex="1">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </GridPane.margin>
+                     <children>
+                        <Label styleClass="subTitleText" text="Live Feedback" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" styleClass="buttonText" text="Too Fast" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Arial" size="10.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" styleClass="buttonText" text="Reset" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Arial" size="10.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" styleClass="buttonText" text="Too Slow" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Arial" size="10.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </GridPane>
+                  <GridPane style="-fx-background-color: white;" GridPane.rowIndex="3">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+                     </GridPane.margin>
+                     <children>
+                        <Label styleClass="subTitleText" text="Ask a question" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </Label>
+                        <Button mnemonicParsing="false" prefHeight="19.0" prefWidth="52.0" styleClass="buttonText" text="Submit" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Arial" size="10.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Type your question here..." wrapText="true" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </TextArea>
+                     </children>
+                  </GridPane>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" styleClass="subTitleText" text="Lecture: CSE1200" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+            </GridPane>
+            <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" stylesheets="@tabStyle.css" tabClosingPolicy="UNAVAILABLE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+              <tabs>
+                <Tab styleClass="tabText" text="Questions">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #E5E5E5;">
+                           <children>
+                              <ListView layoutX="81.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+                <Tab styleClass="tabText" text="Answered Questions">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #E5E5E5;">
+                           <children>
+                              <ListView layoutX="65.0" layoutY="31.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab styleClass="tabText" text="Participants">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #E5E5E5;">
+                           <children>
+                              <ListView layoutX="81.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>
