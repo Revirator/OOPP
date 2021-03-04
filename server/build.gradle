@@ -20,7 +20,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Local test database (in-memory)
-//	implementation 'com.h2database:h2'
+	implementation 'com.h2database:h2'
 	developmentOnly 'org.hibernate:hibernate-entitymanager'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
