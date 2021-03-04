@@ -23,7 +23,7 @@ public class RoomTest {
     private RoomRepository roomRepository;
 
     @Test
-    public void saveAndRetrieveQuestionTest() throws MalformedURLException {
+    public void saveAndRetrieveRoomTest() throws MalformedURLException {
 
         Room expected = new Room(
                 1,
