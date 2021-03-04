@@ -9,6 +9,6 @@ import java.net.URL;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
     Room findById(long id);
-    Room findByStudentsLink(String link);
-    Room findByModeratorLink(String link);
+    Room findFirstByStudentsLink(URL link);
+    Room findByModeratorLink(URL link);
 }

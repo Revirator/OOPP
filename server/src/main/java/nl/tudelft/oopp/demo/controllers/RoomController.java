@@ -29,10 +29,16 @@ public class RoomController {
         return new Room(1, LocalDateTime.now(), "Example Room");    // Used for testing
     }
 
-    @GetMapping(path = "{roomCode}")  // http://localhost:8080/rooms/{roomCode}
+    @GetMapping("/{roomCode}")  // http://localhost:8080/rooms/{roomCode}
     @ResponseBody
-    public Room getRoomByCode(@PathVariable("roomCode") String roomCode) {
+    public Room getRoomByCode(@PathVariable String roomCode) {
         return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
     }
+
+//    @GetMapping("/{id}")  // http://localhost:8080/rooms/{id}
+//    @ResponseBody
+//    public Room getRoomById(@PathVariable int id) {
+//        return roomService.getRoomById(id);
+//    }
 
 }

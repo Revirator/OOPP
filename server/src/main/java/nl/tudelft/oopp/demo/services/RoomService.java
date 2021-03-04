@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -40,12 +42,27 @@ public class RoomService {
      * @return the room itself.
      */
     public Room getRoomByCode(String code) {
-        char last = code.charAt(code.length() - 1);
-        if(last == 'S') {       // Check if the code is for a student or a moderator (probably will get changed later)
-            return roomRepository.findByStudentsLink(code);
-        } else {
-            return roomRepository.findByModeratorLink(code);
+//        char last = code.charAt(code.length() - 1);
+//        if(last == 'S') {       // Check if the code is for a student or a moderator (probably will get changed later)
+//            return roomRepository.findByStudentsLink(code);
+//        } else {
+//            return roomRepository.findByModeratorLink(code);
+//        }
+        URI uri = null;
+        try {
+            uri = new URI(code);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
+
+        URL url = null;
+        try {
+            url = uri.toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return roomRepository.findFirstByStudentsLink(url);
 
     }
 
