@@ -3,6 +3,10 @@
 .gradle
 build/
 
+# Ignore .properties containing db credentials
+application-dev.properties
+application-production.properties
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
@@ -146,3 +150,5 @@ build
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+
