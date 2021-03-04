@@ -5,7 +5,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Room;
 
 import java.io.IOException;
 
@@ -21,6 +24,11 @@ public class SplashController {
      * Handles clicking the button.
      */
     public void buttonClicked(ActionEvent actionEvent) {
+        Room room = ServerCommunication.getRoom(link.getText());
 
+        // Using alert temporary just to test
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("You are in room: " + room.getRoomName());
+        alert.show();
     }
 }

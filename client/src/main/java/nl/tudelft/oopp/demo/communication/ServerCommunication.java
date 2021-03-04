@@ -32,7 +32,6 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());

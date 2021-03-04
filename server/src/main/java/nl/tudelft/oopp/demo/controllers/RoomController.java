@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("rooms")
+@RequestMapping("room")
 public class RoomController {
 
     private final RoomService roomService;
@@ -23,16 +23,16 @@ public class RoomController {
     @GetMapping
     public List<Room> getRooms() { return roomService.getRooms(); }
 
-    @GetMapping(path = "{roomId}")  // http://localhost:8080/rooms/{roomId}
-    public Room getRoomById(@PathVariable("roomId") Long roomId)
-    {
-        return roomService.getRoomById(roomId);
-    }
-
-    @GetMapping("example")   // http://localhost:8080/rooms/example
+    @GetMapping("example")   // http://localhost:8080/room/example
     @ResponseBody
     public Room getExampleRoom() throws MalformedURLException {
         return new Room(1, LocalDateTime.now(), "Example Room");
+    }
+
+    @GetMapping(path = "{roomId}")  // http://localhost:8080/room/{roomId}
+    public Room getRoomById(@PathVariable("roomId") Long roomId)
+    {
+        return roomService.getRoomById(roomId);
     }
 
 }
