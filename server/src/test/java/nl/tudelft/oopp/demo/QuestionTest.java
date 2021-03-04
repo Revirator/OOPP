@@ -21,7 +21,7 @@ public class QuestionTest {
     public void saveAndRetrieveQuestionTest() {
 
         Question expected = new Question(
-                1,
+                1, 1,
                 "What is the basis of the zero subspace?",
                 "Nadine"
         );

@@ -79,8 +79,8 @@ public class QuestionService {
                                 + questionId + " does not exist!"));
 
         if (question != null && question.length() > 0
-                && !Objects.equals(questionToModify.getQuestion(), question)) {
-            questionToModify.setQuestion(question);
+                && !Objects.equals(questionToModify.getText(), question)) {
+            questionToModify.setText(question);
         }
 
     }

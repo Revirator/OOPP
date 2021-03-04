@@ -94,11 +94,11 @@ public class Question {
         return roomId;
     }
 
-    public String getQuestion() {
+    public String getText() {
         return text;
     }
 
-    public void setQuestion(String question) {
+    public void setText(String text) {
         this.text = text;
     }
 
@@ -137,7 +137,7 @@ public class Question {
         Question question1 = (Question) o;
         return getId() == question1.getId()
                 && getRoomId() == question1.getRoomId()
-                && getQuestion().equals(question1.getQuestion())
+                && getText().equals(question1.getText())
                 && getAnswer().equals(question1.getAnswer())
                 && getOwner().equals(question1.getOwner())
                 && getTime().equals(question1.getTime())
@@ -147,7 +147,7 @@ public class Question {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getRoomId(),
-                getQuestion(), getAnswer(), getOwner(), getTime(), upvotes);
+                getText(), getAnswer(), getOwner(), getTime(), upvotes);
     }
 
     @Override

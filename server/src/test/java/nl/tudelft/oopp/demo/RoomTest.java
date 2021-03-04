@@ -27,8 +27,8 @@ public class RoomTest {
 
         Room expected = new Room(
                 1,
-                LocalDateTime.of(2021, Month.APRIL, 16, 8, 45, 00 ),
-                "Linear Algebra");
+                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00 ),
+                "Reasoning and Logic");
         roomRepository.save(expected);
 
         Room output = roomRepository.getOne((long) 1);

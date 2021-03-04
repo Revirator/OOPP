@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.config;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Question;
@@ -16,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class QuestionConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(QuestionRepository repository) {
+    CommandLineRunner commandLineRunner2(QuestionRepository repository) {
         return args -> {
 
             Question senne = new Question(
