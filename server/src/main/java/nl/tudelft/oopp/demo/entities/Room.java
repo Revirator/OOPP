@@ -154,25 +154,7 @@ public class Room {
     public void addQuestion(Question question) {
         this.questions.add(question);
     }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (!(o instanceof Room)) {
-//            return false;
-//        }
-//        Room room = (Room) o;
-//        return isActive() == room.isActive()
-//                && getRoomId() == room.getRoomId()
-//                && getStudentsLink().equals(room.getStudentsLink())
-//                && getModeratorLink().equals(room.getModeratorLink())
-//                && getStartingTime().equals(room.getStartingTime())
-//                && getRoomName().equals(room.getRoomName())
-//                && getParticipants().equals(room.getParticipants())
-//                && getQuestions().equals(room.getQuestions());
-//    }
+
 
     // Equals method without (@Transient) fields that don't have columns in DB.
     @Override
