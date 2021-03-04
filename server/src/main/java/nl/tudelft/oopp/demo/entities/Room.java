@@ -4,25 +4,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import javax.persistence.*;
 
 
 @Entity
 @Table(name = "rooms")
 public class Room {
 
-    // transient = no column in DB
+    // @transient = no column in DB
 
     @Id
     @SequenceGenerator(
@@ -43,8 +34,8 @@ public class Room {
     private boolean active;
     @Transient
     private List<User> participants;            // List of Users > DB ?
-    @Transient
-    private Set<Question> questions;          // Or not needed at all because we have the DB
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Question> questions;          // Or not needed at all because we have the DB
 
 
     public Room() {
@@ -65,7 +56,7 @@ public class Room {
         this.roomName = roomName;
         this.active = false;
         this.participants = new ArrayList<>();
-        this.questions = new HashSet<>();
+        this.questions = new ArrayList<>();
     }
 
     /** Constructor for Room with id.
@@ -84,7 +75,7 @@ public class Room {
         this.roomName = roomName;
         this.active = false;
         this.participants = new ArrayList<>();
-        this.questions = new HashSet<>();
+        this.questions = new ArrayList<>();
     }
 
 
@@ -133,7 +124,7 @@ public class Room {
     }
 
     // Useful for exporting the questions ?
-    public Set<Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 

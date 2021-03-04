@@ -1,12 +1,12 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.time.LocalDate;
+import java.net.MalformedURLException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.Month;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Question;
-import nl.tudelft.oopp.demo.entities.Quote;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,8 +41,11 @@ public class QuestionController {
 
     @GetMapping("example")   // http://localhost:8080/questions/example
     @ResponseBody               // automatically serialized into JSON
-    public Question getExampleQuestion() {
-        return new Question(1, 1,  "What is the basis of the zero subspace?", "Nadine");
+    public Question getExampleQuestion() throws MalformedURLException {
+        return new Question(1,
+                new Room(LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
+                        "OOP Project")
+                ,"What is the basis of the zero subspace?", "Nadine", 55);
     }
 
     @PostMapping   // http://localhost:8080/questions
