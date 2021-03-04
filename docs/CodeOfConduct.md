@@ -17,7 +17,7 @@ This code of conduct is created by us aiming to:
 Code of Conduct violated by one of the members?
 - This will be addressed during our weekly Thursday meeting.
 - This person should explain himself and propose a plan/ideas on how he will prevent this in the future from happening again. This person is expected to go over this Code of Conduct and reflect for himself where it exactly went wrong. If he thinks modifications should be made to this document, he can propose this as well, so we can collectively adapt our Code of Conduct.
-- When nothing improves, the TA will be reported via Mattermost.
+- When nothing improves, the TA will be reported to via Mattermost.
 
 Mutual goal of this OOP project:
 Build a working application that everyone is satisfied about. We will invest as much in the application that time allows us to.
