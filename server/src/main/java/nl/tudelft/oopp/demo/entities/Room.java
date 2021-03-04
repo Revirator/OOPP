@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table
+@Table(name = "rooms")
 public class Room {
 
     // transient = no column in DB
@@ -155,6 +155,8 @@ public class Room {
         this.questions.add(question);
     }
 
+
+    // Equals method without (@Transient) fields that don't have columns in DB.
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -164,15 +166,13 @@ public class Room {
             return false;
         }
         Room room = (Room) o;
-        return isActive() == room.isActive()
-                && getRoomId() == room.getRoomId()
+        return  getRoomId() == room.getRoomId()
                 && getStudentsLink().equals(room.getStudentsLink())
                 && getModeratorLink().equals(room.getModeratorLink())
                 && getStartingTime().equals(room.getStartingTime())
-                && getRoomName().equals(room.getRoomName())
-                && getParticipants().equals(room.getParticipants())
-                && getQuestions().equals(room.getQuestions());
+                && getRoomName().equals(room.getRoomName());
     }
+
 
     @Override
     public int hashCode() {
