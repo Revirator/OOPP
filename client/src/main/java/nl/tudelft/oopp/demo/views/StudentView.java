@@ -20,7 +20,7 @@ public class StudentView extends Application {
      */
     private DoubleProperty subTitleFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty tabFontSize = new SimpleDoubleProperty(10);
-    private DoubleProperty boxFontSize = new SimpleDoubleProperty(10);
+    private DoubleProperty pollButtonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
 
     /**
@@ -51,11 +51,11 @@ public class StudentView extends Application {
         tabFontSize.bind(Bindings.min(15,
                 scene.widthProperty().add(scene.heightProperty()).divide(85)));
 
-        boxFontSize.bind(Bindings.min(15,
+        pollButtonFontSize.bind(Bindings.min(15,
                 scene.widthProperty().add(scene.heightProperty()).divide(100)));
 
-        buttonFontSize.bind(Bindings.min(12,
-                scene.widthProperty().add(scene.heightProperty()).divide(90)));
+        buttonFontSize.bind(Bindings.min(15,
+                scene.widthProperty().add(scene.heightProperty()).divide(120)));
 
         // Put the font sizes on all according nodes
         for (Node node : root.lookupAll(".subTitleText")) {
@@ -71,12 +71,12 @@ public class StudentView extends Application {
 
         for (Node node : root.lookupAll(".pollButton")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
-                    boxFontSize.asString(), ";"));
+                    pollButtonFontSize.asString(), ";"));
         }
 
         for (Node node : root.lookupAll(".buttonText")) {
-            node.styleProperty().bind(Bindings.concat(".pollButton { -fx-font-size: ",
-                    buttonFontSize.asString(), ";}"));
+            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
+                    buttonFontSize.asString(), ";"));
         }
 
     }
