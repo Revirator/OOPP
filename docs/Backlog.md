@@ -17,6 +17,8 @@
 | See all (updated) questions sent by any user with nicknames of their owner. | All | Users can see whom a question/feedback message belongs to. | 
 | See most relevant questions on top, i.e., having most upvotes.  | All  | Keeps the lecture well-organized for both teacher and student. | 
 | Have a separate view for all answered questions (with answers, if answered in text) | All | Users can look back at questions that have been answered (with their answers.) |
+| Start every lecture with an empty list of questions. | Teacher/TA | Makes sure old, irrelevant questions are not visible anymore. | 
+| Have a condensed and simplified view of the current relevant questions. | Teacher/TA | Makes sure he is not distracted by unnecessary details, options or spam. | 
 | Give live feedback to teacher. | Student | Lectures in the future can be improved based on received feedback. | 
 | Can ask questions during the lecture time slot only. | Student | Students can get answers to lecture material that is not clear to them. | 
 | Upvote questions from others. (or their own) | Student | Makes sure questions are prioritized, keeping content relevant. |
@@ -39,12 +41,13 @@
 | Teachers should be able to see whether they are going to fast or slow. | Teacher | Teacher can adapt his/her speed according to feedback given by students, improving, lecture quality. |
 | Rephrase questions sent by students. | Teacher/TA | Keeps content appropriate and understandable for everyone. | 
 | Moderators can answer questions in text. | (Teacher)/TA | Questions can be answered without the lecturer (by the TAs) | 
-| Moderators can answer questions in text, that have been answered verbally by the lecturer. | (Teacher)/TA | Verbal answered are stored in the system as well. | 
+| Moderators can answer questions in text, that have been answered verbally by the lecturer. | (Teacher)/TA | Verbal answered are stored in the system as well. |
+| Be able to ban specific IP addresses. | Teacher/TA | Spammers cannot continue disturbing the lecture. | 
 | After lecture has ended, lecturers/TAs can still answer open questions in text. | Teacher/TA | Students can still get answers to their questions if not answered during the lecture. | 
 | Users can revisit a lecture session by entering the same room code. | All | Allows access to an old room. | 
 | After re-entering a room, users can see all questions and answers. (answered during or after lecture) | All | Users can reread questions/answers at a later point. | 
 | After re-entering a room, moderators can export all questions and answers. | Teacher/TA | Helps the staff to store old questions on their machines. |
-| Having event logs keep track of and display system events. | System admin | Helps admins maintain the system and recover from system crashes (by accessing server logs, they can see where errors occurred). | 
+| Having event logs keep track of and display system events, who did when and what. (should contain names and IP addresses) | System admin | Helps admins maintain the system and recover from system crashes (by accessing server logs, they can see where errors occurred). | 
 | Admins can recover after a system crash, without losing data. | System admin | All messages sent will not be lost. | 
 | After a system crash, all participants can join again using the same room code. | System admin | Helps to restore the lecture faster in case of crash. | 
 | After a system crash, all questions are visible again. | System admin | After recovering, users will be able to see all messages that had been sent before again. | 
