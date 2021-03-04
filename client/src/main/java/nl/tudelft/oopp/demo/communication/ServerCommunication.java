@@ -4,16 +4,41 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import nl.tudelft.oopp.demo.data.Quote;
+import nl.tudelft.oopp.demo.data.Room;
 
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
     private static Gson gson = new Gson();      // added to build.gradle
+
+    /**
+     * Retrieves a room from the server.
+     * @param code room identification code
+     * @return the body of a get request to the server (a room object).
+     * @throws Exception if communication with the server fails.
+     */
+    public static Room getRoom(String code)
+    {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/" + code)).build();
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return gson.fromJson(response.body(), Room.class);
+    }
 
     /**
      * Retrieves a quote from the server.
