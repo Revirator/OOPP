@@ -24,4 +24,13 @@ public class RoomService {
     public List<Room> getRooms() {
         return roomRepository.findAll();
     }
+
+    /** Called by RoomController.
+     * @param id the id of room.
+     * @return the room itself.
+     */
+    public Room getRoomById(long id) {
+        return roomRepository.findById(id);
+    }
+
 }
