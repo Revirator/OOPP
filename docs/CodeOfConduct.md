@@ -14,6 +14,11 @@ This code of conduct is created by us aiming to:
 - Agree upon communication/collaboration arrangements to avoid problems caused by cultural differences.
 - Make communication and collaboration as efficient as possible.
 
+Code of Conduct violated by one of the members?
+- This will be addressed during our weekly Thursday meeting.
+- This person should explain himself and propose a plan/ideas on how he will prevent this in the future from happening again. This person is expected to go over this Code of Conduct and reflect for himself where it exactly went wrong. If he thinks modifications should be made to this document, he can propose this as well, so we can collectively adapt our Code of Conduct.
+- When nothing improves, the TA will be reported to via Mattermost.
+
 Mutual goal of this OOP project:
 Build a working application that everyone is satisfied about. We will invest as much in the application that time allows us to.
 
@@ -37,8 +42,12 @@ Communication
 * Without a valid reason, being 5 minutes late in meetings is fine.
 
 
-* Every weekly meeting reflect for 2-3 min. if communication has failed somewhere.
-  - Code of Conduct violated? Discuss this during the meeting. When nothing improves, reach out to TA.
+* All questions to be asked to TA, may be added to the file “MEETING NOTES”. For technical questions, reach out to technical TAs via Mattermost.
+
+
+* Every weekly meeting ends by reflecting for 2-3 min. if communication has failed somewhere.
+  - This Code of Conduct will be modified throughout this project, whenever modifications are necessary.
+
 
 
 Collaboration
@@ -53,8 +62,21 @@ Collaboration
 * Divide the tasks equally between all the members and adhere to them.
   - If one is not able to finish a task in time, be honest about it and inform the others.
 
+
 * Make one person in charge of planning and taking meeting notes - Nadine.
 
 
 * Every week, the meeting leader/chair, who makes sure all relevant topics are covered, rotates. (in the order: Senne - Pavel - Bora - Emke - Nadine - Denis)
+
+
+* In our teams file “MEETING NOTES”, everyone may add ideas on what topics to discuss.
+
+
+* Every sprint runs from Tuesday in week X until Tuesday in week X+1.
+
+
+* Each member pushes his/her commits, belonging to a feature assigned to him/her, at the latest on Sunday, allowing others to have sufficient time to review code.
+
+
+* Each Tuesday, we merge all feature branches into development_branch, as well as development_branch into master. Before this day, all commits must be adequately reviewed by at least 2 members, who then accept the MR. 
 
