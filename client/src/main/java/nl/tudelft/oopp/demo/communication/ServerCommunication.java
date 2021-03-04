@@ -25,16 +25,18 @@ public class ServerCommunication {
      */
     public static Room getRoom(String code)
     {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/" + code)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/rooms/" + code)).build();
         HttpResponse<String> response = null;
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
+            return null;
         }
         return gson.fromJson(response.body(), Room.class);
     }

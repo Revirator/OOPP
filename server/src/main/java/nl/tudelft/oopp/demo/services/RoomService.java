@@ -6,6 +6,8 @@ import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 @Service
@@ -31,6 +33,20 @@ public class RoomService {
      */
     public Room getRoomById(long id) {
         return roomRepository.findById(id);
+    }
+
+    /** Called by RoomController.
+     * @param code the code (link?) of room.
+     * @return the room itself.
+     */
+    public Room getRoomByCode(String code) {
+        char last = code.charAt(code.length() - 1);
+        if(last == 'S') {       // Check if the code is for a student or a moderator (probably will get changed later)
+            return roomRepository.findByStudentsLink(code);
+        } else {
+            return roomRepository.findByModeratorLink(code);
+        }
+
     }
 
 }
