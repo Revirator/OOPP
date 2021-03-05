@@ -24,22 +24,28 @@ public class SplashController {
      * Handles clicking the button.
      */
     public void buttonClicked(ActionEvent actionEvent) {
-        Room room = ServerCommunication.getRoom(link.getText());
+        if(nickName.getText().equals("") || link.getText().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please enter both nickname and link.");
+            alert.show();
+        } else {
+            Room room = ServerCommunication.getRoom(link.getText());
 
-        // Using alert temporary until the other features ar implemented
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        if(room == null) {
-            alert.setContentText("Invalid room link.");
-            link.clear();
-            alert.show();
-        }
-        else if(room.isActive()){
-            alert.setContentText("You joined " + room.getRoomName());
-            alert.show();   // Here the view should change to the room view
-        }
-        else{
-            alert.setContentText("The room is not open yet.");
-            alert.show();
+            // Using alert temporary until the other features ar implemented
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            if(room == null) {
+                alert.setContentText("Invalid room link.");
+                link.clear();
+                alert.show();
+            }
+            else if(room.isActive()) {
+                alert.setContentText("You joined " + room.getRoomName());
+                alert.show();   // Here the view should change to the room view
+            }
+            else {
+                alert.setContentText("The room is not open yet.");
+                alert.show();
+            }
         }
     }
 }

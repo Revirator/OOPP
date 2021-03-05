@@ -9,6 +9,6 @@ import java.net.URL;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
     Room findById(long id);
-    Room findFirstByStudentsLink(URL link);
-    Room findByModeratorLink(URL link);
+    Room findFirstByStudentsLink(URL link);     // For some reason the link queries can't search by using a String
+    Room findFirstByModeratorLink(URL link);
 }

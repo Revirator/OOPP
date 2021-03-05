@@ -42,12 +42,9 @@ public class RoomService {
      * @return the room itself.
      */
     public Room getRoomByCode(String code) {
-//        char last = code.charAt(code.length() - 1);
-//        if(last == 'S') {       // Check if the code is for a student or a moderator (probably will get changed later)
-//            return roomRepository.findByStudentsLink(code);
-//        } else {
-//            return roomRepository.findByModeratorLink(code);
-//        }
+        char last = code.charAt(code.length() - 1);
+
+        // The next 10 lines are just because we use URL instead of String
         URI uri = null;
         try {
             uri = new URI(code);
@@ -62,8 +59,11 @@ public class RoomService {
             e.printStackTrace();
         }
 
-        return roomRepository.findFirstByStudentsLink(url);
-
+        if(last == 'S') {       // Check if the code is for a student or a moderator (probably will get changed later)
+            return roomRepository.findFirstByStudentsLink(url);
+        } else {
+            return roomRepository.findFirstByModeratorLink(url);
+        }
     }
 
 }

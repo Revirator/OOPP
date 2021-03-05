@@ -35,6 +35,8 @@ public class RoomController {
         return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
     }
 
+    // Used for testing, will probably get removed later
+
 //    @GetMapping("/{id}")  // http://localhost:8080/rooms/{id}
 //    @ResponseBody
 //    public Room getRoomById(@PathVariable int id) {
