@@ -39,8 +39,8 @@ public class SplashController {
             alert.show();
 
         } else {        // If not: try to get a room from the server
-
-            Room room = ServerCommunication.getRoom(link.getText());
+            String code = link.getText();
+            Room room = ServerCommunication.getRoom(code);
 
             // Using alert temporary until the other features are implemented
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -48,20 +48,24 @@ public class SplashController {
             if(room == null) {
                 alert.setContentText("Invalid room link.");     // The room is null when the code is invalid
                 link.clear();
+                alert.show();
             } else {
-                String role;
-                if(isStudent(link.getText())) role = "student";
-                else role = "moderator";
-
-                if(room.getStartingTime().isBefore(LocalDateTime.now())) {   // Might need improvement but works for now
-                    alert.setContentText("You joined " + room.getRoomName() + " as a " + role); // Here the view should change to the room view
+                if(room.getStartingTime().isBefore(LocalDateTime.now())) {   // This check might need improvements but works for now
 
                     // The next few lines are to change the view to the room view
                     // Most of it is magic to me ngl, but it works
+
                     FXMLLoader loader = new FXMLLoader();
-                    URL xmlUrl = getClass().getResource("/mainScene.fxml"); // mainScene.fxml is just a placeholder for the actual scene
+                    URL xmlUrl;
+
+                    if(isStudent(code)) {
+                        xmlUrl = getClass().getResource("/studentRoom.fxml");
+                    } else {
+                        xmlUrl = getClass().getResource("/moderatorRoom.fxml");
+                    }
+
                     loader.setLocation(xmlUrl);
-                    Parent root = (Parent) loader.load();
+                    Parent root = loader.load();
 
                     Stage stage = (Stage) anchor.getScene().getWindow();
                     Scene scene = new Scene(root);
@@ -70,9 +74,9 @@ public class SplashController {
 
                 } else {
                     alert.setContentText("The room is not open yet."); // Here the view should change to the waiting room view instead
+                    alert.show();
                 }
             }
-            alert.show();
         }
     }
 
