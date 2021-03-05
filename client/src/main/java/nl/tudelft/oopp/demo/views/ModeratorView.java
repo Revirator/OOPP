@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -10,9 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class ModeratorView extends Application {
 
@@ -51,11 +51,13 @@ public class ModeratorView extends Application {
         ChoiceBox<String> answers = (ChoiceBox) root.lookup("#answerAmount");
         ChoiceBox<String> correctAnswer = (ChoiceBox) root.lookup("#correctAnswer");
 
-        for (int i=1; i<11; i++)
+        for (int i = 1; i < 11; i++) {
             answers.getItems().add(String.valueOf(i));
+        }
 
-        for(char letter = 'A'; letter <='J'; letter++ )
+        for (char letter = 'A'; letter <= 'J'; letter++) {
             correctAnswer.getItems().add(String.valueOf(letter));
+        }
 
         // Bind font sizes to screen size
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
