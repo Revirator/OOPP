@@ -35,4 +35,22 @@ public class RoomTest {
         assertNotNull(roomTwo.getStudentsLink());
         assertNotNull(roomTwo.getModeratorLink());
     }
+
+    @Test
+    public void testLinkGenerator() {
+        assertTrue(roomOne.getStudentsLink().toString().contains("http://localhost:8080/room/"));
+        assertTrue(roomOne.getModeratorLink().toString().contains("http://localhost:8080/room/M"));
+        assertTrue(roomTwo.getStudentsLink().toString().contains("http://localhost:8080/room/"));
+        assertTrue(roomTwo.getModeratorLink().toString().contains("http://localhost:8080/room/M"));
+        assertNotEquals(roomTwo.getStudentsLink(), roomOne.getStudentsLink());
+        assertNotEquals(roomTwo.getModeratorLink(), roomOne.getModeratorLink());
+    }
+
+    @Test
+    public void testToString() {
+        String date = LocalDateTime.now().toString().substring(0,10).replace("-","/");
+        String time = LocalDateTime.now().toString().substring(11,16);
+        assertEquals("Linear Algebra\n(" +
+                time + ")\n" + date, roomOne.toString());
+    }
 }

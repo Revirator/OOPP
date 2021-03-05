@@ -82,9 +82,9 @@ public class Room {
      * .. then it is a valid moderator link.
      */
     private void linkGenerator() throws MalformedURLException {
-        this.studentsLink = new URL("https://localhost:8080/room/" +
+        this.studentsLink = new URL("http://localhost:8080/room/" +
                 UUID.randomUUID().toString().replace("-", "").substring(0,18));
-        this.moderatorLink = new URL("https://localhost:8080/room/M" +
+        this.moderatorLink = new URL("http://localhost:8080/room/M" +
                 UUID.randomUUID().toString().replace("-", "").substring(0,17));
     }
 
