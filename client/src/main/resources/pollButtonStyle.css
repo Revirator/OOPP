@@ -1,0 +1,11 @@
+.pollButton:hover{
+    -fx-text-fill: #b3b3b3;
+}
+.pollButton:focused{
+    -fx-text-fill: black;
+}
+
+.pollButton {
+    -fx-background-radius: 50;
+    -fx-background-color: #00a6d6;
+}
