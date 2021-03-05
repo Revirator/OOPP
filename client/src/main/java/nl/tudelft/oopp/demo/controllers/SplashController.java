@@ -11,6 +11,7 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class SplashController {
 
@@ -45,7 +46,7 @@ public class SplashController {
                 if(isStudent(link.getText())) role = "student";
                 else role = "moderator";
 
-                if(room.isActive()) {   // Here there has to be proper check for if the room is currently open but
+                if(room.getStartingTime().isBefore(LocalDateTime.now())) {   // Here there has to be proper check for if the room is currently open but
                     alert.setContentText("You joined " + room.getRoomName() + " as a " + role); // Here the view should change to the room view
                 } else {
                     alert.setContentText("The room is not open yet."); // Here the view should change to the waiting room view

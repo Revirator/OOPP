@@ -34,6 +34,10 @@ public class Room {
         return moderatorLink;
     }
 
+    public LocalDateTime getStartingTime() {
+        return startingTime;
+    }
+
     public boolean isActive() {
         return active;
     }
