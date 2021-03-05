@@ -67,6 +67,8 @@ public class SplashController {
                     loader.setLocation(xmlUrl);
                     Parent root = loader.load();
 
+                    // Somewhere here should there should be some code that passes arguments(room, code) to the new view
+
                     Stage stage = (Stage) anchor.getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);

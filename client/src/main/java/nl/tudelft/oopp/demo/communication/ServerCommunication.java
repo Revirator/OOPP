@@ -18,7 +18,6 @@ import nl.tudelft.oopp.demo.data.Room;
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
-    //private static Gson gson = new Gson();      // added to build.gradle  // this is the standard gson deserializer
 
     private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
         @Override
@@ -26,7 +25,8 @@ public class ServerCommunication {
 
             return LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")); }
 
-    }).create();    // Had to change the serializer because the room entity uses LocalDateTime and for some reason gson doesn't support that
+    }).create();    // Had to change the serializer because the room entity uses LocalDateTime
+                    // and for some reason gson doesn't support that...
     /**
      * Retrieves a room from the server.
      * @param code room identification code
@@ -35,6 +35,8 @@ public class ServerCommunication {
      */
     public static Room getRoom(String code)
     {
+        if(code.equals("")) return null;    // Some empty string check (ADS taught me to put those everywhere)
+
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/rooms/" + code)).build();
         HttpResponse<String> response = null;
 
