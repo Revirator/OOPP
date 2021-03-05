@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -37,6 +39,7 @@ public class Room {
     private long roomId;
     private URL studentsLink;
     private URL moderatorLink;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startingTime;
     private String roomName;                    // course name e.g.
     @Transient

@@ -45,8 +45,8 @@ public class SplashController {
                 if(isStudent(link.getText())) role = "student";
                 else role = "moderator";
 
-                if(room.isActive()) {
-                    alert.setContentText("You joined " + room.getRoomName() + "as a " + role); // Here the view should change to the room view
+                if(room.isActive()) {   // Here there has to be proper check for if the room is currently open but
+                    alert.setContentText("You joined " + room.getRoomName() + " as a " + role); // Here the view should change to the room view
                 } else {
                     alert.setContentText("The room is not open yet."); // Here the view should change to the waiting room view
                 }

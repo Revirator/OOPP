@@ -1,13 +1,16 @@
 package nl.tudelft.oopp.demo.communication;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import nl.tudelft.oopp.demo.data.Quote;
 import nl.tudelft.oopp.demo.data.Room;
@@ -15,8 +18,15 @@ import nl.tudelft.oopp.demo.data.Room;
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
-    private static Gson gson = new Gson();      // added to build.gradle
+    //private static Gson gson = new Gson();      // added to build.gradle  // this is the standard gson deserializer
 
+    private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
+        @Override
+        public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+
+            return LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")); }
+
+    }).create();    // Had to change the serializer because the room entity uses LocalDateTime and for some reason gson doesn't support that
     /**
      * Retrieves a room from the server.
      * @param code room identification code
