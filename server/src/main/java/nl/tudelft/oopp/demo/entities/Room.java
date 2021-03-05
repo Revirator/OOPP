@@ -3,7 +3,12 @@ package nl.tudelft.oopp.demo.entities;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -82,10 +87,10 @@ public class Room {
      * .. then it is a valid moderator link.
      */
     private void linkGenerator() throws MalformedURLException {
-        this.studentsLink = new URL("http://localhost:8080/room/" +
-                UUID.randomUUID().toString().replace("-", "").substring(0,18));
-        this.moderatorLink = new URL("http://localhost:8080/room/M" +
-                UUID.randomUUID().toString().replace("-", "").substring(0,17));
+        this.studentsLink = new URL("http://localhost:8080/room/"
+                + UUID.randomUUID().toString().replace("-", "").substring(0,18));
+        this.moderatorLink = new URL("http://localhost:8080/room/M"
+                + UUID.randomUUID().toString().replace("-", "").substring(0,17));
     }
 
     public long getRoomId() {
@@ -173,6 +178,9 @@ public class Room {
                 && getQuestions().equals(room.getQuestions());
     }
 
+    /** Automatically generated hash method.
+     * @return int - the hashCode of the Room
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getRoomId(), getStudentsLink(),
@@ -180,8 +188,8 @@ public class Room {
                 getRoomName(), isActive(), getParticipants(), getQuestions());
     }
 
-    /**
-     * @return String - same format as the one for the waiting room.
+    /** Automatically generated toString method.
+     * @return String - same format as the one for the waiting room
      */
     @Override
     public String toString() {

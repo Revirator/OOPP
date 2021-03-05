@@ -1,19 +1,22 @@
 package nl.tudelft.oopp.demo;
 
-import nl.tudelft.oopp.demo.entities.Room;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
+import nl.tudelft.oopp.demo.entities.Room;
+import org.junit.jupiter.api.Test;
 
 public class RoomTest {
 
     private Room roomOne;
     private Room roomTwo;
 
+    /** Generating two rooms to be tested.
+     */
     public RoomTest() {
         try {
             roomOne = new Room(LocalDateTime.now(), "Linear Algebra");
@@ -50,7 +53,7 @@ public class RoomTest {
     public void testToString() {
         String date = LocalDateTime.now().toString().substring(0,10).replace("-","/");
         String time = LocalDateTime.now().toString().substring(11,16);
-        assertEquals("Linear Algebra\n(" +
-                time + ")\n" + date, roomOne.toString());
+        assertEquals("Linear Algebra\n("
+                + time + ")\n" + date, roomOne.toString());
     }
 }
