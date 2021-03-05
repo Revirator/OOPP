@@ -24,28 +24,43 @@ public class SplashController {
      * Handles clicking the button.
      */
     public void buttonClicked(ActionEvent actionEvent) {
-        if(nickName.getText().equals("") || link.getText().equals("")) {
+        if(nickName.getText().equals("") || link.getText().equals("")) {    // Check if one of the fields is empty
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter both nickname and link.");
             alert.show();
-        } else {
+
+        } else {        // If not: try to get a room from the server
+
             Room room = ServerCommunication.getRoom(link.getText());
 
-            // Using alert temporary until the other features ar implemented
+            // Using alert temporary until the other features are implemented
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
             if(room == null) {
                 alert.setContentText("Invalid room link.");
                 link.clear();
-                alert.show();
+            } else {
+                String role;
+                if(isStudent(link.getText())) role = "student";
+                else role = "moderator";
+
+                if(room.isActive()) {
+                    alert.setContentText("You joined " + room.getRoomName() + "as a " + role); // Here the view should change to the room view
+                } else {
+                    alert.setContentText("The room is not open yet."); // Here the view should change to the waiting room view
+                }
             }
-            else if(room.isActive()) {
-                alert.setContentText("You joined " + room.getRoomName());
-                alert.show();   // Here the view should change to the room view
-            }
-            else {
-                alert.setContentText("The room is not open yet.");
-                alert.show();
-            }
+            alert.show();
         }
+    }
+
+    /**
+     * Returns if the room code is for student
+     * @param code the room code
+     * @return true if the code is for student
+     */
+    private static boolean isStudent(String code) {
+        return code.charAt(code.length() - 1) == 'S';   // If the code/link format changes this should be changed as well
     }
 }
