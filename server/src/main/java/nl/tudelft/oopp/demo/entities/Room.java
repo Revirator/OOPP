@@ -39,7 +39,7 @@ public class Room {
     private long roomId;
     private URL studentsLink;
     private URL moderatorLink;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startingTime;
     private String roomName;                    // course name e.g.
     @Transient

@@ -1,16 +1,15 @@
 package nl.tudelft.oopp.demo.services;
 
-import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.repositories.QuestionRepository;
-import nl.tudelft.oopp.demo.repositories.RoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+
+import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.repositories.RoomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
@@ -20,7 +19,9 @@ public class RoomService {
      * @param roomRepository - retrieves rooms from database.
      */
     @Autowired
-    public RoomService(RoomRepository roomRepository) {this.roomRepository = roomRepository; }
+    public RoomService(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
+    }
 
     /** Called by RoomController.
      * @return a List of rooms.
@@ -59,7 +60,8 @@ public class RoomService {
             e.printStackTrace();
         }
 
-        if(last == 'S') {       // Check if the code is for a student or a moderator (probably will get changed later)
+        // Check if the code is for a student or a moderator (probably will get changed later)
+        if (last == 'S') {
             return roomRepository.findFirstByStudentsLink(url);
         } else {
             return roomRepository.findFirstByModeratorLink(url);
