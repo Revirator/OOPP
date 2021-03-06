@@ -1,0 +1,30 @@
+/* Change background behind tabs. */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #f3f3f3;
+}
+
+/* Change width of the tabs. */
+.tab-pane {
+    -fx-tab-min-width:90px;
+}
+
+/* Removes the weird line between tab and page. */
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+
+/* Changes background colour of the unselected tabs. */
+.tab-pane .tab {
+    -fx-background-color: #f3f3f3;
+}
+
+/* Changes background colour of selected tabs. */
+.tab-pane .tab:selected {
+    -fx-background-color: #E5E5E5;
+}
+
+/* Properly aligns text and makes it 13px. */
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-font-size: 13px;
+}
