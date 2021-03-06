@@ -56,7 +56,7 @@ public class SplashController {
                 if (room.getStartingTime().isBefore(LocalDateTime.now())) {
 
                     // The next few lines are to change the view to the room view
-                    // Most of it is magic to me ngl, but it works
+                    // Most of it is magic to me, but it works
 
                     FXMLLoader loader = new FXMLLoader();
                     URL xmlUrl;
@@ -70,11 +70,15 @@ public class SplashController {
                     loader.setLocation(xmlUrl);
                     Parent root = loader.load();
 
-                    StudentSceneController ssc = loader.getController();
-                    ssc.setUserName(name);
-
-                    // Somewhere here should be some code
-                    // that passes arguments(room, code) to the new view
+                    // Those lines pass the entered name and the room received
+                    // from the DB to the next controller we will be using
+                    if (isStudent(code)) {
+                        StudentRoomController src = loader.getController();
+                        src.setData(name, room);
+                    } else {
+                        ModeratorRoomController mrc = loader.getController();
+                        mrc.setData(name, room);
+                    }
 
                     Stage stage = (Stage) anchor.getScene().getWindow();
                     Scene scene = new Scene(root);
