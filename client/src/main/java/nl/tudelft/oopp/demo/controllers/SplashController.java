@@ -40,6 +40,7 @@ public class SplashController {
             alert.show();
 
         } else {        // If not: try to get a room from the server
+            String name = nickName.getText();
             String code = link.getText();
             Room room = ServerCommunication.getRoom(code);
 
@@ -68,6 +69,9 @@ public class SplashController {
 
                     loader.setLocation(xmlUrl);
                     Parent root = loader.load();
+
+                    StudentSceneController ssc = loader.getController();
+                    ssc.setUserName(name);
 
                     // Somewhere here should be some code
                     // that passes arguments(room, code) to the new view
