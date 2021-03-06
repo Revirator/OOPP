@@ -14,7 +14,17 @@ public class Room {
     private LocalDateTime startingTime;
     private boolean active;
 
-    public Room(String roomName, URL studentsLink, URL moderatorLink, LocalDateTime startingTime, boolean active) {
+
+    /**
+     * Room constructor.
+     * @param roomName roomName
+     * @param studentsLink studentsLink
+     * @param moderatorLink moderatorLink
+     * @param startingTime startingTime
+     * @param active active
+     */
+    public Room(String roomName, URL studentsLink, URL moderatorLink,
+                LocalDateTime startingTime, boolean active) {
         this.roomName = roomName;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
