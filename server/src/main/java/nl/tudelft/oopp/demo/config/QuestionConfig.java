@@ -17,58 +17,64 @@ import org.springframework.context.annotation.Configuration;
 public class QuestionConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner2(QuestionRepository repository, RoomRepository repository2) {
+    CommandLineRunner commandLineRunner2(QuestionRepository questionRepository,
+                                         RoomRepository roomRepository) {
         return args -> {
 
-            Room ooppy1 = new Room(
-                    LocalDateTime.of(2021, Month.APRIL, 19, 12, 45, 00),
-                    "OOP Project");
+            Room calcy1 = new Room(
+                    LocalDateTime.of(2021, Month.APRIL, 19, 8, 45, 00),
+                    "Calculus");
 
-            repository2.save(ooppy1);
+            Room adsy1 = new Room(
+                    LocalDateTime.of(2021, Month.JANUARY, 8, 11, 45, 00),
+                    "Algorithms and Datastructures");
+
+            roomRepository.save(calcy1);
+            roomRepository.save(adsy1);
 
             Question senne = new Question(
                     1,
-                    ooppy1,
+                    adsy1,
                     "How do we get a remote psql database?",
                     "Senne", 12
             );
 
             Question pavel = new Question(
                     2,
-                    ooppy1,
+                    adsy1,
                     "What is the meaning of life?",
                     "Pavel", 99
             );
 
             Question bora = new Question(
                     3,
-                    ooppy1,
+                    adsy1,
                     "What has to be included in our presentation?",
                     "Bora", 1
             );
 
             Question emke = new Question(
                     4,
-                    ooppy1,
+                    calcy1,
                     "Why is the invertible matrix theorem so long?",
                     "Emke", 12
             );
 
             Question nadine = new Question(
                     5,
-                    ooppy1,
+                    calcy1,
                     "What is the basis of the zero subspace?",
                     "Nadine", 0
             );
 
             Question denis = new Question(
                     6,
-                    ooppy1,
+                    calcy1,
                     "When are the grades out??",
                     "Denis", 87
             );
 
-            repository.saveAll(List.of(senne, pavel, bora, emke, nadine, denis));
+            questionRepository.saveAll(List.of(senne, pavel, bora, emke, nadine, denis));
         };
     }
 

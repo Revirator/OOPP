@@ -2,7 +2,16 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.time.LocalTime;
 import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 
 @Entity
@@ -21,7 +30,7 @@ public class Question {
     )
     private long id;
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "room_room_id")
+    @JoinColumn(name = "room_room_id", nullable = false)
     private Room room;
     private String text;
     private String answer;
@@ -66,6 +75,11 @@ public class Question {
         this.upvotes = 0;
     }
 
+    //    public Room getRoom() {
+    //        return room;
+    //    }
+
+    // Returning the room object does not work properly for GET requests?
     public long getRoom() {
         return room.getRoomId();
     }
@@ -116,7 +130,7 @@ public class Question {
         }
         Question question1 = (Question) o;
         return getId() == question1.getId()
-//                && getRoom() == question1.getRoom()
+                // && getRoom() == question1.getRoom()
                 && getText().equals(question1.getText())
                 && getAnswer().equals(question1.getAnswer())
                 && getOwner().equals(question1.getOwner())
