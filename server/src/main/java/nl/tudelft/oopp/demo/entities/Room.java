@@ -6,10 +6,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.*;
-
+import java.util.Set;
+import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "rooms")
@@ -38,7 +49,7 @@ public class Room {
     @Transient
     private List<User> participants;            // List of Users > DB ?
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Question> questions;          // Or not needed at all because we have the DB
+    private Set<Question> questions;          // Or not needed at all because we have the DB
 
 
     public Room() {
@@ -51,15 +62,12 @@ public class Room {
      * @throws MalformedURLException - Exception to be thrown when URL is incorrect format.
      */
     public Room(LocalDateTime startingTime, String roomName) throws MalformedURLException {
-        // Some way to generate 2 links
-        // Example:
-        this.studentsLink = new URL("http://localhost:8080/rooms/" + roomId + "S");
-        this.moderatorLink = new URL("http://localhost:8080/rooms/" + roomId + "TL");
         this.startingTime = startingTime;
         this.roomName = roomName;
         this.active = false;
         this.participants = new ArrayList<>();
-        this.questions = new ArrayList<>();
+        this.questions = new HashSet<>();
+        linkGenerator();
     }
 
     /** Constructor for Room with id.
@@ -70,17 +78,26 @@ public class Room {
      */
     public Room(long id, LocalDateTime startingTime, String roomName) throws MalformedURLException {
         this.roomId = id;
-        // Some way to generate 2 links
-        // Example:
-        this.studentsLink = new URL("http://localhost:8080/rooms/" + roomId + "S");
-        this.moderatorLink = new URL("http://localhost:8080/rooms/" + roomId + "TL");
         this.startingTime = startingTime;
         this.roomName = roomName;
         this.active = false;
         this.participants = new ArrayList<>();
-        this.questions = new ArrayList<>();
+        this.questions = new HashSet<>();
+        linkGenerator();
     }
 
+    /** When verifying the links :
+     * If the link doesn't contain M and is not linked to a room ..
+     * .. then that means the link is invalid students link.
+     * If the link contains M and is linked to a room ..
+     * .. then it is a valid moderator link.
+     */
+    private void linkGenerator() throws MalformedURLException {
+        this.studentsLink = new URL("http://localhost:8080/room/"
+                + UUID.randomUUID().toString().replace("-", "").substring(0,18));
+        this.moderatorLink = new URL("http://localhost:8080/room/M"
+                + UUID.randomUUID().toString().replace("-", "").substring(0,17));
+    }
 
     public long getRoomId() {
         return roomId;
@@ -110,7 +127,7 @@ public class Room {
         return active;
     }
 
-    /**  A function that closes the window for the students, etc.
+    /** A function that closes the window for the students, etc.
      * Room is not active anymore: no more questions can be asked,
      * but Moderators may still answer questions.
      */
@@ -121,13 +138,12 @@ public class Room {
         }
     }
 
-    // or use DB?
     public List<User> getParticipants() {
         return participants;
     }
 
     // Useful for exporting the questions ?
-    public List<Question> getQuestions() {
+    public Set<Question> getQuestions() {
         return questions;
     }
 
@@ -167,7 +183,9 @@ public class Room {
                 && getRoomName().equals(room.getRoomName());
     }
 
-
+    /** Automatically generated hash method.
+     * @return int - the hashCode of the Room
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getRoomId(), getStudentsLink(),
@@ -175,8 +193,15 @@ public class Room {
                 getRoomName(), isActive(), getParticipants(), getQuestions());
     }
 
+    /** Automatically generated toString method.
+     * @return String - same format as the one for the waiting room
+     */
     @Override
     public String toString() {
-        return "Room " + roomId + (active ? "" : " starting at " + startingTime);
+        String result = roomName + "\n(";
+        String date = startingTime.toString().substring(0,10).replace("-","/");
+        String time = startingTime.toString().substring(11,16);
+        result += time + ")\n" + date;
+        return result;
     }
 }
