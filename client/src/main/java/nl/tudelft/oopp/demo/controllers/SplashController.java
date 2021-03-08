@@ -3,14 +3,18 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Set;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
@@ -25,6 +29,15 @@ public class SplashController {
 
     @FXML
     private AnchorPane anchor;      // the splash.fxml anchor pane
+
+    @FXML
+    private Text courseName;
+
+    @FXML
+    private Text startingTime;
+
+    @FXML
+    private Text startingDate;
 
     /**
      * Handles clicking the button.
@@ -95,6 +108,16 @@ public class SplashController {
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
+
+                    Set<Node> set = root.lookupAll("Text");
+                    for (Node node : set){
+                        if(node.getId().equals("courseName")) {
+                            courseName.setText(room.getRoomName());
+                        }
+                    }
+                    courseName.setText(room.getRoomName());
+                    //startingTime.setText("(" + room.getStartingTime().toString().substring(11,16) + ")");
+                    //startingDate.setText(room.getStartingTime().toString().substring(0, 10).replace("-", "/"));
                 }
             }
         }
