@@ -31,8 +31,8 @@ public class RoomController {
 
     @GetMapping("example")   // http://localhost:8080/rooms/example
     @ResponseBody
-    public Room getExampleRoom() throws MalformedURLException {
-        return new Room(1, LocalDateTime.now(), "Example Room");    // Used for testing
+    public Room getExampleRoom() {
+        return roomService.getRoomById(2);
     }
 
     @GetMapping("/{roomCode}")  // http://localhost:8080/rooms/{roomCode}

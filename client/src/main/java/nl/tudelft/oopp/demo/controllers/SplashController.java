@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
 
-
 public class SplashController {
 
     @FXML
@@ -53,7 +52,7 @@ public class SplashController {
                 alert.show();
             } else {
                 // This check might need improvements but works for now
-                if (room.getStartingTime().isBefore(LocalDateTime.now())) {
+                if (!code.contains("M") && room.getStartingTime().isBefore(LocalDateTime.now())) {
 
                     // The next few lines are to change the view to the room view
                     // Most of it is magic to me, but it works
@@ -61,7 +60,7 @@ public class SplashController {
                     FXMLLoader loader = new FXMLLoader();
                     URL xmlUrl;
 
-                    if (isStudent(code)) {
+                    if (!code.contains("M")) {
                         xmlUrl = getClass().getResource("/studentRoom.fxml");
                     } else {
                         xmlUrl = getClass().getResource("/moderatorRoom.fxml");
@@ -72,7 +71,7 @@ public class SplashController {
 
                     // Those lines pass the entered name and the room received
                     // from the DB to the next controller we will be using
-                    if (isStudent(code)) {
+                    if (!code.contains("M")) {
                         StudentRoomController src = loader.getController();
                         src.setData(name, room);
                     } else {
@@ -87,20 +86,17 @@ public class SplashController {
 
                 } else {
                     // Here the view should change to the waiting room view instead
-                    alert.setContentText("The room is not open yet.");
-                    alert.show();
+
+                    URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(xmlUrl);
+                    Parent root = loader.load();
+                    Stage stage = (Stage) anchor.getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                 }
             }
         }
-    }
-
-    /**
-     * Returns if the room code is for student.
-     * @param code the room code
-     * @return true if the code is for student
-     */
-    private static boolean isStudent(String code) {
-        // If the code/link format changes this should be changed as well
-        return code.charAt(code.length() - 1) == 'S';
     }
 }
