@@ -53,4 +53,9 @@ public class ServerCommunication {
 
         return gson.fromJson(response.body(), Room.class);
     }
+
+    public static Room makeRoom(Room room) {
+        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublisher.somethingOf(room)).uri(URI.create("http://localhost:8080/rooms")).build();
+        HttpResponse<String> response;
+    }
 }

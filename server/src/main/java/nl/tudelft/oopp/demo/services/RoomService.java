@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,14 @@ public class RoomService {
      */
     public Room getRoomById(long id) {
         return roomRepository.findById(id);
+    }
+
+    /** Called by RoomController
+     * @param room
+     * Adds a new room
+     */
+    public void addNewRoom(Room room) {
+        roomRepository.save(room);
     }
 
     /** Called by RoomController.
