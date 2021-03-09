@@ -62,7 +62,7 @@ Communication
 * When approving MRs, we leave appropriate comments (showing that you have understood the code).
 
 
-* GitLab Issues and Commit descriptions follow specific formats that we agreed upon. (see examples in GitLab)
+* GitLab Issue descriptions follow a specific format that we agreed upon. (see examples in GitLab)
 
 
 Collaboration
