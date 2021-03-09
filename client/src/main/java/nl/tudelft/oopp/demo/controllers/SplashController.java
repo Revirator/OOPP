@@ -53,6 +53,7 @@ public class SplashController {
                 alert.show();
             } else {
                 // This check might need improvements but works for now
+                // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
 
                     // The next few lines are to change the view to the room view

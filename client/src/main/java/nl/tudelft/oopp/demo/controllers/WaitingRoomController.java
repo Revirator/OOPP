@@ -56,8 +56,9 @@ public class WaitingRoomController {
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(diff), e -> loadStudentRoom()));
             timeline.play();
+        } else {
+            loadStudentRoom();
         }
-        loadStudentRoom();
     }
 
     /** The method changes the view from the ..
