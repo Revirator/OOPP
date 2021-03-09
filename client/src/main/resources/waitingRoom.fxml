@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.SplashController">
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.WaitingRoomController">
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
@@ -18,7 +18,6 @@
             </children>
         </AnchorPane>
     </top>
-
     <center>
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -27,7 +26,6 @@
             <rowConstraints>
                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             </rowConstraints>
-            
             <children>
                 <GridPane alignment="CENTER" style="-fx-background-color: #E5E5E5;" GridPane.hgrow="SOMETIMES" GridPane.valignment="BASELINE" GridPane.vgrow="SOMETIMES">
                     <columnConstraints>
@@ -40,7 +38,6 @@
                         <RowConstraints maxHeight="40" minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="40" minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-
                     <children>
                     <Text fill="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Please wait, the host will let you in soon." textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="331.0791015625" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                         <font>
@@ -70,5 +67,4 @@
         </GridPane>
     </center>
 </BorderPane>
-
 </VBox>
