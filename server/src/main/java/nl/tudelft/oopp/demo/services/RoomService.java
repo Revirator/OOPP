@@ -43,9 +43,6 @@ public class RoomService {
      * @return the room itself.
      */
     public Room getRoomByCode(String code) {
-        // char last = code.charAt(code.length() - 1);
-        char first = code.charAt(27);
-
         // The next 10 lines are just because we use URL instead of String
         URI uri = null;
         try {
@@ -62,12 +59,7 @@ public class RoomService {
         }
 
         // Check if the code is for a student or a moderator (probably will get changed later)
-        //        if (last == 'S') {
-        //            return roomRepository.findFirstByStudentsLink(url);
-        //        } else {
-        //            return roomRepository.findFirstByModeratorLink(url);
-        //        }
-        if (first == 'M') {
+        if (code.contains("M")) {
             return roomRepository.findFirstByModeratorLink(url);
         } else {
             return roomRepository.findFirstByStudentsLink(url);

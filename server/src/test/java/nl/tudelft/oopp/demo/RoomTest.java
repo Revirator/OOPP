@@ -34,7 +34,7 @@ public class RoomTest {
 
         Room expected = new Room(
                 1,
-                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
+                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 0),
                 "Reasoning and Logic");
         roomRepository.save(expected);
 
