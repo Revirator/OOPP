@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +53,8 @@ public class SplashController {
                 alert.show();
             } else {
                 // This check might need improvements but works for now
-                if (!code.contains("M") && room.getStartingTime().isBefore(LocalDateTime.now())) {
+                // If you are a Moderator you don't have to wait in the waiting room
+                if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
 
                     // The next few lines are to change the view to the room view
                     // Most of it is magic to me, but it works
@@ -86,15 +88,19 @@ public class SplashController {
 
                 } else {
                     // Here the view should change to the waiting room view instead
-
                     URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(xmlUrl);
                     Parent root = loader.load();
+
                     Stage stage = (Stage) anchor.getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
+
+                    WaitingRoomController waitingRoomController = loader.getController();
+                    waitingRoomController.setData(name, room);
+                    waitingRoomController.main(new String[0]);
                 }
             }
         }
