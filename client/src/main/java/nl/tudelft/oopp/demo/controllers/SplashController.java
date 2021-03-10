@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
