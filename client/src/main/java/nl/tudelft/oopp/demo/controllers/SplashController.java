@@ -66,7 +66,8 @@ public class SplashController {
                 alert.show();
             } else {
                 // This check might need improvements but works for now
-                if (room.getStartingTime().isBefore(LocalDateTime.now())) {
+                // If you are a Moderator you don't have to wait in the waiting room
+                if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
 
                     // The next few lines are to change the view to the room view
                     // Most of it is magic to me, but it works
@@ -74,10 +75,10 @@ public class SplashController {
                     FXMLLoader loader = new FXMLLoader();
                     URL xmlUrl;
 
-                    if (isStudent(code)) {
-                        xmlUrl = getClass().getResource("/studentRoom.fxml");
-                    } else {
+                    if (code.contains("M")) {
                         xmlUrl = getClass().getResource("/moderatorRoom.fxml");
+                    } else {
+                        xmlUrl = getClass().getResource("/studentRoom.fxml");
                     }
 
                     loader.setLocation(xmlUrl);
@@ -85,12 +86,12 @@ public class SplashController {
 
                     // Those lines pass the entered name and the room received
                     // from the DB to the next controller we will be using
-                    if (isStudent(code)) {
-                        StudentRoomController src = loader.getController();
-                        src.setData(name, room);
-                    } else {
+                    if (code.contains("M")) {
                         ModeratorRoomController mrc = loader.getController();
                         mrc.setData(name, room);
+                    } else {
+                        StudentRoomController src = loader.getController();
+                        src.setData(name, room);
                     }
 
                     Stage stage = (Stage) anchor.getScene().getWindow();
@@ -100,13 +101,29 @@ public class SplashController {
 
                 } else {
                     // Here the view should change to the waiting room view instead
-                    alert.setContentText("The room is not open yet.");
-                    alert.show();
+
+                    URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(xmlUrl);
+                    Parent root = loader.load();
+
+                    Stage stage = (Stage) anchor.getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+
+                    WaitingRoomController waitingRoomController = loader.getController();
+                    waitingRoomController.setData(name, room);
+                    waitingRoomController.main(new String[0]);
                 }
             }
         }
     }
 
+    /** Checkstyle wants a comment - to be edited.
+     * @param actionEvent - to be edited
+     * @throws IOException - to be edited
+     */
     public void scheduleRoom(ActionEvent actionEvent) throws IOException {
 
         if (date == null || hour == null) {
@@ -130,20 +147,6 @@ public class SplashController {
             }, convertToDateViaSqlTimestamp(targetTime));
 
         }
-
-
-
-
-    }
-
-    /**
-     * Returns if the room code is for student.
-     * @param code the room code
-     * @return true if the code is for student
-     */
-    private static boolean isStudent(String code) {
-        // If the code/link format changes this should be changed as well
-        return code.charAt(code.length() - 1) == 'S';
     }
 
     public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
