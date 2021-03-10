@@ -47,14 +47,18 @@ public class RoomTest {
      */
     public RoomTest() {
         try {
-            roomOne = new Room(LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 0),
+            roomOne = new Room(
+                    LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
                     "Linear Algebra");
-            roomTwo = new Room(1, LocalDateTime.of(2022, Month.OCTOBER, 22, 10, 30, 0),
+            roomTwo = new Room(
+                    5, LocalDateTime.of(2022, Month.OCTOBER, 22, 10, 30, 00),
                     "CSE1200");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
+
+
 
     @Test
     public void testConstructorAndGetters() {
@@ -63,11 +67,14 @@ public class RoomTest {
         assertEquals("Linear Algebra", roomOne.getRoomName());
         assertNotNull(roomOne.getStudentsLink());
         assertNotNull(roomOne.getModeratorLink());
-        assertEquals(1, roomTwo.getRoomId());
+        assertEquals(5, roomTwo.getRoomId());
         assertEquals("CSE1200", roomTwo.getRoomName());
         assertNotNull(roomTwo.getStudentsLink());
         assertNotNull(roomTwo.getModeratorLink());
+        assertNotNull(roomOne.getParticipants());
+        assertNotNull(roomOne.getQuestions());
     }
+
 
     @Test
     public void testLinkGenerator() {
@@ -84,5 +91,14 @@ public class RoomTest {
         assertEquals("Linear Algebra\n(10:45)\n2021/05/19", roomOne.toString());
         assertEquals("CSE1200\n(10:30)\n2022/10/22", roomTwo.toString());
     }
+
+    @Test
+    public void testRoomLink() {
+        String exampleLink = "http://localhost:8080/room/M0a959ee44e6f45069";
+        assertEquals('M', exampleLink.charAt(27));
+    }
+
+
+
 }
 

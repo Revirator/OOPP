@@ -59,10 +59,9 @@ Communication
 * All questions to be asked to TA, may be added to the file “MEETING NOTES”. For technical questions, reach out to technical TAs via Mattermost.
 
 
-* When approving MRs, we leave appropriate comments (showing that you have understood the code).
+* Every weekly meeting ends by reflecting for 2-3 min. if communication has failed somewhere.
+  - This Code of Conduct will be modified throughout this project, whenever modifications are necessary.
 
-
-* GitLab Issue descriptions follow a specific format that we agreed upon. (see examples in GitLab)
 
 
 Collaboration
@@ -94,3 +93,4 @@ Collaboration
 
 
 * Each Tuesday, we merge all feature branches into development_branch, as well as development_branch into master. Before this day, all commits must be adequately reviewed by at least 2 members, who then accept the MR. 
+

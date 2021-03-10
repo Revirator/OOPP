@@ -77,6 +77,15 @@ public class SplashView extends Application {
                     buttonFontSize.asString(), ";"));
         }
 
+        for (Node node : root.lookupAll(".createRoom")) {
+            node.styleProperty().bind(Bindings.concat("-fx-background-color: #f1be3e;"));
+        }
+
+        for (Node node : root.lookupAll(".enterRoom")) {
+            node.styleProperty().bind(Bindings.concat("-fx-background-color: #eb7245;"));
+        }
+
+
     }
 
     public static void main(String[] args) {
