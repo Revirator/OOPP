@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Question;
@@ -42,8 +43,17 @@ public class RoomService {
     /** Called by RoomController
      * @param room new Room object to be stored in the database
      */
-    public void addNewRoom(Room room) {
-        roomRepository.save(room);
+    public Room addNewRoom(Room room) throws MalformedURLException {
+
+        String roomName = room.getRoomName();
+        LocalDateTime startingTime = room.getStartingTime();
+        boolean active = room.isActive();
+
+        Room updatedRoom = new Room(startingTime, roomName, active);
+
+        roomRepository.save(updatedRoom);
+
+        return updatedRoom;
     }
 
     /** Called by RoomController.

@@ -39,7 +39,7 @@ public class RoomController {
     }
 
     @PostMapping   // http://localhost:8080/rooms
-    public void addNewRoom(@RequestBody Room room) {
-        roomService.addNewRoom(room);
+    public Room addNewRoom(@RequestBody Room room) throws MalformedURLException {
+        return roomService.addNewRoom(room);
     }
 }

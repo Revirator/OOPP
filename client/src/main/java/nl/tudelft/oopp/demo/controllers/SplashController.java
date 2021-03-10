@@ -98,9 +98,37 @@ public class SplashController {
         }
     }
 
-    public void startRoom(ActionEvent actionEvent) {
-        Room newRoom = new Room(LocalDateTime.now(), "name");
-        ServerCommunication.makeRoom(newRoom);
+    public void startRoom(ActionEvent actionEvent) throws IOException {
+
+        // should be name of room instead of nickname but that field isn't created yet
+        if (nickName.getText().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please enter name of room");
+            alert.show();
+        } else {
+            // create new room that's immediately active
+            Room newRoom = new Room(nickName.getText(), LocalDateTime.now(), true);
+            newRoom = ServerCommunication.makeRoom(newRoom);
+
+            FXMLLoader loader = new FXMLLoader();
+            URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
+
+            // set loader to new location
+            loader.setLocation(xmlUrl);
+            Parent root = loader.load();
+
+            // pass information to moderatorRoomController
+            ModeratorRoomController mrc = loader.getController();
+            mrc.setData(nickName.getText(), newRoom);
+
+            // change view
+            Stage stage = (Stage) anchor.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+
     }
 
     /**

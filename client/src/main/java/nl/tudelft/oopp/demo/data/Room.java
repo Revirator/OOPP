@@ -32,6 +32,12 @@ public class Room {
         this.active = active;
     }
 
+    public Room(String roomName, LocalDateTime startingTime, boolean active) {
+        this.roomName = roomName;
+        this.startingTime = startingTime;
+        this.active = active;
+    }
+
     public String getRoomName() {
         return roomName;
     }

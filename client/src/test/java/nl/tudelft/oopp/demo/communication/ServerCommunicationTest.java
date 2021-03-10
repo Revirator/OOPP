@@ -11,4 +11,7 @@ public class ServerCommunicationTest {
         assertNull(ServerCommunication.getRoom(""));
     }
 
+    @Test
+    public void testMakeRoomEmptyString() { assertNull(ServerCommunication.makeRoom(null));}
+
 }

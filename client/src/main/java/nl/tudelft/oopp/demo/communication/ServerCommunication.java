@@ -54,13 +54,13 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
-    public static void makeRoom(Room room) {
+    public static Room makeRoom(Room room) {
+
+        if (room == null) return null;
 
         String postRequestBody = "roomName: " + room.getRoomName() +
-                ", studentsLink: " + String.valueOf(room.getStudentsLink()) +
-                ", moderatorlink: " + String.valueOf(room.getModeratorLink()) +
-                ", startingTime: " + String.valueOf(room.getStartingTime()) +
-                ", active: " + String.valueOf(room.isActive());
+                ", startingTime: " + room.getStartingTime() +
+                ", active: " + room.isActive();
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/rooms"))
@@ -72,7 +72,14 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            return room;
         }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return null;
+        }
+
+        return gson.fromJson(response.body(), Room.class);
     }
 }

@@ -48,7 +48,7 @@ public class RoomTest {
     public RoomTest() {
         try {
             roomOne = new Room(LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
-                    "Linear Algebra");
+                    "Linear Algebra", false);
             roomTwo = new Room(1, LocalDateTime.of(2022, Month.OCTOBER, 22, 10, 30, 00),
                     "CSE1200");
         } catch (MalformedURLException e) {
