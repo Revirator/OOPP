@@ -32,7 +32,7 @@ public class QuestionTest {
 
         Room wdty1 = new Room(
                 LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
-                "Web and Database");
+                "Web and Database", false);
 
         roomRepository.save(wdty1);
 
