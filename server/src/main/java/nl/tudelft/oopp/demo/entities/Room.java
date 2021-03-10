@@ -84,9 +84,6 @@ public class Room {
         linkGenerator();
     }
 
-    /**
-     * empty constructor.
-     */
     public Room() {
     }
 
