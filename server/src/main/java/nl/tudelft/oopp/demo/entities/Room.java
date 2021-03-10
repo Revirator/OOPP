@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+// can throw MalformedURLException
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;

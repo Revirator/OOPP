@@ -44,7 +44,7 @@ public class SplashController {
     private TextField hour;     // the value of hour user enters
 
     /**
-     * Handles clicking the button.
+     * Handles clicking the "join room" button.
      */
     public void buttonClicked(ActionEvent actionEvent) throws IOException {
 
@@ -123,6 +123,9 @@ public class SplashController {
         }
     }
 
+    /**
+     * Handles clicking the "create instant room" button
+     */
     public void startRoom(ActionEvent actionEvent) throws IOException {
 
         // should be name of room instead of nickname but that field isn't created yet
