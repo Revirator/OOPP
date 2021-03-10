@@ -40,8 +40,7 @@ public class RoomService {
     }
 
     /** Called by RoomController
-     * @param room
-     * Adds a new room
+     * @param room new Room object to be stored in the database
      */
     public void addNewRoom(Room room) {
         roomRepository.save(room);

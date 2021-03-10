@@ -54,8 +54,25 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
-    public static Room makeRoom(Room room) {
-        HttpRequest request = HttpRequest.newBuilder().POST(HttpRequest.BodyPublisher.somethingOf(room)).uri(URI.create("http://localhost:8080/rooms")).build();
+    public static void makeRoom(Room room) {
+
+        String postRequestBody = "roomName: " + room.getRoomName() +
+                ", studentsLink: " + String.valueOf(room.getStudentsLink()) +
+                ", moderatorlink: " + String.valueOf(room.getModeratorLink()) +
+                ", startingTime: " + String.valueOf(room.getStartingTime()) +
+                ", active: " + String.valueOf(room.isActive());
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/rooms"))
+                .POST(HttpRequest.BodyPublishers.ofString(postRequestBody))
+                .build();
         HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
     }
 }
