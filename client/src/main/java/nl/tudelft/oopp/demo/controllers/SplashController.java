@@ -2,14 +2,20 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -26,10 +32,16 @@ public class SplashController {
     private TextField link;     // the value of the link text box
 
     @FXML
+    private TextField roomName;     //the value of the room name text box
+
+    @FXML
     private AnchorPane anchor;      // the splash.fxml anchor pane
 
     @FXML
-    private Button newRoom;
+    private DatePicker date;    // the value of date user enters
+
+    @FXML
+    private TextField hour;     // the value of hour user enters
 
     /**
      * Handles clicking the button.
@@ -57,7 +69,8 @@ public class SplashController {
                 alert.show();
             } else {
                 // This check might need improvements but works for now
-                if (room.getStartingTime().isBefore(LocalDateTime.now())) {
+                // If you are a Moderator you don't have to wait in the waiting room
+                if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
 
                     // The next few lines are to change the view to the room view
                     // Most of it is magic to me, but it works
@@ -65,10 +78,10 @@ public class SplashController {
                     FXMLLoader loader = new FXMLLoader();
                     URL xmlUrl;
 
-                    if (isStudent(code)) {
-                        xmlUrl = getClass().getResource("/studentRoom.fxml");
-                    } else {
+                    if (code.contains("M")) {
                         xmlUrl = getClass().getResource("/moderatorRoom.fxml");
+                    } else {
+                        xmlUrl = getClass().getResource("/studentRoom.fxml");
                     }
 
                     loader.setLocation(xmlUrl);
@@ -76,12 +89,12 @@ public class SplashController {
 
                     // Those lines pass the entered name and the room received
                     // from the DB to the next controller we will be using
-                    if (isStudent(code)) {
-                        StudentRoomController src = loader.getController();
-                        src.setData(name, room);
-                    } else {
+                    if (code.contains("M")) {
                         ModeratorRoomController mrc = loader.getController();
                         mrc.setData(name, room);
+                    } else {
+                        StudentRoomController src = loader.getController();
+                        src.setData(name, room);
                     }
 
                     Stage stage = (Stage) anchor.getScene().getWindow();
@@ -91,8 +104,20 @@ public class SplashController {
 
                 } else {
                     // Here the view should change to the waiting room view instead
-                    alert.setContentText("The room is not open yet.");
-                    alert.show();
+
+                    URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(xmlUrl);
+                    Parent root = loader.load();
+
+                    Stage stage = (Stage) anchor.getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+
+                    WaitingRoomController waitingRoomController = loader.getController();
+                    waitingRoomController.setData(name, room);
+                    waitingRoomController.main(new String[0]);
                 }
             }
         }
@@ -101,13 +126,13 @@ public class SplashController {
     public void startRoom(ActionEvent actionEvent) throws IOException {
 
         // should be name of room instead of nickname but that field isn't created yet
-        if (nickName.getText().equals("")) {
+        if (roomName.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter name of room");
             alert.show();
         } else {
             // create new room that's immediately active
-            Room newRoom = new Room(nickName.getText(), LocalDateTime.now(), true);
+            Room newRoom = new Room(roomName.getText(), LocalDateTime.now(), true);
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             FXMLLoader loader = new FXMLLoader();
@@ -119,7 +144,7 @@ public class SplashController {
 
             // pass information to moderatorRoomController
             ModeratorRoomController mrc = loader.getController();
-            mrc.setData(nickName.getText(), newRoom);
+            mrc.setData(roomName.getText(), newRoom);
 
             // change view
             Stage stage = (Stage) anchor.getScene().getWindow();
@@ -131,13 +156,37 @@ public class SplashController {
 
     }
 
-    /**
-     * Returns if the room code is for student.
-     * @param code the room code
-     * @return true if the code is for student
+    /** Checkstyle wants a comment - to be edited.
+     * @param actionEvent - to be edited
+     * @throws IOException - to be edited
      */
-    private static boolean isStudent(String code) {
-        // If the code/link format changes this should be changed as well
-        return code.charAt(code.length() - 1) == 'S';
+    public void scheduleRoom(ActionEvent actionEvent) throws IOException {
+
+        if (date == null || hour == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please enter both nickname and link.");
+            alert.show();
+        } else {
+            LocalDate localDate = date.getValue();
+            String strHour = hour.getText(0,1);
+            String strMin = hour.getText(3,4);
+            int intHour = Integer.parseInt(strHour);
+            int intMin = Integer.parseInt((strMin));
+            LocalTime localTime = LocalTime.of(intHour, intMin);
+            LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
+
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //TODO open the room lol
+                }
+            }, convertToDateViaSqlTimestamp(targetTime));
+
+        }
     }
+
+    public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
+        return java.sql.Timestamp.valueOf(dateToConvert);
+    }
+
 }

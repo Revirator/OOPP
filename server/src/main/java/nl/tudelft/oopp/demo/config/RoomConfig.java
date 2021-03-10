@@ -22,7 +22,7 @@ public class RoomConfig {
                     "Linear Algebra", false);
 
             Room idmy1 = new Room(
-                    LocalDateTime.of(2021, Month.APRIL, 17, 14, 00, 00),
+                    LocalDateTime.of(2021, Month.MARCH, 9, 12, 30, 00),
                     "Information and Database Management", false);
 
             Room ooppy1 = new Room(

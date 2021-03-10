@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.SplashController">
-
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.SplashController">
    <top>
       <AnchorPane fx:id="anchor" prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <children>
@@ -77,13 +76,17 @@
                               <Font name="Arial" size="16.0" />
                            </font>
                         </Label>
-                        <Button fx:id="enter" mnemonicParsing="false" onAction="#buttonClicked" styleClass="buttonText" text="Enter room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                        <Button fx:id="enter" mnemonicParsing="false" onAction="#buttonClicked" style="-fx-background-color: #eb7245;" text="Enter room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="Arial" size="12.0" />
                            </font>
                            <GridPane.margin>
                               <Insets right="10.0" />
                            </GridPane.margin>
+                           <styleClass>
+                              <String fx:value="buttonText" />
+                              <String fx:value="enterRoom" />
+                           </styleClass>
                         </Button>
                      </children>
                   </GridPane>
@@ -111,10 +114,11 @@
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
-                        <TextField maxWidth="1.7976931348623157E308" promptText="15:30" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <TextField fx:id="hour" maxWidth="1.7976931348623157E308" promptText="15:30" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -129,12 +133,25 @@
                               <Font name="Arial" size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker maxWidth="1.7976931348623157E308" promptText="Scheduled date" showWeekNumbers="true" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <DatePicker fx:id="date" maxWidth="1.7976931348623157E308" promptText="Scheduled date" showWeekNumbers="true" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </DatePicker>
-                        <GridPane alignment="TOP_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                        <TextField maxWidth="1.7976931348623157E308" fx:id="roomName" promptText="Room name (e.g. R&amp;L)" styleClass="boxText" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <Label contentDisplay="CENTER" styleClass="preBoxText" text="Room name:" textAlignment="RIGHT" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="Arial" size="16.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="12.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <GridPane alignment="TOP_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                            <columnConstraints>
                               <ColumnConstraints />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.20001220703125" minWidth="10.0" prefWidth="107.20001220703125" />
@@ -145,21 +162,29 @@
                               <RowConstraints maxHeight="16.79998779296875" minHeight="0.0" prefHeight="16.79998779296875" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" styleClass="buttonText" text="Schedule room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                              <Button fx:id="schedule" mnemonicParsing="false" style="-fx-background-color: #f1be3e;" onAction="#scheduleRoom" styleClass="buttonText" text="Schedule room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
                                  <GridPane.margin>
                                     <Insets right="10.0" />
                                  </GridPane.margin>
+                                 <styleClass>
+                                    <String fx:value="buttonText" />
+                                    <String fx:value="createRoom" />
+                                 </styleClass>
                               </Button>
-                              <Button fx:id="newRoom" onAction="#startRoom" mnemonicParsing="false" prefWidth="108.0" styleClass="buttonText" text="Create instant" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startRoom" prefWidth="130.0" style="-fx-background-color: #f1be3e;" text="Create instant room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets bottom="10.0" right="10.0" />
+                                    <Insets bottom="10.0" right="10.0" top="5.0" />
                                  </GridPane.margin>
+                                 <styleClass>
+                                    <String fx:value="buttonText" />
+                                    <String fx:value="createRoom" />
+                                 </styleClass>
                               </Button>
                            </children>
                         </GridPane>
@@ -171,5 +196,3 @@
       </GridPane>
    </center>
 </BorderPane>
-
-</VBox>
