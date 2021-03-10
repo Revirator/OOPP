@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 
@@ -76,6 +77,15 @@ public class SplashView extends Application {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     buttonFontSize.asString(), ";"));
         }
+
+        for (Node node : root.lookupAll(".createRoom")) {
+            node.styleProperty().bind(Bindings.concat("-fx-background-color: #f1be3e;"));
+        }
+
+        for (Node node : root.lookupAll(".enterRoom")) {
+            node.styleProperty().bind(Bindings.concat("-fx-background-color: #eb7245;"));
+        }
+
 
     }
 

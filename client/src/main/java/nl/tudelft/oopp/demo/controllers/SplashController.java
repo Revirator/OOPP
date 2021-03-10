@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class SplashController {
 
     @FXML
     private AnchorPane anchor;      // the splash.fxml anchor pane
+
 
     /**
      * Handles clicking the button.
