@@ -124,7 +124,7 @@ public class SplashController {
     }
 
     /**
-     * Handles clicking the "create instant room" button
+     * Handles clicking the "create instant room" button.
      */
     public void startRoom(ActionEvent actionEvent) throws IOException {
 

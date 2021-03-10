@@ -40,7 +40,7 @@ public class RoomService {
         return roomRepository.findById(id);
     }
 
-    /** Called by RoomController
+    /** Called by RoomController.
      * @param room new Room object to be stored in the database
      */
     public Room addNewRoom(Room room) throws MalformedURLException {

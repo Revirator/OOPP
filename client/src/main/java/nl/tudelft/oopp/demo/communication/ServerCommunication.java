@@ -56,12 +56,14 @@ public class ServerCommunication {
 
     /**
      * Sends room to the server, returns a room with URLs.
-     * @param room, primitive room
+     * @param room primitive room
      * @return room with all parameters
      */
     public static Room makeRoom(Room room) {
 
-        if (room == null) { return null; }
+        if (room == null) {
+            return null;
+        }
 
         // might not be the right format
         String postRequestBody = "roomName: " + room.getRoomName()
