@@ -34,7 +34,7 @@ public class RoomTest {
 
         Room expected = new Room(
                 1,
-                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
+                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 0),
                 "Reasoning and Logic");
         roomRepository.save(expected);
 
@@ -47,9 +47,9 @@ public class RoomTest {
      */
     public RoomTest() {
         try {
-            roomOne = new Room(LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
+            roomOne = new Room(LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 0),
                     "Linear Algebra");
-            roomTwo = new Room(1, LocalDateTime.of(2022, Month.OCTOBER, 22, 10, 30, 00),
+            roomTwo = new Room(1, LocalDateTime.of(2022, Month.OCTOBER, 22, 10, 30, 0),
                     "CSE1200");
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -71,10 +71,10 @@ public class RoomTest {
 
     @Test
     public void testLinkGenerator() {
-        assertTrue(roomOne.getStudentsLink().toString().contains("http://localhost:8080/room/"));
-        assertTrue(roomOne.getModeratorLink().toString().contains("http://localhost:8080/room/M"));
-        assertTrue(roomTwo.getStudentsLink().toString().contains("http://localhost:8080/room/"));
-        assertTrue(roomTwo.getModeratorLink().toString().contains("http://localhost:8080/room/M"));
+        assertTrue(roomOne.getStudentsLink().toString().contains("http://localhost:8080/rooms/"));
+        assertTrue(roomOne.getModeratorLink().toString().contains("http://localhost:8080/rooms/M"));
+        assertTrue(roomTwo.getStudentsLink().toString().contains("http://localhost:8080/rooms/"));
+        assertTrue(roomTwo.getModeratorLink().toString().contains("http://localhost:8080/rooms/M"));
         assertNotEquals(roomTwo.getStudentsLink(), roomOne.getStudentsLink());
         assertNotEquals(roomTwo.getModeratorLink(), roomOne.getModeratorLink());
     }

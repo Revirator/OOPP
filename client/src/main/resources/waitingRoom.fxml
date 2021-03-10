@@ -4,24 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.SplashController">
+
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="300.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
-        <GridPane prefHeight="50.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="TOP_CENTER">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-
+        <AnchorPane fx:id="anchorWaitingRoom" prefHeight="48.0" prefWidth="420.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
             <children>
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerText" text="QuestionMe Waiting Room" textAlignment="CENTER" wrappingWidth="385" GridPane.halignment="CENTER">
+                <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerText" text="QuestionMe Waiting Room">
                     <font>
                         <Font name="Arial" size="24.0" />
                     </font>
                 </Text>
             </children>
-        </GridPane>
+        </AnchorPane>
     </top>
 
     <center>
@@ -52,19 +47,19 @@
                             <Font name="Arial" size="18.0" />
                         </font>
                     </Text>
-                    <ProgressIndicator fx:id = "progressIndicator" disable="true" layoutX="185.0" layoutY="75.0" prefHeight="40.0" prefWidth="40.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <ProgressIndicator disable="true" layoutX="185.0" layoutY="75.0" prefHeight="40.0" prefWidth="40.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                     </ProgressIndicator>
-                    <Text fill="BLACK" fx:id = "courseName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Linear Algebra" textAlignment="CENTER" wrappingWidth="157.07910919189453" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                    <Text fx:id="courseName" fill="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Linear Algebra" textAlignment="CENTER" wrappingWidth="157.07910919189453" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                         <font>
                             <Font name="Arial" size="18.0" />
                         </font>
                     </Text>
-                    <Text fill="BLACK" fx:id = "startingTime" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="(10:45)" textAlignment="CENTER" wrappingWidth="157.07910919189453" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                    <Text fx:id="startingTime" fill="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="(10:45)" textAlignment="CENTER" wrappingWidth="157.07910919189453" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                         <font>
                             <Font name="Arial" size="16.0" />
                         </font>
                     </Text>
-                    <Text fill="BLACK" fx:id = "startingDate" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="20/03/2021" textAlignment="CENTER" wrappingWidth="157.07910919189453" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                    <Text fx:id="startingDate" fill="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="20/03/2021" textAlignment="CENTER" wrappingWidth="157.07910919189453" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                         <font>
                             <Font name="Arial" size="16.0" />
                         </font>
@@ -75,3 +70,5 @@
         </GridPane>
     </center>
 </BorderPane>
+
+</VBox>
