@@ -48,7 +48,7 @@ public class QuestionController {
     public Question getExampleQuestion() throws MalformedURLException {
         return new Question(1,
                 new Room(LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
-                        "OOP Project"),"What is the basis of the zero subspace?", "Nadine", 55);
+                        "OOP Project", false),"What is the basis of the zero subspace?", "Nadine", 55);
     }
 
     @PostMapping   // http://localhost:8080/questions
