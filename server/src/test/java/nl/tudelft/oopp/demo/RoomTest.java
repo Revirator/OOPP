@@ -92,11 +92,6 @@ public class RoomTest {
         assertEquals("CSE1200\n(10:30)\n2022/10/22", roomTwo.toString());
     }
 
-    @Test
-    public void testRoomLink() {
-        String exampleLink = "http://localhost:8080/room/M0a959ee44e6f45069";
-        assertEquals('M', exampleLink.charAt(27));
-    }
 
 
 
