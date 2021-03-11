@@ -162,7 +162,7 @@
                               <RowConstraints maxHeight="16.79998779296875" minHeight="0.0" prefHeight="16.79998779296875" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button fx:id="schedule" mnemonicParsing="false" style="-fx-background-color: #f1be3e;" onAction="#scheduleRoom" styleClass="buttonText" text="Schedule room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                              <Button fx:id="schedule" mnemonicParsing="false" onAction="#scheduleRoom" styleClass="buttonText" style="-fx-background-color: #f1be3e;" text="Schedule room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
