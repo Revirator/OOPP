@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.data;
 
+import nl.tudelft.oopp.demo.controllers.StudentRoomController;
+
 import java.net.URL;
 import java.time.LocalDateTime;
 
@@ -52,7 +54,5 @@ public class Room {
 
     public void hasEnded() {
         this.active = false;
-        // some other stuff
-        // maybe close the window for the students and not for moderators
     }
 }

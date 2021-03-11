@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
 
 public class ModeratorRoomController {
@@ -29,11 +30,16 @@ public class ModeratorRoomController {
         alert.setContentText("Are you sure you want to end the lecture?");
         alert.showAndWait();
         if(alert.getResult().getText().equals("OK")) {
+            if(room == null) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setContentText("The room does not exist");
+                error.show();
+            }
+            ServerCommunication.updateRoom(room.getModeratorLink().toString());
             room.hasEnded();
-            // maybe close the window only for the students
-            // and show an alert to the moderators that the lecture has ended successfully
-            Stage stage = (Stage) anchor.getScene().getWindow();
-            stage.close();
+            Alert success = new Alert(Alert.AlertType.INFORMATION);
+            success.setContentText("The lecture has ended successfully!");
+            success.show();
         }
     }
 }

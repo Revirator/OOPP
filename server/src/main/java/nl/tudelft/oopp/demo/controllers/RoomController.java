@@ -1,17 +1,14 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("rooms")
@@ -39,5 +36,11 @@ public class RoomController {
     @ResponseBody
     public Room getRoomByCode(@PathVariable String roomCode) {
         return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
+    }
+
+    @PutMapping("/update/{roomCode}") // http://localhost:8080/rooms/update/{roomCode}
+    public void updateRoom(@PathVariable String roomCode) throws MalformedURLException {
+        URL url = new URL("http://localhost:8080/rooms/" + roomCode);
+        roomService.updateRoomStatusByLink(url);
     }
 }

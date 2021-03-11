@@ -124,15 +124,11 @@ public class Room {
         return active;
     }
 
-    /** A function that closes the window for the students, etc.
-     * Room is not active anymore: no more questions can be asked,
+    /** Room is not active anymore: no more questions can be asked,
      * but Moderators may still answer questions.
      */
     public void hasEnded() {
         this.active = false;
-        while (!this.participants.isEmpty()) {
-            this.participants.remove(0);
-        }
     }
 
     public List<User> getParticipants() {
