@@ -1,8 +1,12 @@
 package nl.tudelft.oopp.demo.communication;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import nl.tudelft.oopp.demo.data.Room;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 
 public class ServerCommunicationTest {
 
@@ -14,6 +18,14 @@ public class ServerCommunicationTest {
     @Test
     public void testMakeRoomEmptyString() {
         assertNull(ServerCommunication.makeRoom(null));
+    }
+
+    @Test
+    public void testMakeRoom() {
+        Room room = new Room("CSE1105", LocalDateTime.now(), true);
+        Room updatedRoom = ServerCommunication.makeRoom(room);
+        assertNotNull(updatedRoom.getModeratorLink());
+        assertNotNull(updatedRoom.getStudentsLink());
     }
 
 }

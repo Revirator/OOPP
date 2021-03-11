@@ -41,13 +41,15 @@ public class RoomService {
     }
 
     /** Called by RoomController.
-     * @param room new Room object to be stored in the database
+     * @param string new Room object as a string to be stored in the database
      */
-    public Room addNewRoom(Room room) throws MalformedURLException {
+    public Room addNewRoom(String string) throws MalformedURLException {
 
-        String roomName = room.getRoomName();
-        LocalDateTime startingTime = room.getStartingTime();
-        boolean active = room.isActive();
+        String[] dataArray = string.split(", ");
+
+        String roomName = dataArray[0];
+        LocalDateTime startingTime = LocalDateTime.parse(dataArray[1]);
+        boolean active = Boolean.valueOf(dataArray[2]);
 
         Room updatedRoom = new Room(startingTime, roomName, active);
 
