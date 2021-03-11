@@ -67,16 +67,16 @@ public class StudentView extends Application {
         answeredListView.setItems(answered);
 
 //        DEBUGGING PURPOSES
-//
-//        addQuestion(new Question(20,20,"What's the square root of -1?","Student 1",20));
-//
-//        addQuestion(new Question(20,20,"Is Java a programming language?","Student 2",20));
-//
-//        addQuestion(new Question(20,20,"What is the idea behind the TU Delft logo?", "Student 3", 50));
-//
-//        for (Question q : questions) {
-//            q.setAnswer("this is the answer!");
-//        }
+
+        addQuestion(new Question(1,20,"What's the square root of -1?","Senne",20));
+
+        addQuestion(new Question(2,20,"Is Java a programming language?","Albert",20));
+
+        addQuestion(new Question(3,20,"What is the idea behind the TU Delft logo?", "Henkie", 50));
+
+        for (Question q : questions) {
+            q.setAnswer("This is the answer!");
+        }
 
         // Set cell factory to use student cell
         questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered));
@@ -92,6 +92,25 @@ public class StudentView extends Application {
         questionListView.setSelectionModel(new NoSelectionModel<>());
         answeredListView.setSelectionModel(new NoSelectionModel<>());
     }
+
+    /**
+     * Adds a question to the student view.
+     * @param question question to add
+     * @return true if successful, false if not
+     */
+    public boolean addQuestion(Question question) {
+
+        // Not adding duplicates
+        if (questions.contains(question)) return false;
+
+        questions.add(question);
+
+        // Sort based on votes
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
+
 
     /**
      * Binds the font sizes for a responsive UI.
@@ -143,24 +162,6 @@ public class StudentView extends Application {
                     textBoxFontSize.asString(), ";"));
         }
 
-    }
-
-    /**
-     * Adds a question to the student view.
-     * @param question question to add
-     * @return true if successful, false if not
-     */
-    public boolean addQuestion(Question question) {
-
-        // Not adding duplicates
-        if (questions.contains(question)) return false;
-
-        questions.add(question);
-
-        // Sort based on votes
-        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
-
-        return true;
     }
 
 

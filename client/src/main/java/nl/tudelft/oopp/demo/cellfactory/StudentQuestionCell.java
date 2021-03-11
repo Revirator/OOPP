@@ -55,7 +55,8 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Create buttons
         Button upVoteButton = new Button("Vote");
         Button markAnsweredButton = new Button("Mark as answered");
-        Button deleteButton = new Button("Delete question");
+        Button deleteButton = new Button("Delete");
+        Button editButton = new Button("Edit");
 
         // Align buttons
         markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
@@ -66,7 +67,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         upVoteWrapper.setSpacing(5);
 
         // Wrapper for delete button and solved button
-        HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
+        HBox buttonWrapper = new HBox(markAnsweredButton, editButton, deleteButton);
 
 
         // Add elements to grid pane
@@ -111,8 +112,8 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         // Click event for solved
         markAnsweredButton.setOnAction(event -> {
-
-            //TODO check if owner
+            //TODO this button should only be visible for owners
+            //TODO check if actual owner
             //TODO send to server
 
             answered.add(question);
@@ -120,9 +121,22 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         });
 
+
+        // Click event for edit
+        editButton.setOnAction(event -> {
+
+            //TODO this button should only be visible for owners
+            //TODO check if actual owner
+            //TODO let user change the text
+            //TODO send to server (PUT request)
+
+        });
+
+
         // Click event for delete
         deleteButton.setOnAction(event -> {
 
+            //TODO this button should only be visible for owners
             //TODO check if actual owner
             //TODO send to server
 
