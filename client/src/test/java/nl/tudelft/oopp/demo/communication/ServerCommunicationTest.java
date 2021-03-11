@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.time.LocalDateTime;
 
 import nl.tudelft.oopp.demo.data.Room;
-import nl.tudelft.oopp.demo.DemoApplication;
 import org.junit.jupiter.api.Test;
 
 
