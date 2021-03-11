@@ -3,7 +3,6 @@ package nl.tudelft.oopp.demo.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
-import nl.tudelft.oopp.demo.data.Room;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,6 +10,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import nl.tudelft.oopp.demo.data.Room;
 
 public class ServerCommunication {
 

@@ -1,9 +1,15 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Comparator;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,11 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.demo.cellfactory.*;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
+import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.data.Question;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class ModeratorView extends Application {
 
@@ -28,6 +33,10 @@ public class ModeratorView extends Application {
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty normalFontSize = new SimpleDoubleProperty(10);
+
+    // List of questions
+    private ObservableList<Question> questions = FXCollections.observableArrayList();
+    private ObservableList<Question> answered = FXCollections.observableArrayList();
 
     /**
      * Creates the moderator screen scene and loads it on the primary stage.
@@ -56,17 +65,18 @@ public class ModeratorView extends Application {
         questionListView.setItems(questions);
         answeredListView.setItems(answered);
 
-//        DEBUGGING PURPOSES
-//
-//        addQuestion(new Question(20,20,"What's the square root of -1?","Student 1",20));
-//
-//        addQuestion(new Question(20,20,"Is Java a programming language?","Student 2",20));
-//
-//        addQuestion(new Question(20,20,"What is the idea behind the TU Delft logo?", "Student 3", 50));
-//
-//        for (Question q : questions) {
-//            q.setAnswer("this is the answer!");
-//        }
+        //        DEBUGGING PURPOSES
+
+        //        addQuestion(new Question(20,20,"What's the square root of -1?","Student 1",20));
+        //
+        //        addQuestion(new Question(20,20,"Is Java a programming language?","Student 2",20));
+        //
+        //        addQuestion(new Question(20,20,
+        //        "What is the idea behind the TU Delft logo?", "Student 3", 50));
+        //
+        //        for (Question q : questions) {
+        //            q.setAnswer("this is the answer!");
+        //        }
 
         // Set cell factory to use student cell
         questionListView.setCellFactory(param -> new ModeratorQuestionCell(questions, answered));
@@ -91,6 +101,10 @@ public class ModeratorView extends Application {
 
     }
 
+    /**
+     * Creates the choice boxes for polls.
+     * @param scene current scene
+     */
     private void createChoiceBoxes(Scene scene) {
 
         Parent root = scene.getRoot();
@@ -109,9 +123,11 @@ public class ModeratorView extends Application {
 
     }
 
+    /**
+     * Binds the screen size to the font size to make responsive UI.
+     * @param scene current scene
+     */
     private void bindFonts(Scene scene) {
-
-        Parent root = scene.getRoot();
 
         // Bind font sizes to screen size
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
@@ -131,6 +147,8 @@ public class ModeratorView extends Application {
 
         normalFontSize.bind(Bindings.min(18,
                 scene.widthProperty().add(scene.heightProperty()).divide(100)));
+
+        Parent root = scene.getRoot();
 
         // Put the font sizes on all according nodes
         for (Node node : root.lookupAll(".subTitleText")) {
@@ -165,6 +183,31 @@ public class ModeratorView extends Application {
         }
     }
 
+    /**
+     * Adds a question to the list of current questions.
+     * @param question question to add
+     * @return true if successful, false if unsuccessful
+     */
+    public boolean addQuestion(Question question) {
+
+        // Not adding duplicates
+        if (questions.contains(question)) {
+            return false;
+        }
+
+        // Add question
+        questions.add(question);
+
+        // Sort based on votes
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
+
+    /**
+     * Launches this view.
+     * @param args arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }

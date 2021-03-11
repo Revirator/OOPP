@@ -2,23 +2,38 @@ package nl.tudelft.oopp.demo.cellfactory;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorAnsweredCell extends ListCell<Question> {
 
-    private AnchorPane aP = new AnchorPane();
-    private GridPane gP = new GridPane();
+    private AnchorPane anchorPane = new AnchorPane();
+    private GridPane gridPane = new GridPane();
     private Question question;
     private ObservableList<Question> answered;
+    private boolean editingQuestion;
+    private boolean editingAnswer;
+    private TextField editableQuestion;
+    private TextField editableAnswer;
 
+    /**
+     * Constructor for moderator answer cell.
+     * @param answered ObservableList of answered questions
+     */
     public ModeratorAnsweredCell(ObservableList<Question> answered) {
         super();
 
         this.answered = answered;
+        editingAnswer = false;
+        editingQuestion = false;
+        editableAnswer = new TextField();
+        editableQuestion = new TextField();
 
         // Create visual cell
         createCell();
@@ -30,18 +45,19 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
     private void createCell() {
 
         // Add grid pane to anchor pane
-        aP.getChildren().add(gP);
+        anchorPane.getChildren().add(gridPane);
 
-        // Create all labels
+        // Create all labels with ID
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-        Label answerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
+
+        Label upVotesLabel = new Label();
         upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
+
+        Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
 
         // Position labels
@@ -50,31 +66,126 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
         answerLabel.setAlignment(Pos.CENTER_LEFT);
 
+        // Create buttons
+        Button editAnswerButton = new Button("Edit answer");
+        Button editQuestionButton = new Button("Edit question");
+        Button deleteButton = new Button("Delete");
+
+        // Align buttons
+        editAnswerButton.setAlignment(Pos.CENTER_LEFT);
+        editQuestionButton.setAlignment(Pos.CENTER_RIGHT);
+        deleteButton.setAlignment(Pos.CENTER_RIGHT);
+
+        // Create wrappers
+        HBox answerWrapper = new HBox(answerLabel, editAnswerButton);
+        HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
+
+        // Set wrapper spacing
+        answerWrapper.setSpacing(5);
+        questionWrapper.setSpacing(5);
+
         // Add elements to grid pane
-        gP.add(ownerLabel, 0, 0);
-        gP.add(questionLabel, 0,1);
-        gP.add(upVotesLabel, 1,1);
-        gP.add(answerLabel, 0,2);
+        gridPane.add(ownerLabel, 0, 0);
+        gridPane.add(questionWrapper, 0,1);
+        gridPane.add(upVotesLabel, 1,0);
+        gridPane.add(answerWrapper, 0,2);
+        gridPane.add(deleteButton, 1,2);
 
         // Give background colours
-        gP.styleProperty().setValue("-fx-background-color: white");
-        aP.styleProperty().setValue("-fx-background-color: #E5E5E5");
+        gridPane.styleProperty().setValue("-fx-background-color: white");
+        anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
 
         // Align grid pane
-        gP.setAlignment(Pos.CENTER);
+        gridPane.setAlignment(Pos.CENTER);
 
         // Set gaps between rows and columns
-        gP.setVgap(5);
-        gP.setHgap(5);
+        gridPane.setVgap(5);
+        gridPane.setHgap(5);
 
         // Align grid pane in anchor pane
-        AnchorPane.setTopAnchor(gP, 10.0);
-        AnchorPane.setLeftAnchor(gP, 10.0);
-        AnchorPane.setRightAnchor(gP, 10.0);
-        AnchorPane.setBottomAnchor(gP, 10.0);
+        AnchorPane.setTopAnchor(gridPane, 10.0);
+        AnchorPane.setLeftAnchor(gridPane, 10.0);
+        AnchorPane.setRightAnchor(gridPane, 10.0);
+        AnchorPane.setBottomAnchor(gridPane, 10.0);
+
+        // Click events for buttons
+
+        // TODO move to different file
+
+        editQuestionButton.setOnAction(event -> {
+
+            if (this.question == null) {
+                return;
+            }
+
+            //TODO send changes to server
+
+            questionWrapper.getChildren().clear();
+
+            // User saves changes
+            if (editingQuestion) {
+
+                questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
+                question.setText(editableQuestion.getText());
+                editQuestionButton.setText("Edit question");
+                questionLabel.setText(editableQuestion.getText());
+                editingQuestion = false;
+
+            } else { // User wants to make changes
+
+                questionWrapper.getChildren().addAll(editableQuestion, editQuestionButton);
+                editableQuestion.setText(question.getText());
+                editQuestionButton.setText("Save changes");
+                editingQuestion = true;
+
+            }
+        });
+
+        editAnswerButton.setOnAction(event -> {
+
+            if (this.question == null) {
+                return;
+            }
+
+            //TODO send changes to server
+
+            answerWrapper.getChildren().clear();
+
+            // User saves changes
+            if (editingAnswer) {
+
+                answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
+                question.setAnswer(editableAnswer.getText());
+                editAnswerButton.setText("Edit answer");
+                answerLabel.setText("Answer: " + editableAnswer.getText());
+                editingAnswer = false;
+
+            } else { // User wants to make changes
+
+                answerWrapper.getChildren().addAll(editableAnswer, editAnswerButton);
+                editableAnswer.setText(question.getAnswer());
+                editAnswerButton.setText("Save changes");
+                editingAnswer = true;
+
+            }
+        });
+
+        deleteButton.setOnAction(event -> {
+
+            //TODO send to server
+
+            // Remove question from list
+            answered.remove(question);
+
+        });
 
     }
 
+    /**
+     * Updates the item in the ListView.
+     * @param item updated item
+     * @param empty true if empty, false if not
+     */
     @Override
     protected void updateItem(Question item, boolean empty) {
 
@@ -83,29 +194,38 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
         // Empty list item
         if (empty || item == null) {
+
             setGraphic(null);
             setText("");
-        }
-        // Non-empty list item
-        else {
+
+        } else { // Non-empty list item
 
             // Update question object
             this.question = item;
 
-            // Look for number of votes and question
-            Label upVotesLabel = (Label) gP.lookup("#upVotesLabel");
-            Label questionLabel = (Label) gP.lookup("#questionLabel");
-            Label ownerLabel = (Label) gP.lookup("#ownerLabel");
-            Label answerLabel = (Label) gP.lookup("#answerLabel");
-
-            // Update question and number of votes
+            // Look for number of votes and question and update
+            Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
             upVotesLabel.setText(item.getUpvotes() + " votes");
-            questionLabel.setText(item.getText());
+
+            Label questionLabel = (Label) gridPane.lookup("#questionLabel");
+
+            // Check if exists
+            if (questionLabel != null) {
+                questionLabel.setText(item.getText());
+            }
+
+            Label ownerLabel = (Label) gridPane.lookup("#ownerLabel");
             ownerLabel.setText(item.getOwner());
-            answerLabel.setText("Answer: " + item.getAnswer());
+
+            Label answerLabel = (Label) gridPane.lookup("#answerLabel");
+
+            // Check if exists
+            if (answerLabel != null) {
+                answerLabel.setText("Answer: " + item.getAnswer());
+            }
 
             // Show graphic representation
-            setGraphic(aP);
+            setGraphic(anchorPane);
         }
     }
 }
