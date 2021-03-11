@@ -22,13 +22,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class RoomTest {
 
-
-    @Autowired
-    private RoomRepository roomRepository;
-
     private Room roomOne;
     private Room roomTwo;
-
 
     /**
      * Generating two rooms to be tested.
@@ -45,16 +40,6 @@ public class RoomTest {
             e.printStackTrace();
         }
     }
-
-
-    @Test
-    public void saveAndRetrieveRoomTest() {
-        roomRepository.save(roomOne);
-        Room output = roomRepository.getOne((long)1);
-        assertEquals(roomOne, output);
-        assertEquals(1, roomOne.getRoomId());
-    }
-
 
 
 
