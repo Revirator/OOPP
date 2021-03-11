@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -56,6 +55,9 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+    /** Sends a PUT request to the server to make a room inactive.
+     * @param code the room link as a String
+     */
     public static void updateRoom(String code) {
         code = code.substring(28);
         String url = "http://localhost:8080/rooms/update/" + code;

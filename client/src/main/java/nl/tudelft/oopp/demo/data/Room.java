@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.data;
 
-import nl.tudelft.oopp.demo.controllers.StudentRoomController;
-
 import java.net.URL;
 import java.time.LocalDateTime;
 

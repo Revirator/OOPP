@@ -2,13 +2,17 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("rooms")
