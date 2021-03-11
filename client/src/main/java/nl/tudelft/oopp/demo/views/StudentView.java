@@ -6,17 +6,24 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
 import nl.tudelft.oopp.demo.data.Question;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentView extends Application {
 
@@ -30,6 +37,7 @@ public class StudentView extends Application {
 
     // List of questions
     private ObservableList<Question> questions = FXCollections.observableArrayList();
+    private ObservableList<Question> answered = FXCollections.observableArrayList();
 
     /**
      * Creates the student screen scene and loads it on the primary stage.
@@ -52,17 +60,47 @@ public class StudentView extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-
-
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
 
         questionListView.setItems(questions);
+        answeredListView.setItems(answered);
 
-        questions.add(new Question(20,20,"This is my very large question, I would love an upvote :)","dd",20));
+//        DEBUGGING PURPOSES
+//
+//        addQuestion(new Question(20,20,"What's the square root of -1?","Student 1",20));
+//
+//        addQuestion(new Question(20,20,"Is Java a programming language?","Student 2",20));
+//
+//        addQuestion(new Question(20,20,"What is the idea behind the TU Delft logo?", "Student 3", 50));
+//
+//        for (Question q : questions) {
+//            q.setAnswer("this is the answer!");
+//        }
 
-        questionListView.setCellFactory(param -> new StudentQuestionCell());
+        // Set cell factory to use student cell
+        questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered));
+        answeredListView.setCellFactory(param -> new StudentAnsweredCell(answered));
 
-        // Bind font sizes to screen size
+        // Binds the font sizes relative to the screen size
+        bindFonts(scene);
+
+        /*
+        Prevents list items from being selected
+        whilst still allowing buttons to be pressed
+         */
+        questionListView.setSelectionModel(new NoSelectionModel<>());
+        answeredListView.setSelectionModel(new NoSelectionModel<>());
+    }
+
+    /**
+     * Binds the font sizes for a responsive UI.
+     * @param scene scene to make responsive
+     */
+    private void bindFonts(Scene scene) {
+
+        Parent root = scene.getRoot();
+
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
 
 
@@ -104,6 +142,7 @@ public class StudentView extends Application {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     textBoxFontSize.asString(), ";"));
         }
+
     }
 
     /**
@@ -118,8 +157,13 @@ public class StudentView extends Application {
 
         questions.add(question);
 
+        // Sort based on votes
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
         return true;
     }
+
+
 
     public static void main(String[] args) {
         launch(args);

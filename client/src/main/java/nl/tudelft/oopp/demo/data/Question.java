@@ -13,8 +13,9 @@ public class Question {
     private String owner;
     private String time;
     private Integer upvotes;
+    private boolean voted;
 
-    /** Constructor with upvotes for testing purposes.
+    /** Constructor with votes for testing purposes.
      * @param id - PK of this question.
      * @param roomId - ID of room where this question is asked. (FK)
      * @param text - String containing question.
@@ -29,6 +30,7 @@ public class Question {
         this.owner = owner;
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = upvotes;
+        voted = false;
     }
 
     public Long getId() {
@@ -69,10 +71,12 @@ public class Question {
 
     public void upvote() {
         upvotes++;
+        voted = true;
     }
 
     public void deUpvote(){
         upvotes--;
+        voted = false;
     }
 
     @Override
@@ -105,4 +109,7 @@ public class Question {
     }
 
 
+    public boolean voted() {
+        return voted;
+    }
 }

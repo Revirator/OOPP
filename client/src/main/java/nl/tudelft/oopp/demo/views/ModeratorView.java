@@ -9,7 +9,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.cellfactory.*;
+import nl.tudelft.oopp.demo.data.Question;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,6 +50,51 @@ public class ModeratorView extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+
+        questionListView.setItems(questions);
+        answeredListView.setItems(answered);
+
+//        DEBUGGING PURPOSES
+//
+//        addQuestion(new Question(20,20,"What's the square root of -1?","Student 1",20));
+//
+//        addQuestion(new Question(20,20,"Is Java a programming language?","Student 2",20));
+//
+//        addQuestion(new Question(20,20,"What is the idea behind the TU Delft logo?", "Student 3", 50));
+//
+//        for (Question q : questions) {
+//            q.setAnswer("this is the answer!");
+//        }
+
+        // Set cell factory to use student cell
+        questionListView.setCellFactory(param -> new ModeratorQuestionCell(questions, answered));
+        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answered));
+
+        // Binds the font sizes relative to the screen size
+        bindFonts(scene);
+
+        /*
+        Prevents list items from being selected
+        whilst still allowing buttons to be pressed
+         */
+        questionListView.setSelectionModel(new NoSelectionModel<>());
+        answeredListView.setSelectionModel(new NoSelectionModel<>());
+
+
+        // Add choice boxes to screen
+        createChoiceBoxes(scene);
+
+        // Make fonts responsive
+        bindFonts(scene);
+
+    }
+
+    private void createChoiceBoxes(Scene scene) {
+
+        Parent root = scene.getRoot();
+
         // Add options to dropdown buttons
         ChoiceBox<String> answers = (ChoiceBox) root.lookup("#answerAmount");
         ChoiceBox<String> correctAnswer = (ChoiceBox) root.lookup("#correctAnswer");
@@ -58,6 +106,12 @@ public class ModeratorView extends Application {
         for (char letter = 'A'; letter <= 'J'; letter++) {
             correctAnswer.getItems().add(String.valueOf(letter));
         }
+
+    }
+
+    private void bindFonts(Scene scene) {
+
+        Parent root = scene.getRoot();
 
         // Bind font sizes to screen size
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
@@ -109,7 +163,6 @@ public class ModeratorView extends Application {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     percentageFontSize.asString(), ";"));
         }
-
     }
 
     public static void main(String[] args) {
