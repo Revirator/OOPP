@@ -29,19 +29,6 @@ public class RoomTest {
     private Room roomOne;
     private Room roomTwo;
 
-    @Test
-    public void saveAndRetrieveRoomTest() throws MalformedURLException {
-
-        Room expected = new Room(
-                1,
-                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 0),
-                "Reasoning and Logic");
-        roomRepository.save(expected);
-
-        Room output = roomRepository.getOne((long) 1);
-        assertEquals(expected, output);
-    }
-
     /**
      * Generating two rooms to be tested.
      */
