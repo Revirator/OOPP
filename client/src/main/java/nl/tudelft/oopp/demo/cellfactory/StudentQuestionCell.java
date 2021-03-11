@@ -87,8 +87,12 @@ public class StudentQuestionCell extends ListCell<Question> {
         gridPane.add(questionWrapper, 0,1);
 
         // Give background colours
+
         gridPane.styleProperty().setValue("-fx-background-color: white");
         anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
+//        gP.setGridLinesVisible(true);
+
+
 
         // Align grid pane
         gridPane.setAlignment(Pos.CENTER);
@@ -135,14 +139,14 @@ public class StudentQuestionCell extends ListCell<Question> {
 
 
         // Click event for delete
+        //TODO this button should only be visible for owners
         deleteButton.setOnAction(event -> {
 
-            //TODO this button should only be visible for owners
-            //TODO check if actual owner
-            //TODO send to server
+            deleteQuestion(this.question);
 
             // Remove question from list
             questions.remove(question);
+
         });
 
 
@@ -180,6 +184,19 @@ public class StudentQuestionCell extends ListCell<Question> {
         });
 
     }
+
+
+    public void deleteQuestion(Question questionToRemove) {
+
+        //TODO check if actual owner
+        //TODO send to server
+
+        if (questionToRemove != null) {
+
+        }
+
+    }
+
 
     /**
      * Updates the item in the ListView.
