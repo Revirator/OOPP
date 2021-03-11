@@ -24,9 +24,9 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @GetMapping // http://localhost:8080/rooms : that shouldn't return anything
+    @GetMapping // http://localhost:8080/rooms
     public List<Room> getRooms() {
-        return null;
+        return roomService.getRooms();
     }
 
     @GetMapping("example")   // http://localhost:8080/rooms/example
