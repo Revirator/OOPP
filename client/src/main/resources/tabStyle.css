@@ -15,12 +15,12 @@
 
 /* Changes background colour of the unselected tabs. */
 .tab-pane .tab {
-    -fx-background-color: #f3f3f3;
+    -fx-background-color: #adeaf7;
 }
 
 /* Changes background colour of selected tabs. */
 .tab-pane .tab:selected {
-    -fx-background-color: #E5E5E5;
+    -fx-background-color: #00A6D6;
 }
 
 /* Properly aligns text and makes it 13px. */

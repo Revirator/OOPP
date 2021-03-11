@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -9,9 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class SplashView extends Application {
 
@@ -76,6 +76,15 @@ public class SplashView extends Application {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     buttonFontSize.asString(), ";"));
         }
+
+        for (Node node : root.lookupAll(".createRoom")) {
+            node.styleProperty().bind(Bindings.concat("-fx-background-color: #f1be3e;"));
+        }
+
+        for (Node node : root.lookupAll(".enterRoom")) {
+            node.styleProperty().bind(Bindings.concat("-fx-background-color: #adeaf7;"));
+        }
+
 
     }
 

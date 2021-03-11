@@ -12,7 +12,7 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
      * <p>Returns a <b>read-only</b> ObservableList of all selected indices. The
      * ObservableList will be updated  by the selection model to always reflect
      * changes in selection. This can be observed by adding a
-     * {@link ListChangeListener} to the returned ObservableList.
+     * {@link ListChangeListener} to the returned ObservableList. </p>
      *
      * @return the list of selected indices
      */
@@ -25,7 +25,7 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
      * <p>Returns a <b>read-only</b> ObservableList of all selected items. The
      * ObservableList will be updated further by the selection model to always reflect
      * changes in selection. This can be observed by adding a
-     * {@link ListChangeListener} to the returned ObservableList.
+     * {@link ListChangeListener} to the returned ObservableList. </p>
      *
      * @return the list of selected items
      */
@@ -38,14 +38,14 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
      * <p>This method allows for one or more selections to be set at the same time.
      * It will ignore any value that is not within the valid range (i.e. greater
      * than or equal to zero, and less than the total number of items in the
-     * underlying data model). Any duplication of indices will be ignored.
+     * underlying data model). Any duplication of indices will be ignored. </p>
      *
      * <p>If there is already one or more indices selected in this model, calling
      * this method will <b>not</b> clear these selections - to do so it is
-     * necessary to first call clearSelection.
+     * necessary to first call clearSelection. </p>
      *
      * <p>The last valid value given will become the selected index / selected
-     * item.
+     * item. </p>
      *
      * @param index   the first index to select
      * @param indices zero or more additional indices to select
@@ -81,16 +81,16 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
     /**
      * <p>This will select the given index in the selection model, assuming the
      * index is within the valid range (i.e. greater than or equal to zero, and
-     * less than the total number of items in the underlying data model).
+     * less than the total number of items in the underlying data model). </p>
      *
      * <p>If there is already one or more indices selected in this model, calling
      * this method will <b>not</b> clear these selections - to do so it is
-     * necessary to first call {@link #clearSelection()}.
+     * necessary to first call {@link #clearSelection()}. </p>
      *
      * <p>If the index is already selected, it will not be selected again, or
      * unselected. However, if multiple selection is implemented, then calling
      * select on an already selected index will have the effect of making the index
-     * the new selected index (as returned by {@link #getSelectedIndex()}.
+     * the new selected index (as returned by {@link #getSelectedIndex()}. </p>
      *
      * @param index The position of the item to select in the selection model.
      */
@@ -104,7 +104,7 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
      * object. It will iterate through the underlying data model until it finds
      * an item whose value is equal to the given object. At this point it will
      * stop iterating - this means that this method will not select multiple
-     * indices.
+     * indices. </p>
      *
      * @param obj The object to attempt to select in the underlying data model.
      */
@@ -115,7 +115,7 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
 
     /**
      * <p>This method will clear the selection of the item in the given index.
-     * If the given index is not selected, nothing will happen.
+     * If the given index is not selected, nothing will happen. </p>
      *
      * @param index The selected item to deselect.
      */
@@ -125,7 +125,7 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
     }
 
     /**
-     * <p>Clears the selection model of all selected indices.
+     * <p>Clears the selection model of all selected indices. </p>
      */
     @Override
     public void clearSelection() {
@@ -135,7 +135,7 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
     /**
      * <p>Convenience method to inform if the given index is currently selected
      * in this SelectionModel. Is functionally equivalent to calling
-     * <code>getSelectedIndices().contains(index)</code>.
+     * <code>getSelectedIndices().contains(index)</code>. </p>
      *
      * @param index The index to check as to whether it is currently selected
      *              or not.
@@ -151,8 +151,7 @@ public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
      * indices/items. It will return true if there are <b>no</b> selected items,
      * and false if there are.
      *
-     * @return Will return true if there are <b>no</b> selected items, and false
-     * if there are.
+     * @return Will return true if there are <b>no</b> selected items, and false if there are.
      */
     @Override
     public boolean isEmpty() {

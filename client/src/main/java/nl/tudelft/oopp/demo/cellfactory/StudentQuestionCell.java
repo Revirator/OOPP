@@ -1,30 +1,42 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
+import java.util.Comparator;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.data.Question;
 
-import java.util.Comparator;
-
 public class StudentQuestionCell extends ListCell<Question> {
 
-    private AnchorPane aP = new AnchorPane();
-    private GridPane gP = new GridPane();
+    private AnchorPane anchorPane = new AnchorPane();
+    private GridPane gridPane = new GridPane();
     private Question question;
     private ObservableList<Question> questions;
     private ObservableList<Question> answered;
+    private boolean editing;
+    private TextField editableLabel;
 
-    public StudentQuestionCell(ObservableList<Question> questions, ObservableList<Question> answered) {
+    /**
+     * Constructor for student question cell.
+     * @param questions ObservableList of the current questions
+     * @param answered ObservableList of all answered questions
+     */
+    public StudentQuestionCell(ObservableList<Question> questions,
+                               ObservableList<Question> answered) {
+
         super();
 
         this.questions = questions;
         this.answered = answered;
+        this.editing = false;
+        this.editableLabel = new TextField();
 
         // Create visual cell
         createCell();
@@ -36,7 +48,7 @@ public class StudentQuestionCell extends ListCell<Question> {
     private void createCell() {
 
         // Add grid pane to anchor pane
-        aP.getChildren().add(gP);
+        anchorPane.getChildren().add(gridPane);
 
         // Create all labels
         Label questionLabel = new Label();
@@ -52,42 +64,40 @@ public class StudentQuestionCell extends ListCell<Question> {
         questionLabel.setAlignment(Pos.CENTER_LEFT);
         ownerLabel.setAlignment(Pos.CENTER_LEFT);
 
-        // Create buttons
+        // Create buttons in wrappers
         Button upVoteButton = new Button("Vote");
-        Button markAnsweredButton = new Button("Mark as answered");
-        Button deleteButton = new Button("Delete");
-        Button editButton = new Button("Edit");
-
-        // Align buttons
-        markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
-
-        // Wrapper for upvote button and votes
         HBox upVoteWrapper = new HBox(upVoteButton, upVotesLabel);
         upVoteWrapper.setAlignment(Pos.CENTER_LEFT);
         upVoteWrapper.setSpacing(5);
 
-        // Wrapper for delete button and solved button
-        HBox buttonWrapper = new HBox(markAnsweredButton, editButton, deleteButton);
+        Button markAnsweredButton = new Button("Mark as answered");
+        Button deleteButton = new Button("Delete question");
+        HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
 
+        // Align buttons
+        markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
+
+        Button editQuestionButton = new Button("Edit question");
+        HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
         // Add elements to grid pane
-        gP.add(ownerLabel, 0, 0);
-        gP.add(questionLabel, 0,1);
-        gP.add(upVoteWrapper, 0,2);
-        gP.add(buttonWrapper, 1,2);
+        gridPane.add(buttonWrapper, 1,2);
+        gridPane.add(upVoteWrapper, 0,2);
+        gridPane.add(ownerLabel, 0, 0);
+        gridPane.add(questionWrapper, 0,1);
 
         // Give background colours
-        gP.styleProperty().setValue("-fx-background-color: white");
-        aP.styleProperty().setValue("-fx-background-color: #E5E5E5");
+        gridPane.styleProperty().setValue("-fx-background-color: white");
+        anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
 
         // Align grid pane
-        gP.setAlignment(Pos.CENTER);
+        gridPane.setAlignment(Pos.CENTER);
 
         // Align grid pane in anchor pane
-        AnchorPane.setTopAnchor(gP, 10.0);
-        AnchorPane.setLeftAnchor(gP, 10.0);
-        AnchorPane.setRightAnchor(gP, 10.0);
-        AnchorPane.setBottomAnchor(gP, 10.0);
+        AnchorPane.setTopAnchor(gridPane, 10.0);
+        AnchorPane.setLeftAnchor(gridPane, 10.0);
+        AnchorPane.setRightAnchor(gridPane, 10.0);
+        AnchorPane.setBottomAnchor(gridPane, 10.0);
 
         //TODO possibly move to other files
 
@@ -99,16 +109,16 @@ public class StudentQuestionCell extends ListCell<Question> {
                 // Check if user already voted on question
                 if (question.voted()) {
                     this.question.deUpvote();
-                }
-                else {
+                } else {
                     this.question.upvote();
                 }
 
                 // Sort questions again
-                questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+                questions.sort(Comparator.comparing(Question::getUpvotes,
+                        Comparator.reverseOrder()));
             }
-
         });
+
 
         // Click event for solved
         markAnsweredButton.setOnAction(event -> {
@@ -122,15 +132,6 @@ public class StudentQuestionCell extends ListCell<Question> {
         });
 
 
-        // Click event for edit
-        editButton.setOnAction(event -> {
-
-            //TODO this button should only be visible for owners
-            //TODO check if actual owner
-            //TODO let user change the text
-            //TODO send to server (PUT request)
-
-        });
 
 
         // Click event for delete
@@ -144,8 +145,47 @@ public class StudentQuestionCell extends ListCell<Question> {
             questions.remove(question);
         });
 
+
+        // Click event for editing
+        editQuestionButton.setOnAction(event -> {
+
+            if (this.question == null) {
+                return;
+            }
+
+
+            //TODO this button should only be visible for owners
+            //TODO check if actual owner
+            //TODO let user change the text
+            //TODO send to server (PUT request)
+
+            questionWrapper.getChildren().clear();
+
+            // User saves changes
+            if (editing) {
+                questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
+                question.setText(editableLabel.getText());
+                editQuestionButton.setText("Edit question");
+                questionLabel.setText(editableLabel.getText());
+                editing = false;
+
+            } else { // User wants to make changes
+
+                questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
+                editableLabel.setText(question.getText());
+                editQuestionButton.setText("Save changes");
+                editing = true;
+
+            }
+        });
+
     }
 
+    /**
+     * Updates the item in the ListView.
+     * @param item updated item
+     * @param empty true if empty, false if not
+     */
     @Override
     protected void updateItem(Question item, boolean empty) {
 
@@ -154,19 +194,19 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         // Empty list item
         if (empty || item == null) {
+
             setGraphic(null);
             setText("");
-        }
-        // Non-empty list item
-        else {
+
+        } else { // Non-empty list item
 
             // Update question object
             this.question = item;
 
             // Look for number of votes and question
-            Label upVotesLabel = (Label) gP.lookup("#upVotesLabel");
-            Label questionLabel = (Label) gP.lookup("#questionLabel");
-            Label ownerLabel = (Label) gP.lookup("#ownerLabel");
+            Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
+            Label questionLabel = (Label) gridPane.lookup("#questionLabel");
+            Label ownerLabel = (Label) gridPane.lookup("#ownerLabel");
 
             // Update question and number of votes
             upVotesLabel.setText(String.valueOf(item.getUpvotes()));
@@ -178,7 +218,8 @@ public class StudentQuestionCell extends ListCell<Question> {
             //TODO add check for owner to make delete button (in)visible
 
             // Show graphic representation
-            setGraphic(aP);
+            setGraphic(anchorPane);
+
         }
     }
 
