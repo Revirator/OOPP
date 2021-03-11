@@ -33,7 +33,7 @@ public class QuestionTest {
         Room wdty1 = new Room(
                 LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
                 "Web and Database");
-        //        assertEquals(0, wdty1.getRoomId());
+                assertEquals(0, wdty1.getRoomId());
 
         roomRepository.save(wdty1);
 
