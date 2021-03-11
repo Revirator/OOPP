@@ -10,11 +10,15 @@ import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentAnsweredCell extends ListCell<Question> {
 
-    private AnchorPane aP = new AnchorPane();
-    private GridPane gP = new GridPane();
+    private AnchorPane anchorPane = new AnchorPane();
+    private GridPane gridPane = new GridPane();
     private Question question;
     private ObservableList<Question> answered;
 
+    /**
+     * Constructor for student answer cell.
+     * @param answered ObservableList of all answered questions
+     */
     public StudentAnsweredCell(ObservableList<Question> answered) {
         super();
 
@@ -30,18 +34,19 @@ public class StudentAnsweredCell extends ListCell<Question> {
     private void createCell() {
 
         // Add grid pane to anchor pane
-        aP.getChildren().add(gP);
+        anchorPane.getChildren().add(gridPane);
 
-        // Create all labels
+        // Create all labels with ID's
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-        Label answerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
+
+        Label upVotesLabel = new Label();
         upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
+
+        Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
 
         // Position labels
@@ -51,30 +56,35 @@ public class StudentAnsweredCell extends ListCell<Question> {
         answerLabel.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to grid pane
-        gP.add(ownerLabel, 0, 0);
-        gP.add(questionLabel, 0,1);
-        gP.add(upVotesLabel, 1,1);
-        gP.add(answerLabel, 0,2);
+        gridPane.add(ownerLabel, 0, 0);
+        gridPane.add(questionLabel, 0,1);
+        gridPane.add(upVotesLabel, 1,1);
+        gridPane.add(answerLabel, 0,2);
 
         // Give background colours
-        gP.styleProperty().setValue("-fx-background-color: white");
-        aP.styleProperty().setValue("-fx-background-color: #E5E5E5");
+        gridPane.styleProperty().setValue("-fx-background-color: white");
+        anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
 
         // Align grid pane
-        gP.setAlignment(Pos.CENTER);
+        gridPane.setAlignment(Pos.CENTER);
 
         // Set gaps between rows and columns
-        gP.setVgap(5);
-        gP.setHgap(5);
+        gridPane.setVgap(5);
+        gridPane.setHgap(5);
 
         // Align grid pane in anchor pane
-        AnchorPane.setTopAnchor(gP, 10.0);
-        AnchorPane.setLeftAnchor(gP, 10.0);
-        AnchorPane.setRightAnchor(gP, 10.0);
-        AnchorPane.setBottomAnchor(gP, 10.0);
+        AnchorPane.setTopAnchor(gridPane, 10.0);
+        AnchorPane.setLeftAnchor(gridPane, 10.0);
+        AnchorPane.setRightAnchor(gridPane, 10.0);
+        AnchorPane.setBottomAnchor(gridPane, 10.0);
 
     }
 
+    /**
+     * Updates the item in the ListView.
+     * @param item updated item
+     * @param empty true if empty, false if not empty
+     */
     @Override
     protected void updateItem(Question item, boolean empty) {
 
@@ -85,27 +95,26 @@ public class StudentAnsweredCell extends ListCell<Question> {
         if (empty || item == null) {
             setGraphic(null);
             setText("");
-        }
-        // Non-empty list item
-        else {
+        } else { // Non-empty list item
 
             // Update question object
             this.question = item;
 
-            // Look for number of votes and question
-            Label upVotesLabel = (Label) gP.lookup("#upVotesLabel");
-            Label questionLabel = (Label) gP.lookup("#questionLabel");
-            Label ownerLabel = (Label) gP.lookup("#ownerLabel");
-            Label answerLabel = (Label) gP.lookup("#answerLabel");
-
-            // Update question and number of votes
+            // Update all labels
+            Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
             upVotesLabel.setText(item.getUpvotes() + " votes");
+
+            Label questionLabel = (Label) gridPane.lookup("#questionLabel");
             questionLabel.setText(item.getText());
+
+            Label ownerLabel = (Label) gridPane.lookup("#ownerLabel");
             ownerLabel.setText(item.getOwner());
+
+            Label answerLabel = (Label) gridPane.lookup("#answerLabel");
             answerLabel.setText("Answer: " + item.getAnswer());
 
             // Show graphic representation
-            setGraphic(aP);
+            setGraphic(anchorPane);
         }
     }
 

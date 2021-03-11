@@ -1,6 +1,6 @@
 package nl.tudelft.oopp.demo;
 
-import nl.tudelft.oopp.demo.views.ModeratorView;
+import nl.tudelft.oopp.demo.views.SplashView;
 import nl.tudelft.oopp.demo.views.StudentView;
 
 public class MainApp {

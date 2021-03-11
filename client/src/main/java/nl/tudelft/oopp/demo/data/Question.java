@@ -1,8 +1,6 @@
 package nl.tudelft.oopp.demo.data;
 
 import java.time.LocalTime;
-import java.util.Objects;
-
 
 public class Question {
 
@@ -33,52 +31,101 @@ public class Question {
         voted = false;
     }
 
+    /**
+     * Getter for the question ID.
+     * @return question ID
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Getter for the room ID.
+     * @return room ID
+     */
     public long getRoomId() {
         return roomId;
     }
 
+    /**
+     * Getter for the question String.
+     * @return String containing question
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Updates the question.
+     * @param text new question
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Getter for the answer of the question.
+     * @return String containing the answer
+     */
     public String getAnswer() {
         return answer;
     }
 
+    /**
+     * Changes the answer of the question.
+     * @param answer new answer
+     */
     public void setAnswer(String answer) {
         this.answer = answer;
     }
 
+    /**
+     * Getter for the owner of the question.
+     * @return String containing the owner
+     */
     public String getOwner() {
         return owner;
     }
 
+    /**
+     * Getter for the time of when the question was asked.
+     * @return time of question
+     */
     public String getTime() {
         return time;
     }
 
+    /**
+     * Getter for the amount of votes.
+     * @return amount of upvotes
+     */
     public int getUpvotes() {
         return upvotes;
     }
 
+    /**
+     * Increases the amount of votes by 1 and saves
+     * that the user voted.
+     */
     public void upvote() {
         upvotes++;
         voted = true;
     }
 
-    public void deUpvote(){
+    /**
+     * Decreases the amount of votes by 1 and saves
+     * that the user has no longer voted.
+     */
+    public void deUpvote() {
         upvotes--;
         voted = false;
     }
 
+    /**
+     * Checks if this question equals an object.
+     * @param o object to compare to
+     * @return true if equal, false if not equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -97,18 +144,20 @@ public class Question {
                 && upvotes.equals(question1.upvotes);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getRoomId(),
-                getText(), getAnswer(), getOwner(), getTime(), upvotes);
-    }
-
+    /**
+     * Creates a String representation of the question.
+     * @return String containing info about the question
+     */
     @Override
     public String toString() {
         return time + " -- " + text + (!answer.equals("") ? "- " + answer : "");
     }
 
 
+    /**
+     * Check if the user has voted on the question.
+     * @return true if voted, false if not
+     */
     public boolean voted() {
         return voted;
     }
