@@ -82,7 +82,7 @@ public class SplashView extends Application {
         }
 
         for (Node node : root.lookupAll(".enterRoom")) {
-            node.styleProperty().bind(Bindings.concat("-fx-background-color: #eb7245;"));
+            node.styleProperty().bind(Bindings.concat("-fx-background-color: #adeaf7;"));
         }
 
 
