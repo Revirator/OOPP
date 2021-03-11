@@ -65,12 +65,9 @@ public class ServerCommunication {
             return null;
         }
 
-//        // might not be the right format
-//        String postRequestBody = "{\"roomName\": \"" + room.getRoomName()
-//                + "\", \"startingTime\": " + room.getStartingTime()
-//                + ", \"active\": " + room.isActive() + "}";
-        // not the best way to do it (goes wrong if someone adds ", " in one of the fields, but works for now
-        String postRequestBody = room.getRoomName() + ", " + room.getStartingTime() + ", " + room.isActive();
+        // not the best way to do it (goes wrong if someone adds ", " in one of the fields
+        String postRequestBody = room.getRoomName() + ", "
+                + room.getStartingTime() + ", " + room.isActive();
 
         // send request to the server
         HttpRequest request = HttpRequest.newBuilder()
