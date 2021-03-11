@@ -1,28 +1,35 @@
 package nl.tudelft.oopp.demo.views;
 
-import java.io.IOException;
-import java.net.URL;
-
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.data.Question;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class StudentView extends Application {
 
-    /**
-     * Font sizes for student screen.
-     */
+
+    // Font sizes for student screen.
     private DoubleProperty subTitleFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty tabFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty pollButtonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
+
+    // List of questions
+    private ObservableList<Question> questions = FXCollections.observableArrayList();
 
     /**
      * Creates the student screen scene and loads it on the primary stage.
@@ -44,6 +51,16 @@ public class StudentView extends Application {
         // Set scene on primary stage
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
+
+        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+
+        questionListView.setItems(questions);
+
+        questions.add(new Question(20,20,"This is my very large question, I would love an upvote :)","dd",20));
+
+        questionListView.setCellFactory(param -> new StudentQuestionCell());
 
         // Bind font sizes to screen size
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
@@ -87,7 +104,21 @@ public class StudentView extends Application {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     textBoxFontSize.asString(), ";"));
         }
+    }
 
+    /**
+     * Adds a question to the student view.
+     * @param question question to add
+     * @return true if successful, false if not
+     */
+    public boolean addQuestion(Question question) {
+
+        // Not adding duplicates
+        if (questions.contains(question)) return false;
+
+        questions.add(question);
+
+        return true;
     }
 
     public static void main(String[] args) {
