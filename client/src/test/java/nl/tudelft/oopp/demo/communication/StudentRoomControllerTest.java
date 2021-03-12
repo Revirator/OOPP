@@ -44,11 +44,11 @@ public class StudentRoomControllerTest {
     //        Assertions.assertEquals("Update", question2.getText());
     //    }
 
-    @Test
-    public void testEditQuestion() {
-        Assertions.assertTrue(StudentRoomController.editQuestion(question3, "Can I change this?"));
-        Assertions.assertEquals("Can I change this?", question3.getText());
-    }
+//    @Test
+//    public void testEditQuestion() {
+//        Assertions.assertTrue(StudentRoomController.editQuestion(question3, "Can I change this?"));
+//        Assertions.assertEquals("Can I change this?", question3.getText());
+//    }
 
     // update when POST is done
     //    @Test

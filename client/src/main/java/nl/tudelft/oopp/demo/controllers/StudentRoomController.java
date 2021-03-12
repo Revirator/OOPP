@@ -34,8 +34,7 @@ public class StudentRoomController {
         this.room = room;
     }
 
-    /**
-     * The method is executed when the submit question button is pressed.
+    /** Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.
      * If the room is active but the question form is blank - ..
      * .. they see an alert of type error.
