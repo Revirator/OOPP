@@ -4,7 +4,11 @@ import java.util.Comparator;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -93,7 +97,7 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         gridPane.styleProperty().setValue("-fx-background-color: white");
         anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
-//        gP.setGridLinesVisible(true);
+        // gP.setGridLinesVisible(true);
 
 
         // Align grid pane
@@ -191,7 +195,8 @@ public class StudentQuestionCell extends ListCell<Question> {
                     alert.show();
                 }
 
-                boolean success = StudentRoomController.editQuestion(this.question, question.getText());
+                boolean success = StudentRoomController.editQuestion(
+                        this.question, question.getText());
                 if (!success) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setContentText("Invalid edit!");

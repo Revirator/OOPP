@@ -42,10 +42,10 @@ public class RepositoryTest {
         try {
             calculus = new Room(
                     LocalDateTime.of(2022, Month.OCTOBER, 22, 10, 30, 00),
-                    "CSE1200");
+                    "CSE1200", true);
             wdty1 = new Room(
                     LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
-                    "Web and Database");
+                    "Web and Database", true);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

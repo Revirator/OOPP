@@ -77,7 +77,7 @@ public class StudentRoomController {
         if (questionToRemove != null) {
             if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
                 return false;
-            };
+            }
             return true;
         } else {
             return false;
@@ -93,7 +93,7 @@ public class StudentRoomController {
         if (questionToEdit != null && update.length() > 0) {
             if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
                 return false;
-            };
+            }
             return true;
         } else {
             return false;

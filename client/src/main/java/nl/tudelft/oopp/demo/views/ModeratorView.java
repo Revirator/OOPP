@@ -59,11 +59,13 @@ public class ModeratorView extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-//        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
-//        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+        // ListView<Question> questionListView =
+        // (ListView<Question>) root.lookup("#questionListView");
+        // ListView<Question> answeredListView =
+        // (ListView<Question>) root.lookup("#answeredListView");
 
-//        questionListView.setItems(questions);
-//        answeredListView.setItems(answered);
+        //        questionListView.setItems(questions);
+        //        answeredListView.setItems(answered);
 
         //        DEBUGGING PURPOSES
 
@@ -79,8 +81,9 @@ public class ModeratorView extends Application {
         //        }
 
         // Set cell factory to use student cell
-//        questionListView.setCellFactory(param -> new ModeratorQuestionCell(questions, answered));
-//        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answered));
+        //        questionListView.setCellFactory(param ->
+        //        new ModeratorQuestionCell(questions, answered));
+        //        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answered));
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -89,8 +92,8 @@ public class ModeratorView extends Application {
         Prevents list items from being selected
         whilst still allowing buttons to be pressed
          */
-//        questionListView.setSelectionModel(new NoSelectionModel<>());
-//        answeredListView.setSelectionModel(new NoSelectionModel<>());
+        //        questionListView.setSelectionModel(new NoSelectionModel<>());
+        //        answeredListView.setSelectionModel(new NoSelectionModel<>());
 
 
         // Add choice boxes to screen
