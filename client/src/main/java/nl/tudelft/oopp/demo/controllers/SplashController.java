@@ -21,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.views.ModeratorView;
 
 
 public class SplashController {
@@ -128,7 +129,6 @@ public class SplashController {
      */
     public void startRoom(ActionEvent actionEvent) throws IOException {
 
-        // should be name of room instead of nickname but that field isn't created yet
         if (roomName.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter name of room");
@@ -138,25 +138,14 @@ public class SplashController {
             Room newRoom = new Room(roomName.getText(), LocalDateTime.now(), true);
             newRoom = ServerCommunication.makeRoom(newRoom);
 
-            FXMLLoader loader = new FXMLLoader();
-            URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
+            Stage primaryStage = (Stage) anchor.getScene().getWindow();
 
-            // set loader to new location
-            loader.setLocation(xmlUrl);
-            Parent root = loader.load();
+            ModeratorView moderatorView = new ModeratorView();
+            moderatorView.start(primaryStage);
 
-            // pass information to moderatorRoomController
-            ModeratorRoomController mrc = loader.getController();
-            mrc.setData(roomName.getText(), newRoom);
-
-            // change view
-            Stage stage = (Stage) anchor.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            // Can be uncommented when .setData method is added.
+            // moderatorView.setData(roomName.getText(), newRoom);
         }
-
-
     }
 
     /** Checkstyle wants a comment - to be edited.
