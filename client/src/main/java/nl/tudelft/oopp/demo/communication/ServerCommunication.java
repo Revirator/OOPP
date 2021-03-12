@@ -37,7 +37,8 @@ public class ServerCommunication {
             return null;
         }
 
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/rooms/" + code)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/rooms/" + code)).build();
         HttpResponse<String> response;
 
         try {
@@ -121,9 +122,55 @@ public class ServerCommunication {
     /** Deletes question corresponding to this id from database.
      * Makes DELETE request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be deleted from database
+     * @return boolean - true if DELETE operation succeeded, false otherwise.
      */
-    public static void deleteQuestion(long questionId) {
+    public static boolean deleteQuestion(long questionId) {
 
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+                .uri(URI.create("http://localhost:8080/questions/" + questionId)).build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
 
     }
+
+    /** Updates attribute "text" of question corresponding to this id in database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean editQuestion(long questionId, String update) {
+
+        String url = "http://localhost:8080/questions/" + questionId + "?question=" + update;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText("Something went wrong!");
+            error.show();
+            return false;
+        }
+        return true;
+    }
+
 }

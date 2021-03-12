@@ -64,11 +64,11 @@ public class StudentView extends Application {
 
         // DEBUGGING PURPOSES
 
-        addQuestion(new Question(1,20,"What's the square root of -1?","Senne",20));
+        addQuestion(new Question(1,20,"What's the square root of -1?","Senne",20, true));
 
-        addQuestion(new Question(2,20,"Is Java a programming language?","Albert",20));
+        addQuestion(new Question(2,20,"Is Java a programming language?","Albert",20, false));
 
-        addQuestion(new Question(3,20,"What is the idea behind the TU Delft logo?", "Henkie", 50));
+        addQuestion(new Question(3,20,"What is the idea behind the TU Delft logo?", "Henkie", 50, false));
 
         for (Question q : questions) {
             q.setAnswer("This is the answer!");

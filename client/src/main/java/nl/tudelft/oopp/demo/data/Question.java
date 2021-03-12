@@ -12,6 +12,7 @@ public class Question {
     private String time;
     private Integer upvotes;
     private boolean voted;
+    private boolean isOwner;
 
     /** Constructor with votes for testing purposes.
      * @param id - PK of this question.
@@ -20,7 +21,7 @@ public class Question {
      * @param owner - nickname of person who asked this question.
      * @param upvotes - used to prioritize questions.
      */
-    public Question(long id, long roomId, String text, String owner, int upvotes) {
+    public Question(long id, long roomId, String text, String owner, int upvotes, boolean isOwner) {
         this.id = id;
         this.roomId = roomId;
         this.text = text;
@@ -28,7 +29,8 @@ public class Question {
         this.owner = owner;
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = upvotes;
-        voted = false;
+        this.voted = false;
+        this.isOwner = isOwner;
     }
 
     /**
@@ -160,5 +162,14 @@ public class Question {
      */
     public boolean voted() {
         return voted;
+    }
+
+
+    /**
+     * Check if the user is owner of this question.
+     * @return true if this question was posted by this user, false otherwise.
+     */
+    public boolean isOwner() {
+        return isOwner;
     }
 }
