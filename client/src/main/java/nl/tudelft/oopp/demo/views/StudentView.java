@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.controllers.StudentRoomController;
+import nl.tudelft.oopp.demo.data.Room;
 
 public class StudentView extends Application {
 
@@ -23,6 +25,18 @@ public class StudentView extends Application {
     private DoubleProperty pollButtonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
+
+    private String name;
+    private Room room;
+
+    /** Used in SplashController to pass the username and the room object.
+     * @param name the name entered by the user in splash
+     * @param room the room corresponding to the code entered
+     */
+    public void setData(String name, Room room) {
+        this.name = name;
+        this.room = room;
+    }
 
     /**
      * Creates the student screen scene and loads it on the primary stage.
@@ -37,6 +51,9 @@ public class StudentView extends Application {
         URL xmlUrl = getClass().getResource("/studentRoom.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
+
+        StudentRoomController src = loader.getController();
+        src.setData(name, room);
 
         // Create new scene with root
         Scene scene = new Scene(root);

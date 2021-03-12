@@ -21,6 +21,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.views.ModeratorView;
+import nl.tudelft.oopp.demo.views.StudentView;
 
 
 public class SplashController {
@@ -68,37 +70,15 @@ public class SplashController {
                 // This check might need improvements but works for now
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
-
-                    // The next few lines are to change the view to the room view
-                    // Most of it is magic to me, but it works
-
-                    FXMLLoader loader = new FXMLLoader();
-                    URL xmlUrl;
-
                     if (code.contains("M")) {
-                        xmlUrl = getClass().getResource("/moderatorRoom.fxml");
+                        ModeratorView moderatorView = new ModeratorView();
+                        moderatorView.setData(name, room);
+                        moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
-                        xmlUrl = getClass().getResource("/studentRoom.fxml");
+                        StudentView studentView = new StudentView();
+                        studentView.setData(name, room);
+                        studentView.start((Stage) anchor.getScene().getWindow());
                     }
-
-                    loader.setLocation(xmlUrl);
-                    Parent root = loader.load();
-
-                    // Those lines pass the entered name and the room received
-                    // from the DB to the next controller we will be using
-                    if (code.contains("M")) {
-                        ModeratorRoomController mrc = loader.getController();
-                        mrc.setData(name, room);
-                    } else {
-                        StudentRoomController src = loader.getController();
-                        src.setData(name, room);
-                    }
-
-                    Stage stage = (Stage) anchor.getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-
                 } else {
                     // Here the view should change to the waiting room view instead
 
@@ -125,7 +105,6 @@ public class SplashController {
      * @throws IOException - to be edited
      */
     public void scheduleRoom(ActionEvent actionEvent) throws IOException {
-
         if (date == null || hour == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter both nickname and link.");
@@ -145,7 +124,6 @@ public class SplashController {
                     //TODO open the room lol
                 }
             }, convertToDateViaSqlTimestamp(targetTime));
-
         }
     }
 

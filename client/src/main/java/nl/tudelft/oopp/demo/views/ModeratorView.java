@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
+import nl.tudelft.oopp.demo.data.Room;
 
 public class ModeratorView extends Application {
 
@@ -25,6 +27,18 @@ public class ModeratorView extends Application {
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty normalFontSize = new SimpleDoubleProperty(10);
+
+    private String name;
+    private Room room;
+
+    /** Used in SplashController to pass the username and the room object.
+     * @param name the name entered by the user in splash
+     * @param room the room corresponding to the code entered
+     */
+    public void setData(String name, Room room) {
+        this.name = name;
+        this.room = room;
+    }
 
     /**
      * Creates the moderator screen scene and loads it on the primary stage.
@@ -39,6 +53,9 @@ public class ModeratorView extends Application {
         URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
+
+        ModeratorRoomController mrc = loader.getController();
+        mrc.setData(name, room);
 
         // Create new scene with root
         Scene scene = new Scene(root);

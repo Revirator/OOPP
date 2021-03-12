@@ -22,7 +22,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class RoomTest {
 
-
     @Autowired
     private RoomRepository roomRepository;
 
@@ -45,8 +44,6 @@ public class RoomTest {
         }
     }
 
-
-
     @Test
     public void testConstructorAndGetters() {
         assertNotNull(roomOne);
@@ -61,7 +58,6 @@ public class RoomTest {
         assertNotNull(roomOne.getParticipants());
         assertNotNull(roomOne.getQuestions());
     }
-
 
     @Test
     public void testLinkGenerator() {
@@ -78,9 +74,5 @@ public class RoomTest {
         assertEquals("Linear Algebra\n(10:45)\n2021/05/19", roomOne.toString());
         assertEquals("CSE1200\n(10:30)\n2022/10/22", roomTwo.toString());
     }
-
-
-
-
 }
 
