@@ -14,22 +14,20 @@ public class Room {
     private LocalDateTime startingTime;
     private boolean active;
 
-
     /**
      * Room constructor.
      * @param roomName roomName
      * @param studentsLink studentsLink
      * @param moderatorLink moderatorLink
      * @param startingTime startingTime
-     * @param active active
      */
     public Room(String roomName, URL studentsLink, URL moderatorLink,
-                LocalDateTime startingTime, boolean active) {
+                LocalDateTime startingTime) {
         this.roomName = roomName;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
         this.startingTime = startingTime;
-        this.active = active;
+        this.active = true;
     }
 
     public String getRoomName() {
@@ -50,5 +48,9 @@ public class Room {
 
     public boolean isActive() {
         return active;
+    }
+
+    public void hasEnded() {
+        this.active = false;
     }
 }

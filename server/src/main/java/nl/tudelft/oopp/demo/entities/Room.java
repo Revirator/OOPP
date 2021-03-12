@@ -42,7 +42,6 @@ public class Room {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startingTime;
     private String roomName;                    // course name e.g.
-    @Transient
     private boolean active;
     @Transient
     private List<User> participants;            // List of Users > DB ?
@@ -62,7 +61,7 @@ public class Room {
     public Room(LocalDateTime startingTime, String roomName) throws MalformedURLException {
         this.startingTime = startingTime;
         this.roomName = roomName;
-        this.active = false;
+        this.active = true;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();
         linkGenerator();
@@ -78,7 +77,7 @@ public class Room {
         this.roomId = id;
         this.startingTime = startingTime;
         this.roomName = roomName;
-        this.active = false;
+        this.active = true;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();
         linkGenerator();
@@ -125,15 +124,11 @@ public class Room {
         return active;
     }
 
-    /** A function that closes the window for the students, etc.
-     * Room is not active anymore: no more questions can be asked,
+    /** Room is not active anymore: no more questions can be asked,
      * but Moderators may still answer questions.
      */
     public void hasEnded() {
         this.active = false;
-        while (!this.participants.isEmpty()) {
-            this.participants.remove(0);
-        }
     }
 
     public List<User> getParticipants() {

@@ -16,9 +16,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.StudentRoomController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.StudentRoomController">
    <top>
-      <AnchorPane prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="anchor" prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <children>
             <Text fill="WHITE" layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QuestionMe">
                <font>
@@ -193,7 +193,7 @@
                               <Insets top="10.0" />
                            </padding>
                         </Label>
-                        <Button mnemonicParsing="false" prefHeight="19.0" styleClass="buttonText" text="Submit" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <Button fx:id="submit" mnemonicParsing="false" onAction="#submitQuestion" prefHeight="19.0" styleClass="buttonText" text="Submit" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="Arial" size="10.0" />
                            </font>

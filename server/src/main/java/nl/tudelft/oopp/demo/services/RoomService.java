@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,21 @@ public class RoomService {
      */
     public Room getRoomById(long id) {
         return roomRepository.findById(id);
+    }
+
+    /** Called by RoomController.
+     * Updates the status (active/inactive) of a room
+     * @param link the link to a Lecture
+     */
+    @Transactional
+    public void updateRoomStatusByLink(URL link) {
+        Room room = null;
+        if (link.toString().contains("M")) {
+            room = roomRepository.findFirstByModeratorLink(link);
+        } else {
+            room = roomRepository.findFirstByStudentsLink(link);
+        }
+        room.hasEnded();
     }
 
     /** Called by RoomController.
