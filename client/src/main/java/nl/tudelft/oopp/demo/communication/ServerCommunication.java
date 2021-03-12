@@ -92,6 +92,7 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
      */
@@ -114,5 +115,15 @@ public class ServerCommunication {
             error.setContentText("Something went wrong!");
             error.show();
         }
+    }
+
+
+    /** Deletes question corresponding to this id from database.
+     * Makes DELETE request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be deleted from database
+     */
+    public static void deleteQuestion(long questionId) {
+
+
     }
 }

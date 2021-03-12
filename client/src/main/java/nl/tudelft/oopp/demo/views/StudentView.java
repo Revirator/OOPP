@@ -62,7 +62,7 @@ public class StudentView extends Application {
         questionListView.setItems(questions);
         answeredListView.setItems(answered);
 
-//        DEBUGGING PURPOSES
+        // DEBUGGING PURPOSES
 
         addQuestion(new Question(1,20,"What's the square root of -1?","Senne",20));
 
