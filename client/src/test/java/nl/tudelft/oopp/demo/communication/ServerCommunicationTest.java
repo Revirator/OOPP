@@ -1,12 +1,10 @@
 package nl.tudelft.oopp.demo.communication;
 
-import java.time.LocalDateTime;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import nl.tudelft.oopp.demo.data.Question;
-import nl.tudelft.oopp.demo.data.Room;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ServerCommunicationTest {

@@ -116,9 +116,9 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Click event for upvote
         upVoteButton.setOnAction(event -> {
 
-                StudentRoomController.upvoteQuestion(this.question);
-                // Sort questions again
-                questions.sort(Comparator.comparing(Question::getUpvotes,
+            StudentRoomController.upvoteQuestion(this.question);
+            // Sort questions again
+            questions.sort(Comparator.comparing(Question::getUpvotes,
                         Comparator.reverseOrder()));
 
         });
@@ -127,7 +127,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Click event for solved
         markAnsweredButton.setOnAction(event -> {
 
-            if(this.question.isOwner()) {
+            if (this.question.isOwner()) {
                 StudentRoomController.deleteQuestion(this.question);
                 answered.add(question);
                 questions.remove(question);

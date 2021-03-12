@@ -9,31 +9,31 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 public class QuestionServiceTest {
-
-    @Autowired
-    private QuestionService questionService;
-    @Autowired
-    private QuestionRepository questionRepository;
-
-    @Test
-    public void testGetRequest() {
-
-    }
-
-    @Test
-    public void testDeleteRequest() {
-
-    }
-
-    @Test
-    public void testPutRequest() {
-
-    }
-
-    @Test
-    public void testPostRequest() {
-
-    }
+//
+//    @Autowired
+//    private QuestionService questionService;
+//    @Autowired
+//    private QuestionRepository questionRepository;
+//
+//    @Test
+//    public void testGetRequest() {
+//
+//    }
+//
+//    @Test
+//    public void testDeleteRequest() {
+//
+//    }
+//
+//    @Test
+//    public void testPutRequest() {
+//
+//    }
+//
+//    @Test
+//    public void testPostRequest() {
+//
+//    }
 
 
 }

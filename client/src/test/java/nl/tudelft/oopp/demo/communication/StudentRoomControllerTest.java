@@ -49,11 +49,11 @@ public class StudentRoomControllerTest {
     }
 
     // update when POST is done
-//    @Test
-//    public void deleteAndInsertQuestion() {
-//        Assertions.assertTrue(StudentRoomController.deleteQuestion(question3));
-//        Assertions.assertFalse(StudentRoomController.deleteQuestion(question3));
-//    }
+    //    @Test
+    //    public void deleteAndInsertQuestion() {
+    //        Assertions.assertTrue(StudentRoomController.deleteQuestion(question3));
+    //        Assertions.assertFalse(StudentRoomController.deleteQuestion(question3));
+    //    }
 
 
 }

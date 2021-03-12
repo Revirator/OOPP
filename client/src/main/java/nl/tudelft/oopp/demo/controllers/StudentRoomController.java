@@ -80,13 +80,16 @@ public class StudentRoomController {
 
         // TODO check if question id on client side corresponds to server side id?!
 
-        if (questionToRemove == null || !ServerCommunication.deleteQuestion(questionToRemove.getId())) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Invalid operation!");
-            alert.show();
-            return false;
+        if (questionToRemove != null) {
+            if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Invalid operation!");
+                alert.show();
+                return false;
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
 
@@ -113,20 +116,20 @@ public class StudentRoomController {
     }
 
 
-        /** Increments the number of upvotes of this question by 1.
-         * @param question - Question to upvote
-         */
-        public static void upvoteQuestion (Question question){
+    /** Increments the number of upvotes of this question by 1.
+     * @param question - Question to upvote
+     */
+    public static void upvoteQuestion(Question question) {
 
-            if (question != null) {
-                // Check if user already voted on question
-                if (question.voted()) {
-                    question.deUpvote();
-                } else {
-                    question.upvote();
-                }
+        if (question != null) {
+            // Check if user already voted on question
+            if (question.voted()) {
+                question.deUpvote();
+            } else {
+                question.upvote();
             }
         }
-
-
     }
+
+
+}
