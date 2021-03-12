@@ -2,27 +2,38 @@ package nl.tudelft.oopp.demo.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentView extends Application {
 
-    /**
-     * Font sizes for student screen.
-     */
+
+    // Font sizes for student screen.
     private DoubleProperty subTitleFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty tabFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty pollButtonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
+
+    // List of questions
+    private ObservableList<Question> questions = FXCollections.observableArrayList();
+    private ObservableList<Question> answered = FXCollections.observableArrayList();
 
     /**
      * Creates the student screen scene and loads it on the primary stage.
@@ -45,7 +56,48 @@ public class StudentView extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // Bind font sizes to screen size
+        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+
+        questionListView.setItems(questions);
+        answeredListView.setItems(answered);
+
+        //        DEBUGGING PURPOSES
+        //
+        //        addQuestion(new Question(20,20,
+        //        "What's the square root of -1?","Student 1",20));
+        //
+        //        addQuestion(new Question(20,20,
+        //        "Is Java a programming language?","Student 2",20));
+        //
+        //        addQuestion(new Question(20,20,
+        //        "What is the idea behind the TU Delft logo?", "Student 3", 50));
+        //
+        //        for (Question q : questions) {
+        //            q.setAnswer("this is the answer!");
+        //        }
+
+        // Set cell factory to use student cell
+        questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered));
+        answeredListView.setCellFactory(param -> new StudentAnsweredCell(answered));
+
+        // Binds the font sizes relative to the screen size
+        bindFonts(scene);
+
+        /*
+        Prevents list items from being selected
+        whilst still allowing buttons to be pressed
+         */
+        questionListView.setSelectionModel(new NoSelectionModel<>());
+        answeredListView.setSelectionModel(new NoSelectionModel<>());
+    }
+
+    /**
+     * Binds the font sizes for a responsive UI.
+     * @param scene scene to make responsive
+     */
+    private void bindFonts(Scene scene) {
+
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
 
 
@@ -60,6 +112,8 @@ public class StudentView extends Application {
 
         textBoxFontSize.bind(Bindings.min(25,
                 scene.widthProperty().add(scene.heightProperty()).divide(75)));
+
+        Parent root = scene.getRoot();
 
         // Put the font sizes on all according nodes
         for (Node node : root.lookupAll(".subTitleText")) {
@@ -90,6 +144,31 @@ public class StudentView extends Application {
 
     }
 
+    /**
+     * Adds a question to the student view.
+     * @param question question to add
+     * @return true if successful, false if not
+     */
+    public boolean addQuestion(Question question) {
+
+        // Not adding duplicates
+        if (questions.contains(question)) {
+            return false;
+        }
+
+        questions.add(question);
+
+        // Sort based on votes
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
+
+
+    /**
+     * Launches the student view.
+     * @param args arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
