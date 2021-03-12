@@ -53,4 +53,41 @@ public class ServerCommunication {
 
         return gson.fromJson(response.body(), Room.class);
     }
+
+    /**
+     * Sends room to the server, returns a room with URLs.
+     * @param room primitive room
+     * @return room with all parameters
+     */
+    public static Room makeRoom(Room room) {
+
+        if (room == null) {
+            return null;
+        }
+
+        // not the best way to do it (goes wrong if someone adds ", " in one of the fields
+        String postRequestBody = room.getRoomName() + ", "
+                + room.getStartingTime() + ", " + room.isActive();
+
+        // send request to the server
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/rooms"))
+                .POST(HttpRequest.BodyPublishers.ofString(postRequestBody))
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return room;
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return null;
+        }
+
+        return gson.fromJson(response.body(), Room.class);
+    }
 }

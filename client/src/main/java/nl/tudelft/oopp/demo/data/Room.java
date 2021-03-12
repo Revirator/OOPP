@@ -32,6 +32,18 @@ public class Room {
         this.active = active;
     }
 
+    /**
+     * Room constructor.
+     * @param roomName roomName
+     * @param startingTime startingTime
+     * @param active active
+     */
+    public Room(String roomName, LocalDateTime startingTime, boolean active) {
+        this.roomName = roomName;
+        this.startingTime = startingTime;
+        this.active = active;
+    }
+
     public String getRoomName() {
         return roomName;
     }
