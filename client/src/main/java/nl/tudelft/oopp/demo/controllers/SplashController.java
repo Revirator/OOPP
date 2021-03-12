@@ -21,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.views.ModeratorView;
 
 
 public class SplashController {
@@ -32,6 +33,9 @@ public class SplashController {
     private TextField link;     // the value of the link text box
 
     @FXML
+    private TextField roomName;     //the value of the room name text box
+
+    @FXML
     private AnchorPane anchor;      // the splash.fxml anchor pane
 
     @FXML
@@ -41,7 +45,7 @@ public class SplashController {
     private TextField hour;     // the value of hour user enters
 
     /**
-     * Handles clicking the button.
+     * Handles clicking the "join room" button.
      */
     public void buttonClicked(ActionEvent actionEvent) throws IOException {
 
@@ -117,6 +121,30 @@ public class SplashController {
                     waitingRoomController.main(new String[0]);
                 }
             }
+        }
+    }
+
+    /**
+     * Handles clicking the "create instant room" button.
+     */
+    public void startRoom(ActionEvent actionEvent) throws IOException {
+
+        if (roomName.getText().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please enter name of room");
+            alert.show();
+        } else {
+            // create new room that's immediately active
+            Room newRoom = new Room(roomName.getText(), LocalDateTime.now(), true);
+            newRoom = ServerCommunication.makeRoom(newRoom);
+
+            Stage primaryStage = (Stage) anchor.getScene().getWindow();
+
+            ModeratorView moderatorView = new ModeratorView();
+            moderatorView.start(primaryStage);
+
+            // Can be uncommented when .setData method is added.
+            // moderatorView.setData(roomName.getText(), newRoom);
         }
     }
 

@@ -4,9 +4,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,24 @@ public class RoomService {
             room = roomRepository.findFirstByStudentsLink(link);
         }
         room.hasEnded();
+    }
+
+    /** Called by RoomController.
+     * @param string new Room object as a string to be stored in the database
+     */
+    public Room addNewRoom(String string) throws MalformedURLException {
+
+        String[] dataArray = string.split(", ");
+
+        String roomName = dataArray[0];
+        LocalDateTime startingTime = LocalDateTime.parse(dataArray[1]);
+        boolean active = Boolean.valueOf(dataArray[2]);
+
+        Room updatedRoom = new Room(startingTime, roomName, active);
+
+        roomRepository.save(updatedRoom);
+
+        return updatedRoom;
     }
 
     /** Called by RoomController.
