@@ -116,61 +116,33 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Click event for upvote
         upVoteButton.setOnAction(event -> {
 
-            if (this.question != null) {
-
-                // Check if user already voted on question
-                if (question.voted()) {
-                    this.question.deUpvote();
-                } else {
-                    this.question.upvote();
-                }
-
+                StudentRoomController.upvoteQuestion(this.question);
                 // Sort questions again
                 questions.sort(Comparator.comparing(Question::getUpvotes,
                         Comparator.reverseOrder()));
-            }
+
         });
 
 
         // Click event for solved
         markAnsweredButton.setOnAction(event -> {
 
-            if (this.question == null || !this.question.isOwner()) {
-                return;
+            if(this.question.isOwner()) {
+                StudentRoomController.deleteQuestion(this.question);
+                answered.add(question);
+                questions.remove(question);
             }
-
-            // send to server: DELETE request
-            boolean success = StudentRoomController.deleteQuestion(this.question);
-            if (!success) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Invalid operation!");
-                alert.show();
-            }
-
-            answered.add(question);
-            questions.remove(question);
         });
-
 
 
 
         // Click event for delete
         deleteButton.setOnAction(event -> {
 
-            if (this.question == null || !this.question.isOwner()) {
-                return;
+            if (this.question.isOwner()) {
+                StudentRoomController.deleteQuestion(this.question);
+                questions.remove(question);
             }
-
-            boolean success = StudentRoomController.deleteQuestion(this.question);
-            if (!success) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Invalid deletion!");
-                alert.show();
-            }
-
-            // Remove question from list
-            questions.remove(question);
-
         });
 
 
@@ -178,31 +150,17 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Click event for editing
         editQuestionButton.setOnAction(event -> {
 
-            if (this.question == null || !this.question.isOwner()) {
-                return;
-            }
-
             questionWrapper.getChildren().clear();
 
             // User saves changes
             if (editing) {
+
+                if (this.question.isOwner()) {
+                    StudentRoomController.editQuestion(
+                            this.question, editableLabel.getText());
+                }
+
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
-                if (editableLabel.getText().length() > 0) {
-                    question.setText(editableLabel.getText());
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setContentText("Please enter a new question!");
-                    alert.show();
-                }
-
-                boolean success = StudentRoomController.editQuestion(
-                        this.question, question.getText());
-                if (!success) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setContentText("Invalid edit!");
-                    alert.show();
-                }
-
                 editQuestionButton.setText("Edit");
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
@@ -216,8 +174,6 @@ public class StudentQuestionCell extends ListCell<Question> {
         });
 
     }
-
-
 
 
 

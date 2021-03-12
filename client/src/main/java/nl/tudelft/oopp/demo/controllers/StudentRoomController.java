@@ -25,6 +25,7 @@ public class StudentRoomController {
 
     /**
      * Used in SplashController to pass the username and the room object.
+     *
      * @param name the name entered by the user in splash
      * @param room the room corresponding to the code entered
      */
@@ -33,11 +34,12 @@ public class StudentRoomController {
         this.room = room;
     }
 
-    /** The method is executed when the submit question button is pressed.
-     *  If the room is not active - the student sees an alert of type warning.
-     *  If the room is active but the question form is blank - ..
-     *  .. they see an alert of type error.
-     *  Else the question is sent to the server via a POST request.
+    /**
+     * The method is executed when the submit question button is pressed.
+     * If the room is not active - the student sees an alert of type warning.
+     * If the room is active but the question form is blank - ..
+     * .. they see an alert of type error.
+     * Else the question is sent to the server via a POST request.
      */
     public void submitQuestion() {
         if (this.room.isActive()) {
@@ -47,6 +49,7 @@ public class StudentRoomController {
                 alert.show();
             } else {
                 // TODO: Add question to DB and display it to all users
+
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -57,7 +60,8 @@ public class StudentRoomController {
         }
     }
 
-    /** Still a test class. The idea is that the students ..
+    /**
+     * Still a test class. The idea is that the students ..
      * .. are alerted that the room has been closed.
      */
     public void test() {
@@ -67,40 +71,62 @@ public class StudentRoomController {
     }
 
 
-    /** Deletes this question upon pressing "delete" or "mark as answered" buttons.
+    /**
+     * Deletes this question upon pressing "delete" or "mark as answered" buttons.
+     *
      * @param questionToRemove - Question to be removed from database.
      */
     public static boolean deleteQuestion(Question questionToRemove) {
 
         // TODO check if question id on client side corresponds to server side id?!
 
-        if (questionToRemove != null) {
-            if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
-                return false;
-            }
-            return true;
-        } else {
+        if (questionToRemove == null || !ServerCommunication.deleteQuestion(questionToRemove.getId())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Invalid operation!");
+            alert.show();
             return false;
         }
-
+        return true;
     }
 
-    /** Edits this question according to new text entered upon pressing "edit" button.
+
+    /**
+     * Edits this question according to new text entered upon pressing "edit" button.
+     *
      * @param questionToEdit - Question to edit content of in database.
      */
     public static boolean editQuestion(Question questionToEdit, String update) {
 
         if (questionToEdit != null && update.length() > 0) {
+
+            questionToEdit.setText(update);
+
             if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Invalid operation!");
+                alert.show();
                 return false;
             }
             return true;
-        } else {
-            return false;
         }
-
+        return false;
     }
 
 
+        /** Increments the number of upvotes of this question by 1.
+         * @param question - Question to upvote
+         */
+        public static void upvoteQuestion (Question question){
 
-}
+            if (question != null) {
+                // Check if user already voted on question
+                if (question.voted()) {
+                    question.deUpvote();
+                } else {
+                    question.upvote();
+                }
+            }
+        }
+
+
+    }

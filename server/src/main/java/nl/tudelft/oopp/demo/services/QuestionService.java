@@ -67,9 +67,9 @@ public class QuestionService {
     /** Called by QuestionController.
      * Changes content of question with this id into a new question.
      * @param questionId - Id of Question to be modified
-     * @param question - new question as String
+     * @param question - new question as String (in requestBody)
      *                 Example:
-     *                 PUT http://localhost:8080/questions/6?question=Does this work?
+     *                 PUT http://localhost:8080/questions/6
      */
     @Transactional
     public void updateQuestion(Long questionId, String question) {
