@@ -5,6 +5,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 
 public class StudentRoomController {
@@ -63,4 +65,42 @@ public class StudentRoomController {
         alert.setContentText("The lecture has ended!");
         alert.show();
     }
+
+
+    /** Deletes this question upon pressing "delete" or "mark as answered" buttons.
+     * @param questionToRemove - Question to be removed from database.
+     */
+    public static boolean deleteQuestion(Question questionToRemove) {
+
+        // TODO check if question id on client side corresponds to server side id?!
+
+        if (questionToRemove != null) {
+            if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
+                return false;
+            };
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /** Edits this question according to new text entered upon pressing "edit" button.
+     * @param questionToEdit - Question to edit content of in database.
+     */
+    public static boolean editQuestion(Question questionToEdit, String update) {
+
+        if (questionToEdit != null && update.length() > 0) {
+            if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
+                return false;
+            };
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+
 }
