@@ -11,9 +11,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 
 public class StudentView extends Application {
 
@@ -26,15 +28,15 @@ public class StudentView extends Application {
     private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
 
-    private String name;
+    private User student;
     private Room room;
 
-    /** Used in SplashController to pass the username and the room object.
-     * @param name the name entered by the user in splash
+    /** Used in SplashController to pass the user and the room object.
+     * @param student the student that is using the window
      * @param room the room corresponding to the code entered
      */
-    public void setData(String name, Room room) {
-        this.name = name;
+    public void setData(User student, Room room) {
+        this.student = student;
         this.room = room;
     }
 
@@ -44,16 +46,24 @@ public class StudentView extends Application {
      * @throws IOException if FXMLLoader fails to load the url
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
-
+    public void start(Stage primaryStage) {
         // Load file
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/studentRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = loader.load();
+        Parent root = null;
+
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Something went wrong! Could not load the room");
+            alert.show();
+        }
 
         StudentRoomController src = loader.getController();
-        src.setData(name, room);
+        src.setData(student, room);
 
         // Create new scene with root
         Scene scene = new Scene(root);

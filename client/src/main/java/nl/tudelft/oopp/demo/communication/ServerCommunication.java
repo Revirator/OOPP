@@ -30,7 +30,6 @@ public class ServerCommunication {
      * @param code room identification code
      * @return the body of a get request to the server (a room object).
      */
-
     public static Room getRoom(String code) {
 
         if (code.equals("")) {      // Some empty string check
@@ -46,12 +45,10 @@ public class ServerCommunication {
             e.printStackTrace();
             return null;
         }
-
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return null;
         }
-
         return gson.fromJson(response.body(), Room.class);
     }
 
@@ -60,6 +57,8 @@ public class ServerCommunication {
      */
     public static void updateRoom(String code) {
         code = code.substring(28);
+        // Including the code in the body of the request and ..
+        // .. not in the URL might be better, but I couldn't get it to work.
         String url = "http://localhost:8080/rooms/update/" + code;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(""))

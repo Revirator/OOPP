@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 
 public class StudentRoomController {
 
@@ -18,16 +19,15 @@ public class StudentRoomController {
     @FXML
     private AnchorPane anchor;
 
-    private String name;
+    private User student;
     private Room room;
 
-    /**
-     * Used in SplashController to pass the username and the room object.
-     * @param name the name entered by the user in splash
+    /** Used in SplashController to pass the user and the room object.
+     * @param student the student that is using the window
      * @param room the room corresponding to the code entered
      */
-    public void setData(String name, Room room) {
-        this.name = name;
+    public void setData(User student, Room room) {
+        this.student = student;
         this.room = room;
     }
 
@@ -58,7 +58,7 @@ public class StudentRoomController {
     /** Still a test class. The idea is that the students ..
      * .. are alerted that the room has been closed.
      */
-    public void test() {
+    public void lectureHasEnded() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("The lecture has ended!");
         alert.show();
