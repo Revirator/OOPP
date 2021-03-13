@@ -2,16 +2,7 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.time.LocalTime;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 @Entity
@@ -37,6 +28,14 @@ public class Question {
     private String owner;
     private String time;
     private Integer upvotes;
+    // only to match client-side
+    @Transient
+    private long roomId;
+    @Transient
+    private boolean isOwner;
+    @Transient
+    private boolean voted;
+
 
     public Question() {
 
@@ -53,6 +52,7 @@ public class Question {
     public Question(long id, Room room, String text, String owner, int upvotes) {
         this.id = id;
         this.room = room;
+        // this.roomId = room.getRoomId();
         this.text = text;
         this.answer = "";
         this.owner = owner;
@@ -73,6 +73,9 @@ public class Question {
         this.owner = owner;
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = 0;
+        this.roomId = room.getRoomId();
+        this.voted = false;
+        this.isOwner = true;
     }
 
     //    public Room getRoom() {
@@ -83,6 +86,20 @@ public class Question {
     public long getRoom() {
         return room.getRoomId();
     }
+
+    public boolean getIsOwner() {
+        return isOwner;
+    }
+
+    public boolean getVoted() {
+        return voted;
+    }
+
+
+
+    //        public long getRoomId() {
+    //            return this.roomId;
+    //        }
 
     public Long getId() {
         return id;

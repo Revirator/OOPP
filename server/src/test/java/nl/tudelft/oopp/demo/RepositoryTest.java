@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
@@ -51,6 +53,8 @@ public class RepositoryTest {
         }
     }
 
+
+
     @Test
     @Order(1)
     public void testSequenceGenerator() {
@@ -59,6 +63,11 @@ public class RepositoryTest {
         List<Room> rooms = roomRepository.findAll();
         assertEquals(1, rooms.get(0).getRoomId());
         assertEquals(2, rooms.get(1).getRoomId());
+
+        assertTrue(roomRepository.existsById((long)1));
+        assertTrue(roomRepository.existsById((long)2));
+        assertFalse(roomRepository.existsById((long)3));
+
         System.out.println("################# RoomID 0 ############## = "
                 + rooms.get(0).getRoomId());
         System.out.println("################# RoomID 1 ############## = "

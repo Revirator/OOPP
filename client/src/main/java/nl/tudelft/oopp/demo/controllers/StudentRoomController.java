@@ -8,6 +8,9 @@ import javafx.scene.layout.AnchorPane;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.views.StudentView;
+
+import java.rmi.ServerError;
 
 public class StudentRoomController {
 
@@ -15,13 +18,14 @@ public class StudentRoomController {
     private Button submit;
 
     @FXML
-    private TextArea question;
+    private TextArea questionBox;
 
     @FXML
     private AnchorPane anchor;
 
     private String name;
     private Room room;
+    private StudentView studentView;
 
     /**
      * Used in SplashController to pass the username and the room object.
@@ -29,9 +33,10 @@ public class StudentRoomController {
      * @param name the name entered by the user in splash
      * @param room the room corresponding to the code entered
      */
-    public void setData(String name, Room room) {
+    public void setData(String name, Room room, StudentView view) {
         this.name = name;
         this.room = room;
+        this.studentView = view;
     }
 
     /** Callback method for "Submit" button in student room.
@@ -42,31 +47,27 @@ public class StudentRoomController {
      */
     public void submitQuestion() {
         if (this.room.isActive()) {
-            if (question.getText().equals("")) {
+            if (questionBox.getText().equals("")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("You need to enter a question to submit it!");
                 alert.show();
             } else {
-                // TODO: Add question to DB and display it to all users
+                // Create new question, will be updated on server-side with id.
+                Question newQuestion = new Question(this.room, questionBox.getText(), this.name);
+                newQuestion = ServerCommunication.postQuestion(newQuestion);
+                // newQuestion.setId(newId);
 
+                // TODO: edit/delete/answered buttons only visible for recent question???
+                questionBox.clear();
+                this.studentView.addQuestion(newQuestion);
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("The lecture is over. You cannot ask questions anymore!");
             alert.show();
-            question.setDisable(true);
+            questionBox.setDisable(true);
             submit.setDisable(true);
         }
-    }
-
-    /**
-     * Still a test class. The idea is that the students ..
-     * .. are alerted that the room has been closed.
-     */
-    public void test() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("The lecture has ended!");
-        alert.show();
     }
 
 
@@ -82,7 +83,7 @@ public class StudentRoomController {
         if (questionToRemove != null) {
             if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Invalid operation!");
+                alert.setContentText("Server error!");
                 alert.show();
                 return false;
             }
@@ -105,7 +106,7 @@ public class StudentRoomController {
 
             if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Invalid operation!");
+                alert.setContentText("Server error!");
                 alert.show();
                 return false;
             }

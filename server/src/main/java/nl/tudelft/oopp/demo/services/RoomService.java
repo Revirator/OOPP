@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
+
+
     private final RoomRepository roomRepository;
+
 
     /** Constructor for RoomService.
      * @param roomRepository - retrieves rooms from database.

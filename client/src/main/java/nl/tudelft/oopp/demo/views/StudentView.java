@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentView extends Application {
@@ -35,6 +36,8 @@ public class StudentView extends Application {
     private ObservableList<Question> questions = FXCollections.observableArrayList();
     private ObservableList<Question> answered = FXCollections.observableArrayList();
 
+    private StudentRoomController src;
+
     /**
      * Creates the student screen scene and loads it on the primary stage.
      * @param primaryStage primary stage of the app
@@ -48,6 +51,8 @@ public class StudentView extends Application {
         URL xmlUrl = getClass().getResource("/studentRoom.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
+
+        this.src = loader.getController();
 
         // Create new scene with root
         Scene scene = new Scene(root);
@@ -92,6 +97,14 @@ public class StudentView extends Application {
         answeredListView.setSelectionModel(new NoSelectionModel<>());
     }
 
+
+
+    public StudentRoomController getController() {
+        return this.src;
+    }
+
+
+
     /**
      * Adds a question to the student view.
      * @param question question to add
@@ -108,7 +121,6 @@ public class StudentView extends Application {
 
         // Sort based on votes
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
-
         return true;
     }
 

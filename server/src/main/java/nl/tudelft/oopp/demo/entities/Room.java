@@ -61,7 +61,6 @@ public class Room {
             throws MalformedURLException {
         this.startingTime = startingTime;
         this.roomName = roomName;
-        this.active = true;
         this.active = active;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();

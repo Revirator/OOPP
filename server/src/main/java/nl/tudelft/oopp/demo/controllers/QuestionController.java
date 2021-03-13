@@ -52,10 +52,16 @@ public class QuestionController {
                 "What is the basis of the zero subspace?", "Nadine", 55);
     }
 
+//    @PostMapping   // http://localhost:8080/questions
+//    public void addNewQuestion(@RequestBody Question question) {
+//        questionService.addNewQuestion(question);
+//    }
+
     @PostMapping   // http://localhost:8080/questions
-    public void addNewQuestion(@RequestBody Question question) {
-        questionService.addNewQuestion(question);
+    public void addNewQuestion(@RequestBody String payload) {
+        questionService.addNewQuestion(payload);
     }
+
 
     @DeleteMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {

@@ -80,8 +80,8 @@ public class WaitingRoomController {
             return;
         }
 
-        StudentRoomController src = loader.getController();
-        src.setData(name, room);
+//        StudentRoomController src = loader.getController();
+//        src.setData(name, room);
 
         Stage stage = (Stage) anchorWaitingRoom.getScene().getWindow();
         Scene scene = new Scene(root);

@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.views.ModeratorView;
+import nl.tudelft.oopp.demo.views.StudentView;
 
 
 public class SplashController {
@@ -76,32 +77,42 @@ public class SplashController {
                     // The next few lines are to change the view to the room view
                     // Most of it is magic to me, but it works
 
-                    FXMLLoader loader = new FXMLLoader();
-                    URL xmlUrl;
+//                    FXMLLoader loader = new FXMLLoader();
+//                    URL xmlUrl;
 
                     if (code.contains("M")) {
-                        xmlUrl = getClass().getResource("/moderatorRoom.fxml");
-                    } else {
-                        xmlUrl = getClass().getResource("/studentRoom.fxml");
-                    }
+//                        xmlUrl = getClass().getResource("/moderatorRoom.fxml");
 
-                    loader.setLocation(xmlUrl);
-                    Parent root = loader.load();
+                        Stage primaryStage = (Stage) anchor.getScene().getWindow();
+                        ModeratorView moderatorView = new ModeratorView();
+                        moderatorView.start(primaryStage);
+
+                    } else {
+//                        xmlUrl = getClass().getResource("/studentRoom.fxml");
+                        Stage primaryStage = (Stage) anchor.getScene().getWindow();
+                        StudentView studentView = new StudentView();
+                        studentView.start(primaryStage);
+                        // call StudentRoomController
+                        studentView.getController().setData(name, room, studentView);
+                    }
+//
+//                    loader.setLocation(xmlUrl);
+//                    Parent root = loader.load();
 
                     // Those lines pass the entered name and the room received
                     // from the DB to the next controller we will be using
-                    if (code.contains("M")) {
-                        ModeratorRoomController mrc = loader.getController();
-                        mrc.setData(name, room);
-                    } else {
-                        StudentRoomController src = loader.getController();
-                        src.setData(name, room);
-                    }
+//                    if (code.contains("M")) {
+//                        ModeratorRoomController mrc = loader.getController();
+//                        mrc.setData(name, room);
+//                    } else {
+//                        StudentRoomController src = loader.getController();
+//                        src.setData(name, room);
+//                    }
 
-                    Stage stage = (Stage) anchor.getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+//                    Stage stage = (Stage) anchor.getScene().getWindow();
+//                    Scene scene = new Scene(root);
+//                    stage.setScene(scene);
+//                    stage.show();
 
                 } else {
                     // Here the view should change to the waiting room view instead
