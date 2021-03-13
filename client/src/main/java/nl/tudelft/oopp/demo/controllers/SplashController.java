@@ -160,25 +160,38 @@ public class SplashController {
             alert.show();
         } else {
             LocalDate localDate = date.getValue();
-            String strHour = hour.getText(0,1);
-            String strMin = hour.getText(3,4);
+            String strHour = hour.getText(0,2);
+            String strMin = hour.getText(3,5);
             int intHour = Integer.parseInt(strHour);
-            int intMin = Integer.parseInt((strMin));
+            System.out.println(intHour);    // debugging
+            int intMin = Integer.parseInt(strMin);
+            System.out.println(intMin);     // debugging
+
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
 
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    //TODO open the room lol
-                }
-            }, convertToDateViaSqlTimestamp(targetTime));
+            new Timer().schedule(new ScheduleTask(actionEvent), convertToDateViaSqlTimestamp(targetTime));
 
         }
     }
 
     public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
         return java.sql.Timestamp.valueOf(dateToConvert);
+    }
+
+    public class ScheduleTask extends TimerTask {
+
+        private ActionEvent actionEvent;
+
+        public ScheduleTask(ActionEvent actionEvent) {
+            this.actionEvent = actionEvent;
+        }
+
+        @Override
+        public void run() {
+            // room goes here
+            System.out.println("foo");
+        }
     }
 
 }
