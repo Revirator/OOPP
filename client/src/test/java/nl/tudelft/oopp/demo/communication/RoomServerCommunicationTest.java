@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Test;
 public class RoomServerCommunicationTest {
 
 
-    @Test
-    public void testGetNewRoom() {
-
-        Room newRoom = new Room("Example room", LocalDateTime.now(), true);
-        newRoom = ServerCommunication.makeRoom(newRoom);
-
-        assertNotNull(newRoom);
-        assertEquals("Example room", newRoom.getRoomName());
-        assertTrue(newRoom.isActive());
-
-        assertNotNull(newRoom.getModeratorLink());
-        assertNotNull(newRoom.getStudentsLink());
-        System.out.println("########## " + newRoom.getModeratorLink() + " ############");
-        System.out.println("########## " + newRoom.getRoomId() + " ############");
-
-    }
+    //    @Test
+    //    public void testGetNewRoom() {
+    //
+    //        Room newRoom = new Room("Example room", LocalDateTime.now(), true);
+    //        newRoom = ServerCommunication.makeRoom(newRoom);
+    //
+    //        assertNotNull(newRoom);
+    //        assertEquals("Example room", newRoom.getRoomName());
+    //        assertTrue(newRoom.isActive());
+    //
+    //        assertNotNull(newRoom.getModeratorLink());
+    //        assertNotNull(newRoom.getStudentsLink());
+    //        System.out.println("########## " + newRoom.getModeratorLink() + " ############");
+    //        System.out.println("########## " + newRoom.getRoomId() + " ############");
+    //
+    //    }
 
 
     @Test

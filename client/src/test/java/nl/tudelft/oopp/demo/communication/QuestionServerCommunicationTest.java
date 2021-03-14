@@ -44,28 +44,28 @@ public class QuestionServerCommunicationTest {
         System.out.println("########### " + outputId + " ############");
     }
 
-    @Test
-    public void testPostAndDeleteQuestion() {
-        Question question = new Question(testRoom, "Example question to delete", "Bert");
-        Long outputId = ServerCommunication.postQuestion(question);
-        assertNotNull(outputId);
-        System.out.println("########### " + outputId + " ############");
-        assertTrue(ServerCommunication.deleteQuestion(outputId));
-    }
+    //    @Test
+    //    public void testPostAndDeleteQuestion() {
+    //        Question question = new Question(testRoom, "Example question to delete", "Bert");
+    //        Long outputId = ServerCommunication.postQuestion(question);
+    //        assertNotNull(outputId);
+    //        System.out.println("########### " + outputId + " ############");
+    //        assertTrue(ServerCommunication.deleteQuestion(outputId));
+    //    }
 
 
-    @Test
-    public void testPostAndEditQuestion() {
-        Question question = new Question(testRoom,
-                "Example question to edit", "Joyce");
-        Long outputId = ServerCommunication.postQuestion(question);
-        assertNotNull(outputId);
-        System.out.println("########### " + outputId + " ############");
-        assertTrue(ServerCommunication.editQuestion(outputId, "Editing question."));
-        assertEquals("Joyce", question.getOwner());
-        // question ID and text are not modified by ServerCommunication.
-        // this happens in StudentQuestionCell
-    }
+    //    @Test
+    //    public void testPostAndEditQuestion() {
+    //        Question question = new Question(testRoom,
+    //                "Example question to edit", "Joyce");
+    //        Long outputId = ServerCommunication.postQuestion(question);
+    //        assertNotNull(outputId);
+    //        System.out.println("########### " + outputId + " ############");
+    //        assertTrue(ServerCommunication.editQuestion(outputId, "Editing question."));
+    //        assertEquals("Joyce", question.getOwner());
+    //        // question ID and text are not modified by ServerCommunication.
+    //        // this happens in StudentQuestionCell
+    //    }
 
     @Test
     public void testEmptyEditQuestion() {
