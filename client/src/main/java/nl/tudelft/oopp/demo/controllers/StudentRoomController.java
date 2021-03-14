@@ -47,9 +47,9 @@ public class StudentRoomController {
      */
     public void submitQuestion() {
         if (this.room.isActive()) {
-            if (questionBox.getText().equals("")) {
+            if (questionBox.getText().length() < 7) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("You need to enter a question to submit it!");
+                alert.setContentText("Please enter at least 8 characters!");
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).

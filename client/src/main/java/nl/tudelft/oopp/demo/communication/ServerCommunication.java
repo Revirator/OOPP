@@ -10,7 +10,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -75,19 +74,16 @@ public class ServerCommunication {
                 .POST(HttpRequest.BodyPublishers.ofString(postRequestBody))
                 .build();
         HttpResponse<String> response;
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return room;
         }
-
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return null;
         }
-
         return gson.fromJson(response.body(), Room.class);
     }
 

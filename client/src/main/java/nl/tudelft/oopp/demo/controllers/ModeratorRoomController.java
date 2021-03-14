@@ -41,7 +41,7 @@ public class ModeratorRoomController {
                 error.show();
             }
             ServerCommunication.updateRoom(room.getModeratorLink().toString());
-            room.hasEnded();
+            room.end();
             Alert success = new Alert(Alert.AlertType.INFORMATION);
             success.setContentText("The lecture has ended successfully!");
             success.show();

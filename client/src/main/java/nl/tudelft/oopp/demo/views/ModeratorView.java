@@ -16,7 +16,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
+import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -85,31 +89,30 @@ public class ModeratorView extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // ListView<Question> questionListView =
-        // (ListView<Question>) root.lookup("#questionListView");
-        // ListView<Question> answeredListView =
-        // (ListView<Question>) root.lookup("#answeredListView");
+        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
 
-        //        questionListView.setItems(questions);
-        //        answeredListView.setItems(answered);
+        questionListView.setItems(questions);
+        answeredListView.setItems(answered);
 
         //        DEBUGGING PURPOSES
 
-        //        addQuestion(new Question(20,20,"What's the square root of -1?","Student 1",20));
-        //
-        //        addQuestion(new Question(20,20,"Is Java a programming language?","Student 2",20));
-        //
-        //        addQuestion(new Question(20,20,
-        //        "What is the idea behind the TU Delft logo?", "Student 3", 50));
-        //
-        //        for (Question q : questions) {
-        //            q.setAnswer("this is the answer!");
-        //        }
+        addQuestion(new Question(1,20,
+                "What's the square root of -1?","Senne",20, true));
+
+        addQuestion(new Question(2,20,
+                "Is Java a programming language?","Albert",20, false));
+
+        addQuestion(new Question(3,20,
+                "What is the idea behind the TU Delft logo?", "Henkie", 50, false));
+
+        for (Question q : questions) {
+            q.setAnswer("This is the answer!");
+        }
 
         // Set cell factory to use student cell
-        //        questionListView.setCellFactory(param ->
-        //        new ModeratorQuestionCell(questions, answered));
-        //        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answered));
+        questionListView.setCellFactory(param -> new ModeratorQuestionCell(questions, answered));
+        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answered));
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -118,8 +121,8 @@ public class ModeratorView extends Application {
         Prevents list items from being selected
         whilst still allowing buttons to be pressed
          */
-        //        questionListView.setSelectionModel(new NoSelectionModel<>());
-        //        answeredListView.setSelectionModel(new NoSelectionModel<>());
+        questionListView.setSelectionModel(new NoSelectionModel<>());
+        answeredListView.setSelectionModel(new NoSelectionModel<>());
 
 
         // Add choice boxes to screen

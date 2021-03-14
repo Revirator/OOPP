@@ -83,7 +83,7 @@ public class Room {
         return active;
     }
 
-    public void hasEnded() {
+    public void end() {
         this.active = false;
     }
 }

@@ -45,21 +45,6 @@ public class RoomService {
     }
 
     /** Called by RoomController.
-     * Updates the status (active/inactive) of a room
-     * @param link the link to a Lecture
-     */
-    @Transactional
-    public void updateRoomStatusByLink(URL link) {
-        Room room = null;
-        if (link.toString().contains("M")) {
-            room = roomRepository.findFirstByModeratorLink(link);
-        } else {
-            room = roomRepository.findFirstByStudentsLink(link);
-        }
-        room.hasEnded();
-    }
-
-    /** Called by RoomController.
      * @param string new Room object as a string to be stored in the database
      */
     public Room addNewRoom(String string) throws MalformedURLException {
@@ -77,6 +62,19 @@ public class RoomService {
         return updatedRoom;
     }
 
+    /** Updates the status (active/inactive) of a room.
+     * @param link the link to a Lecture
+     */
+    @Transactional
+    public void updateRoomStatusByLink(URL link) {
+        Room room = null;
+        if (link.toString().contains("M")) {
+            room = roomRepository.findFirstByModeratorLink(link);
+        } else {
+            room = roomRepository.findFirstByStudentsLink(link);
+        }
+        room.end();
+    }
 
     /** Called by RoomController.
      * @param code the code (link?) of room.

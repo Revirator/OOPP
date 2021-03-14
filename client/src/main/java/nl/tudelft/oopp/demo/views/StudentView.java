@@ -71,7 +71,7 @@ public class StudentView extends Application {
         } catch (IOException e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Something went wrong! Could not load the room");
+            alert.setContentText("Something went wrong! Could not load the room!");
             alert.show();
         }
 
@@ -124,24 +124,6 @@ public class StudentView extends Application {
     }
 
 
-    /**
-     * Adds a question to the student view.
-     * @param question question to add
-     * @return true if successful, false if not
-     */
-    public boolean addQuestion(Question question) {
-
-        // Not adding duplicates
-        if (questions.contains(question)) {
-            return false;
-        }
-
-        questions.add(question);
-
-        // Sort based on votes
-        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
-        return true;
-    }
 
 
     /**
@@ -179,7 +161,6 @@ public class StudentView extends Application {
                     tabFontSize.asString(), ";"));
         }
 
-
         for (Node node : root.lookupAll(".pollButton")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     pollButtonFontSize.asString(), ";"));
@@ -194,10 +175,26 @@ public class StudentView extends Application {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     textBoxFontSize.asString(), ";"));
         }
-
     }
 
+    /**
+     * Adds a question to the student view.
+     * @param question question to add
+     * @return true if successful, false if not
+     */
+    public boolean addQuestion(Question question) {
+        // Not adding duplicates
+        if (questions.contains(question)) {
+            return false;
+        }
 
+        questions.add(question);
+
+        // Sort based on votes
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
 
     /**
      * Launches the student view.
@@ -206,5 +203,4 @@ public class StudentView extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
