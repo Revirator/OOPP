@@ -20,7 +20,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
+import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 import nl.tudelft.oopp.demo.views.StudentView;
 
@@ -53,7 +56,6 @@ public class SplashController {
             alert.show();
 
         } else {        // If not: try to get a room from the server
-            String name = nickName.getText();
             String code = link.getText();
             Room room = ServerCommunication.getRoom(code);
 
@@ -67,37 +69,42 @@ public class SplashController {
             } else {
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
-
                     if (code.contains("M")) {
-                        Stage primaryStage = (Stage) anchor.getScene().getWindow();
+                        User moderator = new Moderator(nickName.getText(), room);
                         ModeratorView moderatorView = new ModeratorView();
-                        moderatorView.start(primaryStage);
-                        // call to ModeratorRoomController
-                        moderatorView.getController().setData(name, room, moderatorView);
-
+                        moderatorView.setData(moderator, room);
+                        moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
-                        Stage primaryStage = (Stage) anchor.getScene().getWindow();
+                        User student = new Student(nickName.getText(), room);
                         StudentView studentView = new StudentView();
-                        studentView.start(primaryStage);
-                        // call to StudentRoomController
-                        studentView.getController().setData(name, room, studentView);
+                        studentView.setData(student, room);
+                        studentView.start((Stage) anchor.getScene().getWindow());
                     }
-
                 } else {
                     // Here the view should change to the waiting room view instead
 
                     URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(xmlUrl);
-                    Parent root = loader.load();
+                    Parent root = null;
+
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.setContentText("Something went wrong! Could not load the room");
+                        error.show();
+                    }
 
                     Stage stage = (Stage) anchor.getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
 
+                    User student = new Student(nickName.getText(), room);
                     WaitingRoomController waitingRoomController = loader.getController();
-                    waitingRoomController.setData(name, room);
+                    waitingRoomController.setData(student, room);
                     waitingRoomController.main(new String[0]);
                 }
             }
@@ -120,20 +127,19 @@ public class SplashController {
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
 
+            User moderator = new Moderator(nickName.getText(), newRoom);
             ModeratorView moderatorView = new ModeratorView();
+            moderatorView.setData(moderator, newRoom);
             moderatorView.start(primaryStage);
-
-            // Can be uncommented when .setData method is added.
-            // moderatorView.setData(roomName.getText(), newRoom);
         }
     }
+
 
     /** Checkstyle wants a comment - to be edited.
      * @param actionEvent - to be edited
      * @throws IOException - to be edited
      */
     public void scheduleRoom(ActionEvent actionEvent) throws IOException {
-
         if (date == null || hour == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter both nickname and link.");
@@ -153,7 +159,6 @@ public class SplashController {
                     //TODO open the room lol
                 }
             }, convertToDateViaSqlTimestamp(targetTime));
-
         }
     }
 

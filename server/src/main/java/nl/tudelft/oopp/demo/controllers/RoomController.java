@@ -35,7 +35,7 @@ public class RoomController {
     @GetMapping("example")   // http://localhost:8080/rooms/example
     @ResponseBody
     public Room getExampleRoom() {
-        return roomService.getRoomById(2);
+        return roomService.getRoomById(4);
     }
 
     @GetMapping("/{roomCode}")  // http://localhost:8080/rooms/{roomCode}

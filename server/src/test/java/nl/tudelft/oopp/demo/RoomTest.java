@@ -74,9 +74,5 @@ public class RoomTest {
         assertEquals("Linear Algebra\n(10:45)\n2021/05/19", roomOne.toString());
         assertEquals("CSE1200\n(10:30)\n2022/10/22", roomTwo.toString());
     }
-
-
-
-
 }
 

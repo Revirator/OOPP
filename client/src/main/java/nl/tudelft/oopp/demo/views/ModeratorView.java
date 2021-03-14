@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -23,6 +24,9 @@ import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
+import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 
 public class ModeratorView extends Application {
 
@@ -36,11 +40,23 @@ public class ModeratorView extends Application {
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty normalFontSize = new SimpleDoubleProperty(10);
 
+    private User moderator;
+    private Room room;
+
+
     // List of questions
     private ObservableList<Question> questions = FXCollections.observableArrayList();
     private ObservableList<Question> answered = FXCollections.observableArrayList();
 
-    private ModeratorRoomController mrc;
+
+    /** Used in SplashController to pass the user and the room object.
+     * @param moderator the moderator that is using the window
+     * @param room the room corresponding to the code entered
+     */
+    public void setData(User moderator, Room room) {
+        this.moderator = moderator;
+        this.room = room;
+    }
 
     /**
      * Creates the moderator screen scene and loads it on the primary stage.
@@ -48,15 +64,25 @@ public class ModeratorView extends Application {
      * @throws IOException if FXMLLoader fails to load the url
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
 
         // Load file
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = loader.load();
+        Parent root = null;
 
-        this.mrc = loader.getController();
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Something went wrong! Could not load the room");
+            alert.show();
+        }
+
+        ModeratorRoomController mrc = loader.getController();
+        mrc.setData(moderator, room, this);
 
         // Create new scene with root
         Scene scene = new Scene(root);
@@ -109,12 +135,6 @@ public class ModeratorView extends Application {
         bindFonts(scene);
 
     }
-
-
-    public ModeratorRoomController getController() {
-        return this.mrc;
-    }
-
 
 
     /**

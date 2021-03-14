@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.data;
 
 public class Moderator extends User {
 
@@ -8,7 +8,6 @@ public class Moderator extends User {
 
     @Override
     public String toString() {
-        return "Moderator " + super.getNickname() + " in room " + super.getRoom().getRoomId();
+        return "Moderator " + super.getNickname() + " in room " + super.getRoom().getRoomName();
     }
-
 }

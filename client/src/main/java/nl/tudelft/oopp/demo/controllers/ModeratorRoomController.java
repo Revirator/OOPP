@@ -1,29 +1,29 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import com.sun.scenario.effect.Blend;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Button;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
 public class ModeratorRoomController {
 
     @FXML
-    private AnchorPane anchor = new AnchorPane();
+    private Button endLecture;
 
-    private String name;
+    private User moderator;
     private Room room;
     private ModeratorView moderatorView;
 
-    /**
-     * Used in SplashController to pass the username and the room object.
-     * @param name the name entered by the user in splash
+    /** Used in SplashController to pass the user and the room object.
+     * @param moderator the moderator that is using the window
      * @param room the room corresponding to the code entered
+     * @param moderatorView - corresponding view to this controller (to add questions)
      */
-    public void setData(String name, Room room, ModeratorView moderatorView) {
-        this.name = name;
+    public void setData(User moderator, Room room, ModeratorView moderatorView) {
+        this.moderator = moderator;
         this.room = room;
         this.moderatorView = moderatorView;
     }
@@ -35,9 +35,9 @@ public class ModeratorRoomController {
         alert.setContentText("Are you sure you want to end the lecture?");
         alert.showAndWait();
         if (alert.getResult().getText().equals("OK")) {
-            if (room == null) {
+            if (room == null || !room.isActive()) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText("The room does not exist");
+                error.setContentText("The room does not exist or has ended already!");
                 error.show();
             }
             ServerCommunication.updateRoom(room.getModeratorLink().toString());
@@ -45,6 +45,7 @@ public class ModeratorRoomController {
             Alert success = new Alert(Alert.AlertType.INFORMATION);
             success.setContentText("The lecture has ended successfully!");
             success.show();
+            endLecture.setDisable(true);
         }
     }
 }

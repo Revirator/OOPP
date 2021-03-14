@@ -8,9 +8,9 @@ import javafx.scene.layout.AnchorPane;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
-import java.rmi.ServerError;
 
 public class StudentRoomController {
 
@@ -23,20 +23,20 @@ public class StudentRoomController {
     @FXML
     private AnchorPane anchor;
 
-    private String name;
+    private User student;
     private Room room;
     private StudentView studentView;
 
-    /**
-     * Used in SplashController to pass the username and the room object.
-     *
-     * @param name the name entered by the user in splash
+    /** Used in SplashController to pass the user and the room object.
+     * Data injected by start() in StudentView.
+     * @param student the student that is using the window
      * @param room the room corresponding to the code entered
+     * @param studentView - corresponding view to this controller (to add questions)
      */
-    public void setData(String name, Room room, StudentView view) {
-        this.name = name;
+    public void setData(User student, Room room, StudentView studentView) {
+        this.student = student;
         this.room = room;
-        this.studentView = view;
+        this.studentView = studentView;
     }
 
     /** Callback method for "Submit" button in student room.
@@ -53,7 +53,8 @@ public class StudentRoomController {
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
-                Question newQuestion = new Question(this.room, questionBox.getText(), this.name, true);
+                Question newQuestion = new Question(this.room, questionBox.getText(),
+                        this.student.getNickname(), true);
                 Long newId = ServerCommunication.postQuestion(newQuestion);
                 newQuestion.setId(newId);
 
@@ -110,6 +111,13 @@ public class StudentRoomController {
             return true;
         }
         return false;
+    }
+
+
+    public void lectureHasEnded() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("The lecture has ended!");
+        alert.show();
     }
 
 
