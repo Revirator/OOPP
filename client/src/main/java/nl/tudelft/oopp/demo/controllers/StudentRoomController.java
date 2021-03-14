@@ -6,7 +6,6 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
 
 public class StudentRoomController {
-
     @FXML
     private Button tooSlowButton;
 
@@ -29,31 +28,48 @@ public class StudentRoomController {
         this.room = room;
     }
 
+    /** Increments the peopleThinkingLectureIsTooSlow field in Room ..
+     * .. both on the server and client side by one.
+     */
     public void lectureTooSlow() {
         resetButton.setDisable(false);
         tooSlowButton.setDisable(true);
-        tooFastButton.setDisable(true);
+        tooFastButton.setVisible(false);
         // To be changed
-        tooSlowButton.setStyle("-fx-border-color: #FF0000;");
-        ServerCommunication.sendFeedback("slow");
+        tooSlowButton.setStyle("-fx-border-color: #12de00; -fx-border-width: 3px;");
+        ServerCommunication.sendFeedback(room.getStudentsLink(), "slow");
     }
 
+    /** Increments the peopleThinkingLectureIsTooFast field in Room ..
+     * .. both on the server and client side by one.
+     */
     public void lectureTooFast() {
         resetButton.setDisable(false);
-        tooSlowButton.setDisable(true);
+        tooSlowButton.setVisible(false);
         tooFastButton.setDisable(true);
         // To be changed
-        tooFastButton.setStyle("-fx-border-color: #FF0000;");
-        ServerCommunication.sendFeedback("fast");
+        tooFastButton.setStyle("-fx-border-color: #12de00; -fx-border-width: 3px;");
+        ServerCommunication.sendFeedback(room.getStudentsLink(), "fast");
     }
 
+    /** Decrements either peopleThinkingLectureIsTooSlow or ..
+     * .. peopleThinkingLectureIsTooFast field in Room ..
+     * .. both on the server and client side by one ..
+     * .. depending on which button was previously pressed.
+     */
     public void resetFeedback() {
-        // line 49 and 50 not recommended
+        // next 2 lines are not recommended
         tooSlowButton.setStyle(null);
         tooFastButton.setStyle(null);
-        tooSlowButton.setDisable(false);
-        tooFastButton.setDisable(false);
         resetButton.setDisable(true);
-        ServerCommunication.sendFeedback("reset");
+        if (tooSlowButton.isVisible() && !tooFastButton.isVisible()) {
+            tooSlowButton.setDisable(false);
+            tooFastButton.setVisible(true);
+            ServerCommunication.sendFeedback(room.getStudentsLink(), "resetSlow");
+        } else {
+            tooFastButton.setDisable(false);
+            tooSlowButton.setVisible(true);
+            ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
+        }
     }
 }

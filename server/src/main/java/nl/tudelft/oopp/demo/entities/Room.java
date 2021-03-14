@@ -43,8 +43,9 @@ public class Room {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startingTime;
     private String roomName;                    // course name e.g.
-    @Transient
     private boolean active;
+    private int peopleThinkingLectureIsTooFast;
+    private int peopleThinkingLectureIsTooSlow;
     @Transient
     private List<User> participants;            // List of Users > DB ?
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
@@ -65,6 +66,8 @@ public class Room {
         this.active = active;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
         linkGenerator();
     }
 
@@ -81,6 +84,8 @@ public class Room {
         this.active = false;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
         linkGenerator();
     }
 
@@ -126,6 +131,34 @@ public class Room {
 
     public boolean isActive() {
         return active;
+    }
+
+    public int getPeopleThinkingLectureIsTooFast() {
+        return peopleThinkingLectureIsTooFast;
+    }
+
+    public int getPeopleThinkingLectureIsTooSlow() {
+        return peopleThinkingLectureIsTooSlow;
+    }
+
+    public void votedTooSlow() {
+        this.peopleThinkingLectureIsTooSlow++;
+    }
+
+    public void votedTooFast() {
+        this.peopleThinkingLectureIsTooFast++;
+    }
+
+    /** Decrements one of the fields depending on the feedback received.
+     * @param condition feedback
+     */
+    public void resetVote(String condition) {
+        if (condition.equals("resetSlow")) {
+            peopleThinkingLectureIsTooSlow--;
+        }
+        if (condition.equals("resetFast")) {
+            peopleThinkingLectureIsTooFast--;
+        }
     }
 
     /** A function that closes the window for the students, etc.
