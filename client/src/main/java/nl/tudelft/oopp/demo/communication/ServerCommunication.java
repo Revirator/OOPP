@@ -11,6 +11,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Room;
 
 public class ServerCommunication {
@@ -89,5 +90,24 @@ public class ServerCommunication {
         }
 
         return gson.fromJson(response.body(), Room.class);
+    }
+
+    public static void sendFeedback(String feedback) {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/feedback/" + feedback))
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText("Something went wrong! Feedback was not sent!");
+            error.show();
+        }
     }
 }
