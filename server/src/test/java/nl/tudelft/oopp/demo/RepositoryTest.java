@@ -57,6 +57,7 @@ public class RepositoryTest {
         roomRepository.saveAndFlush(calculus);
         roomRepository.saveAndFlush(wdty1);
         List<Room> rooms = roomRepository.findAll();
+        System.out.println(rooms);
         assertEquals(1, rooms.get(0).getRoomId());
         assertEquals(2, rooms.get(1).getRoomId());
 

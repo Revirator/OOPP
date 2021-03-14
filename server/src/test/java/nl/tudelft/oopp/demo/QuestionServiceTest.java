@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
@@ -41,29 +41,24 @@ public class QuestionServiceTest {
     @SpyBean
     private QuestionService questionService;
 
-    @MockBean
+    @Autowired
     private QuestionRepository questionRepository;
-    @MockBean
-    private RoomRepository roomRepository;
-    //
-    //    private Room roomOne;
-    //    private Question question1;
-    //    private Question question2;
-    //
-    //    public QuestionServiceTest() throws MalformedURLException {
-    //
-    //        roomOne = new Room(
-    //                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
-    //                "Software Quality And Testing", true);
-    //        roomRepository.save(roomOne);
 
-    //        question1 = new Question(roomOne,
-    //                "What's the square root of -1?", "Senne");
-    //        question2 = new Question(roomOne,
-    //                "Is Java a programming language?","Albert");
-    //        questionRepository.save(question1);
-    //        questionRepository.save(question2);
-    //    }
+    @Autowired
+    private RoomRepository roomRepository;
+
+
+    private Room roomOne;
+
+    /** Constructor for this test class.
+     * Creates an example room in which test questions are asked.
+     */
+    public QuestionServiceTest() {
+        this.roomOne = new Room(
+                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
+                "Software Quality And Testing", true);
+    }
+
 
 
     @Test
@@ -118,26 +113,93 @@ public class QuestionServiceTest {
         });
     }
 
-    //
-    //    @Test
-    //    @Order(6)
-    //    public void testPostRequest() {
-    //        System.out.println("########## " + question1.getId() + " ############");
-    //    }
+
+    @Test
+    @Order(6)
+    public void testPostQuestionRequest() {
+
+        roomRepository.saveAndFlush(roomOne);    // roomId 1
+        List<Room> rooms = roomRepository.findAll();
+        System.out.println(rooms);
+        assertTrue(roomRepository.existsById((long)1));
+        Room output = roomRepository.findById(1);
+        assertEquals(roomOne, output);
+
+        String payload = "1, When is lab assignment 3 due?, Sandra";
+        Long questionId = questionService.addNewQuestion(payload);
+        assertEquals(1, questionId);
+        System.out.println("######### " + questionId + " ###########");
+
+        List<Question> questions = questionRepository.findAll();
+        System.out.println("*********** " + questions + " *********");
+        assertEquals("Sandra", questions.get(0).getOwner());
+    }
+
+
+    // Sequence generator continues from most recent count,
+    // even though entries in repository are dropped each test.
+    @Test
+    @Order(7)
+    public void testPostTwoQuestions() {
+
+        roomRepository.saveAndFlush(roomOne);    // roomId 2
+
+        //        List<Room> rooms = roomRepository.findAll();
+        //        System.out.println("%%%%%%%%%% " + rooms.get(0).getRoomId() + " %%%%%%%%%%%%");
+
+        String payload1 = "2, When is lab assignment 3 due?, Sandra";
+        String payload2 = "2, Will answers be published?, Albert";
+
+        Long questionId1 = questionService.addNewQuestion(payload1);
+        Long questionId2 = questionService.addNewQuestion(payload2);
+        assertEquals(2, questionId1);
+        assertEquals(3, questionId2);
+        System.out.println("######### " + questionId1 + " ###########");
+        System.out.println("######### " + questionId2 + " ###########");
+
+        List<Question> questions = questionRepository.findAll();
+        System.out.println("*********** " + questions + " *********");
+        assertEquals("Will answers be published?", questions.get(1).getText());
+    }
 
 
 
-    //
-    //    @Test
-    //    public void testDeleteRequest() {
-    //
-    //    }
-    //
-    //    @Test
-    //    public void testPutRequest() {
-    //
-    //    }
-    //
+
+    @Test
+    @Order(8)
+    public void testDeleteRequest() {
+
+        roomRepository.saveAndFlush(roomOne);    // roomId 3
+
+        String payload = "3, Could you repeat that?, Pim";
+        Long questionId = questionService.addNewQuestion(payload);
+        assertEquals(4, questionId);
+        System.out.println("######### " + questionId + " ###########");
+
+        assertTrue(questionRepository.existsById((long)4));
+        questionService.deleteQuestion((long)4);
+        assertFalse(questionRepository.existsById((long)4));
+
+    }
+
+
+
+    @Test
+    @Order(9)
+    public void testPutRequest() {
+
+        roomRepository.saveAndFlush(roomOne);  // roomId 4
+
+        String payload = "4, Could you repeat that?, Pim";
+        questionService.addNewQuestion(payload);
+        questionService.updateQuestion((long)5, "Can I update this?");
+
+        List<Question> questions = questionRepository.findAll();
+        System.out.println("*********** " + questions + " *********");
+        assertEquals("Can I update this?", questions.get(0).getText());
+
+    }
+
 
 
 }
