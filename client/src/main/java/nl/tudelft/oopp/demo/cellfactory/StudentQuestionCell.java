@@ -154,10 +154,8 @@ public class StudentQuestionCell extends ListCell<Question> {
             // User saves changes
             if (editing) {
 
-                if (this.question.isOwner()) {
-                    StudentRoomController.editQuestion(
-                            this.question, editableLabel.getText());
-                }
+                StudentRoomController.editQuestion(
+                        this.question, editableLabel.getText());
 
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
                 editQuestionButton.setText("Edit");

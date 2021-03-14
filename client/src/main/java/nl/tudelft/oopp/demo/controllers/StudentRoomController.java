@@ -78,16 +78,13 @@ public class StudentRoomController {
      */
     public static boolean deleteQuestion(Question questionToRemove) {
 
-        if (questionToRemove != null) {
-            if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Server error!");
-                alert.show();
-                return false;
-            }
-            return true;
+        if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Server error!");
+            alert.show();
+            return false;
         }
-        return false;
+        return true;
     }
 
 
@@ -98,7 +95,7 @@ public class StudentRoomController {
      */
     public static boolean editQuestion(Question questionToEdit, String update) {
 
-        if (questionToEdit != null && update.length() > 0) {
+        if (update.length() > 0) {
 
             questionToEdit.setText(update);
 
@@ -129,13 +126,11 @@ public class StudentRoomController {
      */
     public static void upvoteQuestion(Question question) {
 
-        if (question != null) {
-            // Check if user already voted on question
-            if (question.voted()) {
-                question.deUpvote();
-            } else {
-                question.upvote();
-            }
+        // Check if user already voted on question
+        if (question.voted()) {
+            question.deUpvote();
+        } else {
+            question.upvote();
         }
         // TODO: send to server to update database (Bora)
     }
