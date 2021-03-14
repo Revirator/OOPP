@@ -109,8 +109,8 @@ public class StudentView extends Application {
         }
 
         // Set cell factory to use student cell
-        questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered));
-        answeredListView.setCellFactory(param -> new StudentAnsweredCell(answered));
+        questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered, src));
+        answeredListView.setCellFactory(param -> new StudentAnsweredCell(answered, src));
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 public class StudentRoomControllerTest {
 
     private Room testRoom;
+    private StudentRoomController src;
 
 
     /** Constructor.
@@ -23,6 +24,7 @@ public class StudentRoomControllerTest {
      */
     public StudentRoomControllerTest() {
         testRoom = new Room(2, "Spring lecture", LocalDateTime.now(), true);
+        this.src = new StudentRoomController();
     }
 
 
@@ -36,7 +38,7 @@ public class StudentRoomControllerTest {
         System.out.println("########### " + outputId + " ############");
         question.setId(outputId);
 
-        assertFalse(StudentRoomController.editQuestion(
+        assertFalse(src.editQuestion(
                 question, ""));
     }
 

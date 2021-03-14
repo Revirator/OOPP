@@ -6,7 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.data.Student;
 
 public class StudentAnsweredCell extends ListCell<Question> {
 
@@ -14,15 +16,17 @@ public class StudentAnsweredCell extends ListCell<Question> {
     private GridPane gridPane = new GridPane();
     private Question question;
     private ObservableList<Question> answered;
+    private StudentRoomController src;
 
-    /**
+    /** Initialized for each question by StudentView.
      * Constructor for student answer cell.
      * @param answered ObservableList of all answered questions
      */
-    public StudentAnsweredCell(ObservableList<Question> answered) {
+    public StudentAnsweredCell(ObservableList<Question> answered, StudentRoomController src) {
         super();
 
         this.answered = answered;
+        this.src = src;
 
         // Create visual cell
         createCell();

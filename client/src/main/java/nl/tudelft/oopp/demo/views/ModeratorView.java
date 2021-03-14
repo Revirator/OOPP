@@ -111,8 +111,10 @@ public class ModeratorView extends Application {
         }
 
         // Set cell factory to use student cell
-        questionListView.setCellFactory(param -> new ModeratorQuestionCell(questions, answered));
-        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answered));
+        questionListView.setCellFactory(param ->
+                new ModeratorQuestionCell(questions, answered, mrc));
+        answeredListView.setCellFactory(param ->
+                new ModeratorAnsweredCell(answered, mrc));
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);

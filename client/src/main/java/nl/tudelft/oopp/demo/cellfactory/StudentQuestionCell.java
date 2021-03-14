@@ -23,14 +23,15 @@ public class StudentQuestionCell extends ListCell<Question> {
     private ObservableList<Question> answered;
     private boolean editing;
     private TextField editableLabel;
+    private StudentRoomController src;
 
-    /**
+    /** Initialized for each question by StudentView.
      * Constructor for student question cell.
      * @param questions ObservableList of the current questions
      * @param answered ObservableList of all answered questions
      */
     public StudentQuestionCell(ObservableList<Question> questions,
-                               ObservableList<Question> answered) {
+                               ObservableList<Question> answered, StudentRoomController src) {
 
         super();
 
@@ -38,6 +39,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         this.answered = answered;
         this.editing = false;
         this.editableLabel = new TextField();
+        this.src = src;
 
         // Create visual cell
         createOwnerCell();
@@ -115,7 +117,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Click event for upvote
         upVoteButton.setOnAction(event -> {
 
-            StudentRoomController.upvoteQuestion(this.question);
+            src.upvoteQuestion(this.question);
             // Sort questions again
             questions.sort(Comparator.comparing(Question::getUpvotes,
                         Comparator.reverseOrder()));
@@ -127,7 +129,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         markAnsweredButton.setOnAction(event -> {
 
             if (this.question.isOwner()) {
-                StudentRoomController.deleteQuestion(this.question);
+                src.deleteQuestion(this.question);
                 answered.add(question);
                 questions.remove(question);
             }
@@ -139,7 +141,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         deleteButton.setOnAction(event -> {
 
             if (this.question.isOwner()) {
-                StudentRoomController.deleteQuestion(this.question);
+                src.deleteQuestion(this.question);
                 questions.remove(question);
             }
         });
@@ -154,7 +156,7 @@ public class StudentQuestionCell extends ListCell<Question> {
             // User saves changes
             if (editing) {
 
-                StudentRoomController.editQuestion(
+                src.editQuestion(
                         this.question, editableLabel.getText());
 
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);

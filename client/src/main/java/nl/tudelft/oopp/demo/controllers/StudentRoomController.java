@@ -76,7 +76,7 @@ public class StudentRoomController {
      * Based on id of this question.
      * @param questionToRemove - Question to be removed from database.
      */
-    public static boolean deleteQuestion(Question questionToRemove) {
+    public boolean deleteQuestion(Question questionToRemove) {
 
         if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -93,7 +93,7 @@ public class StudentRoomController {
      * Based on id of this question.
      * @param questionToEdit - Question to edit content of in database.
      */
-    public static boolean editQuestion(Question questionToEdit, String update) {
+    public boolean editQuestion(Question questionToEdit, String update) {
 
         if (update.length() > 0) {
 
@@ -124,7 +124,7 @@ public class StudentRoomController {
     /** Increments the number of upvotes of this question by 1.
      * @param question - Question to upvote
      */
-    public static void upvoteQuestion(Question question) {
+    public void upvoteQuestion(Question question) {
 
         // Check if user already voted on question
         if (question.voted()) {
