@@ -38,23 +38,23 @@ public class QuestionService {
     }
 
 
-//    /** Called by QuestionController.
-//     * @param question - new Question object to be stored in database.
-//     *                 Example:
-//     *     POST http://localhost:8080/questions
-//     *     Content-Type: application/json
-//        {
-//            "id": 7,
-//            "room": {"roomId":5,"studentsLink":"http://localhost:8080/rooms/5bb8da98f59d41ecbb","moderatorLink":"http://localhost:8080/rooms/M99cfa0c551fa4252b","startingTime":"2021-03-07 22:50:28","roomName":"Example Room","active":false,"participants":[],"questions":[]},
-//            "text": "What is the time complexity of merge sort??",
-//            "owner": "Albert",
-//            "time": "2021-02-09 22:13",
-//            "upvotes": 32
-//    }
-//     */
-//    public void addNewQuestion(Question question) {
-//        questionRepository.save(question);
-//    }
+    //    /** Called by QuestionController.
+    //     * @param question - new Question object to be stored in database.
+    //     *                 Example:
+    //     *     POST http://localhost:8080/questions
+    //     *     Content-Type: application/json
+    //        {
+    //            "id": 7,
+    //            "room": {"roomId":5,"studentsLink":"http://localhost:8080/rooms/5bb8da98f59d41ecbb","moderatorLink":"http://localhost:8080/rooms/M99cfa0c551fa4252b","startingTime":"2021-03-07 22:50:28","roomName":"Example Room","active":false,"participants":[],"questions":[]},
+    //            "text": "What is the time complexity of merge sort??",
+    //            "owner": "Albert",
+    //            "time": "2021-02-09 22:13",
+    //            "upvotes": 32
+    //    }
+    //     */
+    //    public void addNewQuestion(Question question) {
+    //        questionRepository.save(question);
+    //    }
 
 
 
@@ -78,7 +78,8 @@ public class QuestionService {
 
         Question newQuestion = new Question(room, questionText, questionOwner);
         questionRepository.save(newQuestion);
-        System.out.println("############# NEW QUESTION ID: " + newQuestion.getId() + " #################");
+        System.out.println("############# NEW QUESTION ID: "
+                + newQuestion.getId() + " #################");
         return newQuestion.getId();
     }
 
@@ -117,6 +118,7 @@ public class QuestionService {
                 && !Objects.equals(questionToModify.getText(), question)) {
             questionToModify.setText(question);
         }
+        System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
 
     }
 

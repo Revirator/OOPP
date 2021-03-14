@@ -114,6 +114,9 @@ public class StudentRoomController {
     }
 
 
+    /** Alert displayed when lecture is inactive.
+     *
+     */
     public void lectureHasEnded() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("The lecture has ended!");

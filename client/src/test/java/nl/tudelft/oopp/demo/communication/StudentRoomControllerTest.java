@@ -1,62 +1,98 @@
 package nl.tudelft.oopp.demo.communication;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDateTime;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
-import org.junit.jupiter.api.Assertions;
+import nl.tudelft.oopp.demo.data.Room;
 import org.junit.jupiter.api.Test;
+
+
 
 public class StudentRoomControllerTest {
 
-
-    private Question question1;
-    private Question question2;
-    private Question question3;
+    private Room testRoom;
 
 
-    /** Initializes test Questions.
-     *
+    /** Constructor.
+     *  Initializes a test room in which all test questions are being posted.
      */
     public StudentRoomControllerTest() {
-        question1 = new Question(1,20,
-                "What's the square root of -1?","Senne",20, true);
-        question2 = new Question(2,20,
-                "Is Java a programming language?","Albert",20, false);
-        question3 = new Question(3,20,
-                "What is the idea behind the TU Delft logo?", "Henkie", 50, false);
+        testRoom = new Room(2, "Spring lecture", LocalDateTime.now(), true);
     }
+
 
     @Test
     public void testInvalidDeleteQuestion() {
-        Assertions.assertFalse(StudentRoomController.deleteQuestion(null));
+        assertFalse(
+                StudentRoomController.deleteQuestion(null));
     }
 
-    // Doesn't work in Gitlab (I somehow need to inject a repository?)
+    @Test
+    public void testEditNonExistingQuestion() {
+        assertFalse(StudentRoomController.editQuestion(
+                null, "This should not work."));
+    }
 
-    //    @Test
-    //    public void testInvalidEditQuestion() {
-    //        Assertions.assertFalse(StudentRoomController.editQuestion(question1, ""));
-    //        Assertions.assertFalse(StudentRoomController.editQuestion(null, "Test"));
-    //    }
-    //
-    //    @Test
-    //    public void testEditQuestionSingleWord() {
-    //        Assertions.assertTrue(StudentRoomController.editQuestion(question2, "Update"));
-    //        Assertions.assertEquals("Update", question2.getText());
-    //    }
+    @Test
+    public void testPostAndEditEmptyQuestion() {
 
-    //    @Test
-    //    public void testEditQuestion() {
-    //        Assertions.assertTrue(
-    //        StudentRoomController.editQuestion(question3, "Can I change this?"));
-    //        Assertions.assertEquals("Can I change this?", question3.getText());
-    //    }
+        Question question = new Question(testRoom, "Can I make this empty?", "Victor");
+        Long outputId = ServerCommunication.postQuestion(question);
+        assertNotNull(outputId);
+        System.out.println("########### " + outputId + " ############");
+        question.setId(outputId);
 
-    // update when POST is done
-    //    @Test
-    //    public void deleteAndInsertQuestion() {
-    //        Assertions.assertTrue(StudentRoomController.deleteQuestion(question3));
-    //        Assertions.assertFalse(StudentRoomController.deleteQuestion(question3));
-    //    }
+        assertFalse(StudentRoomController.editQuestion(
+                question, ""));
+    }
+
+
+    @Test
+    public void testPostAndEditQuestionSingleWord() {
+
+        Question question = new Question(testRoom, "Can I change this into a word?", "Victor");
+        Long outputId = ServerCommunication.postQuestion(question);
+        assertNotNull(outputId);
+        System.out.println("########### " + outputId + " ############");
+        question.setId(outputId);
+
+        assertTrue(StudentRoomController.editQuestion(question, "Update"));
+        assertEquals("Update", question.getText());
+        assertEquals("Victor", question.getOwner());
+    }
+
+    @Test
+    public void testPostAndEditQuestion() {
+
+        Question question = new Question(testRoom, "What is the square root of -1?", "Senne");
+        Long outputId = ServerCommunication.postQuestion(question);
+        assertNotNull(outputId);
+        System.out.println("########### " + outputId + " ############");
+        question.setId(outputId);
+
+        assertEquals("What is the square root of -1?", question.getText());
+        assertTrue(
+            StudentRoomController.editQuestion(question, "Can I change this?"));
+        assertEquals("Can I change this?", question.getText());
+    }
+
+
+    @Test
+    public void postAndDeleteQuestion() {
+
+        Question question = new Question(testRoom, "Can I delete this again?", "Victor");
+        Long outputId = ServerCommunication.postQuestion(question);
+        assertNotNull(outputId);
+        System.out.println("########### " + outputId + " ############");
+        question.setId(outputId);
+
+        assertTrue(StudentRoomController.deleteQuestion(question));
+    }
 
 
 }

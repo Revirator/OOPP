@@ -15,7 +15,7 @@ public class Question {
     private boolean voted;
     private boolean isOwner;
 
-    /** Constructor with Room object (matches server-side Question entity)
+    /** Constructor with Room object (matches server-side Question entity).
      * @param room - Room where this question is asked. (FK)
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.
@@ -32,7 +32,7 @@ public class Question {
         this.isOwner = true;
     }
 
-    /** Constructor with Room object (matches server-side Question entity)
+    /** Constructor with Room object (matches server-side Question entity).
      * @param room - Room where this question is asked. (FK)
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.

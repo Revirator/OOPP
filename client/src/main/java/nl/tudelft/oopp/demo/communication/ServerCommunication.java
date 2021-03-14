@@ -165,9 +165,6 @@ public class ServerCommunication {
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setContentText("Something went wrong!");
-            error.show();
             return false;
         }
         return true;
