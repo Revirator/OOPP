@@ -52,12 +52,11 @@ public class StudentRoomController {
                 alert.setContentText("You need to enter a question to submit it!");
                 alert.show();
             } else {
-                // Create new question, will be updated on server-side with id.
-                Question newQuestion = new Question(this.room, questionBox.getText(), this.name);
-                newQuestion = ServerCommunication.postQuestion(newQuestion);
-                // newQuestion.setId(newId);
+                // Create new question, id returned by server (needed for delete/edit).
+                Question newQuestion = new Question(this.room, questionBox.getText(), this.name, true);
+                Long newId = ServerCommunication.postQuestion(newQuestion);
+                newQuestion.setId(newId);
 
-                // TODO: edit/delete/answered buttons only visible for recent question???
                 questionBox.clear();
                 this.studentView.addQuestion(newQuestion);
             }
@@ -73,12 +72,10 @@ public class StudentRoomController {
 
     /**
      * Deletes this question upon pressing "delete" or "mark as answered" buttons.
-     *
+     * Based on id of this question.
      * @param questionToRemove - Question to be removed from database.
      */
     public static boolean deleteQuestion(Question questionToRemove) {
-
-        // TODO check if question id on client side corresponds to server side id?!
 
         if (questionToRemove != null) {
             if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
@@ -95,7 +92,7 @@ public class StudentRoomController {
 
     /**
      * Edits this question according to new text entered upon pressing "edit" button.
-     *
+     * Based on id of this question.
      * @param questionToEdit - Question to edit content of in database.
      */
     public static boolean editQuestion(Question questionToEdit, String update) {
@@ -129,7 +126,7 @@ public class StudentRoomController {
                 question.upvote();
             }
         }
-        // TODO: send to server to update database
+        // TODO: send to server to update database (Bora)
     }
 
 

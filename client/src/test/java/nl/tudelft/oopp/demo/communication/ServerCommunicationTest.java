@@ -27,8 +27,9 @@ public class ServerCommunicationTest {
     public void testPostQuestion() {
         Room testRoom = new Room(3, "Test room", LocalDateTime.now(), true);
         Question question = new Question(testRoom, "Example question", "Henk");
-        assertNull(ServerCommunication.postQuestion(question));
-        //        System.out.println("########### " + id + " ############");
+        Long outputId = ServerCommunication.postQuestion(question);
+        assertNotNull(outputId);
+        System.out.println("########### " + outputId + " ############");
     }
 
     @Test

@@ -77,6 +77,7 @@ public class RoomService {
         return updatedRoom;
     }
 
+
     /** Called by RoomController.
      * @param code the code (link?) of room.
      * @return the room itself.

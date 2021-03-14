@@ -32,7 +32,25 @@ public class Question {
         this.isOwner = true;
     }
 
-    /** Constructor with Room id, not object.
+    /** Constructor with Room object (matches server-side Question entity)
+     * @param room - Room where this question is asked. (FK)
+     * @param text - String containing question.
+     * @param owner - nickname of person who asked this question.
+     * @param isOwner - true if this user is owner, false otherwise.
+     */
+    public Question(Room room, String text, String owner, boolean isOwner) {
+        this.room = room;
+        this.roomId = room.getRoomId();
+        this.text = text;
+        this.answer = "";
+        this.owner = owner;
+        this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
+        this.upvotes = 0;
+        this.voted = false;
+        this.isOwner = isOwner;
+    }
+
+    /** Constructor with Room id, not object (testing purposes).
      * @param roomId - ID of Room where this question is asked. (FK)
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.
@@ -94,8 +112,8 @@ public class Question {
         return roomId;
     }
 
-    public long getRoom() {
-        return this.room.getRoomId();
+    public Room getRoom() {
+        return this.room;
     }
 
     /**

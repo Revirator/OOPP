@@ -133,9 +133,10 @@ public class Room {
      */
     public void hasEnded() {
         this.active = false;
-        while (!this.participants.isEmpty()) {
-            this.participants.remove(0);
-        }
+        // This gives NullPointerExceptions, cause client Room does not have "participants" field.
+        //        while (!this.participants.isEmpty()) {
+        //            this.participants.remove(0);
+        //        }
     }
 
     public List<User> getParticipants() {

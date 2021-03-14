@@ -28,13 +28,7 @@ public class Question {
     private String owner;
     private String time;
     private Integer upvotes;
-    // only to match client-side
-    @Transient
-    private long roomId;
-    @Transient
-    private boolean isOwner;
-    @Transient
-    private boolean voted;
+
 
 
     public Question() {
@@ -52,7 +46,6 @@ public class Question {
     public Question(long id, Room room, String text, String owner, int upvotes) {
         this.id = id;
         this.room = room;
-        // this.roomId = room.getRoomId();
         this.text = text;
         this.answer = "";
         this.owner = owner;
@@ -73,9 +66,6 @@ public class Question {
         this.owner = owner;
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = 0;
-        this.roomId = room.getRoomId();
-        this.voted = false;
-        this.isOwner = true;
     }
 
     //    public Room getRoom() {
@@ -87,19 +77,6 @@ public class Question {
         return room.getRoomId();
     }
 
-    public boolean getIsOwner() {
-        return isOwner;
-    }
-
-    public boolean getVoted() {
-        return voted;
-    }
-
-
-
-    //        public long getRoomId() {
-    //            return this.roomId;
-    //        }
 
     public Long getId() {
         return id;

@@ -63,9 +63,7 @@ public class QuestionService {
      * Called by QuestionController.
      * @param payload - data sent by client containing roomId, question, owner.
      */
-    public Question addNewQuestion(String payload) {
-
-        // add roomId as field on server side?
+    public Long addNewQuestion(String payload) {
 
         String[] dataArray = payload.split(", ");
         long roomId = Long.valueOf(dataArray[0]);
@@ -80,7 +78,8 @@ public class QuestionService {
 
         Question newQuestion = new Question(room, questionText, questionOwner);
         questionRepository.save(newQuestion);
-        return newQuestion;
+        System.out.println("############# NEW QUESTION ID: " + newQuestion.getId() + " #################");
+        return newQuestion.getId();
     }
 
 
@@ -96,6 +95,7 @@ public class QuestionService {
         if (!exists) {
             throw new IllegalStateException("Question with id " + questionId + " does not exist!");
         }
+        System.out.println("######## DELETED QUESTION ID: " + questionId + " ################");
         questionRepository.deleteById(questionId);
     }
 

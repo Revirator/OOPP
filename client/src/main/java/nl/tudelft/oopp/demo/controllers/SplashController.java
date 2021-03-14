@@ -29,19 +29,14 @@ public class SplashController {
 
     @FXML
     private TextField nickName;     // the value of the nickname text box
-
     @FXML
     private TextField link;     // the value of the link text box
-
     @FXML
     private TextField roomName;     //the value of the room name text box
-
     @FXML
     private AnchorPane anchor;      // the splash.fxml anchor pane
-
     @FXML
     private DatePicker date;    // the value of date user enters
-
     @FXML
     private TextField hour;     // the value of hour user enters
 
@@ -70,49 +65,23 @@ public class SplashController {
                 link.clear();
                 alert.show();
             } else {
-                // This check might need improvements but works for now
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
 
-                    // The next few lines are to change the view to the room view
-                    // Most of it is magic to me, but it works
-
-//                    FXMLLoader loader = new FXMLLoader();
-//                    URL xmlUrl;
-
                     if (code.contains("M")) {
-//                        xmlUrl = getClass().getResource("/moderatorRoom.fxml");
-
                         Stage primaryStage = (Stage) anchor.getScene().getWindow();
                         ModeratorView moderatorView = new ModeratorView();
                         moderatorView.start(primaryStage);
+                        // call to ModeratorRoomController
+                        moderatorView.getController().setData(name, room, moderatorView);
 
                     } else {
-//                        xmlUrl = getClass().getResource("/studentRoom.fxml");
                         Stage primaryStage = (Stage) anchor.getScene().getWindow();
                         StudentView studentView = new StudentView();
                         studentView.start(primaryStage);
-                        // call StudentRoomController
+                        // call to StudentRoomController
                         studentView.getController().setData(name, room, studentView);
                     }
-//
-//                    loader.setLocation(xmlUrl);
-//                    Parent root = loader.load();
-
-                    // Those lines pass the entered name and the room received
-                    // from the DB to the next controller we will be using
-//                    if (code.contains("M")) {
-//                        ModeratorRoomController mrc = loader.getController();
-//                        mrc.setData(name, room);
-//                    } else {
-//                        StudentRoomController src = loader.getController();
-//                        src.setData(name, room);
-//                    }
-
-//                    Stage stage = (Stage) anchor.getScene().getWindow();
-//                    Scene scene = new Scene(root);
-//                    stage.setScene(scene);
-//                    stage.show();
 
                 } else {
                     // Here the view should change to the waiting room view instead

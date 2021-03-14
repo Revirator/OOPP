@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
+import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorView extends Application {
@@ -38,6 +40,8 @@ public class ModeratorView extends Application {
     private ObservableList<Question> questions = FXCollections.observableArrayList();
     private ObservableList<Question> answered = FXCollections.observableArrayList();
 
+    private ModeratorRoomController mrc;
+
     /**
      * Creates the moderator screen scene and loads it on the primary stage.
      * @param primaryStage primary stage of the app
@@ -51,6 +55,8 @@ public class ModeratorView extends Application {
         URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
+
+        this.mrc = loader.getController();
 
         // Create new scene with root
         Scene scene = new Scene(root);
@@ -103,6 +109,13 @@ public class ModeratorView extends Application {
         bindFonts(scene);
 
     }
+
+
+    public ModeratorRoomController getController() {
+        return this.mrc;
+    }
+
+
 
     /**
      * Creates the choice boxes for polls.

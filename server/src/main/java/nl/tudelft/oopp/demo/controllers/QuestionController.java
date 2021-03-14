@@ -58,8 +58,8 @@ public class QuestionController {
 //    }
 
     @PostMapping   // http://localhost:8080/questions
-    public void addNewQuestion(@RequestBody String payload) {
-        questionService.addNewQuestion(payload);
+    public Long addNewQuestion(@RequestBody String payload) {
+        return questionService.addNewQuestion(payload);
     }
 
 
