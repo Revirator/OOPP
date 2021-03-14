@@ -1,16 +1,16 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.net.MalformedURLException;
-import java.time.LocalDateTime;
+import java.net.URL;
 import java.util.List;
 
-import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,7 +35,7 @@ public class RoomController {
     @GetMapping("example")   // http://localhost:8080/rooms/example
     @ResponseBody
     public Room getExampleRoom() {
-        return roomService.getRoomById(2);
+        return roomService.getRoomById(4);
     }
 
     @GetMapping("/{roomCode}")  // http://localhost:8080/rooms/{roomCode}
@@ -47,5 +47,11 @@ public class RoomController {
     @PostMapping   // http://localhost:8080/rooms
     public Room addNewRoom(@RequestBody String data) throws MalformedURLException {
         return roomService.addNewRoom(data);
+    }
+
+    @PutMapping("/update/{roomCode}") // http://localhost:8080/rooms/update/{roomCode}
+    public void updateRoom(@PathVariable String roomCode) throws MalformedURLException {
+        URL url = new URL("http://localhost:8080/rooms/" + roomCode);
+        roomService.updateRoomStatusByLink(url);
     }
 }

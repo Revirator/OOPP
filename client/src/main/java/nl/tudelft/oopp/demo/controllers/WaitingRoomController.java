@@ -16,6 +16,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
+import nl.tudelft.oopp.demo.views.StudentView;
 
 public class WaitingRoomController {
 
@@ -31,11 +33,15 @@ public class WaitingRoomController {
     @FXML
     private Text startingDate;
 
-    private String name;
+    private User student;
     private Room room;
 
-    public void setData(String name, Room room) {
-        this.name = name;
+    /** Used in SplashController to pass the user and the room object.
+     * @param student the moderator that is using the window
+     * @param room the room corresponding to the code entered
+     */
+    public void setData(User student, Room room) {
+        this.student = student;
         this.room = room;
     }
 
@@ -66,26 +72,8 @@ public class WaitingRoomController {
      * .. sets up the next controller.
      */
     public void loadStudentRoom() {
-        URL xmlUrl = getClass().getResource("/studentRoom.fxml");
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(xmlUrl);
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Something went wrong.");
-            alert.show();
-            return;
-        }
-
-        StudentRoomController src = loader.getController();
-        src.setData(name, room);
-
-        Stage stage = (Stage) anchorWaitingRoom.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        StudentView studentView = new StudentView();
+        studentView.setData(student, room);
+        studentView.start((Stage) anchorWaitingRoom.getScene().getWindow());
     }
 }

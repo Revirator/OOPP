@@ -14,15 +14,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 
 public class StudentView extends Application {
-
 
     // Font sizes for student screen.
     private DoubleProperty subTitleFontSize = new SimpleDoubleProperty(10);
@@ -35,19 +38,42 @@ public class StudentView extends Application {
     private ObservableList<Question> questions = FXCollections.observableArrayList();
     private ObservableList<Question> answered = FXCollections.observableArrayList();
 
+    private User student;
+    private Room room;
+
+    /** Used in SplashController to pass the user and the room object.
+     * @param student the student that is using the window
+     * @param room the room corresponding to the code entered
+     */
+    public void setData(User student, Room room) {
+        this.student = student;
+        this.room = room;
+    }
+
     /**
      * Creates the student screen scene and loads it on the primary stage.
      * @param primaryStage primary stage of the app
      * @throws IOException if FXMLLoader fails to load the url
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
-
+    public void start(Stage primaryStage) {
         // Load file
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/studentRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = loader.load();
+        Parent root = null;
+
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Something went wrong! Could not load the room!");
+            alert.show();
+        }
+
+        StudentRoomController src = loader.getController();
+        src.setData(student, room);
 
         // Create new scene with root
         Scene scene = new Scene(root);
@@ -100,7 +126,6 @@ public class StudentView extends Application {
 
         subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
 
-
         tabFontSize.bind(Bindings.min(15,
                 scene.widthProperty().add(scene.heightProperty()).divide(85)));
 
@@ -126,7 +151,6 @@ public class StudentView extends Application {
                     tabFontSize.asString(), ";"));
         }
 
-
         for (Node node : root.lookupAll(".pollButton")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     pollButtonFontSize.asString(), ";"));
@@ -141,7 +165,6 @@ public class StudentView extends Application {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     textBoxFontSize.asString(), ";"));
         }
-
     }
 
     /**
@@ -150,7 +173,6 @@ public class StudentView extends Application {
      * @return true if successful, false if not
      */
     public boolean addQuestion(Question question) {
-
         // Not adding duplicates
         if (questions.contains(question)) {
             return false;
@@ -164,7 +186,6 @@ public class StudentView extends Application {
         return true;
     }
 
-
     /**
      * Launches the student view.
      * @param args arguments
@@ -172,5 +193,4 @@ public class StudentView extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

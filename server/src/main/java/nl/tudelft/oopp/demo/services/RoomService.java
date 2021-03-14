@@ -7,7 +7,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import nl.tudelft.oopp.demo.entities.Question;
+import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +56,20 @@ public class RoomService {
         roomRepository.save(updatedRoom);
 
         return updatedRoom;
+    }
+
+    /** Updates the status (active/inactive) of a room.
+     * @param link the link to a Lecture
+     */
+    @Transactional
+    public void updateRoomStatusByLink(URL link) {
+        Room room = null;
+        if (link.toString().contains("M")) {
+            room = roomRepository.findFirstByModeratorLink(link);
+        } else {
+            room = roomRepository.findFirstByStudentsLink(link);
+        }
+        room.end();
     }
 
     /** Called by RoomController.
