@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
@@ -146,12 +147,14 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         // Click event for solved
         answerButton.setOnAction(event -> {
 
+            // Next line marks the question as answered in the DB
+            ServerCommunication.markQuestionAsAnswered(question.getId());
+
             //TODO send to server
 
-            question.setAnswer(answer.getText());
-
-            answered.add(question);
-            questions.remove(question);
+            question.setAnswer(answer.getText());   // Those will probably get removed later
+            questions.remove(question);             // since they change stuff only locally
+            answered.add(question);                 //
 
         });
 
