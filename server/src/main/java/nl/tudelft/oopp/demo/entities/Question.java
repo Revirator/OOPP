@@ -118,9 +118,7 @@ public class Question {
         return upvotes;
     }
 
-    public void upvote() {
-        upvotes++;
-    }
+    public void upvote() { upvotes++; }
 
     @Override
     public boolean equals(Object o) {

@@ -213,7 +213,7 @@ public class ServerCommunication {
 
         String url = "http://localhost:8080/questions/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
-                .POST(HttpRequest.BodyPublishers.noBody())
+                .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response;
 

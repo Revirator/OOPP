@@ -122,6 +122,16 @@ public class QuestionService {
 
     }
 
+    //@Transactional
+    public void upvote(Long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+        questionToModify.upvote();
+        System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
+    }
+
 
 
 }

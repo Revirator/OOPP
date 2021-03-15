@@ -131,15 +131,15 @@ public class StudentRoomController {
             question.deUpvote();
         } else {
             question.upvote();
+            if(!ServerCommunication.upvote(question.getId())) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Server error!");
+                alert.show();
+                return false;
+            }
         }
-        // TODO: send to server to update database (Bora)
 
-        if(!ServerCommunication.upvote(question.getId())) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Server error!");
-            alert.show();
-            return false;
-        }
+
 
         return true;
     }
