@@ -205,9 +205,9 @@ public class ServerCommunication {
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
     }
 
-    /** Updates the upvote amount in server after question is up/downvoted on client
-     * Makes PUT request to server to send upvote amount via QuestionController.
-     * @param questionId - id of the question that will get its upvotes updated
+    /** Increments the upvote amount in server after question is upvoted on client
+     * Makes PUT request to server to increment upvotes via QuestionController.
+     * @param questionId - id of the question that will get its upvotes incremented
      */
     public static boolean upvote(Long questionId) {
 
@@ -231,6 +231,10 @@ public class ServerCommunication {
 
     }
 
+    /** Undos incrementing the upvote amount in server after question is upvoted on client
+     * Makes PUT request to server to undo incrementing upvotes via QuestionController.
+     * @param questionId - id of the question that will get its upvotes decremented
+     */
     public static boolean deUpvote(Long questionId) {
 
         String url = "http://localhost:8080/questions/deupvote/" + questionId;

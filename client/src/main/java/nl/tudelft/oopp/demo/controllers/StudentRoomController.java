@@ -129,7 +129,7 @@ public class StudentRoomController {
         // Check if user already voted on question
         if (question.voted()) {
             question.deUpvote();
-            if(!ServerCommunication.deUpvote(question.getId())) {
+            if (!ServerCommunication.deUpvote(question.getId())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
                 alert.show();
@@ -137,7 +137,7 @@ public class StudentRoomController {
             }
         } else {
             question.upvote();
-            if(!ServerCommunication.upvote(question.getId())) {
+            if (!ServerCommunication.upvote(question.getId())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
                 alert.show();
