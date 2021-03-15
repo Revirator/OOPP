@@ -36,6 +36,7 @@ public class Question {
     private String owner;
     private String time;
     private Integer upvotes;
+    private Boolean isAnswered = false;
 
 
 
@@ -74,6 +75,7 @@ public class Question {
         this.owner = owner;
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = 0;
+        this.isAnswered = false;
     }
 
     //    public Room getRoom() {
@@ -116,6 +118,10 @@ public class Question {
 
     public int getUpvotes() {
         return upvotes;
+    }
+
+    public Boolean getIsAnswered() {
+        return isAnswered;
     }
 
     public void upvote() {
