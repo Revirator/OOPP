@@ -8,6 +8,7 @@ public class Room {
     // but we only include what we need on client (there will be more added when needed)
     // No setter necessary, since we don't update on client.
 
+    private long roomId;
     private String roomName;
     private URL studentsLink;
     private URL moderatorLink;
@@ -16,14 +17,12 @@ public class Room {
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
 
-
     /**
      * Room constructor.
      * @param roomName roomName
      * @param studentsLink studentsLink
      * @param moderatorLink moderatorLink
      * @param startingTime startingTime
-     * @param active active
      */
     public Room(String roomName, URL studentsLink, URL moderatorLink,
                 LocalDateTime startingTime, boolean active, int slow, int fast) {
@@ -50,6 +49,21 @@ public class Room {
         this.peopleThinkingLectureIsTooFast = 0;
     }
 
+    /**
+     * Room constructor.
+     * @param roomName roomName
+     * @param startingTime startingTime
+     * @param active active
+     */
+    public Room(long roomId, String roomName, LocalDateTime startingTime, boolean active) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.startingTime = startingTime;
+        this.active = active;
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
+    }
+
     public String getRoomName() {
         return roomName;
     }
@@ -60,6 +74,10 @@ public class Room {
 
     public URL getModeratorLink() {
         return moderatorLink;
+    }
+
+    public long getRoomId() {
+        return roomId;
     }
 
     public LocalDateTime getStartingTime() {
@@ -96,5 +114,9 @@ public class Room {
         if (condition.equals("resetFast")) {
             peopleThinkingLectureIsTooFast--;
         }
+    }
+
+    public void end() {
+        this.active = false;
     }
 }

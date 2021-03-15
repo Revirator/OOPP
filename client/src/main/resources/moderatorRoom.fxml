@@ -18,13 +18,14 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.ModeratorRoomController">
    <top>
-      <AnchorPane prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="anchor" prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <children>
             <Text fill="WHITE" layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QuestionMe">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
             </Text>
+            <Button fx:id="endLecture"  onAction="#endLecture" layoutX="530.0" layoutY="11.0" mnemonicParsing="false" text="End lecture" />
          </children>
       </AnchorPane>
    </top>
@@ -198,7 +199,7 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="subTitleText" text="Lecture: CSE1200" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="176.0" styleClass="subTitleText" text="Lecture: CSE1200" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>

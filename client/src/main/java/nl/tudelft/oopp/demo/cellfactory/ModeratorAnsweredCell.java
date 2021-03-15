@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorAnsweredCell extends ListCell<Question> {
@@ -21,12 +22,14 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
     private boolean editingAnswer;
     private TextField editableQuestion;
     private TextField editableAnswer;
+    private ModeratorRoomController mrc;
 
     /**
      * Constructor for moderator answer cell.
      * @param answered ObservableList of answered questions
      */
-    public ModeratorAnsweredCell(ObservableList<Question> answered) {
+    public ModeratorAnsweredCell(ObservableList<Question> answered,
+                                 ModeratorRoomController mrc) {
         super();
 
         this.answered = answered;
@@ -34,6 +37,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         editingQuestion = false;
         editableAnswer = new TextField();
         editableQuestion = new TextField();
+        this.mrc = mrc;
 
         // Create visual cell
         createCell();

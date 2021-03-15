@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Room;
@@ -26,21 +27,32 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @GetMapping // http://localhost:8080/rooms : that shouldn't return anything
+    @GetMapping // http://localhost:8080/rooms
     public List<Room> getRooms() {
-        return null;
+        return roomService.getRooms();
     }
 
     @GetMapping("example")   // http://localhost:8080/rooms/example
     @ResponseBody
     public Room getExampleRoom() {
-        return roomService.getRoomById(2);
+        return roomService.getRoomById(4);
     }
 
     @GetMapping("/{roomCode}")  // http://localhost:8080/rooms/{roomCode}
     @ResponseBody
     public Room getRoomByCode(@PathVariable String roomCode) {
         return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
+    }
+
+    @PutMapping("/update/{roomCode}") // http://localhost:8080/rooms/update/{roomCode}
+    public void updateRoom(@PathVariable String roomCode) {
+        URL url = null;
+        try {
+            url = new URL("http://localhost:8080/rooms/" + roomCode);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        roomService.updateRoomStatusByLink(url);
     }
 
     @PostMapping   // http://localhost:8080/rooms
@@ -50,7 +62,6 @@ public class RoomController {
 
     @PutMapping("/{roomCode}/{feedback}") // http://localhost:8080/rooms/{roomCode}/{feedback}
     public void updateFeedback(@PathVariable String roomCode, @PathVariable String feedback) {
-        // TODO: Process the feedback
         roomService.updateRoomSpeed("http://localhost:8080/rooms/" + roomCode, feedback);
     }
 }
