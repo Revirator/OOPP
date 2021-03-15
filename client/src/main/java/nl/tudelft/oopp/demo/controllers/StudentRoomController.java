@@ -124,7 +124,7 @@ public class StudentRoomController {
     /** Increments the number of upvotes of this question by 1.
      * @param question - Question to upvote
      */
-    public void upvoteQuestion(Question question) {
+    public boolean upvoteQuestion(Question question) {
 
         // Check if user already voted on question
         if (question.voted()) {
@@ -133,6 +133,15 @@ public class StudentRoomController {
             question.upvote();
         }
         // TODO: send to server to update database (Bora)
+
+        if(!ServerCommunication.upvote(question.getId(), question.getUpvotes())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Server error!");
+            alert.show();
+            return false;
+        }
+
+        return true;
     }
 
 
