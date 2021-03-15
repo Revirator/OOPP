@@ -10,6 +10,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -114,7 +117,6 @@ public class ServerCommunication {
         }
     }
 
-
     /** Deletes question corresponding to this id from database.
      * Makes DELETE request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be deleted from database
@@ -203,5 +205,31 @@ public class ServerCommunication {
         }
 
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
+    }
+
+    /**
+     * Retrieves a list of all answered questions
+     * from the server for a specific room
+     * @param roomId room identification code
+     * @return the body of a get request to the server (list of questions).
+     */
+    public static List<Question> getAnsweredQuestions(long roomId) {
+
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/questions/answered/" + roomId)).build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();     // Not sure if that is needed but leaving it anyways
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 }

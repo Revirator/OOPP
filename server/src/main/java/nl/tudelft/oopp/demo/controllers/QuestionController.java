@@ -38,7 +38,6 @@ public class QuestionController {
         return questionService.getQuestions();
     }
 
-
     /** GET mapping.
      * @return a JSON object of an example Question
      * @throws MalformedURLException - Exception thrown when URL is malformed.
@@ -62,12 +61,16 @@ public class QuestionController {
         return questionService.addNewQuestion(payload);
     }
 
+    @GetMapping("/answered/{roomId}") // http://localhost:8080/questions/answered/{roomId}
+    @ResponseBody
+    public List<Question> getAnsweredQuestions(@PathVariable long roomId) {
+        return questionService.getAnsweredQuestions(roomId);
+    }
 
     @DeleteMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {
         questionService.deleteQuestion(questionId);
     }
-
 
     @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void updateQuestion(

@@ -27,7 +27,6 @@ public class QuestionService {
         this.roomRepository = roomRepository;
     }
 
-
     /** Called by QuestionController.
      * @return a List of questions ordered by number of upvotes.
      *          Example:
@@ -56,7 +55,15 @@ public class QuestionService {
     //        questionRepository.save(question);
     //    }
 
-
+    /** Called by QuestionController.
+     * @param room - the id of the room of which we want the questions
+     * @return a List of questions from a with an answer (text) ordered by time.
+     *          Example:
+     *          GET http://localhost:8080/questions/answered/1
+     */
+    public List<Question> getAnsweredQuestions(long room) {
+        return questionRepository.findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(room, true);
+    }
 
     /** Parses data sent by client to create a new Question with id.
      * Stores new question in database.

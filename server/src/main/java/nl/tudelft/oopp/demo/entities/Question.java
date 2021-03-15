@@ -60,6 +60,7 @@ public class Question {
         this.owner = owner;
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = upvotes;
+        this.isAnswered = false;
     }
 
 
