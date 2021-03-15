@@ -23,11 +23,11 @@ public class QuestionConfig {
 
             Room calcy1 = new Room(
                     LocalDateTime.of(2021, Month.APRIL, 19, 8, 45, 00),
-                    "Calculus", false);
+                    "Calculus", true);
 
             Room adsy1 = new Room(
                     LocalDateTime.of(2021, Month.JANUARY, 8, 11, 45, 00),
-                    "Algorithms and Datastructures", false);
+                    "Algorithms and Datastructures", true);
 
             roomRepository.save(calcy1);
             roomRepository.save(adsy1);

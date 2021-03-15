@@ -16,6 +16,7 @@
             </children>
         </AnchorPane>
     </top>
+
     <center>
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -24,6 +25,7 @@
             <rowConstraints>
                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             </rowConstraints>
+            
             <children>
                 <GridPane alignment="CENTER" style="-fx-background-color: #E5E5E5;" GridPane.hgrow="SOMETIMES" GridPane.valignment="BASELINE" GridPane.vgrow="SOMETIMES">
                     <columnConstraints>
@@ -36,6 +38,7 @@
                         <RowConstraints maxHeight="40" minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="40" minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
+
                     <children>
                     <Text fill="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Text" text="Please wait, the host will let you in soon." textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="331.0791015625" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                         <font>

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.data;
 
 import java.util.Objects;
 
@@ -37,3 +37,4 @@ public abstract class User {
         return Objects.hash(getNickname(), room);
     }
 }
+
