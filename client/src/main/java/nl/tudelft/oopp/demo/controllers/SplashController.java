@@ -183,12 +183,11 @@ public class SplashController {
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
 
-            //TODO cannot get a room link bc room is not created in server-side locally (ask db maker)
-
             Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
             alertMod.setTitle("Links for the room " + roomName.getText());
             alertMod.setHeaderText("Links for the room " + roomName.getText());
-            alertMod.setContentText("Moderator link: " + "link1\n" + "Student link: " + "link2");
+            alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink() +
+                    "\n Student link: " + newRoom.getStudentsLink());
             alertMod.show();
 
         }
