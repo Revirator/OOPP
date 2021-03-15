@@ -122,6 +122,12 @@ public class QuestionService {
 
     }
 
+    /** Called by QuestionController.
+     * Increments the upvote amount by one of the question with provided id.
+     * @param questionId - Id of Question to be incremented
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/upvote/42
+     */
     @Transactional
     public void upvote(Long questionId) {
         Question questionToModify = questionRepository.findById(questionId)
@@ -132,6 +138,12 @@ public class QuestionService {
         System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
     }
 
+    /** Called by QuestionController.
+     * Decrements the upvote amount by one of the question with provided id.
+     * @param questionId - Id of Question to be decremented
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/deupvote/42
+     */
     @Transactional
     public void deUpvote(Long questionId) {
         Question questionToModify = questionRepository.findById(questionId)

@@ -83,5 +83,7 @@ public class QuestionController {
     }
 
     @PutMapping(path = "deupvote/{questionId}") // http://localhost:8080/questions/deupvote/{questionId}
-    public void deUpvote(@PathVariable("questionId") Long questionId) { questionService.deUpvote(questionId); }
+    public void deUpvote(@PathVariable("questionId") Long questionId) {
+        questionService.deUpvote(questionId);
+    }
 }

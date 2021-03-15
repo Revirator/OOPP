@@ -118,9 +118,13 @@ public class Question {
         return upvotes;
     }
 
-    public void upvote() { upvotes++; }
+    public void upvote() {
+        upvotes++;
+    }
 
-    public void deUpvote() { upvotes--; }
+    public void deUpvote() {
+        upvotes--;
+    }
 
     @Override
     public boolean equals(Object o) {
