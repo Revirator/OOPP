@@ -120,6 +120,8 @@ public class Question {
 
     public void upvote() { upvotes++; }
 
+    public void deUpvote() { upvotes--; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

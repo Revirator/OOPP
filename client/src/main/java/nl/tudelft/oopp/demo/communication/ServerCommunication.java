@@ -211,7 +211,29 @@ public class ServerCommunication {
      */
     public static boolean upvote(Long questionId) {
 
-        String url = "http://localhost:8080/questions/" + questionId;
+        String url = "http://localhost:8080/questions/upvote/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+
+    }
+
+    public static boolean deUpvote(Long questionId) {
+
+        String url = "http://localhost:8080/questions/deupvote/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
