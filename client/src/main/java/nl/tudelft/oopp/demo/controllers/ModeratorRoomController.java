@@ -3,6 +3,8 @@ package nl.tudelft.oopp.demo.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
@@ -13,11 +15,21 @@ public class ModeratorRoomController {
     @FXML
     private Button endLecture;
 
+    @FXML
+    private Label lectureName;
+
+    @FXML
+    private  Label tooSlowLabel;
+
+    @FXML
+    private Label tooFastLabel;
+
     private User moderator;
     private Room room;
     private ModeratorView moderatorView;
 
     /** Used in SplashController to pass the user and the room object.
+     * This method should be called after the fetch request so that it updates the information.
      * @param moderator the moderator that is using the window
      * @param room the room corresponding to the code entered
      * @param moderatorView - corresponding view to this controller (to add questions)
@@ -26,6 +38,37 @@ public class ModeratorRoomController {
         this.moderator = moderator;
         this.room = room;
         this.moderatorView = moderatorView;
+        this.lectureName.setText(this.room.getRoomName());
+        setFeedback();
+    }
+
+    /** Updates the feedback for the moderators.
+     * For it to be done in real time it needs the fetch request.
+     */
+    public void setFeedback() {
+        tooSlowLabel.setText(Math.round(
+                this.room.getPeopleThinkingLectureIsTooSlow() * 100
+                        / this.room.getParticipants().size()
+                        + this.room.getPeopleThinkingLectureIsTooSlow() * 100
+                        % this.room.getParticipants().size()) + "%");
+
+        if (Integer.parseInt(tooSlowLabel.getText().replace("%","")) < 10) {
+            tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
+        } else {
+            tooSlowLabel.setTextFill(Paint.valueOf("RED"));
+        }
+
+        tooFastLabel.setText(Math.round(
+                this.room.getPeopleThinkingLectureIsTooFast() * 100
+                        / this.room.getParticipants().size()
+                        + this.room.getPeopleThinkingLectureIsTooFast() * 100
+                        % this.room.getParticipants().size()) + "%");
+
+        if (Integer.parseInt(tooFastLabel.getText().replace("%","")) < 10) {
+            tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
+        } else {
+            tooFastLabel.setTextFill(Paint.valueOf("RED"));
+        }
     }
 
     /** The method that is executed when the End lecture button is clicked.

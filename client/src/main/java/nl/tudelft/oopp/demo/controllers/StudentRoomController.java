@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
@@ -23,6 +24,9 @@ public class StudentRoomController {
     @FXML
     private AnchorPane anchor;
 
+    @FXML
+    private Label lectureName;
+
     private User student;
     private Room room;
     private StudentView studentView;
@@ -37,6 +41,7 @@ public class StudentRoomController {
         this.student = student;
         this.room = room;
         this.studentView = studentView;
+        this.lectureName.setText(this.room.getRoomName());
     }
 
     /** Callback method for "Submit" button in student room.
@@ -69,7 +74,6 @@ public class StudentRoomController {
             submit.setDisable(true);
         }
     }
-
 
     /**
      * Deletes this question upon pressing "delete" or "mark as answered" buttons.

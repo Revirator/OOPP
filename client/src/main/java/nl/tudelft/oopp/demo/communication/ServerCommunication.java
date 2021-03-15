@@ -31,7 +31,6 @@ public class ServerCommunication {
      * @return the body of a get request to the server (a room object).
      */
     public static Room getRoom(String code) {
-
         if (code.equals("")) {      // Some empty string check
             return null;
         }
