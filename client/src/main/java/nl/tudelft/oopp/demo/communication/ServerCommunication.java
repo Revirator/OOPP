@@ -148,6 +148,10 @@ public class ServerCommunication {
      */
     public static boolean editQuestion(long questionId, String update) {
 
+        if (update.equals("")) {
+            return false;
+        }
+
         String url = "http://localhost:8080/questions/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(update))
