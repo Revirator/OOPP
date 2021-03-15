@@ -125,6 +125,10 @@ public class Question {
         return isAnswered;
     }
 
+    public void setAsAnswered() {
+        this.isAnswered = true;
+    }
+
     public void upvote() {
         upvotes++;
     }

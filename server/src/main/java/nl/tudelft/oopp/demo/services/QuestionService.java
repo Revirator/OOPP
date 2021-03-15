@@ -126,7 +126,23 @@ public class QuestionService {
             questionToModify.setText(question);
         }
         System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
-
     }
 
+    /** Called by QuestionController.
+     * Changes the isAnswered value of a question with this id.
+     * @param questionId - Id of Question to be modified
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/markAnswered/2
+     */
+    @Transactional
+    public void markQuestionAsAnswered(long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+
+        questionToModify.setAsAnswered();
+
+        System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
+    }
 }

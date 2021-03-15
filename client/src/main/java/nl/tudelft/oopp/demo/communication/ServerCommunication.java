@@ -56,6 +56,7 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+
     /**
      * Sends room to the server, returns a room with URLs.
      * @param room primitive room
@@ -117,6 +118,7 @@ public class ServerCommunication {
         }
     }
 
+
     /** Deletes question corresponding to this id from database.
      * Makes DELETE request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be deleted from database
@@ -143,6 +145,7 @@ public class ServerCommunication {
 
     }
 
+
     /** Updates attribute "text" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
@@ -153,6 +156,32 @@ public class ServerCommunication {
         String url = "http://localhost:8080/questions/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(update))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+    }
+
+
+    /** Updates attribute "isAnswered" of question corresponding to this id in database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsAnswered(long questionId) {
+
+        String url = "http://localhost:8080/questions/markAnswered/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response;
         try {
@@ -206,6 +235,7 @@ public class ServerCommunication {
 
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
     }
+
 
     /**
      * Retrieves a list of all answered questions
