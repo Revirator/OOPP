@@ -44,6 +44,9 @@ public class RoomController {
         return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
     }
 
+    /** Updates the status of the room from active to inactive.
+     * @param roomCode the link connected to the room
+     */
     @PutMapping("/update/{roomCode}") // http://localhost:8080/rooms/update/{roomCode}
     public void updateRoom(@PathVariable String roomCode) {
         URL url = null;
