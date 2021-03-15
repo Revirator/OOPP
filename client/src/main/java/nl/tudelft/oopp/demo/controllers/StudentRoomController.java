@@ -134,7 +134,7 @@ public class StudentRoomController {
         }
         // TODO: send to server to update database (Bora)
 
-        if(!ServerCommunication.upvote(question.getId(), question.getUpvotes())) {
+        if(!ServerCommunication.upvote(question.getId())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("Server error!");
             alert.show();

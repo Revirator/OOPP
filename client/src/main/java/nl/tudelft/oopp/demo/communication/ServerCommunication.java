@@ -208,13 +208,12 @@ public class ServerCommunication {
     /** Updates the upvote amount in server after question is up/downvoted on client
      * Makes PUT request to server to send upvote amount via QuestionController.
      * @param questionId - id of the question that will get its upvotes updated
-     * @param upvotes - the new amount of upvotes that the question will have
      */
-    public static boolean upvote(Long questionId, Integer upvotes) {
+    public static boolean upvote(Long questionId) {
 
         String url = "http://localhost:8080/questions/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
-                .PUT(HttpRequest.BodyPublishers.ofString(upvotes.toString())) // i dont think upvotes.toString() works here...
+                .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response;
 
