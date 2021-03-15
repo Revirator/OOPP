@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
+import java.lang.String;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.lang.String;
-import java.util.regex.Matcher;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -157,8 +156,10 @@ public class SplashController {
         if (date.getValue() == null
                 || hour.getText().equals("")
                 || !hour.getText().matches("^\\d{2}:\\d{2}$")
-                || Integer.parseInt(hour.getText(0, 2)) > 23 || Integer.parseInt(hour.getText(0, 2)) < 0
-                || Integer.parseInt(hour.getText(3, 5)) > 59 || Integer.parseInt(hour.getText(3,5)) < 0) {
+                || Integer.parseInt(hour.getText(0, 2)) > 23
+                || Integer.parseInt(hour.getText(0, 2)) < 0
+                || Integer.parseInt(hour.getText(3, 5)) > 59
+                || Integer.parseInt(hour.getText(3,5)) < 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter a valid date and time.");
             alert.show();
@@ -174,7 +175,7 @@ public class SplashController {
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
 
-            if(targetTime.isBefore(LocalDateTime.now())) {
+            if (targetTime.isBefore(LocalDateTime.now())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Please enter a valid date and time.");
                 alert.show();
@@ -186,8 +187,8 @@ public class SplashController {
             Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
             alertMod.setTitle("Links for the room " + roomName.getText());
             alertMod.setHeaderText("Links for the room " + roomName.getText());
-            alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink() +
-                    "\n Student link: " + newRoom.getStudentsLink());
+            alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink()
+                    + "\n Student link: " + newRoom.getStudentsLink());
             alertMod.show();
 
         }
