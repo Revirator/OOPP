@@ -5,9 +5,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.lang.String;
+import java.util.regex.Matcher;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,6 +42,7 @@ public class SplashController {
 
     @FXML
     private TextField hour;     // the value of hour user enters
+
 
     /**
      * Handles clicking the "join room" button.
@@ -154,9 +154,13 @@ public class SplashController {
      */
     public void scheduleRoom(ActionEvent actionEvent) throws IOException {
 
-        if (date == null || hour == null) {
+        if (date.getValue() == null
+                || hour.getText().equals("")
+                || !hour.getText().matches("^\\d{2}:\\d{2}$")
+                || Integer.parseInt(hour.getText(0, 2)) > 23 || Integer.parseInt(hour.getText(0, 2)) < 0
+                || Integer.parseInt(hour.getText(3, 5)) > 59 || Integer.parseInt(hour.getText(3,5)) < 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please enter both nickname and link.");
+            alert.setContentText("Please enter a valid date and time.");
             alert.show();
         } else {
             LocalDate localDate = date.getValue();
@@ -170,28 +174,27 @@ public class SplashController {
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
 
-            new Timer().schedule(new ScheduleTask(actionEvent), convertToDateViaSqlTimestamp(targetTime));
+            if(targetTime.isBefore(LocalDateTime.now())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Please enter a valid date and time.");
+                alert.show();
+            }
+
+            Room newRoom = new Room(roomName.getText(), targetTime, true);
+            newRoom = ServerCommunication.makeRoom(newRoom);
+
+            //TODO cannot get a room link bc room is not created in server-side locally (ask db maker)
+
+            Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
+            alertMod.setTitle("Links for the room " + roomName.getText());
+            alertMod.setHeaderText("Links for the room " + roomName.getText());
+            alertMod.setContentText("Moderator link: " + "link1\n" + "Student link: " + "link2");
+            alertMod.show();
 
         }
     }
 
-    public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
-        return java.sql.Timestamp.valueOf(dateToConvert);
-    }
 
-    public class ScheduleTask extends TimerTask {
 
-        private ActionEvent actionEvent;
-
-        public ScheduleTask(ActionEvent actionEvent) {
-            this.actionEvent = actionEvent;
-        }
-
-        @Override
-        public void run() {
-            // room goes here
-            System.out.println("foo");
-        }
-    }
 
 }
