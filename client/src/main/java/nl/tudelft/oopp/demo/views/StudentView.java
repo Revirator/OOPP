@@ -3,6 +3,9 @@ package nl.tudelft.oopp.demo.views;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -20,6 +23,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -42,6 +46,7 @@ public class StudentView extends Application {
 
     private User student;
     private Room room;
+
 
 
     /** Used in SplashController to pass the user and the room object.
@@ -194,6 +199,22 @@ public class StudentView extends Application {
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
 
         return true;
+    }
+
+    /**
+     * This will get called every X(5) seconds to update
+     * the list of answered questions for the user
+     */
+    public void updateAnsweredList() {
+        List<Question> allAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+
+        for(Question q : allAnswered) {
+            if (!answered.contains(q)) {
+                answered.add(q);
+            }
+        }
+
+        // Here might be needed some sorting by time
     }
 
     /**
