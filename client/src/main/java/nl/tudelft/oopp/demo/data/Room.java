@@ -17,6 +17,8 @@ public class Room {
     private LocalDateTime startingTime;
     private boolean active;
     private List<User> participants;
+    private int peopleThinkingLectureIsTooFast;
+    private int peopleThinkingLectureIsTooSlow;
 
     /**
      * Room constructor.
@@ -27,7 +29,7 @@ public class Room {
      */
     public Room(long id, URL studentsLink, URL moderatorLink,
                 LocalDateTime startingTime, String roomName,
-                boolean active, List<User>  participants) {
+                boolean active, List<User>  participants, int slow, int fast) {
         this.roomId = id;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
@@ -35,6 +37,8 @@ public class Room {
         this.roomName = roomName;
         this.active = active;
         this.participants = participants;
+        this.peopleThinkingLectureIsTooSlow = slow;
+        this.peopleThinkingLectureIsTooFast = fast;
     }
 
     /**
@@ -47,9 +51,11 @@ public class Room {
         this.roomName = roomName;
         this.startingTime = startingTime;
         this.active = active;
-        this.participants = new ArrayList<User>();
+        this.participants = new ArrayList<>();
         // or
         // this.participants = participants;
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
     }
 
     /**
@@ -63,9 +69,11 @@ public class Room {
         this.roomName = roomName;
         this.startingTime = startingTime;
         this.active = active;
-        this.participants = new ArrayList<User>();
+        this.participants = new ArrayList<>();
         // or
         // this.participants = participants;
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
     }
 
     public String getRoomName() {
@@ -92,6 +100,34 @@ public class Room {
         return active;
     }
 
+    public int getPeopleThinkingLectureIsTooFast() {
+        return peopleThinkingLectureIsTooFast;
+    }
+
+    public int getPeopleThinkingLectureIsTooSlow() {
+        return peopleThinkingLectureIsTooSlow;
+    }
+
+    public void votedTooSlow() {
+        this.peopleThinkingLectureIsTooSlow++;
+    }
+
+    public void votedTooFast() {
+        this.peopleThinkingLectureIsTooFast++;
+    }
+
+    /** Decrements one of the fields depending on the feedback received.
+     * @param condition feedback
+     */
+    public void resetVote(String condition) {
+        if (condition.equals("resetSlow")) {
+            peopleThinkingLectureIsTooSlow--;
+        }
+        if (condition.equals("resetFast")) {
+            peopleThinkingLectureIsTooFast--;
+        }
+    }
+
     public void end() {
         this.active = false;
     }
@@ -112,15 +148,5 @@ public class Room {
 
     public void addParticipant(User user) {
         this.participants.add(user);
-    }
-
-    public int getPeopleThinkingLectureIsTooSlow() {
-        // will be changed in the other MR
-        return 1;
-    }
-
-    public int getPeopleThinkingLectureIsTooFast() {
-        // will be changed in the other MR
-        return 0;
     }
 }

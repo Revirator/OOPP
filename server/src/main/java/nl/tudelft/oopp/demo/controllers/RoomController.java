@@ -44,14 +44,27 @@ public class RoomController {
         return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
     }
 
+    /** Updates the status of the room from active to inactive.
+     * @param roomCode the link connected to the room
+     */
     @PutMapping("/update/{roomCode}") // http://localhost:8080/rooms/update/{roomCode}
-    public void updateRoom(@PathVariable String roomCode) throws MalformedURLException {
-        URL url = new URL("http://localhost:8080/rooms/" + roomCode);
+    public void updateRoom(@PathVariable String roomCode) {
+        URL url = null;
+        try {
+            url = new URL("http://localhost:8080/rooms/" + roomCode);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         roomService.updateRoomStatusByLink(url);
     }
 
     @PostMapping   // http://localhost:8080/rooms
     public Room addNewRoom(@RequestBody String data) throws MalformedURLException {
         return roomService.addNewRoom(data);
+    }
+
+    @PutMapping("/{roomCode}/{feedback}") // http://localhost:8080/rooms/{roomCode}/{feedback}
+    public void updateFeedback(@PathVariable String roomCode, @PathVariable String feedback) {
+        roomService.updateRoomSpeed("http://localhost:8080/rooms/" + roomCode, feedback);
     }
 }

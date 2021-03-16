@@ -43,6 +43,8 @@ public class Room {
     private LocalDateTime startingTime;
     private String roomName;                    // course name e.g.
     private boolean active;
+    private int peopleThinkingLectureIsTooFast;
+    private int peopleThinkingLectureIsTooSlow;
     @Transient
     // needs to be changed because it is useless at the moment
     private List<User> participants;            // List of Users > DB ?
@@ -62,6 +64,8 @@ public class Room {
         this.active = active;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
         linkGenerator();
     }
 
@@ -75,6 +79,8 @@ public class Room {
         this.active = true;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
         linkGenerator();
     }
 
@@ -91,6 +97,8 @@ public class Room {
         this.active = true;
         this.participants = new ArrayList<>();
         this.questions = new ArrayList<>();
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
         linkGenerator();
     }
 
@@ -136,6 +144,34 @@ public class Room {
 
     public boolean isActive() {
         return active;
+    }
+
+    public int getPeopleThinkingLectureIsTooFast() {
+        return peopleThinkingLectureIsTooFast;
+    }
+
+    public int getPeopleThinkingLectureIsTooSlow() {
+        return peopleThinkingLectureIsTooSlow;
+    }
+
+    public void votedTooSlow() {
+        this.peopleThinkingLectureIsTooSlow++;
+    }
+
+    public void votedTooFast() {
+        this.peopleThinkingLectureIsTooFast++;
+    }
+
+    /** Decrements one of the fields depending on the feedback received.
+     * @param condition feedback
+     */
+    public void resetVote(String condition) {
+        if (condition.equals("resetSlow")) {
+            peopleThinkingLectureIsTooSlow--;
+        }
+        if (condition.equals("resetFast")) {
+            peopleThinkingLectureIsTooFast--;
+        }
     }
 
     /** Room is not active anymore: no more questions can be asked,
