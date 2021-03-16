@@ -2,11 +2,7 @@ package nl.tudelft.oopp.demo.services;
 
 import java.util.List;
 import java.util.Objects;
-<<<<<<< HEAD
-import java.util.Optional;
 import java.util.stream.Collectors;
-=======
->>>>>>> development_branch
 import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
