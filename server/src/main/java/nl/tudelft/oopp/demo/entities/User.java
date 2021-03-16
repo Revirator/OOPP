@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public abstract class User {
 
     @Id
     @SequenceGenerator(

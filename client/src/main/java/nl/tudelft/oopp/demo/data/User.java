@@ -2,7 +2,7 @@ package nl.tudelft.oopp.demo.data;
 
 import java.util.Objects;
 
-public class User {
+public abstract class User {
 
     private String nickname;
     private Room room;
