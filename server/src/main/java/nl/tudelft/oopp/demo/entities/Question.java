@@ -88,7 +88,6 @@ public class Question {
         return room.getRoomId();
     }
 
-
     public Long getId() {
         return id;
     }

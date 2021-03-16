@@ -7,6 +7,8 @@ mainClassName = "nl.tudelft.oopp.demo.MainApp"
 dependencies {
     // Google JSON parsing library
     implementation 'com.google.code.gson:gson:2.8.6'
+    // https://mvnrepository.com/artifact/org.springframework/spring-context
+    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.4'
     testCompile("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.0")
 }

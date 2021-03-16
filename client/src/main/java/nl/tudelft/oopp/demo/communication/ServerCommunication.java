@@ -211,7 +211,7 @@ public class ServerCommunication {
         }
 
         // not the best way to do it (goes wrong if someone adds ", " in one of the fields
-        String postRequestBody = newQuestion.getRoomId() + ", "
+        String postRequestBody = newQuestion.getRoom() + ", "
                 + newQuestion.getText() + ", " + newQuestion.getOwner();
 
         // send request to the server

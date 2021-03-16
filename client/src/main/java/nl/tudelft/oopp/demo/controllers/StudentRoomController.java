@@ -10,8 +10,11 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
-
+@EnableScheduling
 public class StudentRoomController {
 
     @FXML
@@ -38,7 +41,7 @@ public class StudentRoomController {
         this.room = room;
         this.studentView = studentView;
     }
-
+    
     /** Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.
      * If the room is active but the question form is blank - ..
@@ -53,7 +56,7 @@ public class StudentRoomController {
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
-                Question newQuestion = new Question(this.room, questionBox.getText(),
+                Question newQuestion = new Question(this.room.getRoomId(), questionBox.getText(),
                         this.student.getNickname(), true);
                 Long newId = ServerCommunication.postQuestion(newQuestion);
                 newQuestion.setId(newId);
@@ -68,6 +71,7 @@ public class StudentRoomController {
             questionBox.setDisable(true);
             submit.setDisable(true);
         }
+        refresh();
     }
 
 
@@ -87,6 +91,10 @@ public class StudentRoomController {
         return true;
     }
 
+    @Scheduled(fixedRate = 2000)
+    public void refresh () {
+        studentView.updateAnsweredList();
+    }
 
     /**
      * Edits this question according to new text entered upon pressing "edit" button.
@@ -134,6 +142,4 @@ public class StudentRoomController {
         }
         // TODO: send to server to update database (Bora)
     }
-
-
 }

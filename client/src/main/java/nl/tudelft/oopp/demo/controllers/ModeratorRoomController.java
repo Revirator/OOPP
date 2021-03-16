@@ -12,7 +12,6 @@ public class ModeratorRoomController {
 
     @FXML
     private Button endLecture;
-
     private User moderator;
     private Room room;
     private ModeratorView moderatorView;
