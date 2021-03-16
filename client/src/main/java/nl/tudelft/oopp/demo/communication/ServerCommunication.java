@@ -209,7 +209,7 @@ public class ServerCommunication {
      * Makes PUT request to server to increment upvotes via QuestionController.
      * @param questionId - id of the question that will get its upvotes incremented
      */
-    public static boolean upvote(Long questionId) {
+    public static boolean upvoteQuestion(Long questionId) {
 
         String url = "http://localhost:8080/questions/upvote/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
@@ -235,7 +235,7 @@ public class ServerCommunication {
      * Makes PUT request to server to undo incrementing upvotes via QuestionController.
      * @param questionId - id of the question that will get its upvotes decremented
      */
-    public static boolean deUpvote(Long questionId) {
+    public static boolean deUpvoteQuestion(Long questionId) {
 
         String url = "http://localhost:8080/questions/deupvote/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
