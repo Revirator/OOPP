@@ -102,19 +102,14 @@ public class ModeratorView extends Application {
 
     }
 
-    public static void update(Stage PrimaryStage, List<Question> questionList, List<Question> answeredList) {
+    public void update(Stage PrimaryStage, List<Question> questionList, List<Question> answeredList) {
 
-        ObservableList<Question> questionObservable = FXCollections.observableArrayList(questionList);
-        ObservableList<Question> answeredObservable = FXCollections.observableArrayList(answeredList);
+        questions.clear();
+        answered.clear();
 
-        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
-        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+        questions.addAll(questionList);
+        answered.addAll(answeredList);
 
-        questionListView.setItems(questionObservable);
-        answeredListView.setItems(answeredObservable);
-
-        questionListView.setCellFactory(param -> new ModeratorQuestionCell(questionObservable, answeredObservable));
-        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answeredObservable));
     }
 
     /**

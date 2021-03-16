@@ -36,6 +36,6 @@ public class ModeratorRoomController {
         Stage primaryStage = (Stage) anchor.getScene().getWindow();
         List<Question> questionList = ServerCommunication.getQuestions(room);
         List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room);
-        ModeratorView.update(primaryStage, questionList, answeredList);
+        this.ModeratorView.update(primaryStage, questionList, answeredList);
     }
 }
