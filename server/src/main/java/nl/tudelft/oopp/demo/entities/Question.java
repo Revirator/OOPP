@@ -13,7 +13,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
-
 @Entity
 @Table(name = "question")
 public class Question {
@@ -37,6 +36,8 @@ public class Question {
     private String owner;
     private String time;
     private Integer upvotes;
+
+
 
     public Question() {
 
@@ -83,6 +84,7 @@ public class Question {
     public long getRoom() {
         return room.getRoomId();
     }
+
 
     public Long getId() {
         return id;

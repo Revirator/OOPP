@@ -5,6 +5,7 @@ import java.time.LocalTime;
 public class Question {
 
     private long id;
+    private Room room;
     private long roomId;
     private String text;
     private String answer;
@@ -12,15 +13,69 @@ public class Question {
     private String time;
     private Integer upvotes;
     private boolean voted;
+    private boolean isOwner;
+
+    /** Constructor with Room object (matches server-side Question entity).
+     * @param room - Room where this question is asked. (FK)
+     * @param text - String containing question.
+     * @param owner - nickname of person who asked this question.
+     */
+    public Question(Room room, String text, String owner) {
+        this.room = room;
+        this.roomId = room.getRoomId();
+        this.text = text;
+        this.answer = "";
+        this.owner = owner;
+        this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
+        this.upvotes = 0;
+        this.voted = false;
+        this.isOwner = true;
+    }
+
+    /** Constructor with Room object (matches server-side Question entity).
+     * @param room - Room where this question is asked. (FK)
+     * @param text - String containing question.
+     * @param owner - nickname of person who asked this question.
+     * @param isOwner - true if this user is owner, false otherwise.
+     */
+    public Question(Room room, String text, String owner, boolean isOwner) {
+        this.room = room;
+        this.roomId = room.getRoomId();
+        this.text = text;
+        this.answer = "";
+        this.owner = owner;
+        this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
+        this.upvotes = 0;
+        this.voted = false;
+        this.isOwner = isOwner;
+    }
+
+    /** Constructor with Room id, not object (testing purposes).
+     * @param roomId - ID of Room where this question is asked. (FK)
+     * @param text - String containing question.
+     * @param owner - nickname of person who asked this question.
+     */
+    public Question(long roomId, String text, String owner) {
+        this.roomId = roomId;
+        this.text = text;
+        this.answer = "";
+        this.owner = owner;
+        this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
+        this.upvotes = 0;
+        this.voted = false;
+        this.isOwner = true;
+    }
+
+
+
 
     /** Constructor with votes for testing purposes.
      * @param id - PK of this question.
-     * @param roomId - ID of room where this question is asked. (FK)
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.
      * @param upvotes - used to prioritize questions.
      */
-    public Question(long id, long roomId, String text, String owner, int upvotes) {
+    public Question(long roomId, long id, String text, String owner, int upvotes, boolean isOwner) {
         this.id = id;
         this.roomId = roomId;
         this.text = text;
@@ -28,7 +83,8 @@ public class Question {
         this.owner = owner;
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = upvotes;
-        voted = false;
+        this.voted = false;
+        this.isOwner = isOwner;
     }
 
     /**
@@ -40,11 +96,24 @@ public class Question {
     }
 
     /**
+     * Setter for the question ID.
+     * Retrieved by server (database sequence generator)
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+
+    /**
      * Getter for the room ID.
      * @return room ID
      */
     public long getRoomId() {
         return roomId;
+    }
+
+    public Room getRoom() {
+        return this.room;
     }
 
     /**
@@ -161,4 +230,15 @@ public class Question {
     public boolean voted() {
         return voted;
     }
+
+
+    /**
+     * Check if the user is owner of this question.
+     * @return true if this question was posted by this user, false otherwise.
+     */
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+
 }

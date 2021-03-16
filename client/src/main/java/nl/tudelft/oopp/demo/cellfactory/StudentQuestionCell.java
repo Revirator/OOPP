@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentQuestionCell extends ListCell<Question> {
@@ -22,14 +23,15 @@ public class StudentQuestionCell extends ListCell<Question> {
     private ObservableList<Question> answered;
     private boolean editing;
     private TextField editableLabel;
+    private StudentRoomController src;
 
-    /**
+    /** Initialized for each question by StudentView.
      * Constructor for student question cell.
      * @param questions ObservableList of the current questions
      * @param answered ObservableList of all answered questions
      */
     public StudentQuestionCell(ObservableList<Question> questions,
-                               ObservableList<Question> answered) {
+                               ObservableList<Question> answered, StudentRoomController src) {
 
         super();
 
@@ -37,15 +39,18 @@ public class StudentQuestionCell extends ListCell<Question> {
         this.answered = answered;
         this.editing = false;
         this.editableLabel = new TextField();
+        this.src = src;
 
         // Create visual cell
-        createCell();
+        createOwnerCell();
     }
+
+
 
     /**
      * Creates a cell with upvote and solved buttons, number of votes and the question.
      */
-    private void createCell() {
+    private void createOwnerCell() {
 
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
@@ -66,18 +71,21 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         // Create buttons in wrappers
         Button upVoteButton = new Button("Vote");
+        upVoteButton.setId("UpvoteButton");
         HBox upVoteWrapper = new HBox(upVoteButton, upVotesLabel);
         upVoteWrapper.setAlignment(Pos.CENTER_LEFT);
         upVoteWrapper.setSpacing(5);
 
         Button markAnsweredButton = new Button("Mark as answered");
-        Button deleteButton = new Button("Delete question");
+        Button deleteButton = new Button("Delete");
         HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
+        buttonWrapper.setId("AnsweredOrDelete");
 
         // Align buttons
         markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
 
-        Button editQuestionButton = new Button("Edit question");
+        Button editQuestionButton = new Button("Edit");
+        editQuestionButton.setId("EditButton");
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
         // Add elements to grid pane
@@ -87,8 +95,11 @@ public class StudentQuestionCell extends ListCell<Question> {
         gridPane.add(questionWrapper, 0,1);
 
         // Give background colours
+
         gridPane.styleProperty().setValue("-fx-background-color: white");
         anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
+        // gP.setGridLinesVisible(true);
+
 
         // Align grid pane
         gridPane.setAlignment(Pos.CENTER);
@@ -99,82 +110,71 @@ public class StudentQuestionCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
+
         //TODO possibly move to other files
+
 
         // Click event for upvote
         upVoteButton.setOnAction(event -> {
 
-            if (this.question != null) {
-
-                // Check if user already voted on question
-                if (question.voted()) {
-
-                    this.question.deUpvote();
-
-                } else {
-
-                    this.question.upvote();
-
-                }
-
-                // Sort questions again
-                questions.sort(Comparator.comparing(Question::getUpvotes,
+            src.upvoteQuestion(this.question);
+            // Sort questions again
+            questions.sort(Comparator.comparing(Question::getUpvotes,
                         Comparator.reverseOrder()));
-            }
 
         });
+
 
         // Click event for solved
         markAnsweredButton.setOnAction(event -> {
 
-            //TODO check if owner
-            //TODO send to server
-
-            answered.add(question);
-            questions.remove(question);
-
+            if (this.question.isOwner()) {
+                src.deleteQuestion(this.question);
+                answered.add(question);
+                questions.remove(question);
+            }
         });
+
+
 
         // Click event for delete
         deleteButton.setOnAction(event -> {
 
-            //TODO check if actual owner
-            //TODO send to server
-
-            // Remove question from list
-            questions.remove(question);
+            if (this.question.isOwner()) {
+                src.deleteQuestion(this.question);
+                questions.remove(question);
+            }
         });
+
+
 
         // Click event for editing
         editQuestionButton.setOnAction(event -> {
-
-            if (this.question == null) {
-                return;
-            }
-
-            //TODO send changes to server
 
             questionWrapper.getChildren().clear();
 
             // User saves changes
             if (editing) {
+
+                src.editQuestion(
+                        this.question, editableLabel.getText());
+
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
-                question.setText(editableLabel.getText());
-                editQuestionButton.setText("Edit question");
+                editQuestionButton.setText("Edit");
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
             } else { // User wants to make changes
-
                 questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
                 editableLabel.setText(question.getText());
                 editQuestionButton.setText("Save changes");
                 editing = true;
-
             }
         });
 
     }
+
+
 
     /**
      * Updates the item in the ListView.
@@ -208,13 +208,21 @@ public class StudentQuestionCell extends ListCell<Question> {
             questionLabel.setText(item.getText());
             ownerLabel.setText(item.getOwner());
 
-            //TODO add check for owner to make remove/solved buttons (in)visible
 
-            //TODO add check for owner to make delete button (in)visible
+            HBox answeredOrDelete = (HBox) gridPane.lookup("#AnsweredOrDelete");
+            Button editButton = (Button) gridPane.lookup("#EditButton");
+            // Button upvoteButton = (Button) gridPane.lookup("#UpvoteButton");
+            if (!this.question.isOwner()) {
+                answeredOrDelete.setVisible(false);
+                editButton.setVisible(false);
+                // upvoteButton.setVisible(false);
+            } else {
+                answeredOrDelete.setVisible(true);
+                editButton.setVisible(true);
+            }
 
             // Show graphic representation
             setGraphic(anchorPane);
-
         }
     }
 

@@ -13,7 +13,7 @@ public class Room {
     private URL moderatorLink;
     private LocalDateTime startingTime;
     private boolean active;
-
+    private long roomId;
 
     /**
      * Room constructor.
@@ -21,15 +21,15 @@ public class Room {
      * @param studentsLink studentsLink
      * @param moderatorLink moderatorLink
      * @param startingTime startingTime
-     * @param active active
      */
     public Room(String roomName, URL studentsLink, URL moderatorLink,
-                LocalDateTime startingTime, boolean active) {
+                LocalDateTime startingTime, long id) {
         this.roomName = roomName;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
         this.startingTime = startingTime;
-        this.active = active;
+        this.active = true;
+        this.roomId = id;
     }
 
     /**
@@ -44,6 +44,21 @@ public class Room {
         this.active = active;
     }
 
+    /**
+     * Room constructor.
+     * @param roomName roomName
+     * @param startingTime startingTime
+     * @param active active
+     */
+    public Room(long roomId, String roomName, LocalDateTime startingTime, boolean active) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.startingTime = startingTime;
+        this.active = active;
+    }
+
+
+
     public String getRoomName() {
         return roomName;
     }
@@ -56,11 +71,19 @@ public class Room {
         return moderatorLink;
     }
 
+    public long getRoomId() {
+        return roomId;
+    }
+
     public LocalDateTime getStartingTime() {
         return startingTime;
     }
 
     public boolean isActive() {
         return active;
+    }
+
+    public void end() {
+        this.active = false;
     }
 }

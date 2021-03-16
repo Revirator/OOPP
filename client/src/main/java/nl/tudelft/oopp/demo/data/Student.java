@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.data;
 
 public class Student extends User {
 
@@ -8,7 +8,7 @@ public class Student extends User {
 
     @Override
     public String toString() {
-        return "Student " + super.getNickname() + " in room " + super.getRoom().getRoomId();
+        return "Student " + super.getNickname() + " in lecture " + super.getRoom().getRoomName();
     }
 }
 
