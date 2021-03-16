@@ -9,6 +9,7 @@ import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+    @Scheduled(fixedRate = 5000)
     @GetMapping   // http://localhost:8080/questions
     public List<Question> getQuestions() {
         return questionService.getQuestions();
