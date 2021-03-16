@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -28,13 +29,11 @@ public class ServerCommunication {
                 (json, typeOfT, context) -> LocalDateTime.parse(json.getAsString(),
                     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).create();
 
-    /**
-     * Retrieves a room from the server.
+    /** Retrieves a room from the server.
      * @param code room identification code
-     * @return the body of a get request to the server (a room object).
+     * @return the body of the response from the server or null if the room does not exist.
      */
     public static Room getRoom(String code) {
-
         if (code.equals("")) {      // Some empty string check
             return null;
         }
@@ -63,7 +62,6 @@ public class ServerCommunication {
      * @return room with all parameters
      */
     public static Room makeRoom(Room room) {
-
         if (room == null) {
             return null;
         }
@@ -91,6 +89,29 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+    /** Sends feedback to the server which is processed and the rooms are updated.
+     * @param url the students link connected to a room
+     * @param feedback the feedback we want to send
+     */
+    public static void sendFeedback(URL url, String feedback) {
+        String roomCode = url.toString().substring(28);
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/rooms/" + roomCode + "/" + feedback))
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText("Something went wrong! Feedback was not sent!");
+            error.show();
+        }
+    }
 
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
@@ -118,14 +139,12 @@ public class ServerCommunication {
         }
     }
 
-
     /** Deletes question corresponding to this id from database.
      * Makes DELETE request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be deleted from database
      * @return boolean - true if DELETE operation succeeded, false otherwise.
      */
     public static boolean deleteQuestion(long questionId) {
-
         HttpRequest request = HttpRequest.newBuilder().DELETE()
                 .uri(URI.create("http://localhost:8080/questions/" + questionId)).build();
         HttpResponse<String> response;
@@ -142,7 +161,6 @@ public class ServerCommunication {
             return false;
         }
         return true;
-
     }
 
 
@@ -152,7 +170,6 @@ public class ServerCommunication {
      * @return boolean - true if PUT operation succeeded, false otherwise.
      */
     public static boolean editQuestion(long questionId, String update) {
-
         String url = "http://localhost:8080/questions/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(update))
@@ -205,7 +222,6 @@ public class ServerCommunication {
      * @return Long - generated id for this question
      */
     public static Long postQuestion(Question newQuestion) {
-
         if (newQuestion == null) {
             return (long)-1;
         }
@@ -232,7 +248,6 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
             return (long)-1;
         }
-
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
     }
 
@@ -261,5 +276,57 @@ public class ServerCommunication {
         }
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+    }
+
+
+    /** Increments the upvote amount in server after question is upvoted on client
+     * Makes PUT request to server to increment upvotes via QuestionController.
+     * @param questionId - id of the question that will get its upvotes incremented
+     */
+    public static boolean upvoteQuestion(Long questionId) {
+
+        String url = "http://localhost:8080/questions/upvote/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+    }
+
+
+    /** Undos incrementing the upvote amount in server after question is upvoted on client
+     * Makes PUT request to server to undo incrementing upvotes via QuestionController.
+     * @param questionId - id of the question that will get its upvotes decremented
+     */
+    public static boolean deUpvoteQuestion(Long questionId) {
+
+        String url = "http://localhost:8080/questions/deupvote/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
     }
 }

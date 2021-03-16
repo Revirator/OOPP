@@ -165,5 +165,4 @@ public class SplashController {
     public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
         return java.sql.Timestamp.valueOf(dateToConvert);
     }
-
 }

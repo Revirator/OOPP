@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
-import nl.tudelft.oopp.demo.entities.Question;
+
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoomService {
 
-
     private final RoomRepository roomRepository;
-
 
     /** Constructor for RoomService.
      * @param roomRepository - retrieves rooms from database.
@@ -48,7 +46,6 @@ public class RoomService {
      * @param string new Room object as a string to be stored in the database
      */
     public Room addNewRoom(String string) throws MalformedURLException {
-
         String[] dataArray = string.split(", ");
 
         String roomName = dataArray[0];
@@ -60,6 +57,28 @@ public class RoomService {
         roomRepository.save(updatedRoom);
 
         return updatedRoom;
+    }
+
+    /** Updates peopleThinkingLectureIsTooSlow or peopleThinkingLectureIsTooFast ..
+     * .. depending on the feedback received.
+     * @param url link connected to the room
+     * @param feedback feedback to be processed
+     */
+    @Transactional
+    public void updateRoomSpeed(String url,String feedback) {
+        try {
+            Room room = roomRepository.findFirstByStudentsLink(new URL(url));
+            if (feedback.equals("slow")) {
+                room.votedTooSlow();
+            }
+            if (feedback.equals("fast")) {
+                room.votedTooFast();
+            } else if (feedback.contains("reset")) {
+                room.resetVote(feedback);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     /** Updates the status (active/inactive) of a room.
@@ -103,5 +122,4 @@ public class RoomService {
             return roomRepository.findFirstByStudentsLink(url);
         }
     }
-
 }

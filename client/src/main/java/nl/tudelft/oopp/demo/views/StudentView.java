@@ -100,7 +100,7 @@ public class StudentView extends Application {
         questionListView.setItems(questions);
         answeredListView.setItems(answered);
 
-        // DEBUGGING PURPOSES
+        /* DEBUGGING PURPOSES
 
         addQuestion(new Question(1,20,
                 "What's the square root of -1?","Senne",20, true));
@@ -114,6 +114,8 @@ public class StudentView extends Application {
         for (Question q : questions) {
             q.setAnswer("This is the answer!");
         }
+
+        */
 
         // Set cell factory to use student cell
         questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered, src));

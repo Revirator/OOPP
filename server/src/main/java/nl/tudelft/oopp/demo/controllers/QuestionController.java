@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("questions")
 public class QuestionController {
-
 
     private final QuestionService questionService;
 
@@ -40,11 +37,10 @@ public class QuestionController {
 
     /** GET mapping.
      * @return a JSON object of an example Question
-     * @throws MalformedURLException - Exception thrown when URL is malformed.
      */
     @GetMapping("example")   // http://localhost:8080/questions/example
     @ResponseBody               // automatically serialized into JSON
-    public Question getExampleQuestion() throws MalformedURLException {
+    public Question getExampleQuestion() {
         return new Question(1,
                 new Room(LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
                         "OOP Project", false),
@@ -78,10 +74,18 @@ public class QuestionController {
     }
 
     @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
-    public void updateQuestion(
-            @PathVariable("questionId") Long questionId,
-            @RequestBody String question
-    ) {
+    public void updateQuestion(@PathVariable("questionId") Long questionId,
+                               @RequestBody String question) {
         questionService.updateQuestion(questionId, question);
+    }
+
+    @PutMapping(path = "upvote/{questionId}")  // http://localhost:8080/questions/upvote/{questionId}
+    public void upvote(@PathVariable("questionId") Long questionId) {
+        questionService.upvote(questionId);
+    }
+
+    @PutMapping(path = "deupvote/{questionId}") // http://localhost:8080/questions/deupvote/{questionId}
+    public void deUpvote(@PathVariable("questionId") Long questionId) {
+        questionService.deUpvote(questionId);
     }
 }
