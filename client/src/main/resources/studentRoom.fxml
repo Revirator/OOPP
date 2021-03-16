@@ -142,17 +142,17 @@
                               <Insets top="5.0" />
                            </GridPane.margin>
                         </Label>
-                        <Button mnemonicParsing="false" styleClass="buttonText" text="Too Fast" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                        <Button fx:id="tooFastButton" mnemonicParsing="false" onAction="#lectureTooFast" styleClass="buttonText" text="Too Fast" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                            <font>
                               <Font name="Arial" size="10.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="buttonText" text="Reset" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <Button fx:id="resetButton" disable="true" mnemonicParsing="false" onAction="#resetFeedback" styleClass="buttonText" text="Reset" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="Arial" size="10.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="buttonText" text="Too Slow" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <Button fx:id="tooSlowButton" mnemonicParsing="false" onAction="#lectureTooSlow" styleClass="buttonText" text="Too Slow" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="Arial" size="10.0" />
                            </font>

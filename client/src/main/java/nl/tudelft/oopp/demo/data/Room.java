@@ -8,12 +8,14 @@ public class Room {
     // but we only include what we need on client (there will be more added when needed)
     // No setter necessary, since we don't update on client.
 
+    private long roomId;
     private String roomName;
     private URL studentsLink;
     private URL moderatorLink;
     private LocalDateTime startingTime;
     private boolean active;
-    private long roomId;
+    private int peopleThinkingLectureIsTooFast;
+    private int peopleThinkingLectureIsTooSlow;
 
     /**
      * Room constructor.
@@ -23,13 +25,14 @@ public class Room {
      * @param startingTime startingTime
      */
     public Room(String roomName, URL studentsLink, URL moderatorLink,
-                LocalDateTime startingTime, long id) {
+                LocalDateTime startingTime, boolean active, int slow, int fast) {
         this.roomName = roomName;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
         this.startingTime = startingTime;
-        this.active = true;
-        this.roomId = id;
+        this.active = active;
+        this.peopleThinkingLectureIsTooSlow = slow;
+        this.peopleThinkingLectureIsTooFast = fast;
     }
 
     /**
@@ -42,6 +45,8 @@ public class Room {
         this.roomName = roomName;
         this.startingTime = startingTime;
         this.active = active;
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
     }
 
     /**
@@ -55,9 +60,9 @@ public class Room {
         this.roomName = roomName;
         this.startingTime = startingTime;
         this.active = active;
+        this.peopleThinkingLectureIsTooSlow = 0;
+        this.peopleThinkingLectureIsTooFast = 0;
     }
-
-
 
     public String getRoomName() {
         return roomName;
@@ -81,6 +86,34 @@ public class Room {
 
     public boolean isActive() {
         return active;
+    }
+
+    public int getPeopleThinkingLectureIsTooFast() {
+        return peopleThinkingLectureIsTooFast;
+    }
+
+    public int getPeopleThinkingLectureIsTooSlow() {
+        return peopleThinkingLectureIsTooSlow;
+    }
+
+    public void votedTooSlow() {
+        this.peopleThinkingLectureIsTooSlow++;
+    }
+
+    public void votedTooFast() {
+        this.peopleThinkingLectureIsTooFast++;
+    }
+
+    /** Decrements one of the fields depending on the feedback received.
+     * @param condition feedback
+     */
+    public void resetVote(String condition) {
+        if (condition.equals("resetSlow")) {
+            peopleThinkingLectureIsTooSlow--;
+        }
+        if (condition.equals("resetFast")) {
+            peopleThinkingLectureIsTooFast--;
+        }
     }
 
     public void end() {
