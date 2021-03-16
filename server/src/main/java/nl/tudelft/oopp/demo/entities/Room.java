@@ -46,6 +46,7 @@ public class Room {
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
     @Transient
+    // needs to be changed because it is useless at the moment
     private List<User> participants;            // List of Users > DB ?
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Question> questions;          // Or not needed at all because we have the DB
@@ -139,10 +140,6 @@ public class Room {
 
     public String getRoomName() {
         return roomName;
-    }
-
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
     }
 
     public boolean isActive() {

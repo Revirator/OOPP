@@ -28,7 +28,7 @@ public class ServerCommunication {
 
     /** Retrieves a room from the server.
      * @param code room identification code
-     * @return the body of a get request to the server (a room object).
+     * @return the body of the response from the server or null if the room does not exist.
      */
     public static Room getRoom(String code) {
         if (code.equals("")) {      // Some empty string check
