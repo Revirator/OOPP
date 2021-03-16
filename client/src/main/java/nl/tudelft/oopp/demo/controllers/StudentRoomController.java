@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +14,14 @@ import nl.tudelft.oopp.demo.views.StudentView;
 
 
 public class StudentRoomController {
+    @FXML
+    private Button tooSlowButton;
+
+    @FXML
+    private Button tooFastButton;
+
+    @FXML
+    private Button resetButton;
 
     @FXML
     private Button submit;
@@ -70,7 +79,6 @@ public class StudentRoomController {
         }
     }
 
-
     /**
      * Deletes this question upon pressing "delete" or "mark as answered" buttons.
      * Based on id of this question.
@@ -86,7 +94,6 @@ public class StudentRoomController {
         }
         return true;
     }
-
 
     /**
      * Edits this question according to new text entered upon pressing "edit" button.
@@ -110,6 +117,69 @@ public class StudentRoomController {
         return false;
     }
 
+    /** Increments the peopleThinkingLectureIsTooSlow field in Room ..
+     * .. both on the server and client side by one.
+     */
+    public void lectureTooSlow() {
+        if (!room.isActive()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("The lecture is over! You cannot send feedback anymore!");
+            alert.show();
+            tooSlowButton.setDisable(true);
+            tooFastButton.setDisable(true);
+        } else {
+            resetButton.setDisable(false);
+            tooSlowButton.setDisable(true);
+            tooFastButton.setVisible(false);
+            ServerCommunication.sendFeedback(room.getStudentsLink(), "slow");
+        }
+    }
+
+    /** Increments the peopleThinkingLectureIsTooFast field in Room ..
+     * .. both on the server and client side by one.
+     */
+    public void lectureTooFast() {
+        if (!room.isActive()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("The lecture is over! You cannot send feedback anymore!");
+            alert.show();
+            tooFastButton.setDisable(true);
+            tooSlowButton.setDisable(true);
+        } else {
+            resetButton.setDisable(false);
+            tooSlowButton.setVisible(false);
+            tooFastButton.setDisable(true);
+            ServerCommunication.sendFeedback(room.getStudentsLink(), "fast");
+        }
+    }
+
+    /** Decrements either peopleThinkingLectureIsTooSlow or ..
+     * .. peopleThinkingLectureIsTooFast field in Room ..
+     * .. both on the server and client side by one ..
+     * .. depending on which button was previously pressed.
+     */
+    public void resetFeedback() {
+        if (!room.isActive()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("The lecture is over! You cannot send feedback anymore!");
+            alert.show();
+            tooFastButton.setVisible(true);
+            tooSlowButton.setVisible(true);
+            tooFastButton.setDisable(true);
+            tooSlowButton.setDisable(true);
+        } else {
+            resetButton.setDisable(true);
+            if (tooSlowButton.isVisible() && !tooFastButton.isVisible()) {
+                tooSlowButton.setDisable(false);
+                tooFastButton.setVisible(true);
+                ServerCommunication.sendFeedback(room.getStudentsLink(), "resetSlow");
+            } else {
+                tooFastButton.setDisable(false);
+                tooSlowButton.setVisible(true);
+                ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
+            }
+        }
+    }
 
     /** Alert displayed when lecture is inactive.
      *
@@ -119,7 +189,6 @@ public class StudentRoomController {
         alert.setContentText("The lecture has ended!");
         alert.show();
     }
-
 
     /** Increments the number of upvotes of this question by 1.
      * @param question - Question to upvote
@@ -134,6 +203,4 @@ public class StudentRoomController {
         }
         // TODO: send to server to update database (Bora)
     }
-
-
 }
