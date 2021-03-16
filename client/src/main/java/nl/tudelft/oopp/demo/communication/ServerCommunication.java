@@ -28,7 +28,7 @@ public class ServerCommunication {
 
     /** Retrieves a room from the server.
      * @param code room identification code
-     * @return the body of a get request to the server (a room object).
+     * @return the body of the response from the server or null if the room does not exist.
      */
     public static Room getRoom(String code) {
         if (code.equals("")) {      // Some empty string check
@@ -221,5 +221,57 @@ public class ServerCommunication {
             return (long)-1;
         }
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
+    }
+
+    /** Increments the upvote amount in server after question is upvoted on client
+     * Makes PUT request to server to increment upvotes via QuestionController.
+     * @param questionId - id of the question that will get its upvotes incremented
+     */
+    public static boolean upvoteQuestion(Long questionId) {
+
+        String url = "http://localhost:8080/questions/upvote/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+
+    }
+
+    /** Undos incrementing the upvote amount in server after question is upvoted on client
+     * Makes PUT request to server to undo incrementing upvotes via QuestionController.
+     * @param questionId - id of the question that will get its upvotes decremented
+     */
+    public static boolean deUpvoteQuestion(Long questionId) {
+
+        String url = "http://localhost:8080/questions/deupvote/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+
     }
 }

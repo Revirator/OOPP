@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.data;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Room {
     // these match the properties in Room entity on server
@@ -14,6 +16,7 @@ public class Room {
     private URL moderatorLink;
     private LocalDateTime startingTime;
     private boolean active;
+    private List<User> participants;
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
 
@@ -24,13 +27,16 @@ public class Room {
      * @param moderatorLink moderatorLink
      * @param startingTime startingTime
      */
-    public Room(String roomName, URL studentsLink, URL moderatorLink,
-                LocalDateTime startingTime, boolean active, int slow, int fast) {
-        this.roomName = roomName;
+    public Room(long id, URL studentsLink, URL moderatorLink,
+                LocalDateTime startingTime, String roomName,
+                boolean active, List<User>  participants, int slow, int fast) {
+        this.roomId = id;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
         this.startingTime = startingTime;
+        this.roomName = roomName;
         this.active = active;
+        this.participants = participants;
         this.peopleThinkingLectureIsTooSlow = slow;
         this.peopleThinkingLectureIsTooFast = fast;
     }
@@ -45,6 +51,9 @@ public class Room {
         this.roomName = roomName;
         this.startingTime = startingTime;
         this.active = active;
+        this.participants = new ArrayList<>();
+        // or
+        // this.participants = participants;
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
     }
@@ -60,6 +69,9 @@ public class Room {
         this.roomName = roomName;
         this.startingTime = startingTime;
         this.active = active;
+        this.participants = new ArrayList<>();
+        // or
+        // this.participants = participants;
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
     }
@@ -118,5 +130,23 @@ public class Room {
 
     public void end() {
         this.active = false;
+    }
+
+    /** Should be a getter. Doesn't work for now.
+     * @return the list of participants
+     */
+    public List<User> getParticipants() {
+        // Used for testing purposes at the moment
+        ArrayList<User> test = new ArrayList<>();
+        test.add(new Moderator("TEST1",this));
+        test.add(new Student("TEST2",this));
+        return  test;
+        // should be
+        // return this.participants;
+        // but this is always returning null atm cause of the server
+    }
+
+    public void addParticipant(User user) {
+        this.participants.add(user);
     }
 }
