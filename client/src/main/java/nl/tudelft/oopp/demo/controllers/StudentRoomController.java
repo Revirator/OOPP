@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
@@ -120,20 +121,36 @@ public class StudentRoomController {
      * .. both on the server and client side by one.
      */
     public void lectureTooSlow() {
-        resetButton.setDisable(false);
-        tooSlowButton.setDisable(true);
-        tooFastButton.setVisible(false);
-        ServerCommunication.sendFeedback(room.getStudentsLink(), "slow");
+        if (!room.isActive()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("The lecture is over! You cannot send feedback anymore!");
+            alert.show();
+            tooSlowButton.setDisable(true);
+            tooFastButton.setDisable(true);
+        } else {
+            resetButton.setDisable(false);
+            tooSlowButton.setDisable(true);
+            tooFastButton.setVisible(false);
+            ServerCommunication.sendFeedback(room.getStudentsLink(), "slow");
+        }
     }
 
     /** Increments the peopleThinkingLectureIsTooFast field in Room ..
      * .. both on the server and client side by one.
      */
     public void lectureTooFast() {
-        resetButton.setDisable(false);
-        tooSlowButton.setVisible(false);
-        tooFastButton.setDisable(true);
-        ServerCommunication.sendFeedback(room.getStudentsLink(), "fast");
+        if (!room.isActive()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("The lecture is over! You cannot send feedback anymore!");
+            alert.show();
+            tooFastButton.setDisable(true);
+            tooSlowButton.setDisable(true);
+        } else {
+            resetButton.setDisable(false);
+            tooSlowButton.setVisible(false);
+            tooFastButton.setDisable(true);
+            ServerCommunication.sendFeedback(room.getStudentsLink(), "fast");
+        }
     }
 
     /** Decrements either peopleThinkingLectureIsTooSlow or ..
@@ -142,16 +159,25 @@ public class StudentRoomController {
      * .. depending on which button was previously pressed.
      */
     public void resetFeedback() {
-        // next 2 lines are not recommended
-        resetButton.setDisable(true);
-        if (tooSlowButton.isVisible() && !tooFastButton.isVisible()) {
-            tooSlowButton.setDisable(false);
+        if (!room.isActive()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("The lecture is over! You cannot send feedback anymore!");
+            alert.show();
             tooFastButton.setVisible(true);
-            ServerCommunication.sendFeedback(room.getStudentsLink(), "resetSlow");
-        } else {
-            tooFastButton.setDisable(false);
             tooSlowButton.setVisible(true);
-            ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
+            tooFastButton.setDisable(true);
+            tooSlowButton.setDisable(true);
+        } else {
+            resetButton.setDisable(true);
+            if (tooSlowButton.isVisible() && !tooFastButton.isVisible()) {
+                tooSlowButton.setDisable(false);
+                tooFastButton.setVisible(true);
+                ServerCommunication.sendFeedback(room.getStudentsLink(), "resetSlow");
+            } else {
+                tooFastButton.setDisable(false);
+                tooSlowButton.setVisible(true);
+                ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
+            }
         }
     }
 
