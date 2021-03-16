@@ -27,9 +27,9 @@ public class QuestionTest {
     public QuestionTest() {
         activeRoom = new Room(1, "Active room", LocalDateTime.now(), true);
         endedRoom = new Room(2, "Ended lecture", LocalDateTime.now(), false);
-        question1 = new Question(activeRoom, "What is the meaning of life?", "Pavel");
-        question2 = new Question(activeRoom, "When are the grades out?", "Emke");
-        question3 = new Question(endedRoom, "Can I revisit the lecture?", "Bora");
+        question1 = new Question(3, "What is the meaning of life?", "Pavel");
+        question2 = new Question(4, "When are the grades out?", "Emke");
+        question3 = new Question(5, "Can I revisit the lecture?", "Bora");
     }
 
 
@@ -82,8 +82,4 @@ public class QuestionTest {
         assertEquals("Have some patience.",
                 question2.getAnswer());
     }
-
-
-
-
 }
