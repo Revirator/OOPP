@@ -198,14 +198,26 @@ public class StudentRoomController {
     /** Increments the number of upvotes of this question by 1.
      * @param question - Question to upvote
      */
-    public void upvoteQuestion(Question question) {
+    public boolean upvoteQuestion(Question question) {
 
         // Check if user already voted on question
         if (question.voted()) {
             question.deUpvote();
+            if (!ServerCommunication.deUpvoteQuestion(question.getId())) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Server error!");
+                alert.show();
+                return false;
+            }
         } else {
             question.upvote();
+            if (!ServerCommunication.upvoteQuestion(question.getId())) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Server error!");
+                alert.show();
+                return false;
+            }
         }
-        // TODO: send to server to update database (Bora)
+        return true;
     }
 }
