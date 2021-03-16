@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.communication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.reflect.TypeToken;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.google.gson.reflect.TypeToken;
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -238,7 +238,7 @@ public class ServerCommunication {
 
 
     /**
-     * Retrieves a list of all answered questions
+     * Retrieves a list of all answered questions.
      * from the server for a specific room
      * @param roomId room identification code
      * @return the body of a get request to the server (list of questions).
