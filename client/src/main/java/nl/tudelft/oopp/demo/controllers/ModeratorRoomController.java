@@ -8,6 +8,9 @@ import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ModeratorRoomController {
 
     @FXML
@@ -25,6 +28,19 @@ public class ModeratorRoomController {
         this.moderator = moderator;
         this.room = room;
         this.moderatorView = moderatorView;
+
+        // Next 3 lines are to execute the question refreshing every X seconds
+        Timer t = new Timer();
+        QuestionRefresher st = new QuestionRefresher();
+        t.schedule(st,0,5000);
+    }
+
+    // Used just by the timer to refresh the questions every X seconds
+    public class QuestionRefresher extends TimerTask {
+
+        public void run() {
+            moderatorView.updateAnsweredList();
+        }
     }
 
     /** The method that is executed when the End lecture button is clicked.

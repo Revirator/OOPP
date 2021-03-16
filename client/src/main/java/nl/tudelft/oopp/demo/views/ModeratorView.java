@@ -242,19 +242,20 @@ public class ModeratorView extends Application {
     }
 
     /**
-     * This will get called every X(5) seconds to update
+     * This will get called every X(5) seconds to update.
      * the list of answered questions for the user
      */
     public void updateAnsweredList() {
-        List<Question> allAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
 
-        for(Question q : allAnswered) {
+        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+
+        for (Question q : newAnswered) {
             if (!answered.contains(q)) {
                 answered.add(q);
             }
         }
 
-        // Here might be needed some sorting by time
+        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 
     /**
