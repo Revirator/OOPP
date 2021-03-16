@@ -1,13 +1,11 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
+import java.lang.String;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +40,7 @@ public class SplashController {
     private DatePicker date;    // the value of date user enters
     @FXML
     private TextField hour;     // the value of hour user enters
+
 
     /**
      * Handles clicking the "join room" button.
@@ -140,29 +139,49 @@ public class SplashController {
      * @throws IOException - to be edited
      */
     public void scheduleRoom(ActionEvent actionEvent) throws IOException {
-        if (date == null || hour == null) {
+
+        if (date.getValue() == null
+                || hour.getText().equals("")
+                || !hour.getText().matches("^\\d{2}:\\d{2}$")
+                || Integer.parseInt(hour.getText(0, 2)) > 23
+                || Integer.parseInt(hour.getText(0, 2)) < 0
+                || Integer.parseInt(hour.getText(3, 5)) > 59
+                || Integer.parseInt(hour.getText(3,5)) < 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please enter both nickname and link.");
+            alert.setContentText("Please enter a valid date and time.");
             alert.show();
         } else {
             LocalDate localDate = date.getValue();
-            String strHour = hour.getText(0,1);
-            String strMin = hour.getText(3,4);
+            String strHour = hour.getText(0,2);
+            String strMin = hour.getText(3,5);
             int intHour = Integer.parseInt(strHour);
-            int intMin = Integer.parseInt((strMin));
+            System.out.println(intHour);    // debugging
+            int intMin = Integer.parseInt(strMin);
+            System.out.println(intMin);     // debugging
+
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
 
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    //TODO open the room lol
-                }
-            }, convertToDateViaSqlTimestamp(targetTime));
+            if (targetTime.isBefore(LocalDateTime.now())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Please enter a valid date and time.");
+                alert.show();
+            }
+
+            Room newRoom = new Room(roomName.getText(), targetTime, true);
+            newRoom = ServerCommunication.makeRoom(newRoom);
+
+            Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
+            alertMod.setTitle("Links for the room " + roomName.getText());
+            alertMod.setHeaderText("Links for the room " + roomName.getText());
+            alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink()
+                    + "\n Student link: " + newRoom.getStudentsLink());
+            alertMod.show();
+
         }
     }
 
-    public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
-        return java.sql.Timestamp.valueOf(dateToConvert);
-    }
+
+
+
 }
