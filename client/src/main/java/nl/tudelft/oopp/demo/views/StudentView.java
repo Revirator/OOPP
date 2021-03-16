@@ -1,11 +1,13 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.awt.desktop.QuitStrategy;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -129,8 +131,6 @@ public class StudentView extends Application {
     }
 
 
-
-
     /**
      * Binds the font sizes for a responsive UI.
      * @param scene scene to make responsive
@@ -182,6 +182,7 @@ public class StudentView extends Application {
         }
     }
 
+
     /**
      * Adds a question to the student view.
      * @param question question to add
@@ -206,15 +207,15 @@ public class StudentView extends Application {
      * the list of answered questions for the user
      */
     public void updateAnsweredList() {
-        List<Question> allAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
 
-        for(Question q : allAnswered) {
-            if (!answered.contains(q)) {
+        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+
+        for(Question q : newAnswered) {
+            if(!answered.contains(q))
                 answered.add(q);
-            }
         }
 
-        // Here might be needed some sorting by time
+        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 
     /**

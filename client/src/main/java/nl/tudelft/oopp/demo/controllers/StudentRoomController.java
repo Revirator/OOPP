@@ -47,7 +47,7 @@ public class StudentRoomController {
         // Next 3 lines are to execute the question refreshing every X seconds
         Timer t = new Timer();
         QuestionRefresher st = new QuestionRefresher();
-        t.schedule(st,0, 5000);
+        t.schedule(st,0,5000);
     }
 
     // Used just by the timer to refresh the questions every X seconds
