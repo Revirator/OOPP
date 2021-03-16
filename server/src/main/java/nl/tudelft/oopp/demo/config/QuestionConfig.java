@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 public class QuestionConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner2(QuestionRepository questionRepository,
+    CommandLineRunner questionCommandLineRunner(QuestionRepository questionRepository,
                                          RoomRepository roomRepository) {
         return args -> {
 

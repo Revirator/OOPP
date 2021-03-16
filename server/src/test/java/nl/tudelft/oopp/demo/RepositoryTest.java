@@ -4,16 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
+import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.Student;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 
+import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,10 @@ public class RepositoryTest {
     private QuestionRepository questionRepository;
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private UserRepository<Student> studentUserRepository;
+    @Autowired
+    private UserRepository<Moderator> moderatorUserRepository;
 
     private Room calculus;
     private Room wdty1;
@@ -83,7 +89,7 @@ public class RepositoryTest {
 
     @Test
     @Order(3)
-    public void saveAndRetrieveQuestionTest() throws MalformedURLException {
+    public void saveAndRetrieveQuestionTest() {
 
         roomRepository.saveAndFlush(wdty1);
         Question expected = new Question(
@@ -96,6 +102,32 @@ public class RepositoryTest {
         Question output = questionRepository.getOne((long) 1);
         assertEquals(expected, output);
 
+    }
+
+    @Test
+    @Order(4)
+    public void saveAndRetrieveStudentTest() {
+
+        roomRepository.saveAndFlush(wdty1);
+        Student expected = new Student(
+                1, "Nadine", wdty1);
+        studentUserRepository.save(expected);
+
+        Student output = studentUserRepository.getOne((long) 1);
+        assertEquals(expected, output);
+    }
+
+    @Test
+    @Order(5)
+    public void saveAndRetrieveModeratorTest() {
+
+        roomRepository.saveAndFlush(wdty1);
+        Moderator expected = new Moderator(
+                2, "Christoph", wdty1);
+        moderatorUserRepository.save(expected);
+
+        Moderator output = moderatorUserRepository.getOne((long) 2);
+        assertEquals(expected, output);
     }
 
 }
