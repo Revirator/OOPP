@@ -14,7 +14,10 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-@EnableScheduling
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class StudentRoomController {
 
     @FXML
@@ -40,8 +43,21 @@ public class StudentRoomController {
         this.student = student;
         this.room = room;
         this.studentView = studentView;
+
+        // Next 3 lines are to execute the question refreshing every X seconds
+        Timer t = new Timer();
+        QuestionRefresher st = new QuestionRefresher();
+        t.schedule(st,0, 5000);
     }
-    
+
+    // Used just by the timer to refresh the questions every X seconds
+    public class QuestionRefresher extends TimerTask {
+
+        public void run() {
+            studentView.updateAnsweredList();
+        }
+    }
+
     /** Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.
      * If the room is active but the question form is blank - ..
@@ -71,7 +87,6 @@ public class StudentRoomController {
             questionBox.setDisable(true);
             submit.setDisable(true);
         }
-        refresh();
     }
 
 
@@ -89,11 +104,6 @@ public class StudentRoomController {
             return false;
         }
         return true;
-    }
-
-    @Scheduled(fixedRate = 2000)
-    public void refresh () {
-        studentView.updateAnsweredList();
     }
 
     /**

@@ -165,7 +165,7 @@ public class Question {
      * @return true if equal, false if not equal
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) {  // Needs to be redone if we ever use it
         if (this == o) {
             return true;
         }
@@ -174,7 +174,6 @@ public class Question {
         }
         Question question1 = (Question) o;
         return getId().equals(question1.getId())
-                //&& getRoomId() == question1.getRoomId()
                 && getText().equals(question1.getText())
                 && getAnswer().equals(question1.getAnswer())
                 && getOwner().equals(question1.getOwner())
@@ -208,6 +207,4 @@ public class Question {
     public boolean isOwner() {
         return isOwner;
     }
-
-
 }
