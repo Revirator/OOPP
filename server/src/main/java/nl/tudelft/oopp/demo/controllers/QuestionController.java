@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.awt.desktop.QuitEvent;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -34,12 +35,15 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    @Scheduled(fixedRate = 5000)
     @GetMapping   // http://localhost:8080/questions
     public List<Question> getQuestions() {
         return questionService.getQuestions();
     }
 
+    @GetMapping(path = "{room}") // http://localhost:8080/questions/{room}
+    public List<Question> getQuestionsByRoom(@PathVariable("room") Room room) {
+        return questionService.getQuestionsByRoom(room);
+    }
 
     /** GET mapping.
      * @return a JSON object of an example Question

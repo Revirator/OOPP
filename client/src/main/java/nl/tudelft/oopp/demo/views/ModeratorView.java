@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.views;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -99,6 +100,21 @@ public class ModeratorView extends Application {
         // Make fonts responsive
         bindFonts(scene);
 
+    }
+
+    public static void update(Stage PrimaryStage, List<Question> questionList, List<Question> answeredList) {
+
+        ObservableList<Question> questionObservable = FXCollections.observableArrayList(questionList);
+        ObservableList<Question> answeredObservable = FXCollections.observableArrayList(answeredList);
+
+        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+
+        questionListView.setItems(questionObservable);
+        answeredListView.setItems(answeredObservable);
+
+        questionListView.setCellFactory(param -> new ModeratorQuestionCell(questionObservable, answeredObservable));
+        answeredListView.setCellFactory(param -> new ModeratorAnsweredCell(answeredObservable));
     }
 
     /**

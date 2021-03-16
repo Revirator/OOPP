@@ -10,7 +10,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 
 public class ServerCommunication {
@@ -89,5 +92,49 @@ public class ServerCommunication {
         }
 
         return gson.fromJson(response.body(), Room.class);
+    }
+
+    public static List<Question> getQuestions(Room room) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/questions/" + room))
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            // not sure? maybe return something else
+            return null;
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+    }
+
+    /**
+     * Retrieves a list of all answered questions
+     * from the server for a specific room
+     * @param room room where we want to retrieve the questions from
+     * @return the body of a get request to the server (list of questions).
+     */
+    public static List<Question> getAnsweredQuestions(Room room) {
+
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/questions/answered/" + room)).build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();     // Not sure if that is needed but leaving it anyways
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 }

@@ -3,8 +3,10 @@ package nl.tudelft.oopp.demo.services;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Question;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,13 @@ public class QuestionService {
      */
     public List<Question> getQuestions() {
         return questionRepository.findAllByOrderByUpvotesDesc();
+    }
+
+    public List<Question> getQuestionsByRoom(Room room) {
+        return getQuestions()
+                .stream()
+                .filter(q -> q.getId().equals(room.getRoomId()))
+                .collect(Collectors.toList());
     }
 
 
