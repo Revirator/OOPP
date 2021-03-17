@@ -36,9 +36,10 @@ public class QuestionController {
         return questionService.getQuestions();
     }
 
-    @GetMapping(path = "{room}") // http://localhost:8080/questions/{room}
-    public List<Question> getQuestionsByRoom(@PathVariable("room") Room room) {
-        return questionService.getQuestionsByRoom(room);
+    @GetMapping("/{roomID}") // http://localhost:8080/questions/{roomID}
+    @ResponseBody
+    public List<Question> getQuestionsByRoom(@PathVariable long roomID) {
+        return questionService.getQuestionsByRoom(roomID);
     }
 
     /** GET mapping.

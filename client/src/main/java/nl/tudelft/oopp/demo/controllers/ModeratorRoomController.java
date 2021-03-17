@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,11 +14,7 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import nl.tudelft.oopp.demo.data.User;
 
 public class ModeratorRoomController {
 
@@ -55,13 +52,28 @@ public class ModeratorRoomController {
         Timer t = new Timer();
         QuestionRefresher st = new QuestionRefresher();
         t.schedule(st,0,5000);
+
+//        TimerTask questionRefresher = new TimerTask() {
+//            @Override
+//            public void run() {
+//                List<Question> questionList = ServerCommunication.getQuestions(room);
+//                List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+//                moderatorView.update(questionList, answeredList);
+//            }
+//        };
+//        Timer t = new Timer();
+//        t.scheduleAtFixedRate(questionRefresher, 0, 5000);
     }
 
     // Used just by the timer to refresh the questions every X seconds
     public class QuestionRefresher extends TimerTask {
 
+        @Override
         public void run() {
-            moderatorView.updateAnsweredList();
+//            moderatorView.updateAnsweredList();
+            List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
+            List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+            moderatorView.update(questionList, answeredList);
         }
     }
 
@@ -117,8 +129,8 @@ public class ModeratorRoomController {
 
     @Scheduled(fixedRate = 5000)
     public void updateQuestions() {
-        List<Question> questionList = ServerCommunication.getQuestions(room);
-        List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room);
+        List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
+        List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
         this.moderatorView.update(questionList, answeredList);
     }
 }

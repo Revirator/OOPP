@@ -39,13 +39,13 @@ public class QuestionService {
 
     /**
      * Uses a stream to filter out only the questions connected to the right room
-     * @param room current room
+     * @param roomID current roomID
      * @return filtered list of questions
      */
-    public List<Question> getQuestionsByRoom(Room room) {
+    public List<Question> getQuestionsByRoom(long roomID) {
         return getQuestions()
                 .stream()
-                .filter(q -> q.getId().equals(room.getRoomId()))
+                .filter(q -> q.getId().equals(roomID))
                 .collect(Collectors.toList());
     }
 

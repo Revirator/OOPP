@@ -269,6 +269,7 @@ public class ModeratorView extends Application {
         }
 
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
+
     }
 
     /**
