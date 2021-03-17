@@ -138,6 +138,10 @@ public class ModeratorView extends Application {
 
     public void update(List<Question> questionList, List<Question> answeredList) {
 
+        //debugging purposes
+        questionList.add(new Question(3,20,
+                "question?", "Piet", 20, false));
+
         questions.clear();
         answered.clear();
 

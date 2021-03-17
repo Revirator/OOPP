@@ -38,6 +38,11 @@ public class QuestionService {
         return questionRepository.findAllByOrderByUpvotesDesc();
     }
 
+    /**
+     * Uses a stream to filter out only the questions connected to the right room
+     * @param room current room
+     * @return filtered list of questions
+     */
     public List<Question> getQuestionsByRoom(Room room) {
         return getQuestions()
                 .stream()

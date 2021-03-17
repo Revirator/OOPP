@@ -191,9 +191,6 @@ public class ServerCommunication {
         }
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
-
-
-
     }
 
     /** Updates attribute "text" of question corresponding to this id in database.
