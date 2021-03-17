@@ -32,7 +32,7 @@ public class StudentRoomControllerTest {
     @Test
     public void testPostAndEditEmptyQuestion() {
 
-        Question question = new Question(testRoom, "Can I make this empty?", "Victor");
+        Question question = new Question(3, "Can I make this empty?", "Victor");
         Long outputId = ServerCommunication.postQuestion(question);
         assertNotNull(outputId);
         System.out.println("########### " + outputId + " ############");
