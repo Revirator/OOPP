@@ -28,7 +28,6 @@ public class QuestionService {
         this.roomRepository = roomRepository;
     }
 
-
     /** Called by QuestionController.
      * @return a List of questions ordered by number of upvotes.
      *          Example:
@@ -69,7 +68,15 @@ public class QuestionService {
     //        questionRepository.save(question);
     //    }
 
-
+    /** Called by QuestionController.
+     * @param room - the id of the room of which we want the questions
+     * @return a List of questions from a with an answer (text) ordered by time.
+     *          Example:
+     *          GET http://localhost:8080/questions/answered/1
+     */
+    public List<Question> getAnsweredQuestions(long room) {
+        return questionRepository.findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(room, true);
+    }
 
     /** Parses data sent by client to create a new Question with id.
      * Stores new question in database.
@@ -132,7 +139,57 @@ public class QuestionService {
             questionToModify.setText(question);
         }
         System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
-
     }
 
+    /** Called by QuestionController.
+     * Changes the isAnswered value of a question with this id.
+     * @param questionId - Id of Question to be modified
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/markAnswered/2
+     */
+    @Transactional
+    public void markQuestionAsAnswered(long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+
+        questionToModify.setAsAnswered();
+
+        System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
+    }
+
+
+    /** Called by QuestionController.
+     * Increments the upvote amount by one of the question with provided id.
+     * @param questionId - Id of Question to be incremented
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/upvote/42
+     */
+    @Transactional
+    public void upvote(Long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+        questionToModify.upvote();
+        System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
+    }
+
+
+    /** Called by QuestionController.
+     * Decrements the upvote amount by one of the question with provided id.
+     * @param questionId - Id of Question to be decremented
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/deupvote/42
+     */
+    @Transactional
+    public void deUpvote(Long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+        questionToModify.deUpvote();
+        System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
+    }
 }

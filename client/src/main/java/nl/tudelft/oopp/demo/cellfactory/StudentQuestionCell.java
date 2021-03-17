@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
@@ -129,9 +130,10 @@ public class StudentQuestionCell extends ListCell<Question> {
         markAnsweredButton.setOnAction(event -> {
 
             if (this.question.isOwner()) {
-                src.deleteQuestion(this.question);
-                answered.add(question);
-                questions.remove(question);
+                // Next line marks the question as answered in the DB
+                ServerCommunication.markQuestionAsAnswered(question.getId());
+                answered.add(question);     // Those will probably get removed later
+                questions.remove(question); // since they change stuff only locally
             }
         });
 

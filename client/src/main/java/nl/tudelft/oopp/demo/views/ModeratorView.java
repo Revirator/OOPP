@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -251,6 +252,23 @@ public class ModeratorView extends Application {
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
 
         return true;
+    }
+
+    /**
+     * This will get called every X(5) seconds to update.
+     * the list of answered questions for the user
+     */
+    public void updateAnsweredList() {
+
+        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+
+        for (Question q : newAnswered) {
+            if (!answered.contains(q)) {
+                answered.add(q);
+            }
+        }
+
+        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 
     /**

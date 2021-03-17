@@ -38,7 +38,7 @@ public class QuestionServerCommunicationTest {
 
     @Test
     public void testPostQuestion() {
-        Question question = new Question(testRoom, "Example question", "Henk");
+        Question question = new Question(3, "Example question", "Henk");
         Long outputId = ServerCommunication.postQuestion(question);
         assertNotNull(outputId);
         System.out.println("########### " + outputId + " ############");
@@ -69,7 +69,7 @@ public class QuestionServerCommunicationTest {
 
     @Test
     public void testEmptyEditQuestion() {
-        Question question = new Question(testRoom,
+        Question question = new Question(testRoom.getRoomId(),
                 "Example question to edit", "Joyce");
         Long outputId = ServerCommunication.postQuestion(question);
         assertNotNull(outputId);

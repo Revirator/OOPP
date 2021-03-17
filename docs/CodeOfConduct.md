@@ -92,5 +92,8 @@ Collaboration
 * Each member pushes his/her commits, belonging to a feature assigned to him/her, at the latest on Sunday, allowing others to have sufficient time to review code.
 
 
-* Each Tuesday, we merge all feature branches into development_branch, as well as development_branch into master. Before this day, all commits must be adequately reviewed by at least 2 members, who then accept the MR. 
+* Each Tuesday, we merge all feature branches into development_branch, as well as development_branch into master. Before this day, all commits must be adequately reviewed by at least 2 members, who then accept the MR.
+
+
+* At the start of every new sprint (Tuesdays), we divide all issues of that sprint equally amongst ourselves. Besides, we collectively estimate the weights corresponding to these issues. 
 
