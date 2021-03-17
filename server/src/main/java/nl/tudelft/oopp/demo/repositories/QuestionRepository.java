@@ -12,6 +12,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     
     List<Question> findAllByOrderByUpvotesDesc();
 
+    List<Question> findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(long room, Boolean bool);
+
     @Transactional
     void deleteById(Long questionId);
 

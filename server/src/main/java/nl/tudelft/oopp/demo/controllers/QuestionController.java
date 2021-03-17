@@ -57,6 +57,17 @@ public class QuestionController {
         return questionService.addNewQuestion(payload);
     }
 
+    @GetMapping("/answered/{roomId}") // http://localhost:8080/questions/answered/{roomId}
+    @ResponseBody
+    public List<Question> getAnsweredQuestions(@PathVariable long roomId) {
+        return questionService.getAnsweredQuestions(roomId);
+    }
+
+    @PutMapping("/markAnswered/{questionId}") // http://localhost:8080/questions/markAnswered/{questionId}
+    public void markQuestionAsAnswered(@PathVariable long questionId) {
+        questionService.markQuestionAsAnswered(questionId);
+    }
+
     @DeleteMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {
         questionService.deleteQuestion(questionId);

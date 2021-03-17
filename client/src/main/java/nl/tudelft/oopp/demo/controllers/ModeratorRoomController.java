@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -40,6 +43,19 @@ public class ModeratorRoomController {
         this.moderatorView = moderatorView;
         this.lectureName.setText(this.room.getRoomName());
         setFeedback();
+
+        // Next 3 lines are to execute the question refreshing every X seconds
+        Timer t = new Timer();
+        QuestionRefresher st = new QuestionRefresher();
+        t.schedule(st,0,5000);
+    }
+
+    // Used just by the timer to refresh the questions every X seconds
+    public class QuestionRefresher extends TimerTask {
+
+        public void run() {
+            moderatorView.updateAnsweredList();
+        }
     }
 
     /** Updates the feedback for the moderators.

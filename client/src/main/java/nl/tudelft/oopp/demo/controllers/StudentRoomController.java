@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,7 +15,6 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
-
 
 public class StudentRoomController {
     @FXML
@@ -51,6 +53,19 @@ public class StudentRoomController {
         this.room = room;
         this.studentView = studentView;
         this.lectureName.setText(this.room.getRoomName());
+
+        // Next 3 lines are to execute the question refreshing every X seconds
+        Timer t = new Timer();
+        QuestionRefresher st = new QuestionRefresher();
+        t.schedule(st,0,5000);
+    }
+
+    // Used just by the timer to refresh the questions every X seconds
+    public class QuestionRefresher extends TimerTask {
+
+        public void run() {
+            studentView.updateAnsweredList();
+        }
     }
 
     /** Callback method for "Submit" button in student room.
@@ -67,7 +82,7 @@ public class StudentRoomController {
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
-                Question newQuestion = new Question(this.room, questionBox.getText(),
+                Question newQuestion = new Question(this.room.getRoomId(), questionBox.getText(),
                         this.student.getNickname(), true);
                 Long newId = ServerCommunication.postQuestion(newQuestion);
                 newQuestion.setId(newId);
