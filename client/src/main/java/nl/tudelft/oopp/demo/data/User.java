@@ -20,6 +20,8 @@ public abstract class User {
         return room;
     }
 
+    abstract public String getRole();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
