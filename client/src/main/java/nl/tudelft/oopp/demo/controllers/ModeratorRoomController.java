@@ -52,17 +52,6 @@ public class ModeratorRoomController {
         Timer t = new Timer();
         QuestionRefresher st = new QuestionRefresher();
         t.schedule(st,0,5000);
-
-//        TimerTask questionRefresher = new TimerTask() {
-//            @Override
-//            public void run() {
-//                List<Question> questionList = ServerCommunication.getQuestions(room);
-//                List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-//                moderatorView.update(questionList, answeredList);
-//            }
-//        };
-//        Timer t = new Timer();
-//        t.scheduleAtFixedRate(questionRefresher, 0, 5000);
     }
 
     // Used just by the timer to refresh the questions every X seconds

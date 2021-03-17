@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -64,7 +65,10 @@ public class StudentRoomController {
     public class QuestionRefresher extends TimerTask {
 
         public void run() {
-            studentView.updateAnsweredList();
+//            studentView.updateAnsweredList();
+            List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
+            List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+            studentView.update(questionList, answeredList);
         }
     }
 

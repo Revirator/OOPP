@@ -204,6 +204,19 @@ public class StudentView extends Application {
         return true;
     }
 
+    public void update(List<Question> questionList, List<Question> answeredList) {
+
+        questions.clear();
+        answered.clear();
+
+        questions.addAll(questionList);
+        answered.addAll(answeredList);
+
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
+
+    }
+
     /**
      * This will get called every X(5) seconds to update.
      * the list of answered questions for the user

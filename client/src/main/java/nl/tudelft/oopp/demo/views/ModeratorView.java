@@ -149,6 +149,9 @@ public class ModeratorView extends Application {
         questions.addAll(questionList);
         answered.addAll(answeredList);
 
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
+
     }
 
     /**
