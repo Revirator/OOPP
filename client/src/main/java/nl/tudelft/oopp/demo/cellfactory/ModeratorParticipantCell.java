@@ -4,8 +4,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
-public class ModeratorParticipantCell extends ParticipantCell{
+public class ModeratorParticipantCell extends ParticipantCell {
 
+    /**
+     * Constructor for a moderator participant cell.
+     */
     public ModeratorParticipantCell() {
         super();
 

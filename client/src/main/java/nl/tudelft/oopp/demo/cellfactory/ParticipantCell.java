@@ -11,7 +11,6 @@ import nl.tudelft.oopp.demo.data.User;
 
 public class ParticipantCell extends ListCell<User> {
 
-//    private AnchorPane anchorPane = new AnchorPane();
     private GridPane gridPane = new GridPane();
 
     public ParticipantCell() {
@@ -34,18 +33,12 @@ public class ParticipantCell extends ListCell<User> {
 
         // Set background colours
         gridPane.styleProperty().setValue("-fx-background-color: white");
-//        anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
-
-        // Add wrapper to anchor pane
-//        anchorPane.getChildren().add(gridPane);
 
         // Align cell wrapper in gridpane
         AnchorPane.setTopAnchor(gridPane, 10.0);
         AnchorPane.setLeftAnchor(gridPane, 10.0);
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
-
-
 
     }
 

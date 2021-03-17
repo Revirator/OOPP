@@ -215,9 +215,16 @@ public class StudentView extends Application {
         return true;
     }
 
+    /**
+     * Adds a user to the observable list of participants.
+     * @param user user to add
+     * @return true if successful, false otherwise
+     */
     public boolean addUser(User user) {
 
-        if (participants.contains(user)) return false;
+        if (participants.contains(user)) {
+            return false;
+        }
 
         participants.add(user);
         participants.sort(Comparator.comparing(User::getNickname));
