@@ -87,7 +87,8 @@ public abstract class User {
             return false;
         }
         User user = (User) o;
-        return getNickname().equals(user.getNickname());
+        return getNickname().equals(user.getNickname())
+        && room.equals(user.room);
     }
 
     @Override

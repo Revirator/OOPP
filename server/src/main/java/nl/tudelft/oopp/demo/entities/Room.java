@@ -46,7 +46,7 @@ public class Room {
     private boolean active;
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
-    
+
 
     // don't request 2 lists in 1 query!
 
