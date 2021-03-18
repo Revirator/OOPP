@@ -64,8 +64,13 @@ public class StudentRoomController {
     // Used just by the timer to refresh the questions every X seconds
     public class QuestionRefresher extends TimerTask {
 
+        /** The task fetches new information from the server and updates ..
+         * .. the list of questions and the room object.
+         */
         public void run() {
             studentView.updateAnsweredList();
+            room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+            studentView.setData(student,room);
         }
     }
 
@@ -95,6 +100,7 @@ public class StudentRoomController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("The lecture is over. You cannot ask questions anymore!");
             alert.show();
+            questionBox.clear();
             questionBox.setDisable(true);
             submit.setDisable(true);
         }
