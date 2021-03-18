@@ -112,8 +112,8 @@ public class StudentRoomController {
                 alert.show();
             } else if (!questionAllowed) {
                 Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setContentText("Please wait for a total of 20 seconds before" +
-                        "\nsubmitting another question");
+                alert.setContentText("Please wait for a total of 20 seconds before"
+                        + "\nsubmitting another question");
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
