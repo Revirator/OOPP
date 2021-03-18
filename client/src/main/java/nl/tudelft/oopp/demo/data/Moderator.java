@@ -7,6 +7,11 @@ public class Moderator extends User {
     }
 
     @Override
+    public String getRole() {
+        return "Moderator";
+    }
+
+    @Override
     public String toString() {
         return "Moderator " + super.getNickname() + " in room " + super.getRoom().getRoomName();
     }

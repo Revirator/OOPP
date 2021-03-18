@@ -9,11 +9,9 @@ This information can be added throughout the course, except for the names of the
 Add your own name (do not add the names for others!) to the section below.
 
 ## Description of project
-This project aims to create a brand new desktop application to support lecturers during online lectures.
-This piece of software is a platform to be used by students, where they can ask questions and give live feedback to the lectures. 
-Replacement for Zoom chat during live lectures. (as clutter-free as possible)
+In this project for the Computer Science and Engineering course Object Oriented Programming Project (OOPP – CSE1105), we will be working in a team of six students to create a brand-new desktop application, which may potentially be used in actual lectures.
+This new technology is meant to support lectures during online education, by helping them maintain a clutter-free overview of the most relevant questions asked by students. Furthermore, students can provide live feedback, giving lecturers an indication of their speed.
 
-This is a project for the course CSE1105 OOPP.
 
 
 ## Group members (group 43)

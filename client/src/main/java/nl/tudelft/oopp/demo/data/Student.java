@@ -7,6 +7,11 @@ public class Student extends User {
     }
 
     @Override
+    public String getRole() {
+        return "Student";
+    }
+
+    @Override
     public String toString() {
         return "Student " + super.getNickname() + " in lecture " + super.getRoom().getRoomName();
     }
