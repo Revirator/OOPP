@@ -73,8 +73,8 @@ public abstract class User {
         return this.id;
     }
 
-    public Room getRoom() {
-        return room;
+    public long getRoom() {
+        return room.getRoomId();
     }
 
 

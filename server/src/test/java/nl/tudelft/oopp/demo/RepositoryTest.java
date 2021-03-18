@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-
+// DON'T RUN THE TESTS SEPARATELY!
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -64,6 +64,7 @@ public class RepositoryTest {
         roomRepository.saveAndFlush(wdty1);
         List<Room> rooms = roomRepository.findAll();
         System.out.println(rooms);
+        System.out.println(rooms.size());
         assertEquals(1, rooms.get(0).getRoomId());
         assertEquals(2, rooms.get(1).getRoomId());
 
@@ -109,25 +110,37 @@ public class RepositoryTest {
     public void saveAndRetrieveStudentTest() {
 
         roomRepository.saveAndFlush(wdty1);
+        System.out.println("ROOMID TEST 4: " + wdty1.getRoomId());
         Student expected = new Student(
                 1, "Nadine", wdty1);
         studentUserRepository.save(expected);
 
         Student output = studentUserRepository.getOne((long) 1);
         assertEquals(expected, output);
+
+        List<Student> outputlist = studentUserRepository.findAllByRoomRoomId(5);
+        System.out.println(outputlist);
+        assertEquals(expected, outputlist.get(0));
     }
 
     @Test
     @Order(5)
     public void saveAndRetrieveModeratorTest() {
 
-        roomRepository.saveAndFlush(wdty1);
+        roomRepository.saveAndFlush(calculus);
+        System.out.println("ROOM ID TEST 5: " + calculus.getRoomId());
+
         Moderator expected = new Moderator(
-                2, "Christoph", wdty1);
+                2, "Christoph", calculus);
         moderatorUserRepository.save(expected);
 
         Moderator output = moderatorUserRepository.getOne((long) 2);
         assertEquals(expected, output);
+
+        List<Moderator> outputlist = moderatorUserRepository.findAllByRoomRoomId(6);
+        System.out.println(outputlist);
+        assertEquals(expected, outputlist.get(0));
+
     }
 
 }
