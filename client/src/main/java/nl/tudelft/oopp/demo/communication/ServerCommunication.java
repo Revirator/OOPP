@@ -231,10 +231,9 @@ public class ServerCommunication {
             return (long)-1;
         }
 
-        // TODO: Use another way to send the Question (JSON Question object)
-        // not the best way to do it (goes wrong if someone adds ", " in one of the fields
-        String postRequestBody = newQuestion.getRoom() + ", "
-                + newQuestion.getText() + ", " + newQuestion.getOwner();
+        // not the best way to do it (goes wrong if someone adds "& " in one of the fields
+        String postRequestBody = newQuestion.getRoom() + "& "
+                + newQuestion.getText() + "& " + newQuestion.getOwner();
 
         // send request to the server
         HttpRequest request = HttpRequest.newBuilder()

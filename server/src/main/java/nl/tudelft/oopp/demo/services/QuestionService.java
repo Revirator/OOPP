@@ -72,7 +72,7 @@ public class QuestionService {
      */
     public Long addNewQuestion(String payload) {
 
-        String[] dataArray = payload.split(", ");
+        String[] dataArray = payload.split("& ");
         long roomId = Long.valueOf(dataArray[0]);
         String questionText = dataArray[1];
         String questionOwner = dataArray[2];
@@ -109,7 +109,8 @@ public class QuestionService {
                 && !Objects.equals(questionToModify.getAnswer(), answer)) {
             questionToModify.setAnswer(answer);
         }
-        System.out.println("######## SET ANSWER TO QUESTION ID: " + questionId + " ################");
+        System.out.println("######## SET ANSWER TO QUESTION ID: " + questionId
+                + " ################");
     }
 
 
@@ -171,7 +172,8 @@ public class QuestionService {
 
         questionToModify.setAsAnswered();
 
-        System.out.println("######## MARKED ANSWERED QUESTION ID: " + questionId + " ################");
+        System.out.println("######## MARKED ANSWERED QUESTION ID: "
+                + questionId + " ################");
     }
 
 

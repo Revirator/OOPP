@@ -1,5 +1,10 @@
 package nl.tudelft.oopp.demo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -18,18 +23,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DataJpaTest
@@ -65,9 +60,9 @@ public class QuestionServiceTest {
     @Order(1)
     public void testClientDataParsing() {
 
-        String payload = "2, When is lab assignment 3 due?, Sandra";
+        String payload = "2& When is lab assignment 3 due?& Sandra";
 
-        String[] dataArray = payload.split(", ");
+        String[] dataArray = payload.split("& ");
         long roomId = Long.valueOf(dataArray[0]);
         String questionText = dataArray[1];
         String questionOwner = dataArray[2];
@@ -107,7 +102,7 @@ public class QuestionServiceTest {
     @Test
     @Order(5)
     public void testInvalidPostRequest() {
-        String payload = "0, When is lab assignment 3 due?, Sandra";
+        String payload = "0& When is lab assignment 3 due?& Sandra";
         assertThrows(IllegalStateException.class, () -> {
             questionService.addNewQuestion(payload);
         });
@@ -125,7 +120,7 @@ public class QuestionServiceTest {
         Room output = roomRepository.findById(1);
         assertEquals(roomOne, output);
 
-        String payload = "1, When is lab assignment 3 due?, Sandra";
+        String payload = "1& When is lab assignment 3 due?& Sandra";
         Long questionId = questionService.addNewQuestion(payload);
         assertEquals(1, questionId);
         System.out.println("######### " + questionId + " ###########");   // questionId 1
@@ -149,8 +144,8 @@ public class QuestionServiceTest {
         //        List<Room> rooms = roomRepository.findAll();
         //        System.out.println("%%%%%%%%%% " + rooms.get(0).getRoomId() + " %%%%%%%%%%%%");
 
-        String payload1 = "2, When is lab assignment 3 due?, Sandra";
-        String payload2 = "2, Will answers be published?, Albert";
+        String payload1 = "2& When is lab assignment 3 due?& Sandra";
+        String payload2 = "2& Will answers be published?& Albert";
 
         Long questionId1 = questionService.addNewQuestion(payload1);   // questionId 2
         Long questionId2 = questionService.addNewQuestion(payload2);  // questionId 3
@@ -173,7 +168,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);    // roomId 3
 
-        String payload = "3, Could you repeat that?, Pim";
+        String payload = "3& Could you repeat that?& Pim";
         Long questionId = questionService.addNewQuestion(payload);    // questionId 4
         assertEquals(4, questionId);
         System.out.println("######### " + questionId + " ###########");
@@ -192,7 +187,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);  // roomId 4
 
-        String payload = "4, Could you repeat that?, Pim";
+        String payload = "4& Could you repeat that?& Pim";
         questionService.addNewQuestion(payload);   // questionId 5
         questionService.updateQuestion((long)5, "Can I update this?");
 
@@ -218,7 +213,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);  // roomId 5
 
-        String payload = "5, Can I get an empty answer?, Frank";
+        String payload = "5& Can I get an empty answer?& Frank";
         questionService.addNewQuestion(payload);    // questionId 6
 
         List<Question> questions = questionRepository.findAll();
@@ -235,7 +230,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);  // roomId 6
 
-        String payload = "6, Can I get an answer?, Jan";
+        String payload = "6& Can I get an answer?& Jan";
         questionService.addNewQuestion(payload);  // questionId 7
 
         List<Question> questions = questionRepository.findAll();
