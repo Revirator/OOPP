@@ -53,8 +53,14 @@ public class ModeratorRoomController {
     // Used just by the timer to refresh the questions every X seconds
     public class QuestionRefresher extends TimerTask {
 
+        /** The task fetches new information from the server and updates ..
+         * .. the list of questions and the room object.
+         */
         public void run() {
             moderatorView.updateAnsweredList();
+            room = ServerCommunication.getRoom(room.getModeratorLink().toString().substring(28));
+            moderatorView.setData(moderator,room);
+            setFeedback();
         }
     }
 
