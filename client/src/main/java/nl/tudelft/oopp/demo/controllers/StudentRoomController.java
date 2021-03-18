@@ -76,7 +76,7 @@ public class StudentRoomController {
 
         // every 20 seconds, questionAllowed is set on true again
         serviceAllow.setPeriod(Duration.seconds(20));
-        serviceAllow.setOnRunning(e -> questionAllowed=true);
+        serviceAllow.setOnRunning(e -> questionAllowed = true);
         serviceAllow.start();
 
         // Next 3 lines are to execute the question refreshing every X seconds
@@ -112,7 +112,8 @@ public class StudentRoomController {
                 alert.show();
             } else if (!questionAllowed) {
                 Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setContentText("Please wait for a total of 20 seconds before\nsubmitting another question");
+                alert.setContentText("Please wait for a total of 20 seconds before" +
+                        "\nsubmitting another question");
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
