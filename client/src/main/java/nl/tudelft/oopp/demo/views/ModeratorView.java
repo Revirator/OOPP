@@ -103,7 +103,7 @@ public class ModeratorView extends Application {
         answeredListView.setItems(answered);
         participantsListView.setItems(participants);
 
-        /*        DEBUGGING PURPOSES
+
 
         addQuestion(new Question(1,4,
                 "What's the square root of -1?","Senne",20, true));
@@ -118,7 +118,7 @@ public class ModeratorView extends Application {
             q.setAnswer("This is the answer!");
         }
 
-         */
+
         addUser(new Student("ddd", null));
         addUser(new Moderator("xyz", null));
         addUser(new Student("abc", null));
@@ -295,8 +295,6 @@ public class ModeratorView extends Application {
                 answered.remove(oldq);
             }
         }
-
-
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 

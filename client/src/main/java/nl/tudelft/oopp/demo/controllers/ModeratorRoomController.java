@@ -45,6 +45,7 @@ public class ModeratorRoomController {
         this.lectureName.setText(this.room.getRoomName());
         setFeedback();
 
+        // TODO: Solve exception in thread?
         // Next 3 lines are to execute the question refreshing every X seconds
         Timer t = new Timer();
         QuestionRefresher st = new QuestionRefresher();

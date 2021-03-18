@@ -175,6 +175,7 @@ public class QuestionService {
     }
 
 
+
     /** Called by QuestionController.
      * Increments the upvote amount by one of the question with provided id.
      * @param questionId - Id of Question to be incremented
@@ -190,6 +191,7 @@ public class QuestionService {
         questionToModify.upvote();
         System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
     }
+
 
 
     /** Called by QuestionController.
