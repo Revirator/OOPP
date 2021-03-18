@@ -71,7 +71,7 @@ public class QuestionController {
     }
 
     @PutMapping("/markAnswered/{questionId}")
-        // http://localhost:8080/questions/markAnswered/{questionId}
+    // http://localhost:8080/questions/markAnswered/{questionId}
     public void markQuestionAsAnswered(@PathVariable long questionId) {
         questionService.markQuestionAsAnswered(questionId);
     }
@@ -88,13 +88,13 @@ public class QuestionController {
     }
 
     @PutMapping(path = "upvote/{questionId}")
-        // http://localhost:8080/questions/upvote/{questionId}
+    // http://localhost:8080/questions/upvote/{questionId}
     public void upvote(@PathVariable("questionId") Long questionId) {
         questionService.upvote(questionId);
     }
 
     @PutMapping(path = "deupvote/{questionId}")
-        // http://localhost:8080/questions/deupvote/{questionId}
+    // http://localhost:8080/questions/deupvote/{questionId}
     public void deUpvote(@PathVariable("questionId") Long questionId) {
         questionService.deUpvote(questionId);
     }

@@ -45,7 +45,7 @@ public class QuestionService {
     public List<Question> getQuestionsByRoom(long roomID) {
         return getQuestions()
                 .stream()
-                .filter(q -> q.getRoom()==roomID)
+                .filter(q -> q.getRoom() == roomID)
                 .collect(Collectors.toList());
     }
 

@@ -129,11 +129,4 @@ public class ModeratorRoomController {
             endLecture.setDisable(true);
         }
     }
-
-    @Scheduled(fixedRate = 5000)
-    public void updateQuestions() {
-        List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
-        List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-        this.moderatorView.update(questionList, answeredList);
-    }
 }
