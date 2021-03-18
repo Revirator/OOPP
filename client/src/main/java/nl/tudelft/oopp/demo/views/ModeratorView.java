@@ -20,12 +20,16 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
 public class ModeratorView extends Application {
@@ -47,6 +51,7 @@ public class ModeratorView extends Application {
     // List of questions
     private ObservableList<Question> questions = FXCollections.observableArrayList();
     private ObservableList<Question> answered = FXCollections.observableArrayList();
+    private ObservableList<User> participants = FXCollections.observableArrayList();
 
 
     /** Used in SplashController to pass the user and the room object.
@@ -61,7 +66,6 @@ public class ModeratorView extends Application {
     /**
      * Creates the moderator screen scene and loads it on the primary stage.
      * @param primaryStage primary stage of the app
-     * @throws IOException if FXMLLoader fails to load the url
      */
     @Override
     public void start(Stage primaryStage) {
@@ -93,11 +97,13 @@ public class ModeratorView extends Application {
 
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+        ListView<User> participantsListView = (ListView<User>) root.lookup("#participantsListView");
 
         questionListView.setItems(questions);
         answeredListView.setItems(answered);
+        participantsListView.setItems(participants);
 
-        //        DEBUGGING PURPOSES
+        /*        DEBUGGING PURPOSES
 
         addQuestion(new Question(1,20,
                 "What's the square root of -1?","Senne",20, true));
@@ -112,11 +118,19 @@ public class ModeratorView extends Application {
             q.setAnswer("This is the answer!");
         }
 
+         */
+        addUser(new Student("ddd", null));
+        addUser(new Moderator("xyz", null));
+        addUser(new Student("abc", null));
+
+
+
         // Set cell factory to use student cell
         questionListView.setCellFactory(param ->
                 new ModeratorQuestionCell(questions, answered, mrc));
         answeredListView.setCellFactory(param ->
                 new ModeratorAnsweredCell(answered, mrc));
+        participantsListView.setCellFactory(param -> new ModeratorParticipantCell());
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -237,6 +251,24 @@ public class ModeratorView extends Application {
 
         // Sort based on votes
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
+
+    /**
+     * Adds a user to the observable list of participants.
+     * @param user user to add
+     * @return true if successful, false otherwise
+     */
+    public boolean addUser(User user) {
+
+        if (participants.contains(user)) {
+            return false;
+        }
+
+        participants.add(user);
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
 
         return true;
     }
