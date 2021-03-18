@@ -1,7 +1,8 @@
 package nl.tudelft.oopp.demo;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -208,9 +209,9 @@ public class QuestionServiceTest {
         roomRepository.saveAndFlush(roomOne);   // roomId 5
         roomRepository.saveAndFlush(roomTwo);   // roomId 6
 
-        Question qOne = new Question(roomOne, "Question one?", "Sietse");
-        Question qTwo = new Question(roomOne, "Question two?", "Bill");
-        Question qThree = new Question(roomTwo, "Question three?", "Wrong");
+        Question quOne = new Question(roomOne, "Question one?", "Sietse");
+        Question quTwo = new Question(roomOne, "Question two?", "Bill");
+        Question quThree = new Question(roomTwo, "Question three?", "Wrong");
 
         String payload = "5, Question one?, Sietse";
         String payloadtwo = "5, Question two?, Bill";
@@ -220,11 +221,13 @@ public class QuestionServiceTest {
         questionService.addNewQuestion(payloadtwo);
         questionService.addNewQuestion(payloadthree);
 
-        List<Question> listAllQuestions = List.of(qOne, qTwo, qThree);
-        List<Question> listQuestionRoomFour = List.of(qOne, qTwo);
+        List<Question> listAllQuestions = List.of(quOne, quTwo, quThree);
+        List<Question> listQuestionRoomFour = List.of(quOne, quTwo);
 
-        assertEquals(questionService.getQuestionsByRoom(5).toString(), listQuestionRoomFour.toString());
-        assertNotEquals(questionService.getQuestionsByRoom(5).toString(), listAllQuestions.toString());
+        assertEquals(questionService.getQuestionsByRoom(5).toString(),
+                listQuestionRoomFour.toString());
+        assertNotEquals(questionService.getQuestionsByRoom(5).toString(),
+                listAllQuestions.toString());
 
     }
 
