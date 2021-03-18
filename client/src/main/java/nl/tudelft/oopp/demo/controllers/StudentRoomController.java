@@ -112,6 +112,7 @@ public class StudentRoomController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("The lecture is over. You cannot ask questions anymore!");
             alert.show();
+            questionBox.clear();
             questionBox.setDisable(true);
             submit.setDisable(true);
         }

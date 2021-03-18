@@ -15,7 +15,6 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
-import org.springframework.scheduling.annotation.Scheduled;
 
 public class ModeratorRoomController {
 

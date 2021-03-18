@@ -19,12 +19,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
 public class StudentView extends Application {
@@ -41,6 +44,7 @@ public class StudentView extends Application {
     // List of questions
     private ObservableList<Question> questions = FXCollections.observableArrayList();
     private ObservableList<Question> answered = FXCollections.observableArrayList();
+    private ObservableList<User> participants = FXCollections.observableArrayList();
 
     private User student;
     private Room room;
@@ -92,9 +96,11 @@ public class StudentView extends Application {
 
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+        ListView<User> participantsListView = (ListView<User>) root.lookup("#participantsListView");
 
         questionListView.setItems(questions);
         answeredListView.setItems(answered);
+        participantsListView.setItems(participants);
 
         /* DEBUGGING PURPOSES
 
@@ -113,9 +119,14 @@ public class StudentView extends Application {
 
         */
 
+        addUser(new Student("ddd", null));
+        addUser(new Moderator("xyz", null));
+        addUser(new Student("abc", null));
+
         // Set cell factory to use student cell
         questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered, src));
         answeredListView.setCellFactory(param -> new StudentAnsweredCell(answered, src));
+        participantsListView.setCellFactory(param -> new ParticipantCell());
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -196,6 +207,26 @@ public class StudentView extends Application {
 
         // Sort based on votes
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
+
+    /**
+     * Adds a user to the observable list of participants.
+     * @param user user to add
+     * @return true if successful, false otherwise
+     */
+    public boolean addUser(User user) {
+
+        if (participants.contains(user)) {
+            return false;
+        }
+
+        // uncomment after Nadine's MR
+        // this.room.addParticipant(user);
+        participants.add(user);
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
 
         return true;
     }
