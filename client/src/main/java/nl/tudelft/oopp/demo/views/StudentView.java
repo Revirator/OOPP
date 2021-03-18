@@ -217,6 +217,13 @@ public class StudentView extends Application {
                 answered.add(q);
             }
         }
+        // Don't display deleted answered questions
+        // TODO: Do this same check for normal questions (wait for Emke)
+        for (Question oldq : answered) {
+            if (!newAnswered.contains(oldq)) {
+                answered.remove(oldq);
+            }
+        }
 
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }

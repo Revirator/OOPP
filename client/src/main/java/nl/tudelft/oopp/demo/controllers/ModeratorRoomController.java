@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
@@ -49,6 +50,8 @@ public class ModeratorRoomController {
         QuestionRefresher st = new QuestionRefresher();
         t.schedule(st,0,5000);
     }
+
+
 
     // Used just by the timer to refresh the questions every X seconds
     public class QuestionRefresher extends TimerTask {
@@ -107,4 +110,70 @@ public class ModeratorRoomController {
             endLecture.setDisable(true);
         }
     }
+
+
+    /**
+     * Deletes this question upon pressing "delete" or "mark as answered" buttons.
+     * Based on id of this question.
+     * @param questionToRemove - Question to be removed from database.
+     */
+    public boolean deleteQuestion(Question questionToRemove) {
+
+        if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Server error!");
+            alert.show();
+            return false;
+        }
+        return true;
+
+    }
+
+    /**
+     * Edits this question according to new text entered upon pressing:
+     *  - "edit answer" button in QuestionCell
+     *  - "edit answer" button in AnsweredCell
+     * Based on id of this question.
+     * @param questionToEdit - Question to edit content of in database.
+     */
+    public boolean editQuestion(Question questionToEdit, String update) {
+
+        if (update.length() > 0) {
+
+            questionToEdit.setText(update);
+
+            if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Server error!");
+                alert.show();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Sets answer to this question in db.
+     * Based on id of this question.
+     * @param question - Question to set answer of content of in database.
+     */
+    public boolean setAnswer(Question question, String answer) {
+
+        if (answer.length() > 0) {
+
+            if (!ServerCommunication.setAnswer(question.getId(), answer)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Server error!");
+                alert.show();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 }

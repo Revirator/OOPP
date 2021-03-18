@@ -55,6 +55,7 @@ public class StudentRoomController {
         this.lectureName.setText(this.room.getRoomName());
 
         // Next 3 lines are to execute the question refreshing every X seconds
+        // TODO: Solve exception in thread?
         Timer t = new Timer();
         QuestionRefresher st = new QuestionRefresher();
         t.schedule(st,0,5000);
@@ -100,7 +101,7 @@ public class StudentRoomController {
     }
 
     /**
-     * Deletes this question upon pressing "delete" or "mark as answered" buttons.
+     * Deletes this question upon pressing "delete" button.
      * Based on id of this question.
      * @param questionToRemove - Question to be removed from database.
      */

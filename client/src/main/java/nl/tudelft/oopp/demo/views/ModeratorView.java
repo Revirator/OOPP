@@ -99,13 +99,13 @@ public class ModeratorView extends Application {
 
         //        DEBUGGING PURPOSES
 
-        addQuestion(new Question(1,20,
+        addQuestion(new Question(1,4,
                 "What's the square root of -1?","Senne",20, true));
 
-        addQuestion(new Question(2,20,
+        addQuestion(new Question(2,5,
                 "Is Java a programming language?","Albert",20, false));
 
-        addQuestion(new Question(3,20,
+        addQuestion(new Question(3,6,
                 "What is the idea behind the TU Delft logo?", "Henkie", 50, false));
 
         for (Question q : questions) {
@@ -250,10 +250,20 @@ public class ModeratorView extends Application {
         List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
 
         for (Question q : newAnswered) {
+            // Only appends new answered questions (relies on equals)
+            // TODO: check if it's not appending when edited/answered
             if (!answered.contains(q)) {
                 answered.add(q);
             }
         }
+        // Don't display deleted answered questions
+        // TODO: Do this same check for normal questions (wait for Emke)
+        for (Question oldq : answered) {
+            if (!newAnswered.contains(oldq)) {
+                answered.remove(oldq);
+            }
+        }
+
 
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
