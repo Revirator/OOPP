@@ -12,8 +12,8 @@ public class Moderator extends User {
 
     }
 
-    public Moderator(String username, Room room) {
-        super(username, room);
+    public Moderator(String nickname, Room room) {
+        super(nickname, room);
     }
 
     public Moderator(long id, String username, Room room) {
@@ -23,7 +23,7 @@ public class Moderator extends User {
 
     @Override
     public String toString() {
-        return "Moderator " + super.getNickname() + " in room " + getRoom().getRoomId();
+        return "Moderator " + super.getNickname() + " in room " + getRoom();
     }
 
 }

@@ -23,7 +23,7 @@ public class Student extends User {
 
     @Override
     public String toString() {
-        return "Student " + super.getNickname() + " in room " + getRoom().getRoomId();
+        return "Student " + super.getNickname() + " in room " + getRoom();
     }
 }
 

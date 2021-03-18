@@ -36,19 +36,19 @@ public class UserService {
     /** Called by UserController.
      * @return a List of students.
      *          Example:
-     *          GET http://localhost:8080/users/students
+     *          GET http://localhost:8080/users/students/{roomId}
      */
-    public List<Student> getStudents() {
-        return studentUserRepository.findAll();
+    public List<Student> getStudents(long roomId) {
+        return studentUserRepository.findAllByRoomRoomId(roomId);
     }
 
     /** Called by UserController.
      * @return a List of moderators.
      *          Example:
-     *          GET http://localhost:8080/users/moderators
+     *          GET http://localhost:8080/users/moderators/{roomId}
      */
-    public List<Moderator> getModerators() {
-        return moderatorUserRepository.findAll();
+    public List<Moderator> getModerators(long roomId) {
+        return moderatorUserRepository.findAllByRoomRoomId(roomId);
     }
 
 

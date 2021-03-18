@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
-    List<T> findAllByRoom(Room room);
+    List<T> findAllByRoomRoomId(long roomId);
 
     void deleteById(Long userId);
 
