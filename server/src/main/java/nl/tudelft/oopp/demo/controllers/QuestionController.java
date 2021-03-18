@@ -8,7 +8,6 @@ import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +34,7 @@ public class QuestionController {
     public List<Question> getQuestions() {
         return questionService.getQuestions();
     }
+
 
     @GetMapping("/{roomID}") // http://localhost:8080/questions/{roomID}
     @ResponseBody
@@ -70,7 +70,8 @@ public class QuestionController {
         return questionService.getAnsweredQuestions(roomId);
     }
 
-    @PutMapping("/markAnswered/{questionId}") // http://localhost:8080/questions/markAnswered/{questionId}
+    @PutMapping("/markAnswered/{questionId}")
+        // http://localhost:8080/questions/markAnswered/{questionId}
     public void markQuestionAsAnswered(@PathVariable long questionId) {
         questionService.markQuestionAsAnswered(questionId);
     }
@@ -86,12 +87,14 @@ public class QuestionController {
         questionService.updateQuestion(questionId, question);
     }
 
-    @PutMapping(path = "upvote/{questionId}")  // http://localhost:8080/questions/upvote/{questionId}
+    @PutMapping(path = "upvote/{questionId}")
+        // http://localhost:8080/questions/upvote/{questionId}
     public void upvote(@PathVariable("questionId") Long questionId) {
         questionService.upvote(questionId);
     }
 
-    @PutMapping(path = "deupvote/{questionId}") // http://localhost:8080/questions/deupvote/{questionId}
+    @PutMapping(path = "deupvote/{questionId}")
+        // http://localhost:8080/questions/deupvote/{questionId}
     public void deUpvote(@PathVariable("questionId") Long questionId) {
         questionService.deUpvote(questionId);
     }

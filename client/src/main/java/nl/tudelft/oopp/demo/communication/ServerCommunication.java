@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.google.gson.reflect.TypeToken;
-import java.util.List;
-
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -115,6 +112,12 @@ public class ServerCommunication {
             error.show();
         }
     }
+
+    /**
+     * Retrieves a list of all questions.
+     * @param roomID that we want the questions from
+     * @return list of all questions in that room
+     */
     public static List<Question> getQuestions(long roomID) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()

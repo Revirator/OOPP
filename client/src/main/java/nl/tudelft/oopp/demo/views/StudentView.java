@@ -1,13 +1,9 @@
 package nl.tudelft.oopp.demo.views;
 
-import java.awt.desktop.QuitStrategy;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -204,6 +200,11 @@ public class StudentView extends Application {
         return true;
     }
 
+    /**
+     * Updates the questions and answered lists.
+     * @param questionList all questions
+     * @param answeredList all answered questions
+     */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
         questions.clear();
@@ -215,23 +216,6 @@ public class StudentView extends Application {
         questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
-    }
-
-    /**
-     * This will get called every X(5) seconds to update.
-     * the list of answered questions for the user
-     */
-    public void updateAnsweredList() {
-
-        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-
-        for (Question q : newAnswered) {
-            if (!answered.contains(q)) {
-                answered.add(q);
-            }
-        }
-
-        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 
     /**

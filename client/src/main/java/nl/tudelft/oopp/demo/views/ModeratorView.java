@@ -137,11 +137,12 @@ public class ModeratorView extends Application {
 
     }
 
+    /**
+     * Updates the questions and answered lists.
+     * @param questionList all current questions
+     * @param answeredList all answered questions
+     */
     public void update(List<Question> questionList, List<Question> answeredList) {
-
-        //debugging purposes
-        questionList.add(new Question(3,20,
-                "question?", "Piet", 20, false));
 
         questions.clear();
         answered.clear();
@@ -255,24 +256,6 @@ public class ModeratorView extends Application {
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
 
         return true;
-    }
-
-    /**
-     * This will get called every X(5) seconds to update.
-     * the list of answered questions for the user
-     */
-    public void updateAnsweredList() {
-
-        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-
-        for (Question q : newAnswered) {
-            if (!answered.contains(q)) {
-                answered.add(q);
-            }
-        }
-
-        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
-
     }
 
     /**
