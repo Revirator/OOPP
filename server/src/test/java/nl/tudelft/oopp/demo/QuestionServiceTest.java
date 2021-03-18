@@ -133,6 +133,8 @@ public class QuestionServiceTest {
         List<Question> questions = questionRepository.findAll();
         System.out.println("*********** " + questions + " *********");
         assertEquals("Sandra", questions.get(0).getOwner());
+
+        System.out.println("%%%%%%%%%%%%%%%" + roomOne.getQuestions() + " %%%%%%%%%%%%%%%");
     }
 
 

@@ -106,7 +106,7 @@ public class StudentView extends Application {
         answeredListView.setItems(answered);
         participantsListView.setItems(participants);
 
-        /* DEBUGGING PURPOSES
+        // DEBUGGING PURPOSES
 
         addQuestion(new Question(1,20,
                 "What's the square root of -1?","Senne",20, true));
@@ -121,7 +121,7 @@ public class StudentView extends Application {
             q.setAnswer("This is the answer!");
         }
 
-        */
+
 
         addUser(new Student("ddd", null));
         addUser(new Moderator("xyz", null));

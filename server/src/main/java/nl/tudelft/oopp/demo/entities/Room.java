@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,11 +46,22 @@ public class Room {
     private boolean active;
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
-    @Transient
-    // needs to be changed because it is useless at the moment
-    private List<User> participants;            // List of Users > DB ?
+
+
+    // don't request 2 lists in 1 query!
+
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<Question> questions;          // Or not needed at all because we have the DB
+    @JsonManagedReference
+    private List<User> participants;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+    private List<Student> students;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+    private List<Moderator> moderators;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+    private List<Question> questions;
     // For some reason Set does not work for GET requests
 
 
@@ -63,6 +75,8 @@ public class Room {
         this.roomName = roomName;
         this.active = active;
         this.participants = new ArrayList<>();
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.questions = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
@@ -78,6 +92,8 @@ public class Room {
         this.roomName = roomName;
         this.active = true;
         this.participants = new ArrayList<>();
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.questions = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
@@ -96,6 +112,8 @@ public class Room {
         this.roomName = roomName;
         this.active = true;
         this.participants = new ArrayList<>();
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.questions = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
@@ -185,7 +203,16 @@ public class Room {
         return participants;
     }
 
-    // Useful for exporting the questions ?
+    public List<Student> getStudents() {
+        return students;
+    }
+
+
+    public List<Moderator> getModerators() {
+        return moderators;
+    }
+
+
     public List<Question> getQuestions() {
         return questions;
     }
