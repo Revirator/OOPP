@@ -3,6 +3,9 @@
 .gradle
 build/
 
+# Ignore spring.log file
+spring.log
+
 # Ignore .properties containing db credentials
 application-dev.properties
 application-production.properties
