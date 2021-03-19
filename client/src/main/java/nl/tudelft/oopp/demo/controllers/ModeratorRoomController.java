@@ -131,21 +131,22 @@ public class ModeratorRoomController {
      * .. and feedback are not processed.
      */
     public void endLecture() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText("Are you sure you want to end the lecture?");
-        alert.showAndWait();
-        if (alert.getResult().getText().equals("OK")) {
-            if (room == null || !room.isActive()) {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText("The room does not exist or has ended already!");
-                error.show();
+        if (room == null || !room.isActive()) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText("The room does not exist or has ended already!");
+            error.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Are you sure you want to end the lecture?");
+            alert.showAndWait();
+            if (alert.getResult().getText().equals("OK")) {
+                ServerCommunication.updateRoom(room.getModeratorLink().toString());
+                room.end();
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setContentText("The lecture has ended successfully!");
+                success.show();
+                endLecture.setDisable(true);
             }
-            ServerCommunication.updateRoom(room.getModeratorLink().toString());
-            room.end();
-            Alert success = new Alert(Alert.AlertType.INFORMATION);
-            success.setContentText("The lecture has ended successfully!");
-            success.show();
-            endLecture.setDisable(true);
         }
     }
 

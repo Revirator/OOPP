@@ -21,8 +21,8 @@
       <GridPane prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS" prefWidth="300" />
-            <ColumnConstraints hgrow="ALWAYS" prefWidth="0" />
-            <ColumnConstraints hgrow="ALWAYS" prefWidth="0" />
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="10" />
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="10" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints prefHeight="48" vgrow="ALWAYS" />

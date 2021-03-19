@@ -10,7 +10,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
@@ -90,7 +89,15 @@ public class StudentRoomController {
      * .. method in ServerCommunication.
      */
     public void roomRefresher() {
-        this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+        String roomCode = this.room.getStudentsLink().toString().substring(28);
+        Room room = ServerCommunication.getRoom(roomCode);
+        if (this.room.isActive() && !room.isActive()) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setContentText("The lecture has ended! You cannot ask questions or "
+                    + "provide\nfeedback anymore!");
+            alert.show();
+        }
+        this.room = room;
         // something to update the student (in case he got banned or kicked out of the room)
         this.studentView.setData(student,room);
     }
@@ -215,6 +222,7 @@ public class StudentRoomController {
             tooSlowButton.setVisible(true);
             tooFastButton.setDisable(true);
             tooSlowButton.setDisable(true);
+            resetButton.setDisable(true);
         } else {
             resetButton.setDisable(true);
             if (tooSlowButton.isVisible() && !tooFastButton.isVisible()) {
@@ -227,15 +235,6 @@ public class StudentRoomController {
                 ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
             }
         }
-    }
-
-    /** Alert displayed when lecture is inactive.
-     *
-     */
-    public void lectureHasEnded() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("The lecture has ended!");
-        alert.show();
     }
 
     /** Increments the number of upvotes of this question by 1.
