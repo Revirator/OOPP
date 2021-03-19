@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="440.0" prefWidth="665.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.ModeratorRoomController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="440.0" prefWidth="665.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.ModeratorRoomController">
    <top>
-      <AnchorPane prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+      <GridPane prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="300" />
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="0" />
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints prefHeight="48" vgrow="ALWAYS" />
+         </rowConstraints>
          <children>
-            <Text fill="WHITE" layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QuestionMe">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="  QuestionMe" GridPane.columnIndex="0" GridPane.halignment="LEFT">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
             </Text>
-            <Button fx:id="endLecture" alignment="CENTER_RIGHT" layoutX="530.0" layoutY="11.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#endLecture" text="End lecture" />
+            <Button fx:id="exportQuestions" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exportQuestions" text="Export questions" GridPane.columnIndex="1" />
+            <Button fx:id="endLecture" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#endLecture" text="End lecture" GridPane.columnIndex="2" />
          </children>
-      </AnchorPane>
+      </GridPane>
    </top>
    <center>
       <GridPane hgap="10.0" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">

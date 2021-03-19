@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javafx.concurrent.ScheduledService;
@@ -9,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
@@ -25,7 +29,7 @@ public class ModeratorRoomController {
     private Label lectureName;
 
     @FXML
-    private  Label tooSlowLabel;
+    private Label tooSlowLabel;
 
     @FXML
     private Label tooFastLabel;
@@ -35,10 +39,11 @@ public class ModeratorRoomController {
     private ModeratorView moderatorView;
 
 
-    /** Used in SplashController to pass the user and the room object.
+    /**
+     * Used in SplashController to pass the user and the room object.
      * This method should be called after the fetch request so that it updates the information.
-     * @param moderator the moderator that is using the window
-     * @param room the room corresponding to the code entered
+     * @param moderator     the moderator that is using the window
+     * @param room          the room corresponding to the code entered
      * @param moderatorView - corresponding view to this controller (to add questions)
      */
     public void setData(User moderator, Room room, ModeratorView moderatorView) {
@@ -54,7 +59,7 @@ public class ModeratorRoomController {
             protected Task<Boolean> createTask() {
                 return new Task<>() {
                     @Override
-                    protected  Boolean call() {
+                    protected Boolean call() {
                         updateMessage("Checking for updates..");
                         return true;
                     }
@@ -81,16 +86,18 @@ public class ModeratorRoomController {
         moderatorView.update(questionList, answeredList);
     }
 
-    /** Updates the room object and the feedback by calling the getRoom() ..
+    /**
+     * Updates the room object and the feedback by calling the getRoom() ..
      * .. method in ServerCommunication.
      */
     public void roomRefresher() {
         this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
-        this.moderatorView.setData(moderator,room);
+        this.moderatorView.setData(moderator, room);
         setFeedback();
     }
 
-    /** Updates the feedback for the moderators.
+    /**
+     * Updates the feedback for the moderators.
      * For it to be done in real time it needs the fetch request.
      */
     public void setFeedback() {
@@ -100,7 +107,7 @@ public class ModeratorRoomController {
                         + this.room.getPeopleThinkingLectureIsTooSlow() * 100
                         % this.room.getParticipants().size()) + "%");
 
-        if (Integer.parseInt(tooSlowLabel.getText().replace("%","")) < 10) {
+        if (Integer.parseInt(tooSlowLabel.getText().replace("%", "")) < 10) {
             tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
         } else {
             tooSlowLabel.setTextFill(Paint.valueOf("RED"));
@@ -112,7 +119,7 @@ public class ModeratorRoomController {
                         + this.room.getPeopleThinkingLectureIsTooFast() * 100
                         % this.room.getParticipants().size()) + "%");
 
-        if (Integer.parseInt(tooFastLabel.getText().replace("%","")) < 10) {
+        if (Integer.parseInt(tooFastLabel.getText().replace("%", "")) < 10) {
             tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
         } else {
             tooFastLabel.setTextFill(Paint.valueOf("RED"));
@@ -120,6 +127,8 @@ public class ModeratorRoomController {
     }
 
     /** The method that is executed when the End lecture button is clicked.
+     * Updates the status of the room to inactive so that new questions ..
+     * .. and feedback are not processed.
      */
     public void endLecture() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -137,6 +146,37 @@ public class ModeratorRoomController {
             success.setContentText("The lecture has ended successfully!");
             success.show();
             endLecture.setDisable(true);
+        }
+    }
+
+    /** The method is executed when the Export questions is clicked.
+     * If the lecture hasn't ended the moderator is alerted about that.
+     * Otherwise, a new window pops up and he can choose the file name ..
+     * .. and directory to save the file with the questions.
+     * The supported formats are .txt and .md .
+     */
+    public void exportQuestions() {
+        if (room.isActive()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please wait until the lecture has ended to export questions!");
+            alert.show();
+        } else {
+            FileChooser fc = new FileChooser();
+            fc.getExtensionFilters().addAll(new FileChooser
+                    .ExtensionFilter("Text Files (*.txt,*.md)", "*.txt", "*.md"));
+            File selectedFile = fc.showSaveDialog(null);
+            PrintWriter pw = null;
+            try {
+                pw = new PrintWriter(selectedFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            List<Question> answeredQuestions = ServerCommunication
+                    .getAnsweredQuestions(room.getRoomId());
+            for (int i = 0; i < answeredQuestions.size(); i++) {
+                pw.println((i + 1)  + ". " + answeredQuestions.get(i).toString());
+            }
+            pw.close();
         }
     }
 }
