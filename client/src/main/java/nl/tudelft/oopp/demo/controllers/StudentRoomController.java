@@ -1,8 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
 
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -33,9 +35,6 @@ public class StudentRoomController {
     private TextArea questionBox;
 
     @FXML
-    private AnchorPane anchor;
-
-    @FXML
     private Label lectureName;
 
     private User student;
@@ -54,24 +53,46 @@ public class StudentRoomController {
         this.studentView = studentView;
         this.lectureName.setText(this.room.getRoomName());
 
-        // Next 3 lines are to execute the question refreshing every X seconds
-        // TODO: Solve exception in thread?
-        Timer t = new Timer();
-        QuestionRefresher st = new QuestionRefresher();
-        t.schedule(st,0,5000);
+        // creates a service that allows a method to be called every timeframe
+        ScheduledService<Boolean> service = new ScheduledService<>() {
+            @Override
+            protected Task<Boolean> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected  Boolean call() {
+                        updateMessage("Checking for updates..");
+                        return true;
+                    }
+                };
+            }
+        };
+
+        // setting up and starting the thread
+        service.setPeriod(Duration.seconds(5));
+        service.setOnRunning(e -> {
+            roomRefresher();
+            questionRefresher();
+        });
+        service.start();
     }
 
-    // Used just by the timer to refresh the questions every X seconds
-    public class QuestionRefresher extends TimerTask {
+    /**
+     * Calls methods in ServerCommunication to get updated lists from the database.
+     * Updates the actual view.
+     */
+    public void questionRefresher() {
+        List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
+        List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
+        studentView.update(questionList, answeredList);
+    }
 
-        /** The task fetches new information from the server and updates ..
-         * .. the list of questions and the room object.
-         */
-        public void run() {
-            studentView.updateAnsweredList();
-            room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
-            studentView.setData(student,room);
-        }
+    /** Updates the room object (and the user(soon)) by calling the getRoom() ..
+     * .. method in ServerCommunication.
+     */
+    public void roomRefresher() {
+        this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+        // something to update the student (in case he got banned or kicked out of the room)
+        this.studentView.setData(student,room);
     }
 
     /** Callback method for "Submit" button in student room.

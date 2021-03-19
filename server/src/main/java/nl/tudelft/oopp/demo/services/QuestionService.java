@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
@@ -36,6 +37,18 @@ public class QuestionService {
         return questionRepository.findAllByOrderByUpvotesDesc();
     }
 
+    /**
+     * Uses a stream to filter out only the questions connected to the right room.
+     * @param roomID current roomID
+     * @return filtered list of questions
+     */
+    public List<Question> getQuestionsByRoom(long roomID) {
+        return getQuestions()
+                .stream()
+                .filter(q -> q.getRoom() == roomID)
+                .collect(Collectors.toList());
+    }
+
 
     //    /** Called by QuestionController.
     //     * @param question - new Question object to be stored in database.
@@ -44,7 +57,13 @@ public class QuestionService {
     //     *     Content-Type: application/json
     //        {
     //            "id": 7,
-    //            "room": {"roomId":5,"studentsLink":"http://localhost:8080/rooms/5bb8da98f59d41ecbb","moderatorLink":"http://localhost:8080/rooms/M99cfa0c551fa4252b","startingTime":"2021-03-07 22:50:28","roomName":"Example Room","active":false,"participants":[],"questions":[]},
+    //            "room": {"roomId":5,"studentsLink":"http://localhost:8080/rooms/5bb8da98f59d41ecbb",
+    //            "moderatorLink":"http://localhost:8080/rooms/M99cfa0c551fa4252b",
+    //            "startingTime":"2021-03-07 22:50:28",
+    //            "roomName":"Example Room",
+    //            "active":false,
+    //            "participants":[],
+    //            "questions":[]},
     //            "text": "What is the time complexity of merge sort??",
     //            "owner": "Albert",
     //            "time": "2021-02-09 22:13",
