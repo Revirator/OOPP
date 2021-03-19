@@ -68,14 +68,14 @@ public class QuestionService {
     /** Parses data sent by client to create a new Question with id.
      * Stores new question in database.
      * Called by QuestionController.
-     * @param payload - data sent by client containing roomId, question, owner.
+     * @param payload - data sent by client containing roomId, owner, question.
      */
     public Long addNewQuestion(String payload) {
 
         String[] dataArray = payload.split("& ");
         long roomId = Long.valueOf(dataArray[0]);
-        String questionText = dataArray[1];
-        String questionOwner = dataArray[2];
+        String questionOwner = dataArray[1];
+        String questionText = dataArray[2];
 
         boolean exists = roomRepository.existsById(roomId);
         if (!exists) {

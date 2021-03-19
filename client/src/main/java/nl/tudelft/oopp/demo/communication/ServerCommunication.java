@@ -233,7 +233,7 @@ public class ServerCommunication {
 
         // not the best way to do it (goes wrong if someone adds "& " in one of the fields
         String postRequestBody = newQuestion.getRoom() + "& "
-                + newQuestion.getText() + "& " + newQuestion.getOwner();
+                 + newQuestion.getOwner() + "& " + newQuestion.getText();
 
         // send request to the server
         HttpRequest request = HttpRequest.newBuilder()

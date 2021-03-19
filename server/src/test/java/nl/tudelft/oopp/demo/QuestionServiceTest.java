@@ -60,12 +60,12 @@ public class QuestionServiceTest {
     @Order(1)
     public void testClientDataParsing() {
 
-        String payload = "2& When is lab assignment 3 due?& Sandra";
+        String payload = "2& Sandra& When is lab assignment 3 due?";
 
         String[] dataArray = payload.split("& ");
         long roomId = Long.valueOf(dataArray[0]);
-        String questionText = dataArray[1];
-        String questionOwner = dataArray[2];
+        String questionOwner = dataArray[1];
+        String questionText = dataArray[2];
 
         assertEquals(2, roomId);
         assertEquals("When is lab assignment 3 due?", questionText);
@@ -102,7 +102,7 @@ public class QuestionServiceTest {
     @Test
     @Order(5)
     public void testInvalidPostRequest() {
-        String payload = "0& When is lab assignment 3 due?& Sandra";
+        String payload = "0& Sandra& When is lab assignment 3 due?";
         assertThrows(IllegalStateException.class, () -> {
             questionService.addNewQuestion(payload);
         });
@@ -120,7 +120,7 @@ public class QuestionServiceTest {
         Room output = roomRepository.findById(1);
         assertEquals(roomOne, output);
 
-        String payload = "1& When is lab assignment 3 due?& Sandra";
+        String payload = "1& Sandra& When is lab assignment 3 due?";
         Long questionId = questionService.addNewQuestion(payload);
         assertEquals(1, questionId);
         System.out.println("######### " + questionId + " ###########");   // questionId 1
@@ -144,8 +144,8 @@ public class QuestionServiceTest {
         //        List<Room> rooms = roomRepository.findAll();
         //        System.out.println("%%%%%%%%%% " + rooms.get(0).getRoomId() + " %%%%%%%%%%%%");
 
-        String payload1 = "2& When is lab assignment 3 due?& Sandra";
-        String payload2 = "2& Will answers be published?& Albert";
+        String payload1 = "2& Sandra& When is lab assignment 3 due?";
+        String payload2 = "2& Albert& Will answers be published?";
 
         Long questionId1 = questionService.addNewQuestion(payload1);   // questionId 2
         Long questionId2 = questionService.addNewQuestion(payload2);  // questionId 3
@@ -168,7 +168,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);    // roomId 3
 
-        String payload = "3& Could you repeat that?& Pim";
+        String payload = "3& Pim& Could you repeat that?";
         Long questionId = questionService.addNewQuestion(payload);    // questionId 4
         assertEquals(4, questionId);
         System.out.println("######### " + questionId + " ###########");
@@ -187,7 +187,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);  // roomId 4
 
-        String payload = "4& Could you repeat that?& Pim";
+        String payload = "4& Pim& Could you repeat that?";
         questionService.addNewQuestion(payload);   // questionId 5
         questionService.updateQuestion((long)5, "Can I update this?");
 
@@ -213,7 +213,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);  // roomId 5
 
-        String payload = "5& Can I get an empty answer?& Frank";
+        String payload = "5& Frank& Can I get an empty answer?";
         questionService.addNewQuestion(payload);    // questionId 6
 
         List<Question> questions = questionRepository.findAll();
@@ -230,7 +230,7 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);  // roomId 6
 
-        String payload = "6& Can I get an answer?& Jan";
+        String payload = "6& Jan& Can I get an answer?";
         questionService.addNewQuestion(payload);  // questionId 7
 
         List<Question> questions = questionRepository.findAll();
