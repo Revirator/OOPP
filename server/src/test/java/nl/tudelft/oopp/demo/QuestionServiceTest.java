@@ -2,7 +2,7 @@ package nl.tudelft.oopp.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,6 +49,7 @@ public class QuestionServiceTest {
 
 
     private Room roomOne;
+    private Room roomTwo;
 
     /** Constructor for this test class.
      * Creates an example room in which test questions are asked.
@@ -56,7 +57,10 @@ public class QuestionServiceTest {
     public QuestionServiceTest() {
         this.roomOne = new Room(
                 LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
-                "Software Quality And Testing", true);
+                "Software Quality And Testing");
+        this.roomTwo = new Room(
+                LocalDateTime.of(2021, Month.MAY, 19, 10, 58, 00),
+                "OOPP");
     }
 
 
@@ -81,7 +85,7 @@ public class QuestionServiceTest {
 
     @Test
     @Order(2)
-    public void testGetRequest() {
+    public void testEmptyGetRequest() {
         List<Question> questions = questionService.getQuestions();
         System.out.println(questions);
         assertEquals(new ArrayList<>(), questions);
@@ -199,6 +203,35 @@ public class QuestionServiceTest {
         List<Question> questions = questionRepository.findAll();
         System.out.println("*********** " + questions + " *********");
         assertEquals("Can I update this?", questions.get(0).getText());
+
+    }
+
+    @Test
+    @Order(10)
+    public void testGetByRoomRequest() {
+
+        roomRepository.saveAndFlush(roomOne);   // roomId 5
+        roomRepository.saveAndFlush(roomTwo);   // roomId 6
+
+        Question quOne = new Question(roomOne, "Question one?", "Sietse");
+        Question quTwo = new Question(roomOne, "Question two?", "Bill");
+        Question quThree = new Question(roomTwo, "Question three?", "Wrong");
+
+        String payload = "5, Question one?, Sietse";
+        String payloadtwo = "5, Question two?, Bill";
+        String payloadthree = "6, Question three?, Wrong";
+
+        questionService.addNewQuestion(payload);
+        questionService.addNewQuestion(payloadtwo);
+        questionService.addNewQuestion(payloadthree);
+
+        List<Question> listAllQuestions = List.of(quOne, quTwo, quThree);
+        List<Question> listQuestionRoomFour = List.of(quOne, quTwo);
+
+        assertEquals(questionService.getQuestionsByRoom(5).toString(),
+                listQuestionRoomFour.toString());
+        assertNotEquals(questionService.getQuestionsByRoom(5).toString(),
+                listAllQuestions.toString());
 
     }
 
