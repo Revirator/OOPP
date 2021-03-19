@@ -86,6 +86,10 @@ public class StudentRoomController {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Please enter at least 8 characters!");
                 alert.show();
+            } else if (questionBox.getText().contains("&")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The symbol '&' cannot be used.");
+                alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
                 Question newQuestion = new Question(this.room.getRoomId(), questionBox.getText(),

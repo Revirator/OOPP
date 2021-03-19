@@ -255,7 +255,6 @@ public class StudentView extends Application {
                 answered.remove(oldq);
             }
         }
-
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 
