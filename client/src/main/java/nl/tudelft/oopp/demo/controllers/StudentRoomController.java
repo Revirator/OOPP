@@ -35,9 +35,6 @@ public class StudentRoomController {
     private TextArea questionBox;
 
     @FXML
-    private AnchorPane anchor;
-
-    @FXML
     private Label lectureName;
 
     private User student;
@@ -72,7 +69,10 @@ public class StudentRoomController {
 
         // setting up and starting the thread
         service.setPeriod(Duration.seconds(5));
-        service.setOnRunning(e -> questionRefresher());
+        service.setOnRunning(e -> {
+            roomRefresher();
+            questionRefresher();
+        });
         service.start();
     }
 
@@ -84,6 +84,15 @@ public class StudentRoomController {
         List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
         List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
         studentView.update(questionList, answeredList);
+    }
+
+    /** Updates the room object (and the user(soon)) by calling the getRoom() ..
+     * .. method in ServerCommunication.
+     */
+    public void roomRefresher() {
+        this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+        // something to update the student (in case he got banned or kicked out of the room)
+        this.studentView.setData(student,room);
     }
 
     /** Callback method for "Submit" button in student room.

@@ -64,7 +64,10 @@ public class ModeratorRoomController {
 
         // setting up and starting the thread
         service.setPeriod(Duration.seconds(5));
-        service.setOnRunning(e -> questionRefresher());
+        service.setOnRunning(e -> {
+            roomRefresher();
+            questionRefresher();
+        });
         service.start();
     }
 
@@ -78,6 +81,14 @@ public class ModeratorRoomController {
         moderatorView.update(questionList, answeredList);
     }
 
+    /** Updates the room object and the feedback by calling the getRoom() ..
+     * .. method in ServerCommunication.
+     */
+    public void roomRefresher() {
+        this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+        this.moderatorView.setData(moderator,room);
+        setFeedback();
+    }
 
     /** Updates the feedback for the moderators.
      * For it to be done in real time it needs the fetch request.
