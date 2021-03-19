@@ -228,6 +228,6 @@ public class QuestionService {
                         new IllegalStateException("Question with id "
                                 + questionId + " does not exist!"));
         questionToModify.deUpvote();
-        System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
+        System.out.println("######## DE-UPVOTED QUESTION ID: " + questionId + " ################");
     }
 }

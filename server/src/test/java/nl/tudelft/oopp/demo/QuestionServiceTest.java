@@ -204,36 +204,6 @@ public class QuestionServiceTest {
 
     @Test
     @Order(10)
-    public void testGetByRoomRequest() {
-
-        roomRepository.saveAndFlush(roomOne);   // roomId 5
-        roomRepository.saveAndFlush(roomTwo);   // roomId 6
-
-        Question quOne = new Question(roomOne, "Question one?", "Sietse");
-        Question quTwo = new Question(roomOne, "Question two?", "Bill");
-        Question quThree = new Question(roomTwo, "Question three?", "Wrong");
-
-        String payload = "5& Sietse& Question one?";
-        String payloadtwo = "5& Bill& Question two?";
-        String payloadthree = "6& Wrong& Question three?";
-
-        questionService.addNewQuestion(payload);
-        questionService.addNewQuestion(payloadtwo);
-        questionService.addNewQuestion(payloadthree);
-
-        List<Question> listAllQuestions = List.of(quOne, quTwo, quThree);
-        List<Question> listQuestionRoomFour = List.of(quOne, quTwo);
-
-        assertEquals(questionService.getQuestionsByRoom(5).toString(),
-                listQuestionRoomFour.toString());
-        assertNotEquals(questionService.getQuestionsByRoom(5).toString(),
-                listAllQuestions.toString());
-
-    }
-
-
-    @Test
-    @Order(10)
     public void testAnswerNonExistingQuestion() {
         assertThrows(IllegalStateException.class, () -> {
             questionService.setAnswer((long)0, "Id 0 does not exist");
@@ -275,6 +245,38 @@ public class QuestionServiceTest {
         assertEquals("Yes you can.", questions.get(0).getAnswer());
 
     }
+
+
+    @Test
+    @Order(13)
+    public void testGetByRoomRequest() {
+
+        roomRepository.saveAndFlush(roomOne);   // roomId 7
+        roomRepository.saveAndFlush(roomTwo);   // roomId 8
+
+        Question quOne = new Question(roomOne, "Question one?", "Sietse");
+        Question quTwo = new Question(roomOne, "Question two?", "Bill");
+        Question quThree = new Question(roomTwo, "Question three?", "Wrong");
+
+        String payload = "7& Sietse& Question one?";
+        String payloadtwo = "7& Bill& Question two?";
+        String payloadthree = "8& Wrong& Question three?";
+
+        questionService.addNewQuestion(payload);        // questionId 8
+        questionService.addNewQuestion(payloadtwo);     // questionId 9
+        questionService.addNewQuestion(payloadthree);   // questionId 10
+
+        List<Question> listAllQuestions = List.of(quOne, quTwo, quThree);
+        List<Question> listQuestionRoomFour = List.of(quOne, quTwo);
+
+        assertEquals(questionService.getQuestionsByRoom(7).toString(),
+                listQuestionRoomFour.toString());
+        assertNotEquals(questionService.getQuestionsByRoom(7).toString(),
+                listAllQuestions.toString());
+
+    }
+
+
 
 
 }

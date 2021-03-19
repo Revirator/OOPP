@@ -86,6 +86,8 @@ public class StudentRoomController {
         studentView.update(questionList, answeredList);
     }
 
+
+
     /** Updates the room object (and the user(soon)) by calling the getRoom() ..
      * .. method in ServerCommunication.
      */
@@ -94,6 +96,8 @@ public class StudentRoomController {
         // something to update the student (in case he got banned or kicked out of the room)
         this.studentView.setData(student,room);
     }
+
+
 
     /** Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.

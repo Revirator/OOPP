@@ -89,6 +89,9 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+
+
+
     /** Sends feedback to the server which is processed and the rooms are updated.
      * @param url the students link connected to a room
      * @param feedback the feedback we want to send
@@ -141,6 +144,7 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
+
     /**
      * Retrieves a list of all answered questions.
      * from the server for a specific room
@@ -166,6 +170,8 @@ public class ServerCommunication {
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
+
+
 
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
@@ -343,38 +349,6 @@ public class ServerCommunication {
             return false;
         }
         return true;
-    }
-
-
-
-
-
-
-
-    /**
-     * Retrieves a list of all answered questions.
-     * from the server for a specific room
-     * @param roomId room identification code
-     * @return the body of a get request to the server (list of questions).
-     */
-    public static List<Question> getAnsweredQuestions(long roomId) {
-
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/questions/answered/" + roomId)).build();
-        HttpResponse<String> response;
-
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return List.of();
-        }
-
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-            return List.of();     // Not sure if that is needed but leaving it anyways
-        }
-
-        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
 

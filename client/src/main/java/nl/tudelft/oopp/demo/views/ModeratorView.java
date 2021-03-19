@@ -291,30 +291,6 @@ public class ModeratorView extends Application {
         return true;
     }
 
-    /**
-     * This will get called every X(5) seconds to update.
-     * the list of answered questions for the user
-     */
-    public void updateAnsweredList() {
-
-        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-
-        for (Question q : newAnswered) {
-            // Only appends new answered questions (relies on equals)
-            // TODO: check if it's not appending when edited/answered
-            if (!answered.contains(q)) {
-                answered.add(q);
-            }
-        }
-        // Don't display deleted answered questions
-        // TODO: Do this same check for normal questions (wait for Emke)
-        for (Question oldq : answered) {
-            if (!newAnswered.contains(oldq)) {
-                answered.remove(oldq);
-            }
-        }
-        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
-    }
 
     /**
      * Launches this view.
