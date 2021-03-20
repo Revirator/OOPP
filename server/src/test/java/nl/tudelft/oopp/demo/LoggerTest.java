@@ -1,10 +1,9 @@
 package nl.tudelft.oopp.demo;
 
-import org.junit.jupiter.api.Test;
-
 import static nl.tudelft.oopp.demo.config.LoggerConfig.getFirstNumber;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class LoggerTest {
 
