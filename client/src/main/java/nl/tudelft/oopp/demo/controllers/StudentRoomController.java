@@ -41,6 +41,8 @@ public class StudentRoomController {
     private Room room;
     private StudentView studentView;
 
+    private boolean questionAllowed;
+
     /** Used in SplashController to pass the user and the room object.
      * Data injected by start() in StudentView.
      * @param student the student that is using the window
@@ -52,6 +54,26 @@ public class StudentRoomController {
         this.room = room;
         this.studentView = studentView;
         this.lectureName.setText(this.room.getRoomName());
+        this.questionAllowed = true;
+
+        // creates a service that allows a method to be called every timeframe
+        ScheduledService<Boolean> serviceAllow = new ScheduledService<>() {
+            @Override
+            protected Task<Boolean> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected  Boolean call() {
+                        updateMessage("Checking for updates..");
+                        return true;
+                    }
+                };
+            }
+        };
+
+        // every 20 seconds, questionAllowed is set on true again
+        serviceAllow.setPeriod(Duration.seconds(20));
+        serviceAllow.setOnRunning(e -> questionAllowed = true);
+        serviceAllow.start();
 
         // creates a service that allows a method to be called every timeframe
         ScheduledService<Boolean> service = new ScheduledService<>() {
@@ -111,6 +133,11 @@ public class StudentRoomController {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Please enter at least 8 characters!");
                 alert.show();
+            } else if (!questionAllowed) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setContentText("Please wait for a total of 20 seconds before"
+                        + "\nsubmitting another question");
+                alert.show();
             } else if (questionBox.getText().contains("&")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("The symbol '&' cannot be used.");
@@ -124,6 +151,8 @@ public class StudentRoomController {
 
                 questionBox.clear();
                 this.studentView.addQuestion(newQuestion);
+
+                questionAllowed = false;
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
