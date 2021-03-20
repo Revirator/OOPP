@@ -5,6 +5,7 @@ import java.time.Month;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.DemoApplication;
+import nl.tudelft.oopp.demo.config.LoggerConfig;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.QuestionService;
@@ -18,6 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
 
 @RestController
 @RequestMapping("questions")
@@ -60,6 +67,7 @@ public class QuestionController {
     @GetMapping("/answered/{roomId}") // http://localhost:8080/questions/answered/{roomId}
     @ResponseBody
     public List<Question> getAnsweredQuestions(@PathVariable long roomId) {
+        logRequest("requested all answered questions for the room with an id " + roomId);
         return questionService.getAnsweredQuestions(roomId);
     }
 

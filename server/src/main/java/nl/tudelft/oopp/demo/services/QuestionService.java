@@ -2,13 +2,18 @@ package nl.tudelft.oopp.demo.services;
 
 import java.util.List;
 import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+
+import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 public class QuestionService {
