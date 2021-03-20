@@ -113,6 +113,60 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Retrieves a list of all questions.
+     * @param roomID that we want the questions from
+     * @return list of all questions in that room
+     */
+    public static List<Question> getQuestions(long roomID) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/questions/" + roomID))
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            // not sure? maybe return something else
+            return null;
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+    }
+
+    /**
+     * Retrieves a list of all answered questions.
+     * from the server for a specific room
+     * @param roomId room identification code
+     * @return the body of a get request to the server (list of questions).
+     */
+    public static List<Question> getAnsweredQuestions(long roomId) {
+
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/questions/answered/" + roomId)).build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();     // Not sure if that is needed but leaving it anyways
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
+    }
+
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
      */
@@ -145,6 +199,7 @@ public class ServerCommunication {
      * @return boolean - true if DELETE operation succeeded, false otherwise.
      */
     public static boolean deleteQuestion(long questionId) {
+
         HttpRequest request = HttpRequest.newBuilder().DELETE()
                 .uri(URI.create("http://localhost:8080/questions/" + questionId)).build();
         HttpResponse<String> response;
@@ -162,7 +217,6 @@ public class ServerCommunication {
         }
         return true;
     }
-
 
     /** Updates attribute "text" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
@@ -227,6 +281,7 @@ public class ServerCommunication {
      * @return Long - generated id for this question
      */
     public static Long postQuestion(Question newQuestion) {
+
         if (newQuestion == null) {
             return (long)-1;
         }
@@ -240,6 +295,7 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/questions"))
                 .POST(HttpRequest.BodyPublishers.ofString(postRequestBody))
                 .build();
+
         HttpResponse<String> response;
 
         try {
@@ -253,34 +309,8 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
             return (long)-1;
         }
+
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
-    }
-
-
-    /**
-     * Retrieves a list of all answered questions.
-     * from the server for a specific room
-     * @param roomId room identification code
-     * @return the body of a get request to the server (list of questions).
-     */
-    public static List<Question> getAnsweredQuestions(long roomId) {
-
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/questions/answered/" + roomId)).build();
-        HttpResponse<String> response;
-
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return List.of();
-        }
-
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-            return List.of();     // Not sure if that is needed but leaving it anyways
-        }
-
-        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
 

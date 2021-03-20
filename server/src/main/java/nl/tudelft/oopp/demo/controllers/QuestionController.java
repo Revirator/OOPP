@@ -38,6 +38,13 @@ public class QuestionController {
         return questionService.getQuestions();
     }
 
+
+    @GetMapping("/{roomID}") // http://localhost:8080/questions/{roomID}
+    @ResponseBody
+    public List<Question> getQuestionsByRoom(@PathVariable long roomID) {
+        return questionService.getQuestionsByRoom(roomID);
+    }
+
     /** GET mapping.
      * @return a JSON object of an example Question
      */
@@ -76,7 +83,8 @@ public class QuestionController {
         return questionService.getAnsweredQuestions(roomId);
     }
 
-    @PutMapping("/markAnswered/{questionId}") // http://localhost:8080/questions/markAnswered/{questionId}
+    @PutMapping("/markAnswered/{questionId}")
+    // http://localhost:8080/questions/markAnswered/{questionId}
     public void markQuestionAsAnswered(@PathVariable long questionId) {
         logRequest("to mark the question with an id '" + questionId + "' as answered");
         questionService.markQuestionAsAnswered(questionId);
@@ -95,13 +103,15 @@ public class QuestionController {
         questionService.updateQuestion(questionId, question);
     }
 
-    @PutMapping(path = "upvote/{questionId}")  // http://localhost:8080/questions/upvote/{questionId}
+    @PutMapping(path = "upvote/{questionId}")
+    // http://localhost:8080/questions/upvote/{questionId}
     public void upvote(@PathVariable("questionId") Long questionId) {
         logRequest("to upvote the question with an id '" + questionId + "'");
         questionService.upvote(questionId);
     }
 
-    @PutMapping(path = "deupvote/{questionId}") // http://localhost:8080/questions/deupvote/{questionId}
+    @PutMapping(path = "deupvote/{questionId}")
+    // http://localhost:8080/questions/deupvote/{questionId}
     public void deUpvote(@PathVariable("questionId") Long questionId) {
         logRequest("to devote the question with an id '" + questionId + "'");
         questionService.deUpvote(questionId);

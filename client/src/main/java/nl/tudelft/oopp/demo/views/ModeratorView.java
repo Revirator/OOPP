@@ -150,6 +150,23 @@ public class ModeratorView extends Application {
 
     }
 
+    /**
+     * Updates the questions and answered lists.
+     * @param questionList all current questions
+     * @param answeredList all answered questions
+     */
+    public void update(List<Question> questionList, List<Question> answeredList) {
+
+        questions.clear();
+        answered.clear();
+
+        questions.addAll(questionList);
+        answered.addAll(answeredList);
+
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
+
+    }
 
     /**
      * Creates the choice boxes for polls.
