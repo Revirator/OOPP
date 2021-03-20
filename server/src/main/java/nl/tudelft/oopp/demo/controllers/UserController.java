@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
+
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Moderator;
@@ -10,9 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
-
 
 @RestController
 @RequestMapping("users")

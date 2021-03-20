@@ -12,9 +12,13 @@ public class DemoApplication {
 
     public static Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 
+    /**
+     * Main method of the server applicaton.
+     * @param args arguments
+     */
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
 
-        logger.info("Server started");
+        logger.info("Server started.");
     }
 }

@@ -1,11 +1,12 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.config.LoggerConfig.getFirstNumber;
+import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
+
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
-import nl.tudelft.oopp.demo.DemoApplication;
-import nl.tudelft.oopp.demo.config.LoggerConfig;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.QuestionService;
@@ -19,12 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nl.tudelft.oopp.demo.config.LoggerConfig.*;
 
 @RestController
 @RequestMapping("questions")
@@ -61,9 +56,16 @@ public class QuestionController {
     //    questionService.addNewQuestion(question);
     //    }
 
+    /**
+     * PUT mapping, adds a new question to the database.
+     * @param payload data for the new question
+     * @return the id of the new question
+     */
     @PostMapping   // http://localhost:8080/questions
     public Long addNewQuestion(@RequestBody String payload) {
-        logRequest("to add a new question to the room with an id '" + getFirstNumber(payload) + "'");
+        logRequest("to add a new question to the room with an id '"
+                + getFirstNumber(payload) + "'");
+
         return questionService.addNewQuestion(payload);
     }
 
