@@ -24,7 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
+import static nl.tudelft.oopp.demo.config.LoggerConfig.*;
 
 @RestController
 @RequestMapping("questions")
@@ -39,6 +39,7 @@ public class QuestionController {
 
     @GetMapping   // http://localhost:8080/questions
     public List<Question> getQuestions() {
+        logRequest("to get all questions from the database");
         return questionService.getQuestions();
     }
 
@@ -48,6 +49,7 @@ public class QuestionController {
     @GetMapping("example")   // http://localhost:8080/questions/example
     @ResponseBody               // automatically serialized into JSON
     public Question getExampleQuestion() {
+        logRequest("to get the example question");
         return new Question(1,
                 new Room(LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
                         "OOP Project", false),
@@ -61,39 +63,45 @@ public class QuestionController {
 
     @PostMapping   // http://localhost:8080/questions
     public Long addNewQuestion(@RequestBody String payload) {
+        logRequest("to add a new question to the room with an id '" + getFirstNumber(payload) + "'");
         return questionService.addNewQuestion(payload);
     }
 
     @GetMapping("/answered/{roomId}") // http://localhost:8080/questions/answered/{roomId}
     @ResponseBody
     public List<Question> getAnsweredQuestions(@PathVariable long roomId) {
-        logRequest("requested all answered questions for the room with an id " + roomId);
+        logRequest("to get all answered questions for the room with an id '" + roomId + "'");
         return questionService.getAnsweredQuestions(roomId);
     }
 
     @PutMapping("/markAnswered/{questionId}") // http://localhost:8080/questions/markAnswered/{questionId}
     public void markQuestionAsAnswered(@PathVariable long questionId) {
+        logRequest("to mark the question with an id '" + questionId + "' as answered");
         questionService.markQuestionAsAnswered(questionId);
     }
 
     @DeleteMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {
+        logRequest("to delete the question with an id '" + questionId + "'");
         questionService.deleteQuestion(questionId);
     }
 
     @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void updateQuestion(@PathVariable("questionId") Long questionId,
                                @RequestBody String question) {
+        logRequest("to update the question with an id '" + question + "'");
         questionService.updateQuestion(questionId, question);
     }
 
     @PutMapping(path = "upvote/{questionId}")  // http://localhost:8080/questions/upvote/{questionId}
     public void upvote(@PathVariable("questionId") Long questionId) {
+        logRequest("to upvote the question with an id '" + questionId + "'");
         questionService.upvote(questionId);
     }
 
     @PutMapping(path = "deupvote/{questionId}") // http://localhost:8080/questions/deupvote/{questionId}
     public void deUpvote(@PathVariable("questionId") Long questionId) {
+        logRequest("to devote the question with an id '" + questionId + "'");
         questionService.deUpvote(questionId);
     }
 }
