@@ -26,13 +26,13 @@ public class UserController {
     }
 
 
-    @GetMapping("students")   // http://localhost:8080/users/students/{roomId}
+    @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
     public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
         logRequest("to get all students for the room with an id '" + roomId + "'");
         return userService.getStudents(roomId);
     }
 
-    @GetMapping("moderators")   // http://localhost:8080/users/moderators/{roomId}
+    @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
     public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
         logRequest("to get all moderators for the room with an id '" + roomId + "'");
         return userService.getModerators(roomId);
