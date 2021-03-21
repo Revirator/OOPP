@@ -19,6 +19,20 @@ Code of Conduct violated by one of the members?
 - This person should explain himself and propose a plan/ideas on how he will prevent this in the future from happening again. This person is expected to go over this Code of Conduct and reflect for himself where it exactly went wrong. If he thinks modifications should be made to this document, he can propose this as well, so we can collectively adapt our Code of Conduct.
 - When nothing improves, the TA will be reported to via Mattermost.
 
+###
+
+Every weekly Thursday meeting ends by collectively reflecting for 5 min. if communication has failed somewhere or modifications must be made to this Code of Conduct.
+Prior to our meeting every member is expected to go over this document and consider the following:
+- Does this Code of Conduct contain points that not every member agrees upon any longer?
+- Does this Code of Conduct contain incorrect information?
+- Does this Code of Conduct contain points that can be described more elaborately?
+- Are there new arrangements required that were not part of this document yet?
+
+If we together decide modifications are necessary, each member is allowed to come up with new ideas/suggestions to update this document.
+
+
+###
+
 Mutual goal of this OOP project:
 Build a working application that everyone is satisfied about. We will invest as much in the application that time allows us to.
 
@@ -78,5 +92,8 @@ Collaboration
 * Each member pushes his/her commits, belonging to a feature assigned to him/her, at the latest on Sunday, allowing others to have sufficient time to review code.
 
 
-* Each Tuesday, we merge all feature branches into development_branch, as well as development_branch into master. Before this day, all commits must be adequately reviewed by at least 2 members, who then accept the MR. 
+* Each Tuesday, we merge all feature branches into development_branch, as well as development_branch into master. Before this day, all commits must be adequately reviewed by at least 2 members, who then accept the MR.
+
+
+* At the start of every new sprint (Tuesdays), we divide all issues of that sprint equally amongst ourselves. Besides, we collectively estimate the weights corresponding to these issues. 
 

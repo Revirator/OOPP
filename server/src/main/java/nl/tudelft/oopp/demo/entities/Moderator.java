@@ -1,17 +1,29 @@
 package nl.tudelft.oopp.demo.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "moderators")
 public class Moderator extends User {
 
-    public Moderator(String username, long roomId) {
-        super(username, roomId);
+
+    public Moderator() {
+
     }
 
-    public Moderator(long roomId) {
-        super(roomId);
+    public Moderator(String nickname, Room room) {
+        super(nickname, room);
     }
+
+    public Moderator(long id, String username, Room room) {
+        super(id, username, room);
+    }
+
 
     @Override
     public String toString() {
-        return "TA/Lecturer " + super.getNickname() + " in room " + super.getRoomId();
+        return "Moderator " + super.getNickname() + " in room " + getRoom();
     }
+
 }
