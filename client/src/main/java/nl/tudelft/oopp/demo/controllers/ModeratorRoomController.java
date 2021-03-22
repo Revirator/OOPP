@@ -15,8 +15,10 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
@@ -42,8 +44,8 @@ public class ModeratorRoomController {
     /**
      * Used in SplashController to pass the user and the room object.
      * This method should be called after the fetch request so that it updates the information.
-     * @param moderator     the moderator that is using the window
-     * @param room          the room corresponding to the code entered
+     * @param moderator - the moderator that is using the window
+     * @param room - the room corresponding to the code entered
      * @param moderatorView - corresponding view to this controller (to add questions)
      */
     public void setData(User moderator, Room room, ModeratorView moderatorView) {
@@ -72,6 +74,7 @@ public class ModeratorRoomController {
         service.setOnRunning(e -> {
             roomRefresher();
             questionRefresher();
+            participantRefresher();
         });
         service.start();
     }
@@ -87,7 +90,17 @@ public class ModeratorRoomController {
     }
 
     /**
-     * Updates the room object and the feedback by calling the getRoom() ..
+     * Calls methods in ServerCommunication to get updated lists from the database.
+     * Updates the user views (periodically called by refresher)
+     */
+    public void participantRefresher() {
+        List<Student> studentList = ServerCommunication.getStudents(room.getRoomId());
+        List<Moderator> moderatorList = ServerCommunication.getModerators(room.getRoomId());
+        moderatorView.updateParticipants(studentList, moderatorList);
+
+    }
+
+    /** Updates the room object and the feedback by calling the getRoom() ..
      * .. method in ServerCommunication.
      */
     public void roomRefresher() {

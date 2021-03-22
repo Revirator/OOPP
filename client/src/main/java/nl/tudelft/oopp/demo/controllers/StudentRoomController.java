@@ -12,8 +12,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
@@ -93,6 +95,7 @@ public class StudentRoomController {
         service.setOnRunning(e -> {
             roomRefresher();
             questionRefresher();
+            participantRefresher();
         });
         service.start();
     }
@@ -107,7 +110,16 @@ public class StudentRoomController {
         studentView.update(questionList, answeredList);
     }
 
+    /**
+     * Calls methods in ServerCommunication to get updated lists from the database.
+     * Updates the user views (periodically called by refresher)
+     */
+    public void participantRefresher() {
+        List<Student> studentList = ServerCommunication.getStudents(room.getRoomId());
+        List<Moderator> moderatorList = ServerCommunication.getModerators(room.getRoomId());
+        studentView.updateParticipants(studentList, moderatorList);
 
+    }
 
     /** Updates the room object (and the user(soon)) by calling the getRoom() ..
      * .. method in ServerCommunication.

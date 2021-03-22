@@ -102,9 +102,9 @@ public class StudentView extends Application {
         answeredListView.setItems(answered);
         participantsListView.setItems(participants);
 
-        addUser(new Student("ddd", null));
-        addUser(new Moderator("xyz", null));
-        addUser(new Student("abc", null));
+        //        addUser(new Student("ddd", null));
+        //        addUser(new Moderator("xyz", null));
+        //        addUser(new Student("abc", null));
 
         // Set cell factory to use student cell
         questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered, src));
@@ -260,8 +260,7 @@ public class StudentView extends Application {
             return false;
         }
 
-        // uncomment after Nadine's MR
-        // this.room.addParticipant(user);
+        this.room.addParticipant(user);
         participants.add(user);
         participants.sort(Comparator.comparing(User::getNickname));
         participants.sort(Comparator.comparing(User::getRole));
@@ -270,6 +269,22 @@ public class StudentView extends Application {
     }
 
 
+
+    /**
+     * Updates the participant list.
+     * @param studentList list of all students
+     * @param moderatorList list of all moderators
+     */
+    public void updateParticipants(List<Student> studentList, List<Moderator> moderatorList) {
+
+        participants.clear();
+        participants.addAll(studentList);
+        participants.addAll(moderatorList);
+
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
+
+    }
 
     /**
      * Launches the student view.
