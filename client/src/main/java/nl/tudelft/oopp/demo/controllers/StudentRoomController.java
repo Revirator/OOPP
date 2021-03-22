@@ -108,6 +108,11 @@ public class StudentRoomController {
         studentView.update(questionList, answeredList);
     }
 
+    public void participantRefresher() {
+        List<User> userList = ServerCommunication.getParticipants(room.getRoomId());
+        studentView.updateParticipants(userList);
+    }
+
     /** Updates the room object (and the user(soon)) by calling the getRoom() ..
      * .. method in ServerCommunication.
      */

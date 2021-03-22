@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 
 public class ServerCommunication {
 
@@ -111,6 +113,28 @@ public class ServerCommunication {
             error.setContentText("Something went wrong! Feedback was not sent!");
             error.show();
         }
+    }
+
+    public static List<User> getParticipants(long roomID) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/rooms/participants/" + roomID))
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if(response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
     /**

@@ -250,6 +250,20 @@ public class StudentView extends Application {
     }
 
     /**
+     * Updates the participant list.
+     * @param participantList list of all participants
+     */
+    public void updateParticipants(List<User> participantList) {
+
+        participants.clear();
+        participants.addAll(participantList);
+
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
+
+    }
+
+    /**
      * Launches the student view.
      * @param args arguments
      */
