@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -115,6 +114,11 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Fetches a list of all participants.
+     * @param roomID ID of the room
+     * @return a list of all participants in the room
+     */
     public static List<User> getParticipants(long roomID) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -129,7 +133,7 @@ public class ServerCommunication {
             return null;
         }
 
-        if(response.statusCode() != 200) {
+        if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return List.of();
         }
