@@ -7,7 +7,6 @@ import javax.persistence.Table;
 @Table(name = "moderators")
 public class Moderator extends User {
 
-
     public Moderator() {
 
     }

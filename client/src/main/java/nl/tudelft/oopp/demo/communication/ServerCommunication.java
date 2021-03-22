@@ -17,6 +17,7 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
 public class ServerCommunication {
@@ -114,10 +115,17 @@ public class ServerCommunication {
         }
     }
 
-    public static void sendUser(User user, long roomId) {
-        String requestURL = "http://localhost:8080/users/addUser/" + user.getRole()
+    /** Sends a user to the server, who is saved in the DB ..
+     * .. and added to the list of participants in the ..
+     * .. corresponding room instance.
+     * @param user the user to be saved in the DB
+     * @param roomId the id of the room the user is a participant in
+     * @return Long - the id of the user
+     */
+    public static Long sendUser(User user, long roomId) {
+        String requestUrl = "http://localhost:8080/users/addUser/" + user.getRole()
                 +  "/" + roomId + "/" + user.getNickname();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURL))
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl))
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .build();
         HttpResponse<String> response;
@@ -125,11 +133,36 @@ public class ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            return (long) - 1;
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
+            return (long) - 1;
         }
+        return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
+    }
+
+    /** Sends an id to the server.
+     * The server return the student with the given id ..
+     * .. or null if the student doesn't exist.
+     * @param studentId the id of the student to be updated
+     * @return User - a new instance of Student corresponding to the id
+     */
+    public static User getStudent(Long studentId) {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/users/" + studentId))
+                .GET().build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return null;
+        }
+        return gson.fromJson(response.body(), Student.class);
     }
 
     /**

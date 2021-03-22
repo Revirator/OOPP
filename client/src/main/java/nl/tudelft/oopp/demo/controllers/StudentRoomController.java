@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
@@ -91,7 +92,7 @@ public class StudentRoomController {
         // setting up and starting the thread
         service.setPeriod(Duration.seconds(5));
         service.setOnRunning(e -> {
-            roomRefresher();
+            roomAndUserRefresher();
             questionRefresher();
         });
         service.start();
@@ -107,12 +108,15 @@ public class StudentRoomController {
         studentView.update(questionList, answeredList);
     }
 
-    /** Updates the room object (and the user(soon)) by calling the getRoom() ..
-     * .. method in ServerCommunication.
+    /** Updates the room object and the user by calling the getRoom() ..
+     * .. and getStudent() methods in ServerCommunication.
      */
-    public void roomRefresher() {
+    public void roomAndUserRefresher() {
         this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
-        // something to update the student (in case he got banned or kicked out of the room)
+        // The server returns the student with the room field being null
+        User tempStudent = ServerCommunication.getStudent(this.student.getId());
+        this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room);
+        // TODO: Check if the student has been kicked out or banned
         this.studentView.setData(student,room);
     }
 

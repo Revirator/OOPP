@@ -1,12 +1,18 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Student;
 import nl.tudelft.oopp.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -33,13 +39,19 @@ public class UserController {
         return userService.getModerators(roomId);
     }
 
-    @PostMapping("/addUser/Student/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Student/{roomId}/{nickname}
-    public void addStudent(@PathVariable long roomId, @PathVariable String nickname) {
-        userService.addStudent(nickname,roomId);
+    @GetMapping("/{studentId}") //http://localhost:8080/users/{studentId}
+    @ResponseBody
+    public Optional<Student> getStudent(@PathVariable Long studentId) {
+        return userService.getStudentById(studentId);
     }
 
-    @PostMapping("/addUser/Moderator/{roomId}/{nickname}")
-    public void addModerator(@PathVariable long roomId, @PathVariable String nickname) {
-        userService.addModerator(nickname,roomId);
+    @PostMapping("/addUser/Student/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Student/{roomId}/{nickname}
+    public Long addStudent(@PathVariable long roomId, @PathVariable String nickname) {
+        return userService.addStudent(nickname,roomId);
+    }
+
+    @PostMapping("/addUser/Moderator/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Moderator/{roomId}/{nickname}
+    public Long addModerator(@PathVariable long roomId, @PathVariable String nickname) {
+        return userService.addModerator(nickname,roomId);
     }
 }
