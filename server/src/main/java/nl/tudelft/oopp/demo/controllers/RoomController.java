@@ -1,9 +1,12 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +32,21 @@ public class RoomController {
 
     @GetMapping // http://localhost:8080/rooms
     public List<Room> getRooms() {
+        logRequest("to get all rooms from the database");
         return roomService.getRooms();
     }
 
     @GetMapping("example")   // http://localhost:8080/rooms/example
     @ResponseBody
     public Room getExampleRoom() {
+        logRequest("to get the example room");
         return roomService.getRoomById(4);
     }
 
     @GetMapping("/{roomCode}")  // http://localhost:8080/rooms/{roomCode}
     @ResponseBody
     public Room getRoomByCode(@PathVariable String roomCode) {
+        logRequest("to join room with code '" + roomCode + "'");
         return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
     }
 
@@ -55,16 +61,19 @@ public class RoomController {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        logRequest("to deactivate the room with code '" + roomCode + "'");
         roomService.updateRoomStatusByLink(url);
     }
 
     @PostMapping   // http://localhost:8080/rooms
     public Room addNewRoom(@RequestBody String data) throws MalformedURLException {
+        logRequest("to create a new room");
         return roomService.addNewRoom(data);
     }
 
     @PutMapping("/{roomCode}/{feedback}") // http://localhost:8080/rooms/{roomCode}/{feedback}
     public void updateFeedback(@PathVariable String roomCode, @PathVariable String feedback) {
+        DemoApplication.logger.info("Updated the feedback for room with a code '" + roomCode + "'");
         roomService.updateRoomSpeed("http://localhost:8080/rooms/" + roomCode, feedback);
     }
 }

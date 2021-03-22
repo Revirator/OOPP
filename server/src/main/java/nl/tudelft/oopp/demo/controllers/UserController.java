@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
+
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Moderator;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @RequestMapping("users")
@@ -24,15 +25,15 @@ public class UserController {
     }
 
 
-    @GetMapping("students")   // http://localhost:8080/users/students/{roomId}
+    @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
     public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
+        logRequest("to get all students for the room with an id '" + roomId + "'");
         return userService.getStudents(roomId);
     }
 
-    @GetMapping("moderators")   // http://localhost:8080/users/moderators/{roomId}
+    @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
     public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
+        logRequest("to get all moderators for the room with an id '" + roomId + "'");
         return userService.getModerators(roomId);
     }
-
-
 }
