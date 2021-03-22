@@ -69,7 +69,7 @@ public class RoomController {
         roomService.updateRoomSpeed("http://localhost:8080/rooms/" + roomCode, feedback);
     }
 
-    @GetMapping("{roomCode}")
+    @GetMapping("/{roomCode}") // http://localhost:8080/rooms/{roomCode}
     public List<User> getParticipants(@PathVariable String roomCode) {
         return roomService.getRoomByCode("http://localhost:8080/rooms" + roomCode).getParticipants();
     }
