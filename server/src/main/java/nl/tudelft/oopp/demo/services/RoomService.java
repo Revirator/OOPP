@@ -34,6 +34,7 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
+
     /** Called by RoomController.
      * @param id the id of room.
      * @return the room itself.
@@ -41,6 +42,7 @@ public class RoomService {
     public Room getRoomById(long id) {
         return roomRepository.findById(id);
     }
+
 
     /** Called by RoomController.
      * @param string new Room object as a string to be stored in the database
@@ -58,6 +60,7 @@ public class RoomService {
 
         return updatedRoom;
     }
+
 
     /** Updates peopleThinkingLectureIsTooSlow or peopleThinkingLectureIsTooFast ..
      * .. depending on the feedback received.

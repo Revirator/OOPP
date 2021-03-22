@@ -193,6 +193,25 @@ public class StudentView extends Application {
 
 
     /**
+     * Updates the questions and answered lists.
+     * @param questionList all questions
+     * @param answeredList all answered questions
+     */
+    public void update(List<Question> questionList, List<Question> answeredList) {
+
+        questions.clear();
+        answered.clear();
+
+        questions.addAll(questionList);
+        answered.addAll(answeredList);
+
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
+
+    }
+
+
+    /**
      * Adds a question to the student view.
      * @param question question to add
      * @return true if successful, false if not
@@ -231,23 +250,7 @@ public class StudentView extends Application {
         return true;
     }
 
-    /**
-     * Updates the questions and answered lists.
-     * @param questionList all questions
-     * @param answeredList all answered questions
-     */
-    public void update(List<Question> questionList, List<Question> answeredList) {
 
-        questions.clear();
-        answered.clear();
-
-        questions.addAll(questionList);
-        answered.addAll(answeredList);
-
-        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
-        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
-
-    }
 
     /**
      * Launches the student view.
