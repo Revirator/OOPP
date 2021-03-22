@@ -94,6 +94,7 @@ public class StudentRoomController {
         service.setOnRunning(e -> {
             roomRefresher();
             questionRefresher();
+            participantRefresher();
         });
         service.start();
     }
@@ -108,6 +109,10 @@ public class StudentRoomController {
         studentView.update(questionList, answeredList);
     }
 
+    /**
+     * Calls methods in ServerCommunication to get updated lists from the database.
+     * Updates the user views (periodically called by refresher)
+     */
     public void participantRefresher() {
         List<User> userList = ServerCommunication.getParticipants(room.getRoomId());
         studentView.updateParticipants(userList);
