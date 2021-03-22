@@ -175,7 +175,7 @@ public class ModeratorRoomController {
             List<Question> answeredQuestions = ServerCommunication
                     .getAnsweredQuestions(room.getRoomId());
             for (int i = 0; i < answeredQuestions.size(); i++) {
-                pw.println((i + 1)  + ". " + answeredQuestions.get(i).toString());
+                pw.println(answeredQuestions.get(i).toString());
             }
             pw.close();
         }
