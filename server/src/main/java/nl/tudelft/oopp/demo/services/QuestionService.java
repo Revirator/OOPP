@@ -91,14 +91,14 @@ public class QuestionService {
     /** Parses data sent by client to create a new Question with id.
      * Stores new question in database.
      * Called by QuestionController.
-     * @param payload - data sent by client containing roomId, question, owner.
+     * @param payload - data sent by client containing roomId, owner, question.
      */
     public Long addNewQuestion(String payload) {
 
-        String[] dataArray = payload.split(", ");
+        String[] dataArray = payload.split("& ");
         long roomId = Long.valueOf(dataArray[0]);
-        String questionText = dataArray[1];
-        String questionOwner = dataArray[2];
+        String questionOwner = dataArray[1];
+        String questionText = dataArray[2];
 
         boolean exists = roomRepository.existsById(roomId);
         if (!exists) {
@@ -112,6 +112,31 @@ public class QuestionService {
                 + newQuestion.getId() + " #################");
         return newQuestion.getId();
     }
+
+
+    /** Called by QuestionController.
+     * Changes content of question with this id into a new question.
+     * @param questionId - Id of Question to be modified
+     * @param answer - answer to question as String (in requestBody)
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/setanswer/6
+     */
+    @Transactional
+    public void setAnswer(Long questionId, String answer) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+
+        if (answer != null && answer.length() > 0
+                && !Objects.equals(questionToModify.getAnswer(), answer)) {
+            questionToModify.setAnswer(answer);
+        }
+        System.out.println("######## SET ANSWER TO QUESTION ID: " + questionId
+                + " ################");
+    }
+
+
 
 
 
@@ -129,6 +154,8 @@ public class QuestionService {
         System.out.println("######## DELETED QUESTION ID: " + questionId + " ################");
         questionRepository.deleteById(questionId);
     }
+
+
 
     /** Called by QuestionController.
      * Changes content of question with this id into a new question.
@@ -151,6 +178,8 @@ public class QuestionService {
         System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
     }
 
+
+
     /** Called by QuestionController.
      * Changes the isAnswered value of a question with this id.
      * @param questionId - Id of Question to be modified
@@ -166,8 +195,10 @@ public class QuestionService {
 
         questionToModify.setAsAnswered();
 
-        System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
+        System.out.println("######## MARKED ANSWERED QUESTION ID: "
+                + questionId + " ################");
     }
+
 
 
     /** Called by QuestionController.
@@ -187,6 +218,7 @@ public class QuestionService {
     }
 
 
+
     /** Called by QuestionController.
      * Decrements the upvote amount by one of the question with provided id.
      * @param questionId - Id of Question to be decremented
@@ -200,6 +232,6 @@ public class QuestionService {
                         new IllegalStateException("Question with id "
                                 + questionId + " does not exist!"));
         questionToModify.deUpvote();
-        System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
+        System.out.println("######## DE-UPVOTED QUESTION ID: " + questionId + " ################");
     }
 }

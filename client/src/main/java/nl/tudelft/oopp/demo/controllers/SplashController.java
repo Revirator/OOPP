@@ -69,13 +69,13 @@ public class SplashController {
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
                     if (code.contains("M")) {
-                        // TODO: Send Moderator to server to store in db
+                        // TODO: Send Moderator entity to server to store in db
                         User moderator = new Moderator(nickName.getText(), room);
                         ModeratorView moderatorView = new ModeratorView();
                         moderatorView.setData(moderator, room);
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
-                        // TODO: Send Student to server to store in db
+                        // TODO: Send Student entity to server to store in db
                         User student = new Student(nickName.getText(), room);
                         StudentView studentView = new StudentView();
                         studentView.setData(student, room);
@@ -117,7 +117,7 @@ public class SplashController {
      */
     public void startRoom(ActionEvent actionEvent) throws IOException {
 
-        // TODO: Send Moderator to server to store in db
+        // TODO: Send Moderator entity to server to store in db
         if (roomName.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter name of room");
@@ -143,7 +143,7 @@ public class SplashController {
      */
     public void scheduleRoom(ActionEvent actionEvent) throws IOException {
 
-        // TODO: Send Moderator to server to store in db
+        // TODO: Send Moderator entity to server to store in db
         if (date.getValue() == null
                 || hour.getText().equals("")
                 || !hour.getText().matches("^\\d{2}:\\d{2}$")
@@ -175,6 +175,7 @@ public class SplashController {
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
 
+            // TODO: Make sure links are copyable
             Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
             alertMod.setTitle("Links for the room " + roomName.getText());
             alertMod.setHeaderText("Links for the room " + roomName.getText());

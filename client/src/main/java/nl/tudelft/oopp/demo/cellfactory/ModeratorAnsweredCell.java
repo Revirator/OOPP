@@ -114,20 +114,20 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
         // Click events for buttons
 
-        // TODO move to different file
-
         editQuestionButton.setOnAction(event -> {
 
             if (this.question == null) {
                 return;
             }
 
-            //TODO send changes to server
-
             questionWrapper.getChildren().clear();
 
             // User saves changes
             if (editingQuestion) {
+
+                // Send changes to server
+                mrc.editQuestion(
+                        this.question, editableQuestion.getText());
 
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
                 question.setText(editableQuestion.getText());
@@ -151,12 +151,12 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
                 return;
             }
 
-            //TODO send changes to server
-
             answerWrapper.getChildren().clear();
 
             // User saves changes
             if (editingAnswer) {
+
+                mrc.setAnswer(this.question, editableAnswer.getText());
 
                 answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
                 question.setAnswer(editableAnswer.getText());
@@ -176,7 +176,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
         deleteButton.setOnAction(event -> {
 
-            //TODO send to server
+            mrc.deleteQuestion(this.question);
 
             // Remove question from list
             answered.remove(question);
