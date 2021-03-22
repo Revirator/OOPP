@@ -137,6 +137,10 @@ public class StudentRoomController {
                 alert.setContentText("Please wait for a total of 20 seconds before"
                         + "\nsubmitting another question");
                 alert.show();
+            } else if (questionBox.getText().contains("&")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The symbol '&' cannot be used.");
+                alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
                 Question newQuestion = new Question(this.room.getRoomId(), questionBox.getText(),
@@ -160,7 +164,7 @@ public class StudentRoomController {
     }
 
     /**
-     * Deletes this question upon pressing "delete" or "mark as answered" buttons.
+     * Deletes this question upon pressing "delete" button.
      * Based on id of this question.
      * @param questionToRemove - Question to be removed from database.
      */
@@ -247,6 +251,7 @@ public class StudentRoomController {
             tooSlowButton.setVisible(true);
             tooFastButton.setDisable(true);
             tooSlowButton.setDisable(true);
+            resetButton.setDisable(true);
         } else {
             resetButton.setDisable(true);
             if (tooSlowButton.isVisible() && !tooFastButton.isVisible()) {
@@ -259,15 +264,6 @@ public class StudentRoomController {
                 ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
             }
         }
-    }
-
-    /** Alert displayed when lecture is inactive.
-     *
-     */
-    public void lectureHasEnded() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("The lecture has ended!");
-        alert.show();
     }
 
     /** Increments the number of upvotes of this question by 1.

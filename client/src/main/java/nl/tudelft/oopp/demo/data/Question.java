@@ -142,6 +142,13 @@ public class Question {
     }
 
     /**
+     * Setter for the amount of votes.
+     */
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
+    }
+
+    /**
      * Increases the amount of votes by 1 and saves
      * that the user voted.
      */
@@ -177,7 +184,6 @@ public class Question {
                 && getText().equals(question1.getText())
                 && getAnswer().equals(question1.getAnswer())
                 && getOwner().equals(question1.getOwner())
-                && getTime().equals(question1.getTime())
                 && upvotes.equals(question1.upvotes);
     }
 
@@ -187,7 +193,8 @@ public class Question {
      */
     @Override
     public String toString() {
-        return time + " -- " + text + (!answer.equals("") ? "- " + answer : "");
+        return "[" + time + "] " + owner + ": " +  text
+                + (!answer.equals("") ? "\n- " + answer : "\n");
     }
 
 

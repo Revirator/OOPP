@@ -185,6 +185,7 @@ public class SplashController {
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
 
+            // TODO: Make sure links are copyable
             Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
             alertMod.setTitle("Links for the room " + roomName.getText());
             alertMod.setHeaderText("Links for the room " + roomName.getText());

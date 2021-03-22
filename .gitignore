@@ -1,4 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+**/*.log
+
 ### Gradle template
 .gradle
 build/
@@ -129,7 +132,7 @@ buildNumber.properties
 /stacktrace.log
 /test/reports
 /logs
-
+/server/spring.log
 # project release file
 /*.war
 

@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -26,16 +27,17 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
     @ResponseBody
     public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
+        logRequest("to get all students for the room with an id '" + roomId + "'");
         return userService.getStudents(roomId);
     }
 
     @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
     @ResponseBody
     public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
+        logRequest("to get all moderators for the room with an id '" + roomId + "'");
         return userService.getModerators(roomId);
     }
 

@@ -24,12 +24,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
-
 
 
 @DataJpaTest
@@ -69,12 +65,12 @@ public class QuestionServiceTest {
     @Order(1)
     public void testClientDataParsing() {
 
-        String payload = "2, When is lab assignment 3 due?, Sandra";
+        String payload = "2& Sandra& When is lab assignment 3 due?";
 
-        String[] dataArray = payload.split(", ");
+        String[] dataArray = payload.split("& ");
         long roomId = Long.valueOf(dataArray[0]);
-        String questionText = dataArray[1];
-        String questionOwner = dataArray[2];
+        String questionOwner = dataArray[1];
+        String questionText = dataArray[2];
 
         assertEquals(2, roomId);
         assertEquals("When is lab assignment 3 due?", questionText);
@@ -101,7 +97,7 @@ public class QuestionServiceTest {
 
     @Test
     @Order(4)
-    public void testInvalidPutRequest() {
+    public void testInvalidPutEditRequest() {
         assertThrows(IllegalStateException.class, () -> {
             questionService.updateQuestion((long)0, "Invalid update");
         });
@@ -111,7 +107,7 @@ public class QuestionServiceTest {
     @Test
     @Order(5)
     public void testInvalidPostRequest() {
-        String payload = "0, When is lab assignment 3 due?, Sandra";
+        String payload = "0& Sandra& When is lab assignment 3 due?";
         assertThrows(IllegalStateException.class, () -> {
             questionService.addNewQuestion(payload);
         });
@@ -129,10 +125,10 @@ public class QuestionServiceTest {
         Room output = roomRepository.findById(1);
         assertEquals(roomOne, output);
 
-        String payload = "1, When is lab assignment 3 due?, Sandra";
+        String payload = "1& Sandra& When is lab assignment 3 due?";
         Long questionId = questionService.addNewQuestion(payload);
         assertEquals(1, questionId);
-        System.out.println("######### " + questionId + " ###########");
+        System.out.println("######### " + questionId + " ###########");   // questionId 1
 
         List<Question> questions = questionRepository.findAll();
         System.out.println("*********** " + questions + " *********");
@@ -153,11 +149,11 @@ public class QuestionServiceTest {
         //        List<Room> rooms = roomRepository.findAll();
         //        System.out.println("%%%%%%%%%% " + rooms.get(0).getRoomId() + " %%%%%%%%%%%%");
 
-        String payload1 = "2, When is lab assignment 3 due?, Sandra";
-        String payload2 = "2, Will answers be published?, Albert";
+        String payload1 = "2& Sandra& When is lab assignment 3 due?";
+        String payload2 = "2& Albert& Will answers be published?";
 
-        Long questionId1 = questionService.addNewQuestion(payload1);
-        Long questionId2 = questionService.addNewQuestion(payload2);
+        Long questionId1 = questionService.addNewQuestion(payload1);   // questionId 2
+        Long questionId2 = questionService.addNewQuestion(payload2);  // questionId 3
         assertEquals(2, questionId1);
         assertEquals(3, questionId2);
         System.out.println("######### " + questionId1 + " ###########");
@@ -177,8 +173,8 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);    // roomId 3
 
-        String payload = "3, Could you repeat that?, Pim";
-        Long questionId = questionService.addNewQuestion(payload);
+        String payload = "3& Pim& Could you repeat that?";
+        Long questionId = questionService.addNewQuestion(payload);    // questionId 4
         assertEquals(4, questionId);
         System.out.println("######### " + questionId + " ###########");
 
@@ -196,8 +192,8 @@ public class QuestionServiceTest {
 
         roomRepository.saveAndFlush(roomOne);  // roomId 4
 
-        String payload = "4, Could you repeat that?, Pim";
-        questionService.addNewQuestion(payload);
+        String payload = "4& Pim& Could you repeat that?";
+        questionService.addNewQuestion(payload);   // questionId 5
         questionService.updateQuestion((long)5, "Can I update this?");
 
         List<Question> questions = questionRepository.findAll();
@@ -208,32 +204,78 @@ public class QuestionServiceTest {
 
     @Test
     @Order(10)
+    public void testAnswerNonExistingQuestion() {
+        assertThrows(IllegalStateException.class, () -> {
+            questionService.setAnswer((long)0, "Id 0 does not exist");
+        });
+    }
+
+
+    @Test
+    @Order(11)
+    public void testEmptyAnswer() {
+
+        roomRepository.saveAndFlush(roomOne);  // roomId 5
+
+        String payload = "5& Frank& Can I get an empty answer?";
+        questionService.addNewQuestion(payload);    // questionId 6
+
+        List<Question> questions = questionRepository.findAll();
+        System.out.println("*********** " + questions + " ********* ID: "
+                + questions.get(0).getId());
+
+        questionService.setAnswer((long)6, "");
+        assertEquals("", questions.get(0).getAnswer());
+    }
+
+    @Test
+    @Order(12)
+    public void testAnswerPutRequest() {
+
+        roomRepository.saveAndFlush(roomOne);  // roomId 6
+
+        String payload = "6& Jan& Can I get an answer?";
+        questionService.addNewQuestion(payload);  // questionId 7
+
+        List<Question> questions = questionRepository.findAll();
+        System.out.println("*********** " + questions + " *********ID: "
+                + questions.get(0).getId());
+
+        questionService.setAnswer((long)7, "Yes you can.");
+        assertEquals("Yes you can.", questions.get(0).getAnswer());
+
+    }
+
+
+    @Test
+    @Order(13)
     public void testGetByRoomRequest() {
 
-        roomRepository.saveAndFlush(roomOne);   // roomId 5
-        roomRepository.saveAndFlush(roomTwo);   // roomId 6
+        roomRepository.saveAndFlush(roomOne);   // roomId 7
+        roomRepository.saveAndFlush(roomTwo);   // roomId 8
 
         Question quOne = new Question(roomOne, "Question one?", "Sietse");
         Question quTwo = new Question(roomOne, "Question two?", "Bill");
         Question quThree = new Question(roomTwo, "Question three?", "Wrong");
 
-        String payload = "5, Question one?, Sietse";
-        String payloadtwo = "5, Question two?, Bill";
-        String payloadthree = "6, Question three?, Wrong";
+        String payload = "7& Sietse& Question one?";
+        String payloadtwo = "7& Bill& Question two?";
+        String payloadthree = "8& Wrong& Question three?";
 
-        questionService.addNewQuestion(payload);
-        questionService.addNewQuestion(payloadtwo);
-        questionService.addNewQuestion(payloadthree);
+        questionService.addNewQuestion(payload);        // questionId 8
+        questionService.addNewQuestion(payloadtwo);     // questionId 9
+        questionService.addNewQuestion(payloadthree);   // questionId 10
 
         List<Question> listAllQuestions = List.of(quOne, quTwo, quThree);
         List<Question> listQuestionRoomFour = List.of(quOne, quTwo);
 
-        assertEquals(questionService.getQuestionsByRoom(5).toString(),
+        assertEquals(questionService.getQuestionsByRoom(7).toString(),
                 listQuestionRoomFour.toString());
-        assertNotEquals(questionService.getQuestionsByRoom(5).toString(),
+        assertNotEquals(questionService.getQuestionsByRoom(7).toString(),
                 listAllQuestions.toString());
 
     }
+
 
 
 
