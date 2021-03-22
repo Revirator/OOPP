@@ -67,6 +67,7 @@ public class ModeratorRoomController {
         service.setOnRunning(e -> {
             roomRefresher();
             questionRefresher();
+            participantRefresher();
         });
         service.start();
     }
@@ -79,6 +80,15 @@ public class ModeratorRoomController {
         List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
         List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
         moderatorView.update(questionList, answeredList);
+    }
+
+    /**
+     * Calls methods in ServerCommunication to get updated lists from the database.
+     * Updates the user views (periodically called by refresher)
+     */
+    public void participantRefresher() {
+        List<User> userList = ServerCommunication.getParticipants(room.getRoomId());
+        moderatorView.updateParticipants(userList);
     }
 
     /** Updates the room object and the feedback by calling the getRoom() ..

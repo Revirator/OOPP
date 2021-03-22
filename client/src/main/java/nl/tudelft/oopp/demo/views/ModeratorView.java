@@ -169,6 +169,20 @@ public class ModeratorView extends Application {
     }
 
     /**
+     * Updates the participant list.
+     * @param participantList list of all participants
+     */
+    public void updateParticipants(List<User> participantList) {
+
+        participants.clear();
+        participants.addAll(participantList);
+
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
+
+    }
+
+    /**
      * Creates the choice boxes for polls.
      * @param scene current scene
      */
