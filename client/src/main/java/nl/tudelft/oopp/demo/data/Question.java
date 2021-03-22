@@ -187,7 +187,7 @@ public class Question {
      */
     @Override
     public String toString() {
-        return time + " -- " + text + (!answer.equals("") ? "- " + answer : "");
+        return time + " -- " + text + (!answer.equals("") ? "\n- " + answer : "\n");
     }
 
 
