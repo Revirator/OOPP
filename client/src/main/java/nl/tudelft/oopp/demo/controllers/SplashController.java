@@ -71,12 +71,14 @@ public class SplashController {
                     if (code.contains("M")) {
                         // TODO: Send Moderator to server to store in db
                         User moderator = new Moderator(nickName.getText(), room);
+                        ServerCommunication.sendUser(moderator, room.getRoomId());
                         ModeratorView moderatorView = new ModeratorView();
                         moderatorView.setData(moderator, room);
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
                         // TODO: Send Student to server to store in db
                         User student = new Student(nickName.getText(), room);
+                        ServerCommunication.sendUser(student, room.getRoomId());
                         StudentView studentView = new StudentView();
                         studentView.setData(student, room);
                         studentView.start((Stage) anchor.getScene().getWindow());
@@ -104,6 +106,7 @@ public class SplashController {
                     stage.show();
 
                     User student = new Student(nickName.getText(), room);
+                    ServerCommunication.sendUser(student, room.getRoomId());
                     WaitingRoomController waitingRoomController = loader.getController();
                     waitingRoomController.setData(student, room);
                     waitingRoomController.main(new String[0]);
@@ -130,6 +133,7 @@ public class SplashController {
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
 
             User moderator = new Moderator(nickName.getText(), newRoom);
+            ServerCommunication.sendUser(moderator, newRoom.getRoomId());
             ModeratorView moderatorView = new ModeratorView();
             moderatorView.setData(moderator, newRoom);
             moderatorView.start(primaryStage);
@@ -184,9 +188,4 @@ public class SplashController {
 
         }
     }
-
-
-
-
-
 }

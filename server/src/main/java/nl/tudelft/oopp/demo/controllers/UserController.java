@@ -6,10 +6,7 @@ import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Student;
 import nl.tudelft.oopp.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -24,15 +21,25 @@ public class UserController {
     }
 
 
-    @GetMapping("students")   // http://localhost:8080/users/students/{roomId}
+    @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
+    @ResponseBody
     public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
         return userService.getStudents(roomId);
     }
 
-    @GetMapping("moderators")   // http://localhost:8080/users/moderators/{roomId}
+    @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
+    @ResponseBody
     public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
         return userService.getModerators(roomId);
     }
 
+    @PostMapping("/addUser/Student/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Student/{roomId}/{nickname}
+    public void addStudent(@PathVariable long roomId, @PathVariable String nickname) {
+        userService.addStudent(nickname,roomId);
+    }
 
+    @PostMapping("/addUser/Moderator/{roomId}/{nickname}")
+    public void addModerator(@PathVariable long roomId, @PathVariable String nickname) {
+        userService.addModerator(nickname,roomId);
+    }
 }

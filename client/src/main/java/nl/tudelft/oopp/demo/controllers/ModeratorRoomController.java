@@ -131,7 +131,7 @@ public class ModeratorRoomController {
                 error.setContentText("The room does not exist or has ended already!");
                 error.show();
             }
-            ServerCommunication.updateRoom(room.getModeratorLink().toString());
+            ServerCommunication.updateRoomStatus(room.getModeratorLink().toString());
             room.end();
             Alert success = new Alert(Alert.AlertType.INFORMATION);
             success.setContentText("The lecture has ended successfully!");

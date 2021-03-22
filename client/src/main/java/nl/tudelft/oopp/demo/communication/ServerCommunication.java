@@ -17,6 +17,7 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
 
 public class ServerCommunication {
 
@@ -113,6 +114,24 @@ public class ServerCommunication {
         }
     }
 
+    public static void sendUser(User user, long roomId) {
+        String requestURL = "http://localhost:8080/users/addUser/" + user.getRole()
+                +  "/" + roomId + "/" + user.getNickname();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURL))
+                .POST(HttpRequest.BodyPublishers.ofString(""))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
     /**
      * Retrieves a list of all questions.
      * @param roomID that we want the questions from
@@ -170,7 +189,7 @@ public class ServerCommunication {
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
      */
-    public static void updateRoom(String code) {
+    public static void updateRoomStatus(String code) {
         code = code.substring(28);
         // Including the code in the body of the request and ..
         // .. not in the URL might be better, but I couldn't get it to work.

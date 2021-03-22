@@ -48,7 +48,7 @@ public class RoomController {
      * @param roomCode the link connected to the room
      */
     @PutMapping("/update/{roomCode}") // http://localhost:8080/rooms/update/{roomCode}
-    public void updateRoom(@PathVariable String roomCode) {
+    public void updateRoomStatus(@PathVariable String roomCode) {
         URL url = null;
         try {
             url = new URL("http://localhost:8080/rooms/" + roomCode);

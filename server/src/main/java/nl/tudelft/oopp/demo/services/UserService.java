@@ -3,7 +3,9 @@ package nl.tudelft.oopp.demo.services;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.entities.Moderator;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +53,15 @@ public class UserService {
         return moderatorUserRepository.findAllByRoomRoomId(roomId);
     }
 
+    public void addStudent(String nickname, long roomId) {
+        Room room = roomRepository.getOne(roomId);
+        User student = new Student(nickname,room);
+        studentUserRepository.save((Student) student);
+    }
 
+    public void addModerator(String nickname, long roomId) {
+        Room room = roomRepository.getOne(roomId);
+        User moderator = new Moderator(nickname,room);
+        moderatorUserRepository.save((Moderator) moderator);
+    }
 }
