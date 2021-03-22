@@ -102,22 +102,22 @@ public class ModeratorView extends Application {
         answeredListView.setItems(answered);
         participantsListView.setItems(participants);
 
-        /*        DEBUGGING PURPOSES
 
-        addQuestion(new Question(1,20,
+
+        addQuestion(new Question(1,4,
                 "What's the square root of -1?","Senne",20, true));
 
-        addQuestion(new Question(2,20,
+        addQuestion(new Question(2,5,
                 "Is Java a programming language?","Albert",20, false));
 
-        addQuestion(new Question(3,20,
+        addQuestion(new Question(3,6,
                 "What is the idea behind the TU Delft logo?", "Henkie", 50, false));
 
         for (Question q : questions) {
             q.setAnswer("This is the answer!");
         }
 
-         */
+
         addUser(new Student("ddd", null));
         addUser(new Moderator("xyz", null));
         addUser(new Student("abc", null));
@@ -305,22 +305,6 @@ public class ModeratorView extends Application {
         return true;
     }
 
-    /**
-     * This will get called every X(5) seconds to update.
-     * the list of answered questions for the user
-     */
-    public void updateAnsweredList() {
-
-        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-
-        for (Question q : newAnswered) {
-            if (!answered.contains(q)) {
-                answered.add(q);
-            }
-        }
-
-        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
-    }
 
     /**
      * Launches this view.

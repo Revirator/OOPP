@@ -71,18 +71,18 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         // Create buttons
         Button answerButton = new Button("Answer");
         Button editButton = new Button("Edit question");
-        Button deleteButton = new Button("Delete question");
+        Button deleteButton = new Button("Delete");
 
         // Create text area
-        TextArea answer = new TextArea("");
-        answer.setWrapText(true);
+        TextArea answerBox = new TextArea("");
+        answerBox.setWrapText(true);
 
         // Wrap edit and delete button
         HBox editDeleteWrapper = new HBox(editButton, deleteButton);
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answer, answerButton);
+        HBox answerWrapper = new HBox(answerBox, answerButton);
         answerWrapper.setSpacing(5);
 
         // Align buttons
@@ -112,7 +112,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
-        //TODO possibly move to other files
 
         // Click event for upvote
         editButton.setOnAction(event -> {
@@ -121,10 +120,12 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 return;
             }
 
-            //TODO send changes to server
-
             // User saves changes
             if (editing) {
+
+                // Send changes to server
+                mrc.editQuestion(
+                        this.question, editableLabel.getText());
 
                 gridPane.getChildren().remove(editableLabel);
                 gridPane.add(questionLabel, 0, 1);
@@ -150,18 +151,21 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Next line marks the question as answered in the DB
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
-            //TODO send to server
+            // Send answer to server to store in db
+            mrc.setAnswer(this.question, answerBox.getText());
 
-            question.setAnswer(answer.getText());   // Those will probably get removed later
+            question.setAnswer(answerBox.getText());   // Those will probably get removed later
             questions.remove(question);             // since they change stuff only locally
-            answered.add(question);                 //
+            answered.add(question);
+            answerBox.clear();
 
         });
 
         // Click event for delete
         deleteButton.setOnAction(event -> {
 
-            //TODO send to server
+            // Send to server to delete from DB
+            mrc.deleteQuestion(this.question);
 
             // Remove question from list
             questions.remove(question);

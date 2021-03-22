@@ -128,6 +128,8 @@ public class StudentRoomController {
         this.studentView.setData(student,room);
     }
 
+
+
     /** Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.
      * If the room is active but the question form is blank - ..
@@ -144,6 +146,10 @@ public class StudentRoomController {
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setContentText("Please wait for a total of 20 seconds before"
                         + "\nsubmitting another question");
+                alert.show();
+            } else if (questionBox.getText().contains("&")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The symbol '&' cannot be used.");
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
@@ -168,7 +174,7 @@ public class StudentRoomController {
     }
 
     /**
-     * Deletes this question upon pressing "delete" or "mark as answered" buttons.
+     * Deletes this question upon pressing "delete" button.
      * Based on id of this question.
      * @param questionToRemove - Question to be removed from database.
      */
