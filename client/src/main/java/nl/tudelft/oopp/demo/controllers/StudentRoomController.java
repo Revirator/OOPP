@@ -10,11 +10,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
@@ -94,6 +95,7 @@ public class StudentRoomController {
         service.setOnRunning(e -> {
             roomRefresher();
             questionRefresher();
+            participantRefresher();
         });
         service.start();
     }
@@ -108,14 +110,35 @@ public class StudentRoomController {
         studentView.update(questionList, answeredList);
     }
 
+    /**
+     * Calls methods in ServerCommunication to get updated lists from the database.
+     * Updates the user views (periodically called by refresher)
+     */
+    public void participantRefresher() {
+        List<Student> studentList = ServerCommunication.getStudents(room.getRoomId());
+        List<Moderator> moderatorList = ServerCommunication.getModerators(room.getRoomId());
+        studentView.updateParticipants(studentList, moderatorList);
+
+    }
+
     /** Updates the room object (and the user(soon)) by calling the getRoom() ..
      * .. method in ServerCommunication.
      */
     public void roomRefresher() {
-        this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+        String roomCode = this.room.getStudentsLink().toString().substring(28);
+        Room room = ServerCommunication.getRoom(roomCode);
+        if (this.room.isActive() && !room.isActive()) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setContentText("The lecture has ended! You cannot ask questions or "
+                    + "provide\nfeedback anymore!");
+            alert.show();
+        }
+        this.room = room;
         // something to update the student (in case he got banned or kicked out of the room)
         this.studentView.setData(student,room);
     }
+
+
 
     /** Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.
@@ -133,6 +156,10 @@ public class StudentRoomController {
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setContentText("Please wait for a total of 20 seconds before"
                         + "\nsubmitting another question");
+                alert.show();
+            } else if (questionBox.getText().contains("&")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The symbol '&' cannot be used.");
                 alert.show();
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
@@ -157,7 +184,7 @@ public class StudentRoomController {
     }
 
     /**
-     * Deletes this question upon pressing "delete" or "mark as answered" buttons.
+     * Deletes this question upon pressing "delete" button.
      * Based on id of this question.
      * @param questionToRemove - Question to be removed from database.
      */
@@ -244,6 +271,7 @@ public class StudentRoomController {
             tooSlowButton.setVisible(true);
             tooFastButton.setDisable(true);
             tooSlowButton.setDisable(true);
+            resetButton.setDisable(true);
         } else {
             resetButton.setDisable(true);
             if (tooSlowButton.isVisible() && !tooFastButton.isVisible()) {
@@ -256,15 +284,6 @@ public class StudentRoomController {
                 ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
             }
         }
-    }
-
-    /** Alert displayed when lecture is inactive.
-     *
-     */
-    public void lectureHasEnded() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("The lecture has ended!");
-        alert.show();
     }
 
     /** Increments the number of upvotes of this question by 1.

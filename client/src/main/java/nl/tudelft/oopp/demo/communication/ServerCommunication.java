@@ -15,8 +15,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javafx.scene.control.Alert;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
+
 
 public class ServerCommunication {
 
@@ -89,6 +92,9 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+
+
+
     /** Sends feedback to the server which is processed and the rooms are updated.
      * @param url the students link connected to a room
      * @param feedback the feedback we want to send
@@ -112,6 +118,91 @@ public class ServerCommunication {
             error.show();
         }
     }
+
+    //    /**
+    //     * Fetches a list of all participants.
+    //     * @param roomID ID of the room
+    //     * @return a list of all participants in the room
+    //     */
+    //    public static List<User> getParticipants(long roomID) {
+    //        HttpRequest request = HttpRequest.newBuilder()
+    //                .GET()
+    //                .uri(URI.create("http://localhost:8080/rooms/participants/" + roomID))
+    //                .build();
+    //        HttpResponse<String> response;
+    //
+    //        try {
+    //            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    //        } catch (Exception e) {
+    //            e.printStackTrace();
+    //            return null;
+    //        }
+    //
+    //        if (response.statusCode() != 200) {
+    //            System.out.println("Status: " + response.statusCode());
+    //            return List.of();
+    //        }
+    //
+    //        return gson.fromJson(response.body(), new TypeToken<List<User>>(){}.getType());
+    //    }
+
+
+    /**
+     * Fetches a list of all students.
+     * @param roomID ID of the room
+     * @return a list of all students in the room
+     */
+    public static List<Student> getStudents(long roomID) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/rooms/students/" + roomID))
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Student>>(){}.getType());
+    }
+
+    /**
+     * Fetches a list of all moderators.
+     * @param roomID ID of the room
+     * @return a list of all moderators in the room
+     */
+    public static List<Moderator> getModerators(long roomID) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/rooms/moderators/" + roomID))
+                .build();
+        HttpResponse<String> response;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<Moderator>>(){}.getType());
+    }
+
+
+
 
     /**
      * Retrieves a list of all questions.
@@ -141,6 +232,7 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
+
     /**
      * Retrieves a list of all answered questions.
      * from the server for a specific room
@@ -166,6 +258,8 @@ public class ServerCommunication {
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
+
+
 
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
@@ -286,9 +380,9 @@ public class ServerCommunication {
             return (long)-1;
         }
 
-        // not the best way to do it (goes wrong if someone adds ", " in one of the fields
-        String postRequestBody = newQuestion.getRoom() + ", "
-                + newQuestion.getText() + ", " + newQuestion.getOwner();
+        // not the best way to do it (goes wrong if someone adds "& " in one of the fields
+        String postRequestBody = newQuestion.getRoom() + "& "
+                 + newQuestion.getOwner() + "& " + newQuestion.getText();
 
         // send request to the server
         HttpRequest request = HttpRequest.newBuilder()
@@ -311,6 +405,38 @@ public class ServerCommunication {
         }
 
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
+    }
+
+
+
+
+    /** Updates attribute "answer" of question corresponding to this id in database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to set answer of in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean setAnswer(long questionId, String answer) {
+
+        if (answer.equals("")) {
+            return false;
+        }
+
+        String url = "http://localhost:8080/questions/setanswer/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.ofString(answer))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
     }
 
 

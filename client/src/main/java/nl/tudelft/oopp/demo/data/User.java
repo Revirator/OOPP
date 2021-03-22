@@ -2,7 +2,7 @@ package nl.tudelft.oopp.demo.data;
 
 import java.util.Objects;
 
-public abstract class User {
+public class User {
 
     private String nickname;
     private Room room;
@@ -20,7 +20,18 @@ public abstract class User {
         return room;
     }
 
-    public abstract String getRole();
+
+    /** Returns role type of this user.
+     * @return String - either "Student" or "Moderator"
+     */
+    public String getRole() {
+        if (this instanceof Student) {
+            return "Student";
+        } else {
+            return "Moderator";
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {
