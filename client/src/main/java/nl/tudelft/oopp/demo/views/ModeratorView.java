@@ -102,26 +102,9 @@ public class ModeratorView extends Application {
         answeredListView.setItems(answered);
         participantsListView.setItems(participants);
 
-        /*        DEBUGGING PURPOSES
-
-        addQuestion(new Question(1,20,
-                "What's the square root of -1?","Senne",20, true));
-
-        addQuestion(new Question(2,20,
-                "Is Java a programming language?","Albert",20, false));
-
-        addQuestion(new Question(3,20,
-                "What is the idea behind the TU Delft logo?", "Henkie", 50, false));
-
-        for (Question q : questions) {
-            q.setAnswer("This is the answer!");
-        }
-
-         */
         addUser(new Student("ddd", null));
         addUser(new Moderator("xyz", null));
         addUser(new Student("abc", null));
-
 
 
         // Set cell factory to use student cell
@@ -151,22 +134,115 @@ public class ModeratorView extends Application {
     }
 
     /**
+     * Adds a question to the list of current questions.
+     * @param question question to add
+     * @return true if successful, false if unsuccessful
+     */
+    public boolean addQuestion(Question question) {
+
+        // Not adding duplicates
+        if (questions.contains(question)) {
+            return false;
+        }
+
+        // Add question
+        questions.add(question);
+
+        // Sort based on votes
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
+
+
+    /**
      * Updates the questions and answered lists.
-     * @param questionList all current questions
+     * @param questionList all questions
      * @param answeredList all answered questions
+     *      If a question in questionList (returned by server) exists, it will only be updated.
+     *      Else, isOwner and hasVoted would be set to false again. (don't exist on server-side)
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
-        questions.clear();
         answered.clear();
-
-        questions.addAll(questionList);
         answered.addAll(answeredList);
+
+        // questionList contains both answered and non-answered questions!
+        for (Question q : questionList) {
+
+            Question toUpdate = searchQuestion(q.getId());
+
+            // if question exists and is NOT answered, update its values.
+            if (toUpdate != null) {
+                if (answered.contains(toUpdate)) {
+                    questions.remove(toUpdate);
+                } else {
+                    toUpdate.setUpvotes(q.getUpvotes());
+                    toUpdate.setText(q.getText());
+                    toUpdate.setAnswer(q.getAnswer());
+                }
+                // if new question, just add it to the questions.
+            } else if (!answered.contains(q)) {
+                questions.add(q);
+            }
+        }
 
         questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
     }
+
+    /**
+     * Checks if this question id exists in the questionList.
+     * @param questionId question id to check
+     * @return true if exists, else false.
+     */
+    private Question searchQuestion(long questionId) {
+
+        for (Question q : questions) {
+            if (q.getId() == questionId) {
+                return q;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Adds a user to the observable list of participants.
+     * @param user user to add
+     * @return true if successful, false otherwise
+     */
+    public boolean addUser(User user) {
+
+        if (participants.contains(user)) {
+            return false;
+        }
+
+        this.room.addParticipant(user);
+        participants.add(user);
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
+
+        return true;
+    }
+
+
+    /**
+     * Updates the participant list.
+     * @param studentList list of all students
+     * @param moderatorList list of all moderators
+     */
+    public void updateParticipants(List<Student> studentList, List<Moderator> moderatorList) {
+
+        participants.clear();
+        participants.addAll(studentList);
+        participants.addAll(moderatorList);
+
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
+
+    }
+
 
     /**
      * Creates the choice boxes for polls.
@@ -250,63 +326,8 @@ public class ModeratorView extends Application {
         }
     }
 
-    /**
-     * Adds a question to the list of current questions.
-     * @param question question to add
-     * @return true if successful, false if unsuccessful
-     */
-    public boolean addQuestion(Question question) {
 
-        // Not adding duplicates
-        if (questions.contains(question)) {
-            return false;
-        }
 
-        // Add question
-        questions.add(question);
-
-        // Sort based on votes
-        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
-
-        return true;
-    }
-
-    /**
-     * Adds a user to the observable list of participants.
-     * @param user user to add
-     * @return true if successful, false otherwise
-     */
-    public boolean addUser(User user) {
-
-        if (participants.contains(user)) {
-            return false;
-        }
-
-        // uncomment after Nadine's MR
-        // this.room.addParticipant(user);
-        participants.add(user);
-        participants.sort(Comparator.comparing(User::getNickname));
-        participants.sort(Comparator.comparing(User::getRole));
-
-        return true;
-    }
-
-    /**
-     * This will get called every X(5) seconds to update.
-     * the list of answered questions for the user
-     */
-    public void updateAnsweredList() {
-
-        List<Question> newAnswered = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-
-        for (Question q : newAnswered) {
-            if (!answered.contains(q)) {
-                answered.add(q);
-            }
-        }
-
-        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
-    }
 
     /**
      * Launches this view.

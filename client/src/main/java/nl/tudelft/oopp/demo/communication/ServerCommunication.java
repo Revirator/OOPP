@@ -6,7 +6,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -15,8 +14,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javafx.scene.control.Alert;
+import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
+import nl.tudelft.oopp.demo.data.User;
 
 public class ServerCommunication {
 
@@ -89,13 +91,15 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Room.class);
     }
 
+
+
+
     /** Sends feedback to the server which is processed and the rooms are updated.
      * @param url the students link connected to a room
      * @param feedback the feedback we want to send
      */
-    public static void sendFeedback(URL url, String feedback) {
-        String roomCode = url.toString().substring(28);
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/rooms/" + roomCode + "/" + feedback))
+    public static void sendFeedback(String url, String feedback) {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/rooms/" + url + "/" + feedback))
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .build();
         HttpResponse<String> response;
@@ -113,6 +117,135 @@ public class ServerCommunication {
         }
     }
 
+    /** Sends a user to the server, who is saved in the DB ..
+     * .. and added to the list of participants in the ..
+     * .. corresponding room instance.
+     * @param user the user to be saved in the DB
+     * @param roomId the id of the room the user is a participant in
+     * @return Long - the id of the user
+     */
+    public static Long sendUser(User user, long roomId) {
+        String requestUrl = "http://localhost:8080/users/addUser/" + user.getRole()
+                +  "/" + roomId + "/" + user.getNickname();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl))
+                .POST(HttpRequest.BodyPublishers.ofString(""))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return (long) - 1;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return (long) - 1;
+        }
+        return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
+    }
+
+    //    /**
+    //     * Fetches a list of all participants.
+    //     * @param roomID ID of the room
+    //     * @return a list of all participants in the room
+    //     */
+    //    public static List<User> getParticipants(long roomID) {
+    //        HttpRequest request = HttpRequest.newBuilder()
+    //                .GET()
+    //                .uri(URI.create("http://localhost:8080/rooms/participants/" + roomID))
+    //                .build();
+    //        HttpResponse<String> response;
+    //
+    //        try {
+    //            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    //        } catch (Exception e) {
+    //            e.printStackTrace();
+    //            return null;
+    //        }
+    //
+    //        if (response.statusCode() != 200) {
+    //            System.out.println("Status: " + response.statusCode());
+    //            return List.of();
+    //        }
+    //
+    //        return gson.fromJson(response.body(), new TypeToken<List<User>>(){}.getType());
+    //    }
+
+
+    /**
+     * Fetches a list of all students.
+     * @param roomID ID of the room
+     * @return a list of all students in the room
+     */
+    public static List<Student> getStudents(long roomID) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/rooms/students/" + roomID))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();
+        }
+        return gson.fromJson(response.body(), new TypeToken<List<Student>>() {
+        }.getType());
+    }
+
+
+    /** Sends an id to the server.
+     * The server return the student with the given id ..
+     * .. or null if the student doesn't exist.
+     * @param studentId the id of the student to be updated
+     * @return User - a new instance of Student corresponding to the id
+     */
+    public static User getStudent(Long studentId) {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/users/" + studentId))
+                .GET().build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return null;
+        }
+        return gson.fromJson(response.body(), Student.class);
+    }
+
+    /**
+     * Fetches a list of all moderators.
+     * @param roomID ID of the room
+     * @return a list of all moderators in the room
+     */
+    public static List<Moderator> getModerators(long roomID) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/rooms/moderators/" + roomID))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return List.of();
+        }
+        return gson.fromJson(response.body(), new TypeToken<List<Moderator>>(){}.getType());
+    }
+
     /**
      * Retrieves a list of all questions.
      * @param roomID that we want the questions from
@@ -124,7 +257,6 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/questions/" + roomID))
                 .build();
         HttpResponse<String> response;
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -170,8 +302,7 @@ public class ServerCommunication {
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
      */
-    public static void updateRoom(String code) {
-        code = code.substring(28);
+    public static void updateRoomStatus(String code) {
         // Including the code in the body of the request and ..
         // .. not in the URL might be better, but I couldn't get it to work.
         String url = "http://localhost:8080/rooms/update/" + code;
@@ -199,7 +330,6 @@ public class ServerCommunication {
      * @return boolean - true if DELETE operation succeeded, false otherwise.
      */
     public static boolean deleteQuestion(long questionId) {
-
         HttpRequest request = HttpRequest.newBuilder().DELETE()
                 .uri(URI.create("http://localhost:8080/questions/" + questionId)).build();
         HttpResponse<String> response;
@@ -224,7 +354,6 @@ public class ServerCommunication {
      * @return boolean - true if PUT operation succeeded, false otherwise.
      */
     public static boolean editQuestion(long questionId, String update) {
-
         if (update.equals("")) {
             return false;
         }
@@ -254,7 +383,6 @@ public class ServerCommunication {
      * @return boolean - true if PUT operation succeeded, false otherwise.
      */
     public static boolean markQuestionAsAnswered(long questionId) {
-
         String url = "http://localhost:8080/questions/markAnswered/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())
@@ -281,14 +409,13 @@ public class ServerCommunication {
      * @return Long - generated id for this question
      */
     public static Long postQuestion(Question newQuestion) {
-
         if (newQuestion == null) {
             return (long)-1;
         }
 
-        // not the best way to do it (goes wrong if someone adds ", " in one of the fields
-        String postRequestBody = newQuestion.getRoom() + ", "
-                + newQuestion.getText() + ", " + newQuestion.getOwner();
+        // not the best way to do it (goes wrong if someone adds "& " in one of the fields
+        String postRequestBody = newQuestion.getRoom() + "& "
+                 + newQuestion.getOwner() + "& " + newQuestion.getText();
 
         // send request to the server
         HttpRequest request = HttpRequest.newBuilder()
@@ -314,12 +441,40 @@ public class ServerCommunication {
     }
 
 
+    /** Updates attribute "answer" of question corresponding to this id in database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to set answer of in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean setAnswer(long questionId, String answer) {
+        if (answer.equals("")) {
+            return false;
+        }
+
+        String url = "http://localhost:8080/questions/setanswer/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.ofString(answer))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+    }
+
+
     /** Increments the upvote amount in server after question is upvoted on client
      * Makes PUT request to server to increment upvotes via QuestionController.
      * @param questionId - id of the question that will get its upvotes incremented
      */
     public static boolean upvoteQuestion(Long questionId) {
-
         String url = "http://localhost:8080/questions/upvote/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())
@@ -345,7 +500,6 @@ public class ServerCommunication {
      * @param questionId - id of the question that will get its upvotes decremented
      */
     public static boolean deUpvoteQuestion(Long questionId) {
-
         String url = "http://localhost:8080/questions/deupvote/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())

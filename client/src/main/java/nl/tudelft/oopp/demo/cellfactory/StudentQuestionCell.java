@@ -112,7 +112,6 @@ public class StudentQuestionCell extends ListCell<Question> {
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
 
-        //TODO possibly move to other files
 
 
         // Click event for upvote

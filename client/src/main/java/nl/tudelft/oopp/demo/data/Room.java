@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.data;
 
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +11,13 @@ public class Room {
 
     private long roomId;
     private String roomName;
-    private URL studentsLink;
-    private URL moderatorLink;
+    private String studentsLink;
+    private String moderatorLink;
     private LocalDateTime startingTime;
     private boolean active;
     private List<User> participants;
+    private List<Student> students;
+    private List<Moderator> moderators;
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
 
@@ -27,9 +28,9 @@ public class Room {
      * @param moderatorLink moderatorLink
      * @param startingTime startingTime
      */
-    public Room(long id, URL studentsLink, URL moderatorLink,
+    public Room(long id, String studentsLink, String moderatorLink,
                 LocalDateTime startingTime, String roomName,
-                boolean active, List<User>  participants, int slow, int fast) {
+                boolean active, List<User> participants, int slow, int fast) {
         this.roomId = id;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
@@ -37,6 +38,8 @@ public class Room {
         this.roomName = roomName;
         this.active = active;
         this.participants = participants;
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = slow;
         this.peopleThinkingLectureIsTooFast = fast;
     }
@@ -52,8 +55,8 @@ public class Room {
         this.startingTime = startingTime;
         this.active = active;
         this.participants = new ArrayList<>();
-        // or
-        // this.participants = participants;
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
     }
@@ -70,8 +73,8 @@ public class Room {
         this.startingTime = startingTime;
         this.active = active;
         this.participants = new ArrayList<>();
-        // or
-        // this.participants = participants;
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
     }
@@ -80,11 +83,11 @@ public class Room {
         return roomName;
     }
 
-    public URL getStudentsLink() {
+    public String getStudentsLink() {
         return studentsLink;
     }
 
-    public URL getModeratorLink() {
+    public String getModeratorLink() {
         return moderatorLink;
     }
 
@@ -144,6 +147,14 @@ public class Room {
         // should be
         // return this.participants;
         // but this is always returning null atm cause of the server
+    }
+
+    public List<Student> getStudents() {
+        return this.students;
+    }
+
+    public List<Moderator> getModerators() {
+        return this.moderators;
     }
 
     public void addParticipant(User user) {

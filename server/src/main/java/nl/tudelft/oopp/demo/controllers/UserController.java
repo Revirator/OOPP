@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
+
 import java.util.List;
+import java.util.Optional;
 
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Student;
@@ -8,9 +11,10 @@ import nl.tudelft.oopp.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @RequestMapping("users")
@@ -23,16 +27,33 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @GetMapping("students")   // http://localhost:8080/users/students/{roomId}
+    @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
+    @ResponseBody
     public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
+        logRequest("to get all students for the room with an id '" + roomId + "'");
         return userService.getStudents(roomId);
     }
 
-    @GetMapping("moderators")   // http://localhost:8080/users/moderators/{roomId}
+    @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
+    @ResponseBody
     public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
+        logRequest("to get all moderators for the room with an id '" + roomId + "'");
         return userService.getModerators(roomId);
     }
 
+    @GetMapping("/{studentId}") //http://localhost:8080/users/{studentId}
+    @ResponseBody
+    public Optional<Student> getStudent(@PathVariable Long studentId) {
+        return userService.getStudentById(studentId);
+    }
 
+    @PostMapping("/addUser/Student/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Student/{roomId}/{nickname}
+    public Long addStudent(@PathVariable long roomId, @PathVariable String nickname) {
+        return userService.addStudent(nickname,roomId);
+    }
+
+    @PostMapping("/addUser/Moderator/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Moderator/{roomId}/{nickname}
+    public Long addModerator(@PathVariable long roomId, @PathVariable String nickname) {
+        return userService.addModerator(nickname,roomId);
+    }
 }
