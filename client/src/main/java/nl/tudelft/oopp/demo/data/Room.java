@@ -17,6 +17,8 @@ public class Room {
     private LocalDateTime startingTime;
     private boolean active;
     private List<User> participants;
+    private List<Student> students;
+    private List<Moderator> moderators;
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
 
@@ -29,7 +31,7 @@ public class Room {
      */
     public Room(long id, URL studentsLink, URL moderatorLink,
                 LocalDateTime startingTime, String roomName,
-                boolean active, List<User>  participants, int slow, int fast) {
+                boolean active, List<User> participants, int slow, int fast) {
         this.roomId = id;
         this.studentsLink = studentsLink;
         this.moderatorLink = moderatorLink;
@@ -37,6 +39,8 @@ public class Room {
         this.roomName = roomName;
         this.active = active;
         this.participants = participants;
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = slow;
         this.peopleThinkingLectureIsTooFast = fast;
     }
@@ -52,8 +56,8 @@ public class Room {
         this.startingTime = startingTime;
         this.active = active;
         this.participants = new ArrayList<>();
-        // or
-        // this.participants = participants;
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
     }
@@ -70,8 +74,8 @@ public class Room {
         this.startingTime = startingTime;
         this.active = active;
         this.participants = new ArrayList<>();
-        // or
-        // this.participants = participants;
+        this.students = new ArrayList<>();
+        this.moderators = new ArrayList<>();
         this.peopleThinkingLectureIsTooSlow = 0;
         this.peopleThinkingLectureIsTooFast = 0;
     }
@@ -144,6 +148,14 @@ public class Room {
         // should be
         // return this.participants;
         // but this is always returning null atm cause of the server
+    }
+
+    public List<Student> getStudents() {
+        return this.students;
+    }
+
+    public List<Moderator> getModerators() {
+        return this.moderators;
     }
 
     public void addParticipant(User user) {

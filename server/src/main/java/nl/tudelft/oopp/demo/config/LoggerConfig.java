@@ -30,11 +30,11 @@ public class LoggerConfig {
     /**
      * Gets the first integer from a string,
      * used to get ids from http payloads.
-     * @param text some string with delimiter ", "
+     * @param text some string with delimiter "& "
      * @return the first integer in the string
      */
     public static int getFirstNumber(String text) {
-        int num = new Scanner(text).useDelimiter(", ").nextInt();
+        int num = new Scanner(text).useDelimiter("& ").nextInt();
         return num;
     }
 }

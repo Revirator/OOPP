@@ -9,6 +9,6 @@ public class LoggerTest {
 
     @Test
     public void getFirstNumberTest() {
-        assertEquals(2, getFirstNumber("2, asda, 123"));
+        assertEquals(2, getFirstNumber("2& asda& 123"));
     }
 }

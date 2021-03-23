@@ -134,6 +134,28 @@ public class ModeratorView extends Application {
     }
 
     /**
+     * Adds a question to the list of current questions.
+     * @param question question to add
+     * @return true if successful, false if unsuccessful
+     */
+    public boolean addQuestion(Question question) {
+
+        // Not adding duplicates
+        if (questions.contains(question)) {
+            return false;
+        }
+
+        // Add question
+        questions.add(question);
+
+        // Sort based on votes
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+
+        return true;
+    }
+
+
+    /**
      * Updates the questions and answered lists.
      * @param questionList all questions
      * @param answeredList all answered questions
@@ -184,6 +206,43 @@ public class ModeratorView extends Application {
         }
         return null;
     }
+
+    /**
+     * Adds a user to the observable list of participants.
+     * @param user user to add
+     * @return true if successful, false otherwise
+     */
+    public boolean addUser(User user) {
+
+        if (participants.contains(user)) {
+            return false;
+        }
+
+        this.room.addParticipant(user);
+        participants.add(user);
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
+
+        return true;
+    }
+
+
+    /**
+     * Updates the participant list.
+     * @param studentList list of all students
+     * @param moderatorList list of all moderators
+     */
+    public void updateParticipants(List<Student> studentList, List<Moderator> moderatorList) {
+
+        participants.clear();
+        participants.addAll(studentList);
+        participants.addAll(moderatorList);
+
+        participants.sort(Comparator.comparing(User::getNickname));
+        participants.sort(Comparator.comparing(User::getRole));
+
+    }
+
 
     /**
      * Creates the choice boxes for polls.
@@ -267,46 +326,7 @@ public class ModeratorView extends Application {
         }
     }
 
-    /**
-     * Adds a question to the list of current questions.
-     * @param question question to add
-     * @return true if successful, false if unsuccessful
-     */
-    public boolean addQuestion(Question question) {
 
-        // Not adding duplicates
-        if (questions.contains(question)) {
-            return false;
-        }
-
-        // Add question
-        questions.add(question);
-
-        // Sort based on votes
-        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
-
-        return true;
-    }
-
-    /**
-     * Adds a user to the observable list of participants.
-     * @param user user to add
-     * @return true if successful, false otherwise
-     */
-    public boolean addUser(User user) {
-
-        if (participants.contains(user)) {
-            return false;
-        }
-
-        // uncomment after Nadine's MR
-        // this.room.addParticipant(user);
-        participants.add(user);
-        participants.sort(Comparator.comparing(User::getNickname));
-        participants.sort(Comparator.comparing(User::getRole));
-
-        return true;
-    }
 
 
     /**

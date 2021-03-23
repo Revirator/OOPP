@@ -7,7 +7,10 @@ import java.net.URL;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.DemoApplication;
+import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.Student;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,5 +78,23 @@ public class RoomController {
     public void updateFeedback(@PathVariable String roomCode, @PathVariable String feedback) {
         DemoApplication.logger.info("Updated the feedback for room with a code '" + roomCode + "'");
         roomService.updateRoomSpeed("http://localhost:8080/rooms/" + roomCode, feedback);
+    }
+
+    //    @GetMapping("/participants/{roomId}") // http://localhost:8080/rooms/participants/{roomId}
+    //    public List<User> getParticipants(@PathVariable String roomId) {
+    //        Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
+    //        return room.getParticipants();
+    //    }
+
+    @GetMapping("/students/{roomId}") // http://localhost:8080/rooms/participants/{roomId}
+    public List<Student> getStudents(@PathVariable String roomId) {
+        Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
+        return room.getStudents();
+    }
+
+    @GetMapping("/moderators/{roomId}") // http://localhost:8080/rooms/participants/{roomId}
+    public List<Moderator> getModerators(@PathVariable String roomId) {
+        Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
+        return room.getModerators();
     }
 }

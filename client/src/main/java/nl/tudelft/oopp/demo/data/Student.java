@@ -12,7 +12,7 @@ public class Student extends User {
 
     @Override
     public String getRole() {
-        return "Student";
+        return super.getRole();
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Moderator extends User {
 
     @Override
     public String getRole() {
-        return "Moderator";
+        return super.getRole();
     }
 
     @Override

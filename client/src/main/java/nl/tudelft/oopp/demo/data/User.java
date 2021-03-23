@@ -37,7 +37,16 @@ public class User {
         return room;
     }
 
+    /** Returns role type of this user.
+     * @return String - "Student", "Moderator" or "User"
+     */
     public String getRole() {
+        if (this instanceof Student) {
+            return "Student";
+        }
+        if (this instanceof Moderator) {
+            return "Moderator";
+        }
         return "User";
     }
 

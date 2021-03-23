@@ -23,7 +23,7 @@ public class UserConfig {
         return args -> {
 
             Room pts = new Room(
-                    LocalDateTime.of(2021, Month.JUNE, 15, 8, 45, 00),
+                    LocalDateTime.of(2021, Month.MARCH, 15, 8, 45, 00),
                     "Probability Theory and Statistics", true);
 
             roomRepository.save(pts);
