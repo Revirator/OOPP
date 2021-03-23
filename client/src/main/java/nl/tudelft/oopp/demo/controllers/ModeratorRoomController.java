@@ -104,7 +104,7 @@ public class ModeratorRoomController {
      * .. method in ServerCommunication.
      */
     public void roomRefresher() {
-        this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+        this.room = ServerCommunication.getRoom(room.getStudentsLink());
         this.moderatorView.setData(moderator, room);
         setFeedback();
     }
@@ -148,12 +148,13 @@ public class ModeratorRoomController {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setContentText("The room does not exist or has ended already!");
             error.show();
+            endLecture.setDisable(true);
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Are you sure you want to end the lecture?");
             alert.showAndWait();
             if (alert.getResult().getText().equals("OK")) {
-                ServerCommunication.updateRoomStatus(room.getModeratorLink().toString());
+                ServerCommunication.updateRoomStatus(room.getModeratorLink());
                 room.end();
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
                 success.setContentText("The lecture has ended successfully!");

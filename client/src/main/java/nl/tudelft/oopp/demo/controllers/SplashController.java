@@ -136,7 +136,6 @@ public class SplashController {
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
-
             User moderator = new Moderator(nickName.getText(), newRoom);
             moderator = new Moderator(
                     ServerCommunication.sendUser(moderator, newRoom.getRoomId()),

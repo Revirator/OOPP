@@ -3,14 +3,12 @@ package nl.tudelft.oopp.demo.controllers;
 import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
-import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +48,7 @@ public class RoomController {
     @ResponseBody
     public Room getRoomByCode(@PathVariable String roomCode) {
         logRequest("to join room with code '" + roomCode + "'");
-        return roomService.getRoomByCode("http://localhost:8080/rooms/" + roomCode);
+        return roomService.getRoomByCode(roomCode);
     }
 
     /** Updates the status of the room from active to inactive.
@@ -58,14 +56,8 @@ public class RoomController {
      */
     @PutMapping("/update/{roomCode}") // http://localhost:8080/rooms/update/{roomCode}
     public void updateRoomStatus(@PathVariable String roomCode) {
-        URL url = null;
-        try {
-            url = new URL("http://localhost:8080/rooms/" + roomCode);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
         logRequest("to deactivate the room with code '" + roomCode + "'");
-        roomService.updateRoomStatusByLink(url);
+        roomService.updateRoomStatusByLink(roomCode);
     }
 
     @PostMapping   // http://localhost:8080/rooms
@@ -77,7 +69,7 @@ public class RoomController {
     @PutMapping("/{roomCode}/{feedback}") // http://localhost:8080/rooms/{roomCode}/{feedback}
     public void updateFeedback(@PathVariable String roomCode, @PathVariable String feedback) {
         DemoApplication.logger.info("Updated the feedback for room with a code '" + roomCode + "'");
-        roomService.updateRoomSpeed("http://localhost:8080/rooms/" + roomCode, feedback);
+        roomService.updateRoomSpeed(roomCode, feedback);
     }
 
     //    @GetMapping("/participants/{roomId}") // http://localhost:8080/rooms/participants/{roomId}

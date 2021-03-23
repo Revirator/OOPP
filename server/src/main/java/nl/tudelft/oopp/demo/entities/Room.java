@@ -37,8 +37,8 @@ public class Room {
             generator = "room_sequence"
     )
     private long roomId;
-    private URL studentsLink;
-    private URL moderatorLink;
+    private String studentsLink;
+    private String moderatorLink;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startingTime;
     private String roomName;                    // course name e.g.
@@ -129,25 +129,19 @@ public class Room {
      * .. then it is a valid moderator link.
      */
     private void linkGenerator() {
-        try {
-            this.studentsLink = new URL("http://localhost:8080/rooms/"
-                    + UUID.randomUUID().toString().replace("-", "").substring(0, 18));
-            this.moderatorLink = new URL("http://localhost:8080/rooms/M"
-                    + UUID.randomUUID().toString().replace("-", "").substring(0, 17));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        this.studentsLink = UUID.randomUUID().toString().replace("-", "").substring(0, 18);
+        this.moderatorLink = "M" + UUID.randomUUID().toString().replace("-", "").substring(0, 17);
     }
 
     public long getRoomId() {
         return roomId;
     }
 
-    public URL getStudentsLink() {
+    public String getStudentsLink() {
         return studentsLink;
     }
 
-    public URL getModeratorLink() {
+    public String getModeratorLink() {
         return moderatorLink;
     }
 

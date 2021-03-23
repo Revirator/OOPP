@@ -6,7 +6,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -99,9 +98,8 @@ public class ServerCommunication {
      * @param url the students link connected to a room
      * @param feedback the feedback we want to send
      */
-    public static void sendFeedback(URL url, String feedback) {
-        String roomCode = url.toString().substring(28);
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/rooms/" + roomCode + "/" + feedback))
+    public static void sendFeedback(String url, String feedback) {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/rooms/" + url + "/" + feedback))
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .build();
         HttpResponse<String> response;
@@ -305,7 +303,6 @@ public class ServerCommunication {
      * @param code the room link as a String
      */
     public static void updateRoomStatus(String code) {
-        code = code.substring(28);
         // Including the code in the body of the request and ..
         // .. not in the URL might be better, but I couldn't get it to work.
         String url = "http://localhost:8080/rooms/update/" + code;
@@ -333,7 +330,6 @@ public class ServerCommunication {
      * @return boolean - true if DELETE operation succeeded, false otherwise.
      */
     public static boolean deleteQuestion(long questionId) {
-
         HttpRequest request = HttpRequest.newBuilder().DELETE()
                 .uri(URI.create("http://localhost:8080/questions/" + questionId)).build();
         HttpResponse<String> response;
@@ -358,7 +354,6 @@ public class ServerCommunication {
      * @return boolean - true if PUT operation succeeded, false otherwise.
      */
     public static boolean editQuestion(long questionId, String update) {
-
         if (update.equals("")) {
             return false;
         }
@@ -388,7 +383,6 @@ public class ServerCommunication {
      * @return boolean - true if PUT operation succeeded, false otherwise.
      */
     public static boolean markQuestionAsAnswered(long questionId) {
-
         String url = "http://localhost:8080/questions/markAnswered/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())
@@ -415,7 +409,6 @@ public class ServerCommunication {
      * @return Long - generated id for this question
      */
     public static Long postQuestion(Question newQuestion) {
-
         if (newQuestion == null) {
             return (long)-1;
         }
@@ -454,7 +447,6 @@ public class ServerCommunication {
      * @return boolean - true if PUT operation succeeded, false otherwise.
      */
     public static boolean setAnswer(long questionId, String answer) {
-
         if (answer.equals("")) {
             return false;
         }
@@ -483,7 +475,6 @@ public class ServerCommunication {
      * @param questionId - id of the question that will get its upvotes incremented
      */
     public static boolean upvoteQuestion(Long questionId) {
-
         String url = "http://localhost:8080/questions/upvote/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())
@@ -509,7 +500,6 @@ public class ServerCommunication {
      * @param questionId - id of the question that will get its upvotes decremented
      */
     public static boolean deUpvoteQuestion(Long questionId) {
-
         String url = "http://localhost:8080/questions/deupvote/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())
