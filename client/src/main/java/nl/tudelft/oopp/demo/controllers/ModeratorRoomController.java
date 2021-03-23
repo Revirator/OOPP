@@ -153,7 +153,7 @@ public class ModeratorRoomController {
             alert.setContentText("Are you sure you want to end the lecture?");
             alert.showAndWait();
             if (alert.getResult().getText().equals("OK")) {
-                ServerCommunication.updateRoom(room.getModeratorLink().toString());
+                ServerCommunication.updateRoomStatus(room.getModeratorLink().toString());
                 room.end();
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
                 success.setContentText("The lecture has ended successfully!");
@@ -255,8 +255,4 @@ public class ModeratorRoomController {
         }
         return false;
     }
-
-
-
-
 }

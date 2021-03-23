@@ -45,7 +45,7 @@ public class SplashController {
     /**
      * Handles clicking the "join room" button.
      */
-    public void buttonClicked(ActionEvent actionEvent) throws IOException {
+    public void joinRoom(ActionEvent actionEvent) {
 
         // Check if one of the fields is empty
         if (nickName.getText().equals("") || link.getText().equals("")) {
@@ -69,14 +69,20 @@ public class SplashController {
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
                     if (code.contains("M")) {
-                        // TODO: Send Moderator entity to server to store in db
                         User moderator = new Moderator(nickName.getText(), room);
+                        moderator = new Moderator(
+                                ServerCommunication.sendUser(moderator, room.getRoomId()),
+                                moderator.getNickname(),
+                                moderator.getRoom());
                         ModeratorView moderatorView = new ModeratorView();
                         moderatorView.setData(moderator, room);
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
-                        // TODO: Send Student entity to server to store in db
                         User student = new Student(nickName.getText(), room);
+                        student = new Student(
+                                ServerCommunication.sendUser(student, room.getRoomId()),
+                                student.getNickname(),
+                                student.getRoom());
                         StudentView studentView = new StudentView();
                         studentView.setData(student, room);
                         studentView.start((Stage) anchor.getScene().getWindow());
@@ -104,6 +110,10 @@ public class SplashController {
                     stage.show();
 
                     User student = new Student(nickName.getText(), room);
+                    student = new Student(
+                            ServerCommunication.sendUser(student, room.getRoomId()),
+                            student.getNickname(),
+                            student.getRoom());
                     WaitingRoomController waitingRoomController = loader.getController();
                     waitingRoomController.setData(student, room);
                     waitingRoomController.main(new String[0]);
@@ -115,9 +125,7 @@ public class SplashController {
     /**
      * Handles clicking the "create instant room" button.
      */
-    public void startRoom(ActionEvent actionEvent) throws IOException {
-
-        // TODO: Send Moderator entity to server to store in db
+    public void startRoom(ActionEvent actionEvent) {
         if (roomName.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter name of room");
@@ -130,6 +138,10 @@ public class SplashController {
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
 
             User moderator = new Moderator(nickName.getText(), newRoom);
+            moderator = new Moderator(
+                    ServerCommunication.sendUser(moderator, newRoom.getRoomId()),
+                    moderator.getNickname(),
+                    moderator.getRoom());
             ModeratorView moderatorView = new ModeratorView();
             moderatorView.setData(moderator, newRoom);
             moderatorView.start(primaryStage);
@@ -141,9 +153,7 @@ public class SplashController {
      * @param actionEvent - to be edited
      * @throws IOException - to be edited
      */
-    public void scheduleRoom(ActionEvent actionEvent) throws IOException {
-
-        // TODO: Send Moderator entity to server to store in db
+    public void scheduleRoom(ActionEvent actionEvent) {
         if (date.getValue() == null
                 || hour.getText().equals("")
                 || !hour.getText().matches("^\\d{2}:\\d{2}$")
@@ -182,12 +192,6 @@ public class SplashController {
             alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink()
                     + "\n Student link: " + newRoom.getStudentsLink());
             alertMod.show();
-
         }
     }
-
-
-
-
-
 }

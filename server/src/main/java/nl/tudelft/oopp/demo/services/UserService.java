@@ -1,8 +1,10 @@
 package nl.tudelft.oopp.demo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import nl.tudelft.oopp.demo.entities.Moderator;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
@@ -51,5 +53,33 @@ public class UserService {
         return moderatorUserRepository.findAllByRoomRoomId(roomId);
     }
 
+    public Optional<Student> getStudentById(Long studentId) {
+        return studentUserRepository.findById(studentId);
+    }
 
+    /** Adds the student to the DB.
+     * @param nickname the nickname of the student
+     * @param roomId the id of the room the student is in
+     * @return the id of the student
+     */
+    public Long addStudent(String nickname, long roomId) {
+        Room room = roomRepository.getOne(roomId);
+        Student student = new Student(nickname,room);
+        studentUserRepository.save(student);
+        room.addParticipant(student);
+        return student.getId();
+    }
+
+    /** Adds the moderator to the DB.
+     * @param nickname the nickname of the moderator
+     * @param roomId the id of the room the student is in
+     * @return the id of the moderator
+     */
+    public Long addModerator(String nickname, long roomId) {
+        Room room = roomRepository.getOne(roomId);
+        Moderator moderator = new Moderator(nickname,room);
+        moderatorUserRepository.save(moderator);
+        room.addParticipant(moderator);
+        return moderator.getId();
+    }
 }

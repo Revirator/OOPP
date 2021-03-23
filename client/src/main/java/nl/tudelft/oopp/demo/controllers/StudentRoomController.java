@@ -93,7 +93,7 @@ public class StudentRoomController {
         // setting up and starting the thread
         service.setPeriod(Duration.seconds(5));
         service.setOnRunning(e -> {
-            roomRefresher();
+            roomAndUserRefresher();
             questionRefresher();
             participantRefresher();
         });
@@ -121,24 +121,17 @@ public class StudentRoomController {
 
     }
 
-    /** Updates the room object (and the user(soon)) by calling the getRoom() ..
-     * .. method in ServerCommunication.
+    /** Updates the room object and the user by calling the getRoom() ..
+     * .. and getStudent() methods in ServerCommunication.
      */
-    public void roomRefresher() {
-        String roomCode = this.room.getStudentsLink().toString().substring(28);
-        Room room = ServerCommunication.getRoom(roomCode);
-        if (this.room.isActive() && !room.isActive()) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setContentText("The lecture has ended! You cannot ask questions or "
-                    + "provide\nfeedback anymore!");
-            alert.show();
-        }
-        this.room = room;
-        // something to update the student (in case he got banned or kicked out of the room)
+    public void roomAndUserRefresher() {
+        this.room = ServerCommunication.getRoom(room.getStudentsLink().toString().substring(28));
+        // The server returns the student with the room field being null
+        User tempStudent = ServerCommunication.getStudent(this.student.getId());
+        this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room);
+        // TODO: Check if the student has been kicked out or banned
         this.studentView.setData(student,room);
     }
-
-
 
     /** Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.

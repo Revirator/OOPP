@@ -19,7 +19,7 @@ import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.Student;
-
+import nl.tudelft.oopp.demo.data.User;
 
 public class ServerCommunication {
 
@@ -119,6 +119,33 @@ public class ServerCommunication {
         }
     }
 
+    /** Sends a user to the server, who is saved in the DB ..
+     * .. and added to the list of participants in the ..
+     * .. corresponding room instance.
+     * @param user the user to be saved in the DB
+     * @param roomId the id of the room the user is a participant in
+     * @return Long - the id of the user
+     */
+    public static Long sendUser(User user, long roomId) {
+        String requestUrl = "http://localhost:8080/users/addUser/" + user.getRole()
+                +  "/" + roomId + "/" + user.getNickname();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl))
+                .POST(HttpRequest.BodyPublishers.ofString(""))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return (long) - 1;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return (long) - 1;
+        }
+        return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
+    }
+
     //    /**
     //     * Fetches a list of all participants.
     //     * @param roomID ID of the room
@@ -158,7 +185,6 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/rooms/students/" + roomID))
                 .build();
         HttpResponse<String> response;
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -170,8 +196,32 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
             return List.of();
         }
+        return gson.fromJson(response.body(), new TypeToken<List<Student>>() {
+        }.getType());
+    }
 
-        return gson.fromJson(response.body(), new TypeToken<List<Student>>(){}.getType());
+
+    /** Sends an id to the server.
+     * The server return the student with the given id ..
+     * .. or null if the student doesn't exist.
+     * @param studentId the id of the student to be updated
+     * @return User - a new instance of Student corresponding to the id
+     */
+    public static User getStudent(Long studentId) {
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/users/" + studentId))
+                .GET().build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return null;
+        }
+        return gson.fromJson(response.body(), Student.class);
     }
 
     /**
@@ -185,24 +235,18 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/rooms/moderators/" + roomID))
                 .build();
         HttpResponse<String> response;
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return List.of();
         }
-
         return gson.fromJson(response.body(), new TypeToken<List<Moderator>>(){}.getType());
     }
-
-
-
 
     /**
      * Retrieves a list of all questions.
@@ -215,7 +259,6 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/questions/" + roomID))
                 .build();
         HttpResponse<String> response;
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -231,7 +274,6 @@ public class ServerCommunication {
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
-
 
     /**
      * Retrieves a list of all answered questions.
@@ -259,12 +301,10 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
-
-
     /** Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
      */
-    public static void updateRoom(String code) {
+    public static void updateRoomStatus(String code) {
         code = code.substring(28);
         // Including the code in the body of the request and ..
         // .. not in the URL might be better, but I couldn't get it to work.
@@ -406,8 +446,6 @@ public class ServerCommunication {
 
         return gson.fromJson(String.valueOf(Long.parseLong(response.body())), Long.class);
     }
-
-
 
 
     /** Updates attribute "answer" of question corresponding to this id in database.
