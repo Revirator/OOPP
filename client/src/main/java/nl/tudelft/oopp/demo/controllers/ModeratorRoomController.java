@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -29,6 +30,9 @@ public class ModeratorRoomController {
 
     @FXML
     private Label lectureName;
+
+    @FXML
+    private CheckBox zenMode;
 
     @FXML
     private Label tooSlowLabel;
@@ -193,6 +197,16 @@ public class ModeratorRoomController {
             }
             pw.close();
         }
+    }
+
+
+    /** Callback method for the "Zen Mode" button in Moderator Room.
+     * Makes the following buttons invisible: ..
+     *  .. "edit", "answer", "mark answered", "delete"
+     */
+    public void zenMode() {
+        // TODO: make buttons invisible in ModeratorQuestionCell
+        // TODO: modify when 2nd answer button added (Senne)
     }
 
 
