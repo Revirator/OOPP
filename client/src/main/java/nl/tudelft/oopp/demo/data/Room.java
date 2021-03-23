@@ -111,14 +111,6 @@ public class Room {
         return peopleThinkingLectureIsTooSlow;
     }
 
-    public void votedTooSlow() {
-        this.peopleThinkingLectureIsTooSlow++;
-    }
-
-    public void votedTooFast() {
-        this.peopleThinkingLectureIsTooFast++;
-    }
-
     /** Decrements one of the fields depending on the feedback received.
      * @param condition feedback
      */
@@ -139,14 +131,7 @@ public class Room {
      * @return the list of participants
      */
     public List<User> getParticipants() {
-        // Used for testing purposes at the moment
-        ArrayList<User> test = new ArrayList<>();
-        test.add(new Moderator("TEST1",this));
-        test.add(new Student("TEST2",this));
-        return  test;
-        // should be
-        // return this.participants;
-        // but this is always returning null atm cause of the server
+        return this.participants;
     }
 
     public List<Student> getStudents() {
@@ -158,6 +143,7 @@ public class Room {
     }
 
     public void addParticipant(User user) {
-        this.participants.add(user);
+        if (user instanceof Student) this.students.add((Student)user);
+        if (user instanceof Moderator) this.moderators.add((Moderator)user);
     }
 }

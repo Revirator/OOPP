@@ -114,28 +114,30 @@ public class ModeratorRoomController {
      * For it to be done in real time it needs the fetch request.
      */
     public void setFeedback() {
-        tooSlowLabel.setText(Math.round(
-                this.room.getPeopleThinkingLectureIsTooSlow() * 100
-                        / this.room.getParticipants().size()
-                        + this.room.getPeopleThinkingLectureIsTooSlow() * 100
-                        % this.room.getParticipants().size()) + "%");
+        if (this.room.getStudents().size() > 0) {
+            tooSlowLabel.setText(this.room.getPeopleThinkingLectureIsTooSlow() * 100
+                    / this.room.getStudents().size() + "%");
 
-        if (Integer.parseInt(tooSlowLabel.getText().replace("%", "")) < 10) {
-            tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
-        } else {
-            tooSlowLabel.setTextFill(Paint.valueOf("RED"));
+            if (Integer.parseInt(tooSlowLabel.getText().replace("%", "")) < 10) {
+                tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
+            } else {
+                tooSlowLabel.setTextFill(Paint.valueOf("RED"));
+            }
+
+            tooFastLabel.setText(this.room.getPeopleThinkingLectureIsTooFast() * 100
+                    / this.room.getStudents().size() + "%");
+
+            if (Integer.parseInt(tooFastLabel.getText().replace("%", "")) < 10) {
+                tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
+            } else {
+                tooFastLabel.setTextFill(Paint.valueOf("RED"));
+            }
         }
-
-        tooFastLabel.setText(Math.round(
-                this.room.getPeopleThinkingLectureIsTooFast() * 100
-                        / this.room.getParticipants().size()
-                        + this.room.getPeopleThinkingLectureIsTooFast() * 100
-                        % this.room.getParticipants().size()) + "%");
-
-        if (Integer.parseInt(tooFastLabel.getText().replace("%", "")) < 10) {
+        else {
+            tooSlowLabel.setText(0 + "%");
+            tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
+            tooFastLabel.setText(0 + "%");
             tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
-        } else {
-            tooFastLabel.setTextFill(Paint.valueOf("RED"));
         }
     }
 
@@ -176,22 +178,22 @@ public class ModeratorRoomController {
             alert.setContentText("Please wait until the lecture has ended to export questions!");
             alert.show();
         } else {
-            FileChooser fc = new FileChooser();
-            fc.getExtensionFilters().addAll(new FileChooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(new FileChooser
                     .ExtensionFilter("Text Files (*.txt,*.md)", "*.txt", "*.md"));
-            File selectedFile = fc.showSaveDialog(null);
-            PrintWriter pw = null;
+            File selectedFile = fileChooser.showSaveDialog(null);
+            PrintWriter printWriter = null;
             try {
-                pw = new PrintWriter(selectedFile);
+                printWriter = new PrintWriter(selectedFile);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
             List<Question> answeredQuestions = ServerCommunication
                     .getAnsweredQuestions(room.getRoomId());
             for (int i = 0; i < answeredQuestions.size(); i++) {
-                pw.println(answeredQuestions.get(i).toString());
+                printWriter.println(answeredQuestions.get(i).toString());
             }
-            pw.close();
+            printWriter.close();
         }
     }
 
