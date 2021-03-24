@@ -47,10 +47,8 @@ public class SplashController {
      */
     public void joinRoom(ActionEvent actionEvent) {
 
-        // Check if one of the fields is empty
-        if (joinRoomSanitation() == true) {
+        if (joinRoomSanitation(nickName.getText(), link.getText()) == true) {
 
-        // If not: try to get a room from the server
             String code = link.getText();
             Room room = ServerCommunication.getRoom(code);
 
@@ -197,23 +195,21 @@ public class SplashController {
      * (Also shows an alert informing the user about what's wrong)
      * @return true if is, false if it's not
      */
-    private boolean joinRoomSanitation() {
+    public static boolean joinRoomSanitation(String name, String code) {
         boolean flag = true;
 
-        String name = nickName.getText();
-        String code = link.getText();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         if (name.equals("") || code.equals("")) {
             alert.setContentText("Please enter both nickname and link.");
             flag = false;
 
-        } else if (name.contains(" ")) {
-            alert.setContentText("A name cannot contain empty spaces.");
+        } else if (name.contains(" ") || code.contains(" ")) {
+            alert.setContentText("The name and the link cannot contain empty spaces.");
             flag = false;
 
         } else if (name.length() < 2 || name.length() > 20) {
-            alert.setContentText("A name should be between 2 and 20 characters.");
+            alert.setContentText("The name should be between 2 and 20 characters.");
             flag = false;
         }
 
