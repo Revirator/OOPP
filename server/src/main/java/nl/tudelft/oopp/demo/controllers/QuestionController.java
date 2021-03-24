@@ -27,28 +27,43 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+
+    /**
+     * Autowired constructor for the class.
+     * @param questionService
+     */
     @Autowired
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
 
 
+    /**
+     * GET mapping.
+     * @return a JSON object with all questions from the database
+     */
     @GetMapping   // http://localhost:8080/questions
     public List<Question> getQuestions() {
-        // I'm keeping this logging because it won't happen repetitively
+        // I'm keeping this logging because it will be requested in very rare cases
         logRequest("to get all questions from the database");
         return questionService.getQuestions();
     }
 
 
-    @GetMapping("/{roomID}") // http://localhost:8080/questions/{roomID}
+    /**
+     * GET mapping.
+     * @param roomId the id of the required room
+     * @return all questions for a specific room
+     */
+    @GetMapping("/{roomId}") // http://localhost:8080/questions/{roomID}
     @ResponseBody
-    public List<Question> getQuestionsByRoom(@PathVariable long roomID) {
-        return questionService.getQuestionsByRoom(roomID);
+    public List<Question> getQuestionsByRoom(@PathVariable long roomId) {
+        return questionService.getQuestionsByRoom(roomId);
     }
 
 
-    /** GET mapping.
+    /**
+     * GET mapping.
      * @return a JSON object of an example Question
      */
     @GetMapping("example")   // http://localhost:8080/questions/example
@@ -78,14 +93,21 @@ public class QuestionController {
     }
 
 
-
+    /**
+     * GET mapping.
+     * @param roomId the id of the required room
+     * @return all answered questions for a specific room
+     */
     @GetMapping("/answered/{roomId}") // http://localhost:8080/questions/answered/{roomId}
     @ResponseBody
     public List<Question> getAnsweredQuestions(@PathVariable long roomId) {
         return questionService.getAnsweredQuestions(roomId);
     }
 
-
+    /**
+     * PUT mapping, marks a question in the DB as answered.
+     * @param questionId the id of the required question
+     */
     @PutMapping("/markAnswered/{questionId}")
     // http://localhost:8080/questions/markAnswered/{questionId}
     public void markQuestionAsAnswered(@PathVariable long questionId) {
@@ -94,6 +116,10 @@ public class QuestionController {
     }
 
 
+    /**
+     * DELETE mapping, deletes a question from the DB.
+     * @param questionId the id of the required question
+     */
     @DeleteMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {
         logRequest("to delete the question with an id '" + questionId + "'");
@@ -101,6 +127,11 @@ public class QuestionController {
     }
 
 
+    /**
+     * PUT mapping, updates the text of a question in the DB.
+     * @param questionId the id of the required question
+     * @param question the new text for the question
+     */
     @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void updateQuestion(@PathVariable("questionId") Long questionId,
                                @RequestBody String question) {
@@ -109,6 +140,11 @@ public class QuestionController {
     }
 
 
+    /**
+     * PUT mapping, sets an answer to a question.
+     * @param questionId the id of the required question
+     * @param answer the answer for the question
+     */
     @PutMapping(path = "/setanswer/{questionId}")
     // http://localhost:8080/questions/setanswer/{questionId}
     public void setAnswer(@PathVariable("questionId") Long questionId,
@@ -117,20 +153,24 @@ public class QuestionController {
     }
 
 
-
+    /**
+     * PUT mapping, upvotes a question.
+     * @param questionId the id of the required question
+     */
     @PutMapping(path = "upvote/{questionId}")
     // http://localhost:8080/questions/upvote/{questionId}
     public void upvote(@PathVariable("questionId") Long questionId) {
-        // logRequest("to upvote the question with an id '" + questionId + "'");
         questionService.upvote(questionId);
     }
 
 
-
+    /**
+     * PUT mapping, deupvotes a question.
+     * @param questionId the id of the required question
+     */
     @PutMapping(path = "deupvote/{questionId}")
     // http://localhost:8080/questions/deupvote/{questionId}
     public void deUpvote(@PathVariable("questionId") Long questionId) {
-        // logRequest("to devote the question with an id '" + questionId + "'");
         questionService.deUpvote(questionId);
     }
 }
