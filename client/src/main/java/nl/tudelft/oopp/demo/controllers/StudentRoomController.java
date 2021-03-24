@@ -19,7 +19,7 @@ import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
-public class StudentRoomController {
+public class StudentRoomController extends RoomController{
     @FXML
     private Button tooSlowButton;
 
@@ -284,31 +284,5 @@ public class StudentRoomController {
                 ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
             }
         }
-    }
-
-    /** Increments the number of upvotes of this question by 1.
-     * @param question - Question to upvote
-     */
-    public boolean upvoteQuestion(Question question) {
-
-        // Check if user already voted on question
-        if (question.voted()) {
-            question.deUpvote();
-            if (!ServerCommunication.deUpvoteQuestion(question.getId())) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Server error!");
-                alert.show();
-                return false;
-            }
-        } else {
-            question.upvote();
-            if (!ServerCommunication.upvoteQuestion(question.getId())) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Server error!");
-                alert.show();
-                return false;
-            }
-        }
-        return true;
     }
 }

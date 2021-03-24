@@ -22,7 +22,7 @@ import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
-public class ModeratorRoomController {
+public class ModeratorRoomController extends RoomController{
 
     @FXML
     private Button endLecture;
