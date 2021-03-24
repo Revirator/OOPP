@@ -157,7 +157,8 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
             // User saves changes
             if (editingAnswer) {
 
-                mrc.setAnswer(this.question, editableAnswer.getText());
+                ((ModeratorRoomController) mrc).setAnswer(this.question,
+                        editableAnswer.getText());
 
                 answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
                 question.setAnswer(editableAnswer.getText());

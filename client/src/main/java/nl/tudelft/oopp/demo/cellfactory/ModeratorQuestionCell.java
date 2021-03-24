@@ -153,7 +153,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
             // Send answer to server to store in db
-            mrc.setAnswer(this.question, answerBox.getText());
+            ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
 
             question.setAnswer(answerBox.getText());   // Those will probably get removed later
             questions.remove(question);             // since they change stuff only locally
