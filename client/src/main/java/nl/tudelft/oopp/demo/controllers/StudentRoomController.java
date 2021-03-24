@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
 
+import com.sun.tools.javac.Main;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
 public class StudentRoomController {
+
     @FXML
     private Button tooSlowButton;
 
