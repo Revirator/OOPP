@@ -44,6 +44,7 @@ public class SplashController {
     @FXML
     private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
 
+
     /**
      * Handles clicking the "join room" button.
      */
@@ -124,10 +125,24 @@ public class SplashController {
         }
     }
 
+
     /**
-     * Handles clicking the "create instant room" button.
+     * Handles clicking the "create room" button.
      */
     public void startRoom(ActionEvent actionEvent) {
+        if (!scheduledBox.isSelected()) {
+            instantRoom();
+        } else {
+            scheduleRoom();
+        }
+    }
+
+
+    /**
+     * Called by startRoom when scheduledBox is unchecked.
+     * Creates a room instantly.
+     */
+    private void instantRoom() {
         if (roomName.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter name of room");
@@ -150,10 +165,11 @@ public class SplashController {
     }
 
 
-    /** Checkstyle wants a comment - to be edited.
-     * @throws IOException - to be edited
+    /**
+     * Called by startRoom when scheduledBox is checked.
+     * Creates a scheduled room.
      */
-    public void scheduleRoom() {
+    private void scheduleRoom() {
         if (date.getValue() == null
                 || hour.getText().equals("")
                 || !hour.getText().matches("^\\d{2}:\\d{2}$")
