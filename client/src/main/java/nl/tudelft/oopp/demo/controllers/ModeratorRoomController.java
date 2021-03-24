@@ -104,7 +104,7 @@ public class ModeratorRoomController {
      * .. method in ServerCommunication.
      */
     public void roomRefresher() {
-        this.room = ServerCommunication.getRoom(room.getStudentsLink());
+        this.room = ServerCommunication.getRoom(room.getStudentsLink(), false);
         this.moderatorView.setData(moderator, room);
         setFeedback();
     }
