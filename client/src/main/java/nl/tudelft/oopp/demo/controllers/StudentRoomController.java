@@ -81,7 +81,7 @@ public class StudentRoomController extends RoomController {
         Room room = super.getRoom();
         User student = super.getUser();
 
-        Room newRoom = ServerCommunication.getRoom(room.getStudentsLink());
+        Room newRoom = ServerCommunication.getRoom(room.getStudentsLink(), false);
         if (room.isActive() && !newRoom.isActive()) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setContentText("The lecture has ended! You cannot ask questions or "
