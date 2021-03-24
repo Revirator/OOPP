@@ -40,7 +40,7 @@ public class QuestionController {
 
     /**
      * GET mapping.
-     * @return a JSON object with all questions from the database
+     * @return all questions from the database
      */
     @GetMapping   // http://localhost:8080/questions
     public List<Question> getQuestions() {
@@ -103,6 +103,7 @@ public class QuestionController {
     public List<Question> getAnsweredQuestions(@PathVariable long roomId) {
         return questionService.getAnsweredQuestions(roomId);
     }
+
 
     /**
      * PUT mapping, marks a question in the DB as answered.
