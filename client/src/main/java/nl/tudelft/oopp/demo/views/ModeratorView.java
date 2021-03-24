@@ -86,7 +86,8 @@ public class ModeratorView extends AppView {
 
         // Set cell creation per list view
         questionListView.setCellFactory(param ->
-                new ModeratorQuestionCell(super.getQuestions(), super.getAnswered(), roomController));
+                new ModeratorQuestionCell(super.getQuestions(),
+                        super.getAnswered(), roomController));
         answeredListView.setCellFactory(param ->
                 new ModeratorAnsweredCell(super.getAnswered(), roomController));
         participantsListView.setCellFactory(param -> new ModeratorParticipantCell());

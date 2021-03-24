@@ -19,7 +19,7 @@ import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
-public class StudentRoomController extends RoomController{
+public class StudentRoomController extends RoomController {
     @FXML
     private Button tooSlowButton;
 

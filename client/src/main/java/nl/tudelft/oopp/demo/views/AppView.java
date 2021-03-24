@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.util.Comparator;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -18,9 +21,6 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
-
-import java.util.Comparator;
-import java.util.List;
 
 public abstract class AppView extends Application {
 

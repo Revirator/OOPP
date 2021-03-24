@@ -8,6 +8,12 @@ public abstract class RoomController {
 
     public abstract boolean editQuestion(Question questionToEdit, String update);
 
+    /**
+     * Set the answer on the server-side.
+     * @param question answered question
+     * @param answer answer
+     * @return true if successful, false if not
+     */
     public boolean setAnswer(Question question, String answer) {
 
         if (answer.length() > 0) {
@@ -23,8 +29,18 @@ public abstract class RoomController {
         return false;
     }
 
+    /**
+     * Delete a question server-side.
+     * @param questionToRemove question to remove
+     * @return true if successful, false if not
+     */
     public abstract boolean deleteQuestion(Question questionToRemove);
 
+    /**
+     * Upvote a question server-side.
+     * @param question question to upvote
+     * @return true if successful, false if not
+     */
     public boolean upvoteQuestion(Question question) {
 
         // Check if user already voted on question
