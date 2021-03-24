@@ -131,14 +131,16 @@ public class SplashController {
      */
     public void startRoom(ActionEvent actionEvent) {
         if (scheduledBox.isSelected()) {
-            instantRoom();
-        } else {
             scheduleRoom();
+        } else {
             instantRoom();
         }
     }
 
 
+    /**
+     * Handles the check/uncheck action of the checkbox.
+     */
     public void checkboxPress() {
         if (scheduledBox.isSelected()) {
             date.setDisable(false);
