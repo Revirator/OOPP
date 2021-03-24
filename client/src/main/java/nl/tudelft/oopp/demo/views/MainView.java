@@ -19,7 +19,7 @@ public abstract class MainView extends Application {
      */
     public void bindFonts(Scene scene) {
 
-        subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
+        subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(75));
 
         buttonFontSize.bind(Bindings.min(12,
                 scene.widthProperty().add(scene.heightProperty()).divide(120)));
@@ -27,7 +27,7 @@ public abstract class MainView extends Application {
         Parent root = scene.getRoot();
 
         // Put the font sizes on all according nodes
-        for (Node node : root.lookupAll(".subTitle")) {
+        for (Node node : root.lookupAll(".subTitleText")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     subTitleFontSize.asString(), ";"));
         }
