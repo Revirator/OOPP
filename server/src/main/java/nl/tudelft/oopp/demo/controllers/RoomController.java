@@ -28,7 +28,7 @@ public class RoomController {
 
     /**
      * Autowired constructor for the class.
-     * @param roomService
+     * @param roomService roomService
      */
     @Autowired
     public RoomController(RoomService roomService) {
@@ -96,10 +96,10 @@ public class RoomController {
 
 
     /**
-     * POST mapping, adds a new room to the DB
+     * POST mapping, adds a new room to the DB.
      * @param data the data needed for the creation
      * @return the newly created room
-     * @throws MalformedURLException
+     * @throws MalformedURLException MalformedURLException
      */
     @PostMapping   // http://localhost:8080/rooms
     public Room addNewRoom(@RequestBody String data) throws MalformedURLException {
@@ -115,7 +115,6 @@ public class RoomController {
      */
     @PutMapping("/{roomCode}/{feedback}") // http://localhost:8080/rooms/{roomCode}/{feedback}
     public void updateFeedback(@PathVariable String roomCode, @PathVariable String feedback) {
-        // DemoApplication.logger.info("Updated the feedback for room with a code '" + roomCode + "'");
         roomService.updateRoomSpeed(roomCode, feedback);
     }
 

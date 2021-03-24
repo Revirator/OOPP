@@ -30,7 +30,7 @@ public class QuestionController {
 
     /**
      * Autowired constructor for the class.
-     * @param questionService
+     * @param questionService questionService
      */
     @Autowired
     public QuestionController(QuestionService questionService) {
@@ -44,7 +44,6 @@ public class QuestionController {
      */
     @GetMapping   // http://localhost:8080/questions
     public List<Question> getQuestions() {
-        // I'm keeping this logging because it will be requested in very rare cases
         logRequest("to get all questions from the database");
         return questionService.getQuestions();
     }

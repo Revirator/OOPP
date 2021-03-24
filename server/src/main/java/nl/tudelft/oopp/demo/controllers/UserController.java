@@ -23,7 +23,7 @@ public class UserController {
 
     /**
      * Autowired constructor for the class.
-     * @param userService
+     * @param userService userService
      */
     @Autowired
     public UserController(UserService userService) {
@@ -68,7 +68,7 @@ public class UserController {
 
 
     /**
-     * POST mapping, adds a new student to a room
+     * POST mapping, adds a new student to a room.
      * @param roomId the id of the room
      * @param nickname the nickname of the new student
      * @return id of the new student
@@ -80,7 +80,7 @@ public class UserController {
 
 
     /**
-     * POST mapping, adds a new moderator to a room
+     * POST mapping, adds a new moderator to a room.
      * @param roomId the id of the room
      * @param nickname the nickname of the new moderator
      * @return id of the new moderator
