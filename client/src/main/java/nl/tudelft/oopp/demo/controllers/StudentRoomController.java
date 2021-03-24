@@ -71,29 +71,6 @@ public class StudentRoomController extends RoomController {
         serviceAllow.setPeriod(Duration.seconds(20));
         serviceAllow.setOnRunning(e -> questionAllowed = true);
         serviceAllow.start();
-
-//        // creates a service that allows a method to be called every timeframe
-//        ScheduledService<Boolean> service = new ScheduledService<>() {
-//            @Override
-//            protected Task<Boolean> createTask() {
-//                return new Task<>() {
-//                    @Override
-//                    protected  Boolean call() {
-//                        updateMessage("Checking for updates..");
-//                        return true;
-//                    }
-//                };
-//            }
-//        };
-//
-//        // setting up and starting the thread
-//        service.setPeriod(Duration.seconds(5));
-//        service.setOnRunning(e -> {
-//            roomAndUserRefresher();
-//            questionRefresher();
-//            participantRefresher();
-//        });
-//        service.start();
     }
 
     /** Updates the room object and the user by calling the getRoom() ..

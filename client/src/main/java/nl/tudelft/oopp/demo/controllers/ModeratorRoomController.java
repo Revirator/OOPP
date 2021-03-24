@@ -47,36 +47,17 @@ public class ModeratorRoomController extends RoomController {
         this.lectureName.setText(room.getRoomName());
         setFeedback();
 
-//        // creates a service that allows a method to be called every timeframe
-//        ScheduledService<Boolean> service = new ScheduledService<>() {
-//            @Override
-//            protected Task<Boolean> createTask() {
-//                return new Task<>() {
-//                    @Override
-//                    protected Boolean call() {
-//                        updateMessage("Checking for updates..");
-//                        return true;
-//                    }
-//                };
-//            }
-//        };
-//
-//        // setting up and starting the thread
-//        service.setPeriod(Duration.seconds(5));
-//        service.setOnRunning(e -> {
-//            roomRefresher();
-//            questionRefresher();
-//            participantRefresher();
-//        });
-//        service.start();
     }
 
-   public void roomRefresher() {
-       super.setRoom(ServerCommunication.getRoom(
+    /**
+     * Refreshes the current room.
+     */
+    public void roomRefresher() {
+        super.setRoom(ServerCommunication.getRoom(
                super.getRoom().getStudentsLink()));
-       this.moderatorView.setData(super.getUser(), super.getRoom());
-       setFeedback();
-   }
+        this.moderatorView.setData(super.getUser(), super.getRoom());
+        setFeedback();
+    }
 
     /**
      * Updates the feedback for the moderators.
@@ -111,8 +92,9 @@ public class ModeratorRoomController extends RoomController {
         }
     }
 
-    /** The method that is executed when the End lecture button is clicked.
-     * Updates the status of the room to inactive so that new questions ..
+    /**
+     * The method that is executed when the End lecture button is clicked.
+     * Updates the status of the room to inactive so that new questions..
      * .. and feedback are not processed.
      */
     public void endLecture() {
