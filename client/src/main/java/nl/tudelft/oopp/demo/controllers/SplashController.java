@@ -130,10 +130,22 @@ public class SplashController {
      * Handles clicking the "create room" button.
      */
     public void startRoom(ActionEvent actionEvent) {
-        if (!scheduledBox.isSelected()) {
+        if (scheduledBox.isSelected()) {
             instantRoom();
         } else {
             scheduleRoom();
+            instantRoom();
+        }
+    }
+
+
+    public void checkboxPress() {
+        if (scheduledBox.isSelected()) {
+            date.setDisable(false);
+            hour.setDisable(false);
+        } else {
+            date.setDisable(true);
+            hour.setDisable(true);
         }
     }
 
