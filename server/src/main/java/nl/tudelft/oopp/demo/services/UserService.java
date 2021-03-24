@@ -3,6 +3,8 @@ package nl.tudelft.oopp.demo.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
@@ -11,7 +13,6 @@ import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 
 
 @Service
@@ -85,6 +86,9 @@ public class UserService {
         return moderator.getId();
     }
 
+    /** Updates the banned field of the student with the corresponding id.
+     * @param studentId the id of the student
+     */
     @Transactional
     public void banStudent(long studentId) {
         Student student = studentUserRepository.findById(studentId);

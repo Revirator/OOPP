@@ -132,8 +132,7 @@ public class ModeratorRoomController {
             } else {
                 tooFastLabel.setTextFill(Paint.valueOf("RED"));
             }
-        }
-        else {
+        } else {
             tooSlowLabel.setText(0 + "%");
             tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
             tooFastLabel.setText(0 + "%");

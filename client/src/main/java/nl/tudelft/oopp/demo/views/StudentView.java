@@ -260,7 +260,6 @@ public class StudentView extends Application {
             return false;
         }
 
-        this.room.addParticipant(user);
         participants.add(user);
         participants.sort(Comparator.comparing(User::getNickname));
         participants.sort(Comparator.comparing(User::getRole));

@@ -141,15 +141,18 @@ public class StudentRoomController {
         // The server returns the student with the room field being null
         Student tempStudent = (Student) ServerCommunication.getStudent(this.student.getId());
         if (!((Student) this.student).isBanned() && tempStudent.isBanned()) {
-            this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room, tempStudent.getIpAddress(), tempStudent.isBanned());
+            this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room,
+                    tempStudent.getIpAddress(), tempStudent.isBanned());
             resetFeedback();
             Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("It seems like you got banned!\nThe window will now close for you!");
+            alert.setContentText("It seems like you got banned!"
+                    + "\nThe window will now close for you!");
             alert.showAndWait();
             Stage stage = (Stage) anchor.getScene().getWindow();
             stage.close();
         } else {
-            this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room, tempStudent.getIpAddress(), tempStudent.isBanned());
+            this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room,
+                    tempStudent.getIpAddress(), tempStudent.isBanned());
             this.studentView.setData(student,room);
         }
     }

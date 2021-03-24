@@ -78,7 +78,7 @@ public class SplashController {
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
                         Student student = new Student(nickName.getText(), room);
-                        // TODO: Check if the student is banned from this room else add him to the DB
+                        // TODO: Check if the student is banned from this room or add him to the DB
                         student = new Student(
                                 ServerCommunication.sendUser(student, room.getRoomId()),
                                 student.getNickname(),

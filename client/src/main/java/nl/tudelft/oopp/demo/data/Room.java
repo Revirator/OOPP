@@ -126,15 +126,4 @@ public class Room {
     public List<Moderator> getModerators() {
         return this.moderators;
     }
-
-    public void addParticipant(User user) {
-        if (user instanceof Student) {
-            this.students.add((Student)user);
-        }
-        if (user instanceof Moderator) {
-            this.moderators.add((Moderator)user);
-        } else {
-            this.participants.add(user);
-        }
-    }
 }

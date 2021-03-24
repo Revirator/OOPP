@@ -37,7 +37,8 @@ public class ModeratorParticipantCell extends ParticipantCell {
         // CLick event for ipBanButton
         ipBanButton.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setContentText("Are you sure you want to ban\n" + super.getUser().getNickname() + " ?");
+            alert.setContentText("Are you sure you want to ban\n"
+                    + super.getUser().getNickname() + " ?");
             alert.showAndWait();
             if (alert.getResult().getText().equals("OK")) {
                 ServerCommunication.banStudent(super.getUser());
