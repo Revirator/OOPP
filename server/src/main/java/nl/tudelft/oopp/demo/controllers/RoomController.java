@@ -44,10 +44,16 @@ public class RoomController {
         return roomService.getRoomById(4);
     }
 
+    @GetMapping("/{roomCode}/log")  // http://localhost:8080/rooms/{roomCode}/log
+    @ResponseBody
+    public Room getRoomByCodeLog(@PathVariable String roomCode) {
+        logRequest("to join room with code '" + roomCode + "'");
+        return roomService.getRoomByCode(roomCode);
+    }
+
     @GetMapping("/{roomCode}")  // http://localhost:8080/rooms/{roomCode}
     @ResponseBody
     public Room getRoomByCode(@PathVariable String roomCode) {
-        logRequest("to join room with code '" + roomCode + "'");
         return roomService.getRoomByCode(roomCode);
     }
 

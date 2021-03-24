@@ -56,7 +56,7 @@ public class SplashController {
 
         } else {        // If not: try to get a room from the server
             String code = link.getText();
-            Room room = ServerCommunication.getRoom(code);
+            Room room = ServerCommunication.getRoom(code, true);
 
             // Using alert temporary until the other features are implemented
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

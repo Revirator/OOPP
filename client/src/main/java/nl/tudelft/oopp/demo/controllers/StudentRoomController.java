@@ -125,7 +125,7 @@ public class StudentRoomController {
      * .. and getStudent() methods in ServerCommunication.
      */
     public void roomAndUserRefresher() {
-        Room newRoom = ServerCommunication.getRoom(room.getStudentsLink());
+        Room newRoom = ServerCommunication.getRoom(room.getStudentsLink(), false);
         if (this.room.isActive() && !newRoom.isActive()) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setContentText("The lecture has ended! You cannot ask questions or "
