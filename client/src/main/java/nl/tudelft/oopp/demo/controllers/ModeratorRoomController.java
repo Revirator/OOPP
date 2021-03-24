@@ -54,7 +54,7 @@ public class ModeratorRoomController extends RoomController {
      */
     public void roomRefresher() {
         super.setRoom(ServerCommunication.getRoom(
-               super.getRoom().getStudentsLink()));
+               super.getRoom().getStudentsLink(), false));
         this.moderatorView.setData(super.getUser(), super.getRoom());
         setFeedback();
     }
