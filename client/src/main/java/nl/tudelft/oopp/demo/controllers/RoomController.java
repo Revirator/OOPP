@@ -82,6 +82,13 @@ public abstract class RoomController {
     }
 
     /**
+     * Setter for the current user.
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
      * Calls methods in ServerCommunication to get updated lists from the database.
      * Updates the actual view.
      */

@@ -88,10 +88,10 @@ public class StudentRoomController extends RoomController {
                     + "provide\nfeedback anymore!");
             alert.show();
         }
-        room = newRoom;
+        super.setRoom(newRoom);
         // The server returns the student with the room field being null
         User tempStudent = ServerCommunication.getStudent(student.getId());
-        student = new Student(tempStudent.getId(), tempStudent.getNickname(), room);
+        super.setUser(new Student(tempStudent.getId(), tempStudent.getNickname(), room));
         // TODO: Check if the student has been kicked out or banned
         this.studentView.setData(student,room);
     }
