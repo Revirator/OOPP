@@ -21,7 +21,6 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.Student;
-import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 import nl.tudelft.oopp.demo.views.StudentView;
 
@@ -69,7 +68,7 @@ public class SplashController {
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
                     if (code.contains("M")) {
-                        User moderator = new Moderator(nickName.getText(), room);
+                        Moderator moderator = new Moderator(nickName.getText(), room);
                         moderator = new Moderator(
                                 ServerCommunication.sendUser(moderator, room.getRoomId()),
                                 moderator.getNickname(),
@@ -78,11 +77,14 @@ public class SplashController {
                         moderatorView.setData(moderator, room);
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
-                        User student = new Student(nickName.getText(), room);
+                        Student student = new Student(nickName.getText(), room);
+                        // TODO: Check if the student is banned from this room else add him to the DB
                         student = new Student(
                                 ServerCommunication.sendUser(student, room.getRoomId()),
                                 student.getNickname(),
-                                student.getRoom());
+                                student.getRoom(),
+                                student.getIpAddress(),
+                                student.isBanned());
                         StudentView studentView = new StudentView();
                         studentView.setData(student, room);
                         studentView.start((Stage) anchor.getScene().getWindow());
@@ -109,11 +111,14 @@ public class SplashController {
                     stage.setScene(scene);
                     stage.show();
 
-                    User student = new Student(nickName.getText(), room);
+                    Student student = new Student(nickName.getText(), room);
+                    // TODO: Check if the student is banned from this room else add him to the DB
                     student = new Student(
                             ServerCommunication.sendUser(student, room.getRoomId()),
                             student.getNickname(),
-                            student.getRoom());
+                            student.getRoom(),
+                            student.getIpAddress(),
+                            student.isBanned());
                     WaitingRoomController waitingRoomController = loader.getController();
                     waitingRoomController.setData(student, room);
                     waitingRoomController.main(new String[0]);
@@ -136,7 +141,7 @@ public class SplashController {
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
-            User moderator = new Moderator(nickName.getText(), newRoom);
+            Moderator moderator = new Moderator(nickName.getText(), newRoom);
             moderator = new Moderator(
                     ServerCommunication.sendUser(moderator, newRoom.getRoomId()),
                     moderator.getNickname(),

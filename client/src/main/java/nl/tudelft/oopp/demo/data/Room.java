@@ -111,25 +111,10 @@ public class Room {
         return peopleThinkingLectureIsTooSlow;
     }
 
-    /** Decrements one of the fields depending on the feedback received.
-     * @param condition feedback
-     */
-    public void resetVote(String condition) {
-        if (condition.equals("resetSlow")) {
-            peopleThinkingLectureIsTooSlow--;
-        }
-        if (condition.equals("resetFast")) {
-            peopleThinkingLectureIsTooFast--;
-        }
-    }
-
     public void end() {
         this.active = false;
     }
 
-    /** Should be a getter. Doesn't work for now.
-     * @return the list of participants
-     */
     public List<User> getParticipants() {
         return this.participants;
     }
@@ -143,7 +128,13 @@ public class Room {
     }
 
     public void addParticipant(User user) {
-        if (user instanceof Student) this.students.add((Student)user);
-        if (user instanceof Moderator) this.moderators.add((Moderator)user);
+        if (user instanceof Student) {
+            this.students.add((Student)user);
+        }
+        if (user instanceof Moderator) {
+            this.moderators.add((Moderator)user);
+        } else {
+            this.participants.add(user);
+        }
     }
 }

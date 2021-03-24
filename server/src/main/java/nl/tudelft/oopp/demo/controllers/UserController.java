@@ -9,12 +9,7 @@ import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Student;
 import nl.tudelft.oopp.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("users")
@@ -55,5 +50,10 @@ public class UserController {
     @PostMapping("/addUser/Moderator/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Moderator/{roomId}/{nickname}
     public Long addModerator(@PathVariable long roomId, @PathVariable String nickname) {
         return userService.addModerator(nickname,roomId);
+    }
+
+    @PutMapping("/ban/{studentId}") // http://localhost:8080/users/ban/{studentId}
+    public void banStudent(@PathVariable Long studentId) {
+        userService.banStudent(studentId);
     }
 }

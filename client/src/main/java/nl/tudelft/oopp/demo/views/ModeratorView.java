@@ -23,7 +23,6 @@ import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
-import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
@@ -218,7 +217,6 @@ public class ModeratorView extends Application {
             return false;
         }
 
-        this.room.addParticipant(user);
         participants.add(user);
         participants.sort(Comparator.comparing(User::getNickname));
         participants.sort(Comparator.comparing(User::getRole));

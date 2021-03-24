@@ -11,6 +11,8 @@ import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 
 @Service
 public class UserService {
@@ -81,5 +83,13 @@ public class UserService {
         moderatorUserRepository.save(moderator);
         room.addParticipant(moderator);
         return moderator.getId();
+    }
+
+    @Transactional
+    public void banStudent(long studentId) {
+        Student student = studentUserRepository.findById(studentId);
+        if (student != null) {
+            student.ban();
+        }
     }
 }

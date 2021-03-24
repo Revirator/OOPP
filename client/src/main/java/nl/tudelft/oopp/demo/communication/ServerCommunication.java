@@ -222,6 +222,23 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), Student.class);
     }
 
+    public static void banStudent(User user) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/users/ban/" + user.getId()))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
     /**
      * Fetches a list of all moderators.
      * @param roomID ID of the room

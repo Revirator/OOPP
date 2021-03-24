@@ -10,6 +10,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Moderator;
@@ -20,6 +22,9 @@ import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
 public class StudentRoomController {
+    @FXML
+    private AnchorPane anchor;
+
     @FXML
     private Button tooSlowButton;
 
@@ -91,7 +96,7 @@ public class StudentRoomController {
         };
 
         // setting up and starting the thread
-        service.setPeriod(Duration.seconds(5));
+        service.setPeriod(Duration.seconds(1));
         service.setOnRunning(e -> {
             roomAndUserRefresher();
             questionRefresher();
@@ -134,10 +139,19 @@ public class StudentRoomController {
         }
         this.room = newRoom;
         // The server returns the student with the room field being null
-        User tempStudent = ServerCommunication.getStudent(this.student.getId());
-        this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room);
-        // TODO: Check if the student has been kicked out or banned
-        this.studentView.setData(student,room);
+        Student tempStudent = (Student) ServerCommunication.getStudent(this.student.getId());
+        if (!((Student) this.student).isBanned() && tempStudent.isBanned()) {
+            this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room, tempStudent.getIpAddress(), tempStudent.isBanned());
+            resetFeedback();
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("It seems like you got banned!\nThe window will now close for you!");
+            alert.showAndWait();
+            Stage stage = (Stage) anchor.getScene().getWindow();
+            stage.close();
+        } else {
+            this.student = new Student(tempStudent.getId(), tempStudent.getNickname(), this.room, tempStudent.getIpAddress(), tempStudent.isBanned());
+            this.studentView.setData(student,room);
+        }
     }
 
     /** Callback method for "Submit" button in student room.
@@ -263,6 +277,9 @@ public class StudentRoomController {
      * .. depending on which button was previously pressed.
      */
     public void resetFeedback() {
+        if (resetButton.isDisabled()) {
+            return;
+        }
         if (!room.isActive()) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setContentText("The lecture is over! You cannot send feedback anymore!");

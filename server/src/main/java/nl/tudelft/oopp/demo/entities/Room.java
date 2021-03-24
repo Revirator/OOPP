@@ -200,6 +200,9 @@ public class Room {
         return students;
     }
 
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
 
     public List<Moderator> getModerators() {
         return moderators;
