@@ -30,14 +30,12 @@ public class UserController {
     @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
     @ResponseBody
     public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
-        logRequest("to get all students for the room with an id '" + roomId + "'");
         return userService.getStudents(roomId);
     }
 
     @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
     @ResponseBody
     public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
-        logRequest("to get all moderators for the room with an id '" + roomId + "'");
         return userService.getModerators(roomId);
     }
 

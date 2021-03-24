@@ -68,7 +68,7 @@ public class RoomController {
 
     @PutMapping("/{roomCode}/{feedback}") // http://localhost:8080/rooms/{roomCode}/{feedback}
     public void updateFeedback(@PathVariable String roomCode, @PathVariable String feedback) {
-        DemoApplication.logger.info("Updated the feedback for room with a code '" + roomCode + "'");
+        // DemoApplication.logger.info("Updated the feedback for room with a code '" + roomCode + "'");
         roomService.updateRoomSpeed(roomCode, feedback);
     }
 

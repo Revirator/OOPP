@@ -35,6 +35,7 @@ public class QuestionController {
 
     @GetMapping   // http://localhost:8080/questions
     public List<Question> getQuestions() {
+        // I'm keeping this logging because it won't happen repetitively
         logRequest("to get all questions from the database");
         return questionService.getQuestions();
     }
@@ -53,17 +54,14 @@ public class QuestionController {
     @GetMapping("example")   // http://localhost:8080/questions/example
     @ResponseBody               // automatically serialized into JSON
     public Question getExampleQuestion() {
+        // I'm keeping this logging because it won't happen repetitively
         logRequest("to get the example question");
+
         return new Question(1,
                 new Room(LocalDateTime.of(2021, Month.APRIL, 17, 12, 45, 00),
                         "OOP Project", false),
                 "What is the basis of the zero subspace?", "Nadine", 55);
     }
-
-    //    @PostMapping   // http://localhost:8080/questions
-    //    public void addNewQuestion(@RequestBody Question question) {
-    //    questionService.addNewQuestion(question);
-    //    }
 
 
     /**
@@ -71,7 +69,6 @@ public class QuestionController {
      * @param payload data for the new question
      * @return the id of the new question
      */
-
     @PostMapping   // http://localhost:8080/questions
     public Long addNewQuestion(@RequestBody String payload) {
         logRequest("to add a new question to the room with an id '"
@@ -85,7 +82,6 @@ public class QuestionController {
     @GetMapping("/answered/{roomId}") // http://localhost:8080/questions/answered/{roomId}
     @ResponseBody
     public List<Question> getAnsweredQuestions(@PathVariable long roomId) {
-        logRequest("to get all answered questions for the room with an id '" + roomId + "'");
         return questionService.getAnsweredQuestions(roomId);
     }
 
@@ -125,7 +121,7 @@ public class QuestionController {
     @PutMapping(path = "upvote/{questionId}")
     // http://localhost:8080/questions/upvote/{questionId}
     public void upvote(@PathVariable("questionId") Long questionId) {
-        logRequest("to upvote the question with an id '" + questionId + "'");
+        // logRequest("to upvote the question with an id '" + questionId + "'");
         questionService.upvote(questionId);
     }
 
@@ -134,7 +130,7 @@ public class QuestionController {
     @PutMapping(path = "deupvote/{questionId}")
     // http://localhost:8080/questions/deupvote/{questionId}
     public void deUpvote(@PathVariable("questionId") Long questionId) {
-        logRequest("to devote the question with an id '" + questionId + "'");
+        // logRequest("to devote the question with an id '" + questionId + "'");
         questionService.deUpvote(questionId);
     }
 }
