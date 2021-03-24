@@ -208,8 +208,8 @@ public class SplashController {
             alert.setContentText("The name and the link cannot contain empty spaces.");
             flag = false;
 
-        } else if (name.contains("/") || code.contains("/") ||
-                name.contains("=") || code.contains("=")) {
+        } else if (name.contains("/") || code.contains("/")
+                || name.contains("=") || code.contains("=")) {
             alert.setContentText("The name or the link contains illegal characters.");
             flag = false;
 
