@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -40,7 +41,8 @@ public class SplashController {
     private DatePicker date;    // the value of date user enters
     @FXML
     private TextField hour;     // the value of hour user enters
-
+    @FXML
+    private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
 
     /**
      * Handles clicking the "join room" button.
@@ -149,10 +151,9 @@ public class SplashController {
 
 
     /** Checkstyle wants a comment - to be edited.
-     * @param actionEvent - to be edited
      * @throws IOException - to be edited
      */
-    public void scheduleRoom(ActionEvent actionEvent) {
+    public void scheduleRoom() {
         if (date.getValue() == null
                 || hour.getText().equals("")
                 || !hour.getText().matches("^\\d{2}:\\d{2}$")

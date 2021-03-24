@@ -162,19 +162,12 @@
                               <RowConstraints maxHeight="16.79998779296875" minHeight="0.0" prefHeight="16.79998779296875" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button fx:id="schedule" mnemonicParsing="false" onAction="#scheduleRoom" style="-fx-background-color: #f1be3e;" styleClass="buttonText" text="Schedule room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-                                 <font>
-                                    <Font name="Arial" size="12.0" />
-                                 </font>
-                                 <GridPane.margin>
-                                    <Insets right="10.0" />
-                                 </GridPane.margin>
-                                 <styleClass>
-                                    <String fx:value="buttonText" />
-                                    <String fx:value="createRoom" />
-                                 </styleClass>
-                              </Button>
-                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startRoom" prefWidth="130.0" style="-fx-background-color: #f1be3e;" text="Create instant room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                              <CheckBox fx:id="scheduledBox" mnemonicParsing="false" prefHeight="17.0" prefWidth="131.0" text="Scheduled room?" GridPane.columnIndex="1">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startRoom" prefWidth="130.0" style="-fx-background-color: #f1be3e;" text="Create room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
