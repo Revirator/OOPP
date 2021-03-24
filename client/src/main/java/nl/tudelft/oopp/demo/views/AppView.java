@@ -3,7 +3,6 @@ package nl.tudelft.oopp.demo.views;
 import java.util.Comparator;
 import java.util.List;
 
-import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -22,14 +21,12 @@ import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
-public abstract class AppView extends Application {
+public abstract class AppView extends MainView {
 
     /*
     All shared fonts.
      */
-    private DoubleProperty subTitleFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty tabFontSize = new SimpleDoubleProperty(10);
-    private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty textBoxFontSize = new SimpleDoubleProperty(10);
 
     /*
@@ -197,15 +194,11 @@ public abstract class AppView extends Application {
      * Makes all font sizes responsive in the UI.
      * @param scene current scene
      */
+    @Override
     public void bindFonts(Scene scene) {
-
-        subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(85));
 
         tabFontSize.bind(Bindings.min(15,
                 scene.widthProperty().add(scene.heightProperty()).divide(85)));
-
-        buttonFontSize.bind(Bindings.min(15,
-                scene.widthProperty().add(scene.heightProperty()).divide(120)));
 
         textBoxFontSize.bind(Bindings.min(25,
                 scene.widthProperty().add(scene.heightProperty()).divide(85)));
@@ -213,25 +206,18 @@ public abstract class AppView extends Application {
         Parent root = scene.getRoot();
 
         // Put the font sizes on all according nodes
-        for (Node node : root.lookupAll(".subTitleText")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
-                    subTitleFontSize.asString(), ";"));
-        }
-
         for (Node node : root.lookupAll(".tab-label")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     tabFontSize.asString(), ";"));
-        }
-
-        for (Node node : root.lookupAll(".buttonText")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
-                    buttonFontSize.asString(), ";"));
         }
 
         for (Node node : root.lookupAll(".textBox")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     textBoxFontSize.asString(), ";"));
         }
+
+        // Bind shared fonts
+        super.bindFonts(scene);
     }
 
 
