@@ -126,32 +126,27 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
-                        <TextField fx:id="hour" maxWidth="1.7976931348623157E308" promptText="15:30" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <Label styleClass="preBoxText" text="Date:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <Label styleClass="preBoxText" text="Date:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
                         </Label>
-                        <Label styleClass="preBoxText" text="Hour:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                           <font>
-                              <Font name="Arial" size="16.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="date" maxWidth="1.7976931348623157E308" promptText="Scheduled date" showWeekNumbers="true" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <DatePicker fx:id="date" disable="true" maxWidth="1.7976931348623157E308" promptText="Scheduled date" showWeekNumbers="true" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </DatePicker>
-                        <TextField fx:id="roomName" maxWidth="1.7976931348623157E308" promptText="Room name (e.g. R&amp;L)" styleClass="boxText" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label styleClass="preBoxText" text="Hour:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Arial" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="hour" disable="true" maxWidth="1.7976931348623157E308" promptText="15:30" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                         </TextField>
-                        <Label contentDisplay="CENTER" styleClass="preBoxText" text="Room name:" textAlignment="RIGHT" GridPane.rowIndex="2">
+                        <Label contentDisplay="CENTER" styleClass="preBoxText" text="Room name:" textAlignment="RIGHT">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
@@ -159,6 +154,11 @@
                               <Insets left="12.0" />
                            </GridPane.margin>
                         </Label>
+                        <TextField fx:id="roomName" maxWidth="1.7976931348623157E308" promptText="Room name (e.g. R&amp;L)" styleClass="boxText" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </TextField>
                         <GridPane alignment="TOP_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                            <columnConstraints>
                               <ColumnConstraints />
@@ -170,19 +170,12 @@
                               <RowConstraints maxHeight="16.79998779296875" minHeight="0.0" prefHeight="16.79998779296875" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button fx:id="schedule" mnemonicParsing="false" onAction="#scheduleRoom" style="-fx-background-color: #f1be3e;" styleClass="buttonText" text="Schedule room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-                                 <font>
-                                    <Font name="Arial" size="12.0" />
-                                 </font>
-                                 <GridPane.margin>
-                                    <Insets right="10.0" />
-                                 </GridPane.margin>
-                                 <styleClass>
-                                    <String fx:value="buttonText" />
-                                    <String fx:value="createRoom" />
-                                 </styleClass>
-                              </Button>
-                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startRoom" prefWidth="130.0" style="-fx-background-color: #f1be3e;" text="Create instant room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                              <CheckBox fx:id="scheduledBox" mnemonicParsing="false" onAction="#checkboxPress" prefHeight="28.0" prefWidth="131.0" text="Scheduled room?" GridPane.columnIndex="1">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </CheckBox>
+                              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#startRoom" prefWidth="130.0" style="-fx-background-color: #f1be3e;" text="Create room" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                                  <font>
                                     <Font name="Arial" size="12.0" />
                                  </font>
