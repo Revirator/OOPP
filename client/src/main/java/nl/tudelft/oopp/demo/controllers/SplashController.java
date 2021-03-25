@@ -47,14 +47,8 @@ public class SplashController {
      */
     public void joinRoom(ActionEvent actionEvent) {
 
-        // Check if one of the fields is empty
-        if (nickName.getText().equals("") || link.getText().equals("")) {
+        if (joinRoomSanitation(nickName.getText(), link.getText()) == true) {
 
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please enter both nickname and link.");
-            alert.show();
-
-        } else {        // If not: try to get a room from the server
             String code = link.getText();
             Room room = ServerCommunication.getRoom(code, true);
 
@@ -121,6 +115,7 @@ public class SplashController {
             }
         }
     }
+
 
     /**
      * Handles clicking the "create instant room" button.
@@ -192,5 +187,41 @@ public class SplashController {
                     + "\n Student link: " + newRoom.getStudentsLink());
             alertMod.show();
         }
+    }
+
+
+    /**
+     * Checks if the required user input for joining a room is proper.
+     * (Also shows an alert informing the user about what's wrong)
+     * @return true if is, false if it's not
+     */
+    public static boolean joinRoomSanitation(String name, String code) {
+        boolean flag = true;
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        if (name.equals("") || code.equals("")) {
+            alert.setContentText("Please enter both nickname and link.");
+            flag = false;
+
+        } else if (name.contains(" ") || code.contains(" ")) {
+            alert.setContentText("The name and the link cannot contain empty spaces.");
+            flag = false;
+
+        } else if (name.contains("/") || code.contains("/")
+                || name.contains("=") || code.contains("=")) {
+            alert.setContentText("The name or the link contains illegal characters.");
+            flag = false;
+
+        } else if (name.length() < 2 || name.length() > 20) {
+            alert.setContentText("The name should be between 2 and 20 characters.");
+            flag = false;
+        }
+
+        if (flag == false) {
+            alert.show();
+        }
+
+        return flag;
     }
 }
