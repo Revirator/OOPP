@@ -226,9 +226,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // TODO: modify when 2nd answer button added (Senne)
             // TODO: Create zen cell?
-            ModeratorRoomController mrc1 = (ModeratorRoomController) mrc;
+            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
             // if zen mode is active
-            if (mrc1.getZenMode()) {
+            if (mrcCast.getZenMode()) {
                 answerWrapper.setVisible(false);
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);

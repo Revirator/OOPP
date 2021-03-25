@@ -242,9 +242,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
             Button deleteButton = (Button) gridPane.lookup("#deleteButton");
 
             // TODO: modify when 2nd answer button added (Senne)
-            ModeratorRoomController mrc1 = (ModeratorRoomController) mrc;
+            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
             // if zen mode is active
-            if (mrc1.getZenMode()) {
+            if (mrcCast.getZenMode()) {
                 editAnswer.setVisible(false);
                 editQuestion.setVisible(false);
                 deleteButton.setVisible(false);
