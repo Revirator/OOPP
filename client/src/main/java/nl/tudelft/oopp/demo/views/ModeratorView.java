@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
+import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -36,7 +37,6 @@ public class ModeratorView extends AppView {
      */
     @Override
     public void start(Stage primaryStage) {
-
         // Load file
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
@@ -51,7 +51,6 @@ public class ModeratorView extends AppView {
             alert.setContentText("Something went wrong! Could not load the room");
             alert.show();
         }
-
         ModeratorRoomController mrc = loader.getController();
         mrc.setData(super.getUser(), super.getRoom(), this);
 
@@ -78,7 +77,6 @@ public class ModeratorView extends AppView {
      * @param roomController current room controller
      */
     public void bindCellFactory(Parent root, RoomController roomController) {
-
         // Look up all list views
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
@@ -98,7 +96,6 @@ public class ModeratorView extends AppView {
      * @param scene current scene
      */
     private void createChoiceBoxes(Scene scene) {
-
         Parent root = scene.getRoot();
 
         // Reference to choice boxes
@@ -114,7 +111,6 @@ public class ModeratorView extends AppView {
         for (char letter = 'A'; letter <= 'J'; letter++) {
             correctAnswer.getItems().add(String.valueOf(letter));
         }
-
     }
 
     /**
@@ -123,7 +119,6 @@ public class ModeratorView extends AppView {
      */
     @Override
     public void bindFonts(Scene scene) {
-
         // Bind screen size to font
         percentageFontSize.bind(Bindings.min(45,
                 scene.widthProperty().add(scene.heightProperty()).divide(45)));

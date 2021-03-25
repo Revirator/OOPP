@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -74,12 +75,15 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Create buttons in wrappers
         Button upVoteButton = new Button("Vote");
         upVoteButton.setId("UpvoteButton");
+        upVoteButton.setCursor(Cursor.HAND);
         HBox upVoteWrapper = new HBox(upVoteButton, upVotesLabel);
         upVoteWrapper.setAlignment(Pos.CENTER_LEFT);
         upVoteWrapper.setSpacing(5);
 
         Button markAnsweredButton = new Button("Mark as answered");
+        markAnsweredButton.setCursor(Cursor.HAND);
         Button deleteButton = new Button("Delete");
+        deleteButton.setCursor(Cursor.HAND);
         HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
         buttonWrapper.setId("AnsweredOrDelete");
 
@@ -87,6 +91,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
 
         Button editQuestionButton = new Button("Edit");
+        editQuestionButton.setCursor(Cursor.HAND);
         editQuestionButton.setId("EditButton");
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
@@ -213,6 +218,7 @@ public class StudentQuestionCell extends ListCell<Question> {
 
             HBox answeredOrDelete = (HBox) gridPane.lookup("#AnsweredOrDelete");
             Button editButton = (Button) gridPane.lookup("#EditButton");
+            editButton.setCursor(Cursor.HAND);
             // Button upvoteButton = (Button) gridPane.lookup("#UpvoteButton");
             if (!this.question.isOwner()) {
                 answeredOrDelete.setVisible(false);

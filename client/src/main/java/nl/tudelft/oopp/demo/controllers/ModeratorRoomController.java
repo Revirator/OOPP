@@ -42,11 +42,9 @@ public class ModeratorRoomController extends RoomController {
      */
     public void setData(User moderator, Room room, ModeratorView moderatorView) {
         super.setData(moderator, room, moderatorView);
-
         this.moderatorView = moderatorView;
         this.lectureName.setText(room.getRoomName());
         setFeedback();
-
     }
 
     /**
@@ -64,31 +62,30 @@ public class ModeratorRoomController extends RoomController {
      * For it to be done in real time it needs the fetch request.
      */
     public void setFeedback() {
-
         Room room = super.getRoom();
+        if (room.getStudents().size() > 0) {
+            tooSlowLabel.setText(room.getPeopleThinkingLectureIsTooSlow() * 100
+                    / room.getStudents().size() + "%");
 
-        tooSlowLabel.setText(Math.round(
-                room.getPeopleThinkingLectureIsTooSlow() * 100
-                        / room.getParticipants().size()
-                        + room.getPeopleThinkingLectureIsTooSlow() * 100
-                        % room.getParticipants().size()) + "%");
+            if (Integer.parseInt(tooSlowLabel.getText().replace("%", "")) < 10) {
+                tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
+            } else {
+                tooSlowLabel.setTextFill(Paint.valueOf("RED"));
+            }
 
-        if (Integer.parseInt(tooSlowLabel.getText().replace("%", "")) < 10) {
+            tooFastLabel.setText(room.getPeopleThinkingLectureIsTooFast() * 100
+                    / room.getStudents().size() + "%");
+
+            if (Integer.parseInt(tooFastLabel.getText().replace("%", "")) < 10) {
+                tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
+            } else {
+                tooFastLabel.setTextFill(Paint.valueOf("RED"));
+            }
+        } else {
+            tooSlowLabel.setText(0 + "%");
             tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
-        } else {
-            tooSlowLabel.setTextFill(Paint.valueOf("RED"));
-        }
-
-        tooFastLabel.setText(Math.round(
-                room.getPeopleThinkingLectureIsTooFast() * 100
-                        / room.getParticipants().size()
-                        + room.getPeopleThinkingLectureIsTooFast() * 100
-                        % room.getParticipants().size()) + "%");
-
-        if (Integer.parseInt(tooFastLabel.getText().replace("%", "")) < 10) {
+            tooFastLabel.setText(0 + "%");
             tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
-        } else {
-            tooFastLabel.setTextFill(Paint.valueOf("RED"));
         }
     }
 
@@ -136,22 +133,22 @@ public class ModeratorRoomController extends RoomController {
             alert.setContentText("Please wait until the lecture has ended to export questions!");
             alert.show();
         } else {
-            FileChooser fc = new FileChooser();
-            fc.getExtensionFilters().addAll(new FileChooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(new FileChooser
                     .ExtensionFilter("Text Files (*.txt,*.md)", "*.txt", "*.md"));
-            File selectedFile = fc.showSaveDialog(null);
-            PrintWriter pw = null;
+            File selectedFile = fileChooser.showSaveDialog(null);
+            PrintWriter printWriter = null;
             try {
-                pw = new PrintWriter(selectedFile);
+                printWriter = new PrintWriter(selectedFile);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
             List<Question> answeredQuestions = ServerCommunication
                     .getAnsweredQuestions(room.getRoomId());
             for (int i = 0; i < answeredQuestions.size(); i++) {
-                pw.println(answeredQuestions.get(i).toString());
+                printWriter.println(answeredQuestions.get(i).toString());
             }
-            pw.close();
+            printWriter.close();
         }
     }
 

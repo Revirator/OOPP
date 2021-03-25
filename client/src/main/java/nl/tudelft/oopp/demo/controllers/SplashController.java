@@ -18,11 +18,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.Student;
-import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 import nl.tudelft.oopp.demo.views.StudentView;
 
@@ -66,7 +66,7 @@ public class SplashController {
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
                     if (code.contains("M")) {
-                        User moderator = new Moderator(nickName.getText(), room);
+                        Moderator moderator = new Moderator(nickName.getText(), room);
                         moderator = new Moderator(
                                 ServerCommunication.sendUser(moderator, room.getRoomId()),
                                 moderator.getNickname(),
@@ -75,14 +75,22 @@ public class SplashController {
                         moderatorView.setData(moderator, room);
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
-                        User student = new Student(nickName.getText(), room);
-                        student = new Student(
-                                ServerCommunication.sendUser(student, room.getRoomId()),
-                                student.getNickname(),
-                                student.getRoom());
-                        StudentView studentView = new StudentView();
-                        studentView.setData(student, room);
-                        studentView.start((Stage) anchor.getScene().getWindow());
+                        Student student = new Student(nickName.getText(), room);
+                        if (ServerCommunication.checkIfBanned(student)) {
+                            Alert error = new Alert(Alert.AlertType.ERROR);
+                            error.setContentText("You are banned from this lecture!");
+                            error.show();
+                        } else {
+                            student = new Student(
+                                    ServerCommunication.sendUser(student, room.getRoomId()),
+                                    student.getNickname(),
+                                    student.getRoom(),
+                                    student.getIpAddress(),
+                                    student.isBanned());
+                            StudentView studentView = new StudentView();
+                            studentView.setData(student, room);
+                            studentView.start((Stage) anchor.getScene().getWindow());
+                        }
                     }
                 } else {
                     // Here the view should change to the waiting room view instead
@@ -106,14 +114,22 @@ public class SplashController {
                     stage.setScene(scene);
                     stage.show();
 
-                    User student = new Student(nickName.getText(), room);
-                    student = new Student(
-                            ServerCommunication.sendUser(student, room.getRoomId()),
-                            student.getNickname(),
-                            student.getRoom());
-                    WaitingRoomController waitingRoomController = loader.getController();
-                    waitingRoomController.setData(student, room);
-                    waitingRoomController.main(new String[0]);
+                    Student student = new Student(nickName.getText(), room);
+                    if (ServerCommunication.checkIfBanned(student)) {
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.setContentText("You are banned from this lecture!");
+                        error.show();
+                    } else {
+                        student = new Student(
+                                ServerCommunication.sendUser(student, room.getRoomId()),
+                                student.getNickname(),
+                                student.getRoom(),
+                                student.getIpAddress(),
+                                student.isBanned());
+                        WaitingRoomController waitingRoomController = loader.getController();
+                        waitingRoomController.setData(student, room);
+                        waitingRoomController.main(new String[0]);
+                    }
                 }
             }
         }
@@ -161,7 +177,7 @@ public class SplashController {
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
-            User moderator = new Moderator(nickName.getText(), newRoom);
+            Moderator moderator = new Moderator(nickName.getText(), newRoom);
             moderator = new Moderator(
                     ServerCommunication.sendUser(moderator, newRoom.getRoomId()),
                     moderator.getNickname(),
@@ -208,6 +224,28 @@ public class SplashController {
 
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
+
+            // Change it to a window with the links
+            /*
+            URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(xmlUrl);
+            Parent root = null;
+
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setContentText("Something went wrong! Could not load the links");
+                error.show();
+            }
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+             */
 
             // TODO: Make sure links are copyable
             Alert alertMod = new Alert(Alert.AlertType.INFORMATION);

@@ -123,7 +123,6 @@ public class StudentView extends AppView {
      * @param roomController current room controller
      */
     public void bindCellFactory(Parent root, RoomController roomController) {
-
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
         ListView<User> participantsListView = (ListView<User>) root.lookup("#participantsListView");
@@ -134,7 +133,6 @@ public class StudentView extends AppView {
                 new StudentAnsweredCell(super.getAnswered(), roomController));
         participantsListView.setCellFactory(param -> new ParticipantCell());
     }
-
 
     /**
      * Launches the student view.

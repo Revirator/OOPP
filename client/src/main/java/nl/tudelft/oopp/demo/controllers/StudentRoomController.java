@@ -8,6 +8,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
@@ -17,6 +19,9 @@ import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
 public class StudentRoomController extends RoomController {
+    @FXML
+    private AnchorPane anchor;
+
     @FXML
     private Button tooSlowButton;
 
@@ -46,9 +51,7 @@ public class StudentRoomController extends RoomController {
      * @param studentView - corresponding view to this controller (to add questions)
      */
     public void setData(User user, Room room, StudentView studentView) {
-
         super.setData(user, room, studentView);
-
         this.studentView = studentView;
         this.lectureName.setText(room.getRoomName());
         this.questionAllowed = true;
@@ -76,11 +79,10 @@ public class StudentRoomController extends RoomController {
     /** Updates the room object and the user by calling the getRoom() ..
      * .. and getStudent() methods in ServerCommunication.
      */
-    public void roomAndUserRefresher() {
-
+    @Override
+    public void roomRefresher() {
         Room room = super.getRoom();
         User student = super.getUser();
-
         Room newRoom = ServerCommunication.getRoom(room.getStudentsLink(), false);
         if (room.isActive() && !newRoom.isActive()) {
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -89,11 +91,23 @@ public class StudentRoomController extends RoomController {
             alert.show();
         }
         super.setRoom(newRoom);
-        // The server returns the student with the room field being null
-        User tempStudent = ServerCommunication.getStudent(student.getId());
-        super.setUser(new Student(tempStudent.getId(), tempStudent.getNickname(), room));
-        // TODO: Check if the student has been kicked out or banned
-        this.studentView.setData(student,room);
+        // The server returns a student with the room field being null
+        Student tempStudent = (Student) ServerCommunication.getStudent(student.getId());
+        if (!((Student) student).isBanned() && tempStudent.isBanned()) {
+            super.setUser(new Student(tempStudent.getId(), tempStudent.getNickname(), room,
+                    tempStudent.getIpAddress(), tempStudent.isBanned()));
+            resetFeedback();
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("It seems like you got banned!"
+                    + "\nThe window will now close for you!");
+            alert.showAndWait();
+            Stage stage = (Stage) anchor.getScene().getWindow();
+            stage.close();
+        } else {
+            student = new Student(tempStudent.getId(), tempStudent.getNickname(), room,
+                    tempStudent.getIpAddress(), tempStudent.isBanned());
+            this.studentView.setData(student,room);
+        }
     }
 
     /** Callback method for "Submit" button in student room.
@@ -103,10 +117,8 @@ public class StudentRoomController extends RoomController {
      * Else the question is sent to the server via a POST request.
      */
     public void submitQuestion() {
-
         Room room = super.getRoom();
         User student = super.getUser();
-
         if (room.isActive()) {
             if (questionBox.getText().length() < 7) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -127,10 +139,8 @@ public class StudentRoomController extends RoomController {
                         student.getNickname(), true);
                 Long newId = ServerCommunication.postQuestion(newQuestion);
                 newQuestion.setId(newId);
-
                 questionBox.clear();
                 this.studentView.addQuestion(newQuestion);
-
                 questionAllowed = false;
             }
         } else {
@@ -148,9 +158,7 @@ public class StudentRoomController extends RoomController {
      * .. both on the server and client side by one.
      */
     public void lectureTooSlow() {
-
         Room room = super.getRoom();
-
         if (!room.isActive()) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setContentText("The lecture is over! You cannot send feedback anymore!");
@@ -192,9 +200,10 @@ public class StudentRoomController extends RoomController {
      * .. depending on which button was previously pressed.
      */
     public void resetFeedback() {
-
+        if (resetButton.isDisabled()) {
+            return;
+        }
         Room room = super.getRoom();
-
         if (!room.isActive()) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setContentText("The lecture is over! You cannot send feedback anymore!");
@@ -216,20 +225,5 @@ public class StudentRoomController extends RoomController {
                 ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
             }
         }
-    }
-
-    /**
-     * Updates the room object and the feedback by calling the getRoom() ..
-     * .. method in ServerCommunication.
-     */
-    @Override
-    public void roomRefresher() {
-        roomAndUserRefresher();
-
-
-        //TODO Why is this created like that?
-        // Moderator has everything separated (room, question, participants)
-        // This has room and user, question, participant
-        // Shouldn't room and user be just room?
     }
 }

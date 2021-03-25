@@ -48,7 +48,7 @@ public abstract class RoomController {
         };
 
         // setting up and starting the thread
-        service.setPeriod(Duration.seconds(5));
+        service.setPeriod(Duration.seconds(1));
         service.setOnRunning(e -> {
             roomRefresher();
             questionRefresher();

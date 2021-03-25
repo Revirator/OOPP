@@ -90,7 +90,9 @@ public class RoomService {
         } else {
             room = roomRepository.findFirstByStudentsLink(link);
         }
-        room.end();
+        if (room != null) {
+            room.end();
+        }
     }
 
     /** Called by RoomController.

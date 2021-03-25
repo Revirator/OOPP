@@ -4,6 +4,7 @@ import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Room;
@@ -127,7 +128,7 @@ public class RoomController {
     @GetMapping("/students/{roomId}") // http://localhost:8080/rooms/participants/{roomId}
     public List<Student> getStudents(@PathVariable String roomId) {
         Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
-        return room.getStudents();
+        return room.getStudents().stream().filter(s -> !s.isBanned()).collect(Collectors.toList());
     }
 
 

@@ -62,14 +62,35 @@ public abstract class AppView extends MainView {
      * @param moderatorList list of all moderators
      */
     public void updateParticipants(List<Student> studentList, List<Moderator> moderatorList) {
-
         participants.clear();
-        participants.addAll(studentList);
+        /*
+        for (User s : participants) {
+            if (s.getRole().equals("Student") && ((Student) s).isBanned()) {
+                participants.remove(s);
+            }
+        }
+
+        for (Student s : studentList) {
+            s.setRoom(this.room);
+            if (!participants.contains(s) && !s.isBanned()) {
+                participants.add(s);
+            }
+        }
+
+        for (Moderator m : moderatorList) {
+            m.setRoom(this.room);
+            if (!participants.contains(m)) {
+                participants.add(m);
+            }
+        }
+        */
+
+        studentList.sort(Comparator.comparing(Student::getNickname));
+        moderatorList.sort(Comparator.comparing(Moderator::getNickname));
         participants.addAll(moderatorList);
-
-        participants.sort(Comparator.comparing(User::getNickname));
-        participants.sort(Comparator.comparing(User::getRole));
-
+        participants.addAll(studentList);
+        // participants.sort(Comparator.comparing(User::getNickname));
+        // participants.sort(Comparator.comparing(User::getRole));
     }
 
     /**
@@ -229,6 +250,4 @@ public abstract class AppView extends MainView {
         // Bind shared fonts
         super.bindFonts(scene);
     }
-
-
 }
