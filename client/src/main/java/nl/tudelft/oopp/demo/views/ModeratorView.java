@@ -20,6 +20,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
@@ -112,7 +113,7 @@ public class ModeratorView extends Application {
         answeredListView.setCellFactory(param ->
                 new ModeratorAnsweredCell(answered, mrc));
         participantsListView.setCellFactory(param ->
-                new ParticipantCell(this.moderator.getRole()));
+                new ModeratorParticipantCell());
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);

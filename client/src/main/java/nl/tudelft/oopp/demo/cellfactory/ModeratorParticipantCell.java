@@ -1,12 +1,10 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
@@ -15,12 +13,15 @@ public class ModeratorParticipantCell extends ParticipantCell {
     /**
      * Constructor for a moderator participant cell.
      */
-    public ModeratorParticipantCell(String windowOwner) {
-        super(windowOwner);
-        // addButtons();
+    public ModeratorParticipantCell() {
+        super();
+        addBanButton();
     }
 
-    private void addButtons() {
+    /**
+     * Adds the ban button to the cell.
+     */
+    private void addBanButton() {
         Button ipBanButton = new Button("Ban");
 
         ipBanButton.setId("ipBanButton");
@@ -44,6 +45,26 @@ public class ModeratorParticipantCell extends ParticipantCell {
             }
         });
 
+    }
+
+    /**
+     * Updates the cell.
+     * @param user user in this cell
+     * @param empty true if empty, false if not
+     */
+    @Override
+    public void updateItem(User user, boolean empty) {
+
+        super.updateItem(user, empty);
+
+        if (!empty && user != null) {
+
+            Button button = (Button) super.getGridPane().lookup("#ipBanButton");
+
+            // Set button visible in cell only if student
+            button.setVisible(user instanceof Student);
+
+        }
     }
 
 }
