@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.views;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import javafx.beans.binding.Bindings;
@@ -80,6 +81,15 @@ public abstract class AppView extends MainView {
 
         answered.clear();
         answered.addAll(answeredList);
+
+        // remove deleted questions from view
+        Iterator<Question> iterator = questions.iterator();
+        while (iterator.hasNext()) {
+            Question q = iterator.next();
+            if (!questionList.contains(q)) {
+                iterator.remove();
+            }
+        }
 
         // questionList contains both answered and non-answered questions!
         for (Question q : questionList) {

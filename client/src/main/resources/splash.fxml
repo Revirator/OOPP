@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.SplashController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.SplashController">
    <top>
       <AnchorPane fx:id="anchor" prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <children>
@@ -48,7 +40,7 @@
                   <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="152.00001220703126" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label styleClass="subTitleText" text="Join room" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label styleClass="subTitle" text="Join room" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -109,7 +101,7 @@
                   <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="152.00001220703126" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label styleClass="subTitleText" text="Create room" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label styleClass="subTitle" text="Create room" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
