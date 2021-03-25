@@ -234,4 +234,15 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
             setGraphic(anchorPane);
         }
     }
+
+    // TODO: modify when 2nd answer button added (Senne)
+    public static void zenMode(boolean active) {
+
+        if (active) {
+            // TODO: hide text box + buttons
+        } else {
+            // TODO: make visible again
+        }
+
+    }
 }

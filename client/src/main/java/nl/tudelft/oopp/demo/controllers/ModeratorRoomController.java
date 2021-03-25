@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.CheckBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -36,6 +38,7 @@ public class ModeratorRoomController extends RoomController {
     private Label tooFastLabel;
 
     private ModeratorView moderatorView;
+    private boolean zenModeActive;
 
     /**
      * Used in SplashController to pass the user and the room object.
@@ -50,7 +53,7 @@ public class ModeratorRoomController extends RoomController {
         this.moderatorView = moderatorView;
         this.lectureName.setText(room.getRoomName());
         setFeedback();
-
+        zenModeActive = false;
     }
 
     /**
@@ -163,10 +166,20 @@ public class ModeratorRoomController extends RoomController {
     /** Callback method for the "Zen Mode" button in Moderator Room.
      * Makes the following buttons invisible: ..
      *  .. "edit", "answer", "mark answered", "delete"
+     *  .. as well as answer text box
      */
     public void zenMode() {
-        // TODO: make buttons invisible in ModeratorQuestionCell
-        // TODO: modify when 2nd answer button added (Senne)
+
+        // zen mode becomes active
+        if (!zenModeActive) {
+            ModeratorQuestionCell.zenMode(true);
+            ModeratorAnsweredCell.zenMode(true);
+        } else {
+            zenModeActive = false;
+            ModeratorQuestionCell.zenMode(false);
+            ModeratorAnsweredCell.zenMode(false);
+        }
+
     }
 
 

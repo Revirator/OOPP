@@ -71,7 +71,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create buttons
         Button answerButton = new Button("Answer");
+        answerButton.setId("answerButton");
         Button editButton = new Button("Edit question");
+        // TODO: set IDs OR MAKE PRIVATE FIELD
         Button deleteButton = new Button("Delete");
 
         // Create text area
@@ -212,6 +214,19 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Show graphic representation
             setGraphic(anchorPane);
         }
+    }
+
+
+    // TODO: modify when 2nd answer button added (Senne)
+    public static void zenMode(boolean active) {
+
+        if (active) {
+            // TODO: hide text box + buttons
+
+        } else {
+            // TODO: make visible again
+        }
+
     }
 
 }
