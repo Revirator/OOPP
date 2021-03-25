@@ -6,10 +6,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
@@ -20,7 +17,12 @@ import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
+import javax.security.auth.callback.Callback;
+
 public class ModeratorRoomController extends RoomController {
+
+    @FXML
+    private ListView listView;
 
     @FXML
     private Button endLecture;
@@ -38,6 +40,7 @@ public class ModeratorRoomController extends RoomController {
     private Label tooFastLabel;
 
     private ModeratorView moderatorView;
+
     private boolean zenModeActive;
 
     /**
@@ -170,16 +173,28 @@ public class ModeratorRoomController extends RoomController {
      */
     public void zenMode() {
 
-        // zen mode becomes active
-        if (!zenModeActive) {
-            ModeratorQuestionCell.zenMode(true);
-            ModeratorAnsweredCell.zenMode(true);
-        } else {
-            zenModeActive = false;
-            ModeratorQuestionCell.zenMode(false);
-            ModeratorAnsweredCell.zenMode(false);
-        }
+        ModeratorQuestionCell mqc = (ModeratorQuestionCell) listView.getCellFactory().call(listView);
+        // This is a test to see what the method returns, but it gives null?
+        System.out.println(mqc.getQuestion());
 
+
+//        List<ModeratorQuestionCell> questionCells = (List<ModeratorQuestionCell>) listView.getCellFactory();
+//        // zen mode becomes active
+//        if (!zenModeActive) {
+//            zenModeActive = true;
+//            if (!questionCells.isEmpty()) {
+//                for (ModeratorQuestionCell cell : questionCells) {
+//                    cell.zenMode(true);
+//                }
+//            }
+//        } else {
+//            zenModeActive = false;
+//            if (!questionCells.isEmpty()) {
+//                for (ModeratorQuestionCell cell : questionCells) {
+//                    cell.zenMode(false);
+//                }
+//            }
+//        }
     }
 
 

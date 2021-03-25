@@ -26,6 +26,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private boolean editing;
     private RoomController mrc;
 
+
     /**
      * Constructor for moderator question cell.
      * @param questions ObservableList of current questions
@@ -53,6 +54,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+        gridPane.setId("gridPane");
 
         // Create all labels
         Label questionLabel = new Label();
@@ -73,11 +75,13 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         Button answerButton = new Button("Answer");
         answerButton.setId("answerButton");
         Button editButton = new Button("Edit question");
-        // TODO: set IDs OR MAKE PRIVATE FIELD
+        editButton.setId("editButton");
         Button deleteButton = new Button("Delete");
+        deleteButton.setId("deleteButton");
 
         // Create text area
         TextArea answerBox = new TextArea("");
+        answerBox.setId("answerBox");
         answerBox.setWrapText(true);
 
         // Wrap edit and delete button
@@ -217,16 +221,31 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     }
 
 
+
     // TODO: modify when 2nd answer button added (Senne)
-    public static void zenMode(boolean active) {
+    public void zenMode(boolean active) {
+
+        TextArea answerBox = (TextArea) gridPane.lookup("answerBox");
+        Button answerButton = (Button) gridPane.lookup("answerButton");
+        Button editButton= (Button) gridPane.lookup("editButton");
+        Button deleteButton = (Button) gridPane.lookup("deleteButton");
 
         if (active) {
-            // TODO: hide text box + buttons
-
+            answerBox.setVisible(false);
+            answerButton.setVisible(false);
+            editButton.setVisible(false);
+            deleteButton.setVisible(false);
         } else {
-            // TODO: make visible again
+            answerBox.setVisible(true);
+            answerButton.setVisible(true);
+            editButton.setVisible(true);
+            deleteButton.setVisible(true);
         }
 
+    }
+
+    public Question getQuestion() {
+        return question;
     }
 
 }
