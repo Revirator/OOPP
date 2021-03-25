@@ -20,9 +20,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
-import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
@@ -101,9 +101,9 @@ public class ModeratorView extends Application {
         answeredListView.setItems(answered);
         participantsListView.setItems(participants);
 
-        addUser(new Student("ddd", null));
-        addUser(new Moderator("xyz", null));
-        addUser(new Student("abc", null));
+        // addUser(new Student("ddd", null));
+        // addUser(new Moderator("xyz", null));
+        // addUser(new Student("abc", null));
 
 
         // Set cell factory to use student cell
@@ -111,7 +111,8 @@ public class ModeratorView extends Application {
                 new ModeratorQuestionCell(questions, answered, mrc));
         answeredListView.setCellFactory(param ->
                 new ModeratorAnsweredCell(answered, mrc));
-        participantsListView.setCellFactory(param -> new ModeratorParticipantCell());
+        participantsListView.setCellFactory(param ->
+                new ParticipantCell(this.moderator.getRole()));
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -122,6 +123,7 @@ public class ModeratorView extends Application {
          */
         questionListView.setSelectionModel(new NoSelectionModel<>());
         answeredListView.setSelectionModel(new NoSelectionModel<>());
+        participantsListView.setSelectionModel(new NoSelectionModel<>());
 
 
         // Add choice boxes to screen
@@ -233,11 +235,35 @@ public class ModeratorView extends Application {
     public void updateParticipants(List<Student> studentList, List<Moderator> moderatorList) {
 
         participants.clear();
-        participants.addAll(studentList);
-        participants.addAll(moderatorList);
+        /*
+        for (User s : participants) {
+            if (s.getRole().equals("Student") && ((Student) s).isBanned()) {
+                participants.remove(s);
+            }
+        }
 
-        participants.sort(Comparator.comparing(User::getNickname));
-        participants.sort(Comparator.comparing(User::getRole));
+        for (Student s : studentList) {
+            s.setRoom(this.room);
+            if (!participants.contains(s) && !s.isBanned()) {
+                participants.add(s);
+            }
+        }
+
+        for (Moderator m : moderatorList) {
+            m.setRoom(this.room);
+            if (!participants.contains(m)) {
+                participants.add(m);
+            }
+        }
+        */
+
+        studentList.sort(Comparator.comparing(Student::getNickname));
+        moderatorList.sort(Comparator.comparing(Moderator::getNickname));
+        participants.addAll(moderatorList);
+        participants.addAll(studentList);
+
+        // participants.sort(Comparator.comparing(User::getNickname));
+        // participants.sort(Comparator.comparing(User::getRole));
 
     }
 

@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.data;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Room {
     // these match the properties in Room entity on server
@@ -125,5 +126,30 @@ public class Room {
 
     public List<Moderator> getModerators() {
         return this.moderators;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Room)) {
+            return false;
+        }
+        Room room = (Room) o;
+        return isActive() == room.isActive()
+                && getPeopleThinkingLectureIsTooFast() == room.getPeopleThinkingLectureIsTooFast()
+                && getPeopleThinkingLectureIsTooSlow() == room.getPeopleThinkingLectureIsTooSlow()
+                && getRoomName().equals(room.getRoomName())
+                && getStudentsLink().equals(room.getStudentsLink())
+                && getModeratorLink().equals(room.getModeratorLink())
+                && getStartingTime().equals(room.getStartingTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRoomId(), getRoomName(), getStudentsLink(), getModeratorLink(),
+                getStartingTime(), isActive(), getParticipants(), getStudents(), getModerators(),
+                getPeopleThinkingLectureIsTooFast(), getPeopleThinkingLectureIsTooSlow());
     }
 }

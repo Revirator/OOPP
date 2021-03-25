@@ -15,10 +15,9 @@ public class ModeratorParticipantCell extends ParticipantCell {
     /**
      * Constructor for a moderator participant cell.
      */
-    public ModeratorParticipantCell() {
-        super();
-
-        addButtons();
+    public ModeratorParticipantCell(String windowOwner) {
+        super(windowOwner);
+        // addButtons();
     }
 
     private void addButtons() {

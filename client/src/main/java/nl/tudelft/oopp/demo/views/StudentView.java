@@ -109,7 +109,7 @@ public class StudentView extends Application {
         // Set cell factory to use student cell
         questionListView.setCellFactory(param -> new StudentQuestionCell(questions, answered, src));
         answeredListView.setCellFactory(param -> new StudentAnsweredCell(answered, src));
-        participantsListView.setCellFactory(param -> new ParticipantCell());
+        participantsListView.setCellFactory(param -> new ParticipantCell(this.student.getRole()));
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -120,6 +120,7 @@ public class StudentView extends Application {
          */
         questionListView.setSelectionModel(new NoSelectionModel<>());
         answeredListView.setSelectionModel(new NoSelectionModel<>());
+        participantsListView.setSelectionModel(new NoSelectionModel<>());
     }
 
 

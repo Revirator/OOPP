@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.data;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 
 public class Student extends User {
 
@@ -53,6 +54,26 @@ public class Student extends User {
     @Override
     public String toString() {
         return "Student " + super.getNickname() + " in lecture " + super.getRoom().getRoomName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Student)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Student student = (Student) o;
+        return isBanned() == student.isBanned() && getIpAddress().equals(student.getIpAddress());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getIpAddress(), isBanned());
     }
 }
 
