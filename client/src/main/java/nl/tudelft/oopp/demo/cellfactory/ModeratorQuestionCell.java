@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.cellfactory;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -70,12 +71,16 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create buttons
         Button answerButton = new Button("Answer");
+        answerButton.setCursor(Cursor.HAND);
         Button editButton = new Button("Edit question");
+        editButton.setCursor(Cursor.HAND);
         Button deleteButton = new Button("Delete");
+        deleteButton.setCursor(Cursor.HAND);
 
         // Create text area
         TextArea answerBox = new TextArea("");
         answerBox.setWrapText(true);
+        answerBox.setCursor(Cursor.TEXT);
 
         // Wrap edit and delete button
         HBox editDeleteWrapper = new HBox(editButton, deleteButton);
