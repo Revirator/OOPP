@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
+import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorQuestionCell extends ListCell<Question> {
@@ -24,7 +25,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private ObservableList<Question> answered;
     private TextField editableLabel;
     private boolean editing;
-    private ModeratorRoomController mrc;
+    private RoomController mrc;
 
     /**
      * Constructor for moderator question cell.
@@ -32,7 +33,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
      * @param answered ObservableList of answered questions
      */
     public ModeratorQuestionCell(ObservableList<Question> questions,
-                                 ObservableList<Question> answered, ModeratorRoomController mrc) {
+                                 ObservableList<Question> answered, RoomController mrc) {
 
         super();
 
@@ -157,7 +158,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
             // Send answer to server to store in db
-            mrc.setAnswer(this.question, answerBox.getText());
+            ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
 
             question.setAnswer(answerBox.getText());   // Those will probably get removed later
             questions.remove(question);             // since they change stuff only locally
