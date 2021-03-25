@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
@@ -24,7 +25,7 @@ public class StudentQuestionCell extends ListCell<Question> {
     private ObservableList<Question> answered;
     private boolean editing;
     private TextField editableLabel;
-    private StudentRoomController src;
+    private RoomController src;
 
     /** Initialized for each question by StudentView.
      * Constructor for student question cell.
@@ -32,7 +33,7 @@ public class StudentQuestionCell extends ListCell<Question> {
      * @param answered ObservableList of all answered questions
      */
     public StudentQuestionCell(ObservableList<Question> questions,
-                               ObservableList<Question> answered, StudentRoomController src) {
+                               ObservableList<Question> answered, RoomController src) {
 
         super();
 

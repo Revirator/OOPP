@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -40,6 +41,8 @@ public class SplashController {
     private DatePicker date;    // the value of date user enters
     @FXML
     private TextField hour;     // the value of hour user enters
+    @FXML
+    private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
 
 
     /**
@@ -47,16 +50,10 @@ public class SplashController {
      */
     public void joinRoom(ActionEvent actionEvent) {
 
-        // Check if one of the fields is empty
-        if (nickName.getText().equals("") || link.getText().equals("")) {
+        if (joinRoomSanitation(nickName.getText(), link.getText()) == true) {
 
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please enter both nickname and link.");
-            alert.show();
-
-        } else {        // If not: try to get a room from the server
             String code = link.getText();
-            Room room = ServerCommunication.getRoom(code);
+            Room room = ServerCommunication.getRoom(code, true);
 
             // Using alert temporary until the other features are implemented
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -122,10 +119,38 @@ public class SplashController {
         }
     }
 
+
     /**
-     * Handles clicking the "create instant room" button.
+     * Handles clicking the "create room" button.
      */
     public void startRoom(ActionEvent actionEvent) {
+        if (scheduledBox.isSelected()) {
+            scheduleRoom();
+        } else {
+            instantRoom();
+        }
+    }
+
+
+    /**
+     * Handles the check/uncheck action of the checkbox.
+     */
+    public void checkboxPress() {
+        if (scheduledBox.isSelected()) {
+            date.setDisable(false);
+            hour.setDisable(false);
+        } else {
+            date.setDisable(true);
+            hour.setDisable(true);
+        }
+    }
+
+
+    /**
+     * Called by startRoom when scheduledBox is unchecked.
+     * Creates a room instantly.
+     */
+    private void instantRoom() {
         if (roomName.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter name of room");
@@ -148,11 +173,11 @@ public class SplashController {
     }
 
 
-    /** Checkstyle wants a comment - to be edited.
-     * @param actionEvent - to be edited
-     * @throws IOException - to be edited
+    /**
+     * Called by startRoom when scheduledBox is checked.
+     * Creates a scheduled room.
      */
-    public void scheduleRoom(ActionEvent actionEvent) {
+    private void scheduleRoom() {
         if (date.getValue() == null
                 || hour.getText().equals("")
                 || !hour.getText().matches("^\\d{2}:\\d{2}$")
@@ -192,5 +217,41 @@ public class SplashController {
                     + "\n Student link: " + newRoom.getStudentsLink());
             alertMod.show();
         }
+    }
+
+
+    /**
+     * Checks if the required user input for joining a room is proper.
+     * (Also shows an alert informing the user about what's wrong)
+     * @return true if is, false if it's not
+     */
+    public static boolean joinRoomSanitation(String name, String code) {
+        boolean flag = true;
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        if (name.equals("") || code.equals("")) {
+            alert.setContentText("Please enter both nickname and link.");
+            flag = false;
+
+        } else if (name.contains(" ") || code.contains(" ")) {
+            alert.setContentText("The name and the link cannot contain empty spaces.");
+            flag = false;
+
+        } else if (name.contains("/") || code.contains("/")
+                || name.contains("=") || code.contains("=")) {
+            alert.setContentText("The name or the link contains illegal characters.");
+            flag = false;
+
+        } else if (name.length() < 2 || name.length() > 20) {
+            alert.setContentText("The name should be between 2 and 20 characters.");
+            flag = false;
+        }
+
+        if (flag == false) {
+            alert.show();
+        }
+
+        return flag;
     }
 }

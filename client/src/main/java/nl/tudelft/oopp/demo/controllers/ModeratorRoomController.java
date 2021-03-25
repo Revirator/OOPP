@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -14,16 +12,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.CheckBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
-import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
-public class ModeratorRoomController {
+public class ModeratorRoomController extends RoomController {
 
     @FXML
     private Button endLecture;
@@ -40,10 +35,7 @@ public class ModeratorRoomController {
     @FXML
     private Label tooFastLabel;
 
-    private User moderator;
-    private Room room;
     private ModeratorView moderatorView;
-
 
     /**
      * Used in SplashController to pass the user and the room object.
@@ -53,63 +45,21 @@ public class ModeratorRoomController {
      * @param moderatorView - corresponding view to this controller (to add questions)
      */
     public void setData(User moderator, Room room, ModeratorView moderatorView) {
-        this.moderator = moderator;
-        this.room = room;
+        super.setData(moderator, room, moderatorView);
+
         this.moderatorView = moderatorView;
-        this.lectureName.setText(this.room.getRoomName());
+        this.lectureName.setText(room.getRoomName());
         setFeedback();
 
-        // creates a service that allows a method to be called every timeframe
-        ScheduledService<Boolean> service = new ScheduledService<>() {
-            @Override
-            protected Task<Boolean> createTask() {
-                return new Task<>() {
-                    @Override
-                    protected Boolean call() {
-                        updateMessage("Checking for updates..");
-                        return true;
-                    }
-                };
-            }
-        };
-
-        // setting up and starting the thread
-        service.setPeriod(Duration.seconds(5));
-        service.setOnRunning(e -> {
-            roomRefresher();
-            questionRefresher();
-            participantRefresher();
-        });
-        service.start();
     }
 
     /**
-     * Calls methods in ServerCommunication to get updated lists from the database.
-     * Updates the actual view.
-     */
-    public void questionRefresher() {
-        List<Question> questionList = ServerCommunication.getQuestions(room.getRoomId());
-        List<Question> answeredList = ServerCommunication.getAnsweredQuestions(room.getRoomId());
-        moderatorView.update(questionList, answeredList);
-    }
-
-    /**
-     * Calls methods in ServerCommunication to get updated lists from the database.
-     * Updates the user views (periodically called by refresher)
-     */
-    public void participantRefresher() {
-        List<Student> studentList = ServerCommunication.getStudents(room.getRoomId());
-        List<Moderator> moderatorList = ServerCommunication.getModerators(room.getRoomId());
-        moderatorView.updateParticipants(studentList, moderatorList);
-
-    }
-
-    /** Updates the room object and the feedback by calling the getRoom() ..
-     * .. method in ServerCommunication.
+     * Refreshes the current room.
      */
     public void roomRefresher() {
-        this.room = ServerCommunication.getRoom(room.getStudentsLink());
-        this.moderatorView.setData(moderator, room);
+        super.setRoom(ServerCommunication.getRoom(
+               super.getRoom().getStudentsLink(), false));
+        this.moderatorView.setData(super.getUser(), super.getRoom());
         setFeedback();
     }
 
@@ -118,11 +68,14 @@ public class ModeratorRoomController {
      * For it to be done in real time it needs the fetch request.
      */
     public void setFeedback() {
+
+        Room room = super.getRoom();
+
         tooSlowLabel.setText(Math.round(
-                this.room.getPeopleThinkingLectureIsTooSlow() * 100
-                        / this.room.getParticipants().size()
-                        + this.room.getPeopleThinkingLectureIsTooSlow() * 100
-                        % this.room.getParticipants().size()) + "%");
+                room.getPeopleThinkingLectureIsTooSlow() * 100
+                        / room.getParticipants().size()
+                        + room.getPeopleThinkingLectureIsTooSlow() * 100
+                        % room.getParticipants().size()) + "%");
 
         if (Integer.parseInt(tooSlowLabel.getText().replace("%", "")) < 10) {
             tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
@@ -131,10 +84,10 @@ public class ModeratorRoomController {
         }
 
         tooFastLabel.setText(Math.round(
-                this.room.getPeopleThinkingLectureIsTooFast() * 100
-                        / this.room.getParticipants().size()
-                        + this.room.getPeopleThinkingLectureIsTooFast() * 100
-                        % this.room.getParticipants().size()) + "%");
+                room.getPeopleThinkingLectureIsTooFast() * 100
+                        / room.getParticipants().size()
+                        + room.getPeopleThinkingLectureIsTooFast() * 100
+                        % room.getParticipants().size()) + "%");
 
         if (Integer.parseInt(tooFastLabel.getText().replace("%", "")) < 10) {
             tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
@@ -143,11 +96,15 @@ public class ModeratorRoomController {
         }
     }
 
-    /** The method that is executed when the End lecture button is clicked.
-     * Updates the status of the room to inactive so that new questions ..
+    /**
+     * The method that is executed when the End lecture button is clicked.
+     * Updates the status of the room to inactive so that new questions..
      * .. and feedback are not processed.
      */
     public void endLecture() {
+
+        Room room = super.getRoom();
+
         if (room == null || !room.isActive()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setContentText("The room does not exist or has ended already!");
@@ -175,6 +132,9 @@ public class ModeratorRoomController {
      * The supported formats are .txt and .md .
      */
     public void exportQuestions() {
+
+        Room room = super.getRoom();
+
         if (room.isActive()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please wait until the lecture has ended to export questions!");
@@ -210,51 +170,12 @@ public class ModeratorRoomController {
     }
 
 
-    /**
-     * Deletes this question upon pressing "delete" or "mark as answered" buttons.
-     * Based on id of this question.
-     * @param questionToRemove - Question to be removed from database.
-     */
-    public boolean deleteQuestion(Question questionToRemove) {
-
-        if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Server error!");
-            alert.show();
-            return false;
-        }
-        return true;
-
-    }
 
     /**
-     * Edits this question according to new text entered upon pressing:
-     *  - "edit answer" button in QuestionCell
-     *  - "edit answer" button in AnsweredCell
-     * Based on id of this question.
-     * @param questionToEdit - Question to edit content of in database.
-     */
-    public boolean editQuestion(Question questionToEdit, String update) {
-
-        if (update.length() > 0) {
-
-            questionToEdit.setText(update);
-
-            if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Server error!");
-                alert.show();
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Sets answer to this question in db.
-     * Based on id of this question.
-     * @param question - Question to set answer of content of in database.
+     * Set the answer on the server-side.
+     * @param question answered question
+     * @param answer answer
+     * @return true if successful, false if not
      */
     public boolean setAnswer(Question question, String answer) {
 
