@@ -6,23 +6,21 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
-import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
-import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
-import javax.security.auth.callback.Callback;
 
 public class ModeratorRoomController extends RoomController {
 
-    @FXML
-    private ListView listView;
 
     @FXML
     private Button endLecture;
@@ -167,34 +165,23 @@ public class ModeratorRoomController extends RoomController {
 
 
     /** Callback method for the "Zen Mode" button in Moderator Room.
-     * Makes the following buttons invisible: ..
+     * Update in ModeratorQuestionCell makes the following buttons invisible: ..
      *  .. "edit", "answer", "mark answered", "delete"
      *  .. as well as answer text box
      */
     public void zenMode() {
 
-        ModeratorQuestionCell mqc = (ModeratorQuestionCell) listView.getCellFactory().call(listView);
-        // This is a test to see what the method returns, but it gives null?
-        System.out.println(mqc.getQuestion());
+        // zen mode becomes active
+        if (!zenModeActive) {
+            zenModeActive = true;
+        } else {
+            zenModeActive = false;
+        }
+    }
 
 
-//        List<ModeratorQuestionCell> questionCells = (List<ModeratorQuestionCell>) listView.getCellFactory();
-//        // zen mode becomes active
-//        if (!zenModeActive) {
-//            zenModeActive = true;
-//            if (!questionCells.isEmpty()) {
-//                for (ModeratorQuestionCell cell : questionCells) {
-//                    cell.zenMode(true);
-//                }
-//            }
-//        } else {
-//            zenModeActive = false;
-//            if (!questionCells.isEmpty()) {
-//                for (ModeratorQuestionCell cell : questionCells) {
-//                    cell.zenMode(false);
-//                }
-//            }
-//        }
+    public boolean getZenMode() {
+        return zenModeActive;
     }
 
 

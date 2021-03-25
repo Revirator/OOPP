@@ -90,6 +90,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Wrap answer button and text area
         HBox answerWrapper = new HBox(answerBox, answerButton);
+        answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
         // Align buttons
@@ -217,35 +218,28 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // Show graphic representation
             setGraphic(anchorPane);
+
+
+            Button editButton = (Button) gridPane.lookup("#editButton");
+            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
+            HBox answerWrapper = (HBox) gridPane.lookup("#answerWrapper");
+
+            // TODO: modify when 2nd answer button added (Senne)
+            // TODO: Create zen cell?
+            ModeratorRoomController mrc1 = (ModeratorRoomController) mrc;
+            // if zen mode is active
+            if (mrc1.getZenMode()) {
+                answerWrapper.setVisible(false);
+                editButton.setVisible(false);
+                deleteButton.setVisible(false);
+            } else {
+                answerWrapper.setVisible(true);
+                editButton.setVisible(true);
+                deleteButton.setVisible(true);
+            }
         }
     }
 
 
-
-    // TODO: modify when 2nd answer button added (Senne)
-    public void zenMode(boolean active) {
-
-        TextArea answerBox = (TextArea) gridPane.lookup("answerBox");
-        Button answerButton = (Button) gridPane.lookup("answerButton");
-        Button editButton= (Button) gridPane.lookup("editButton");
-        Button deleteButton = (Button) gridPane.lookup("deleteButton");
-
-        if (active) {
-            answerBox.setVisible(false);
-            answerButton.setVisible(false);
-            editButton.setVisible(false);
-            deleteButton.setVisible(false);
-        } else {
-            answerBox.setVisible(true);
-            answerButton.setVisible(true);
-            editButton.setVisible(true);
-            deleteButton.setVisible(true);
-        }
-
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
 
 }

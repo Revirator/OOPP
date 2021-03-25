@@ -63,19 +63,15 @@ public class UserServiceTest {
 
     @Test
     @Order(1)
-    public void testGetStudentsRequest() {
-        List<Student> students = userService.getStudents(1);
-        System.out.println(students);
-        assertEquals(new ArrayList<>(), students);
+    public void testGetStudentRequest() {
+
     }
 
 
     @Test
     @Order(2)
-    public void testGetModeratorsRequest() {
-        List<Moderator> moderators = userService.getModerators(1);
-        System.out.println(moderators);
-        assertEquals(new ArrayList<>(), moderators);
+    public void testGetModeratorRequest() {
+
     }
 
 
