@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -95,5 +96,19 @@ public class UserService {
         if (student != null) {
             student.ban();
         }
+    }
+
+    /** Checks if the IP address of the student is the same as ..
+     * .. the IP address of an already banned student.
+     * @param roomId the id of the room
+     * @param ipAddress the IP address of the student
+     * @return true if the user is banned, false otherwise
+     */
+    public boolean checkIfBanned(long roomId, String ipAddress) {
+        List<Student> studentList = roomRepository.getOne(roomId).getStudents().stream()
+                .filter(s -> s.isBanned()).collect(Collectors.toList());
+        List<String> ipAddresses = studentList.stream()
+                .map(s -> s.getIpAddress()).collect(Collectors.toList());
+        return ipAddresses.contains(ipAddress);
     }
 }

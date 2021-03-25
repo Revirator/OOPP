@@ -17,6 +17,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Room;
@@ -78,16 +79,21 @@ public class SplashController {
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
                         Student student = new Student(nickName.getText(), room);
-                        // TODO: Check if the student is banned from this room or add him to the DB
-                        student = new Student(
-                                ServerCommunication.sendUser(student, room.getRoomId()),
-                                student.getNickname(),
-                                student.getRoom(),
-                                student.getIpAddress(),
-                                student.isBanned());
-                        StudentView studentView = new StudentView();
-                        studentView.setData(student, room);
-                        studentView.start((Stage) anchor.getScene().getWindow());
+                        if (ServerCommunication.checkIfBanned(student)) {
+                            Alert error = new Alert(Alert.AlertType.ERROR);
+                            error.setContentText("You are banned from this lecture!");
+                            error.show();
+                        } else {
+                            student = new Student(
+                                    ServerCommunication.sendUser(student, room.getRoomId()),
+                                    student.getNickname(),
+                                    student.getRoom(),
+                                    student.getIpAddress(),
+                                    student.isBanned());
+                            StudentView studentView = new StudentView();
+                            studentView.setData(student, room);
+                            studentView.start((Stage) anchor.getScene().getWindow());
+                        }
                     }
                 } else {
                     // Here the view should change to the waiting room view instead
@@ -112,16 +118,21 @@ public class SplashController {
                     stage.show();
 
                     Student student = new Student(nickName.getText(), room);
-                    // TODO: Check if the student is banned from this room else add him to the DB
-                    student = new Student(
-                            ServerCommunication.sendUser(student, room.getRoomId()),
-                            student.getNickname(),
-                            student.getRoom(),
-                            student.getIpAddress(),
-                            student.isBanned());
-                    WaitingRoomController waitingRoomController = loader.getController();
-                    waitingRoomController.setData(student, room);
-                    waitingRoomController.main(new String[0]);
+                    if (ServerCommunication.checkIfBanned(student)) {
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.setContentText("You are banned from this lecture!");
+                        error.show();
+                    } else {
+                        student = new Student(
+                                ServerCommunication.sendUser(student, room.getRoomId()),
+                                student.getNickname(),
+                                student.getRoom(),
+                                student.getIpAddress(),
+                                student.isBanned());
+                        WaitingRoomController waitingRoomController = loader.getController();
+                        waitingRoomController.setData(student, room);
+                        waitingRoomController.main(new String[0]);
+                    }
                 }
             }
         }
@@ -188,6 +199,28 @@ public class SplashController {
 
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
+
+            // Change it to a window with the links
+            /*
+            URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(xmlUrl);
+            Parent root = null;
+
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setContentText("Something went wrong! Could not load the links");
+                error.show();
+            }
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+             */
 
             // TODO: Make sure links are copyable
             Alert alertMod = new Alert(Alert.AlertType.INFORMATION);

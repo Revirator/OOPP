@@ -62,4 +62,9 @@ public class UserController {
     public void banStudent(@PathVariable Long studentId) {
         userService.banStudent(studentId);
     }
+
+    @GetMapping("/isBanned/{roomId}/{ipAddress}")
+    public boolean checkIfBanned(@PathVariable Long roomId, @PathVariable String ipAddress) {
+        return userService.checkIfBanned(roomId, ipAddress);
+    }
 }
