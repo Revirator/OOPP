@@ -5,6 +5,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import javafx.scene.control.Alert;
+import nl.tudelft.oopp.demo.data.Student;
+import nl.tudelft.oopp.demo.data.User;
 
 public class PutServerCommunication extends ServerCommunication {
 
@@ -182,5 +184,51 @@ public class PutServerCommunication extends ServerCommunication {
             return false;
         }
         return true;
+    }
+
+    /** Sends the id of the student to be banned to the Server.
+     * The banned field is updated to true and the student is kicked out of the lecture.
+     * @param user the student to be banned
+     */
+    public static void banStudent(User user) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/users/ban/" + user.getId()))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
+
+    /** Sends a request to the server to check if the user's IP is ..
+     * .. in the list of banned IPs for this lecture.
+     * @param user the student we want to check
+     * @return true if the user is banned or there is a server error and false otherwise
+     */
+    public static boolean checkIfBanned(User user) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/users/isBanned/"
+                        + user.getRoom().getRoomId() + "/" + ((Student) user).getIpAddress()))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return true;
+        }
+        return gson.fromJson(response.body(), Boolean.class);
     }
 }

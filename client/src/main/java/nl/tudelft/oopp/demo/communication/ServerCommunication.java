@@ -33,34 +33,7 @@ public class ServerCommunication {
      * @return the body of the response from the server or null if the room does not exist.
      */
     public static Room getRoom(String code, boolean toLog) {
-        if (code.equals("")) {      // Some empty string check
-            return null;
-        }
-
-        HttpRequest request;
-        HttpResponse<String> response;
-
-        if (toLog == true) {
-            request = HttpRequest.newBuilder().GET()
-                    .uri(URI.create("http://localhost:8080/rooms/" + code + "/log")).build();
-
-        } else {
-            request = HttpRequest.newBuilder().GET()
-                    .uri(URI.create("http://localhost:8080/rooms/" + code)).build();
-        }
-
-
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-            return null;
-        }
-        return gson.fromJson(response.body(), Room.class);
+        return GetServerCommunication.getRoom(code, toLog);
     }
 
 
@@ -117,20 +90,7 @@ public class ServerCommunication {
      * @param user the student to be banned
      */
     public static void banStudent(User user) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .PUT(HttpRequest.BodyPublishers.ofString(""))
-                .uri(URI.create("http://localhost:8080/users/ban/" + user.getId()))
-                .build();
-        HttpResponse<String> response;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
+        PutServerCommunication.banStudent(user);
     }
 
     /** Sends a request to the server to check if the user's IP is ..
@@ -139,23 +99,7 @@ public class ServerCommunication {
      * @return true if the user is banned or there is a server error and false otherwise
      */
     public static boolean checkIfBanned(User user) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create("http://localhost:8080/users/isBanned/"
-                        + user.getRoom().getRoomId() + "/" + ((Student) user).getIpAddress()))
-                .build();
-        HttpResponse<String> response;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return true;
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-            return true;
-        }
-        return gson.fromJson(response.body(), Boolean.class);
+        return PutServerCommunication.checkIfBanned(user);
     }
 
     /**
