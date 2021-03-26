@@ -31,8 +31,8 @@ public class ServerCommunication {
      * @param code room identification code
      * @return the body of the response from the server or null if the room does not exist.
      */
-    public static Room getRoom(String code) {
-        return GetServerCommunication.getRoom(code);
+    public static Room getRoom(String code, boolean toLog) {
+        return GetServerCommunication.getRoom(code, toLog);
     }
 
 
