@@ -19,23 +19,14 @@ public class GetServerCommunication extends ServerCommunication {
      * @param code room identification code
      * @return the body of the response from the server or null if the room does not exist.
      */
-    public static Room getRoom(String code, boolean toLog) {
+    public static Room getRoom(String code) {
         if (code.equals("")) {      // Some empty string check
             return null;
         }
 
-        HttpRequest request;
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create("http://localhost:8080/rooms/" + code)).build();
         HttpResponse<String> response;
-
-        if (toLog == true) {
-            request = HttpRequest.newBuilder().GET()
-                    .uri(URI.create("http://localhost:8080/rooms/" + code + "/log")).build();
-
-        } else {
-            request = HttpRequest.newBuilder().GET()
-                    .uri(URI.create("http://localhost:8080/rooms/" + code)).build();
-        }
-
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -48,7 +39,6 @@ public class GetServerCommunication extends ServerCommunication {
             return null;
         }
         return gson.fromJson(response.body(), Room.class);
-
     }
 
     /**
