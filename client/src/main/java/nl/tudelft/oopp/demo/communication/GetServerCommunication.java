@@ -2,9 +2,9 @@ package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.URI;
 import java.util.List;
 
 import nl.tudelft.oopp.demo.data.Moderator;

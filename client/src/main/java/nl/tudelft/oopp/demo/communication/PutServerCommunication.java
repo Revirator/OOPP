@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.demo.communication;
 
+import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.URI;
 
 import javafx.scene.control.Alert;
 
