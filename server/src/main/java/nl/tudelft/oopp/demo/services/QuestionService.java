@@ -12,8 +12,6 @@ import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 public class QuestionService {
@@ -52,31 +50,6 @@ public class QuestionService {
                 .filter(q -> q.getRoom() == roomID)
                 .collect(Collectors.toList());
     }
-
-
-    //    /** Called by QuestionController.
-    //     * @param question - new Question object to be stored in database.
-    //     *                 Example:
-    //     *     POST http://localhost:8080/questions
-    //     *     Content-Type: application/json
-    //        {
-    //            "id": 7,
-    //            "room": {"roomId":5,"studentsLink":"http://localhost:8080/rooms/5bb8da98f59d41ecbb",
-    //            "moderatorLink":"http://localhost:8080/rooms/M99cfa0c551fa4252b",
-    //            "startingTime":"2021-03-07 22:50:28",
-    //            "roomName":"Example Room",
-    //            "active":false,
-    //            "participants":[],
-    //            "questions":[]},
-    //            "text": "What is the time complexity of merge sort??",
-    //            "owner": "Albert",
-    //            "time": "2021-02-09 22:13",
-    //            "upvotes": 32
-    //    }
-    //     */
-    //    public void addNewQuestion(Question question) {
-    //        questionRepository.save(question);
-    //    }
 
     /** Called by QuestionController.
      * @param room - the id of the room of which we want the questions
@@ -135,9 +108,6 @@ public class QuestionService {
         System.out.println("######## SET ANSWER TO QUESTION ID: " + questionId
                 + " ################");
     }
-
-
-
 
 
     /** Called by QuestionController.
