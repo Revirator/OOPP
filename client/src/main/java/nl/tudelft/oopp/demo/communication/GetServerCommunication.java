@@ -1,14 +1,19 @@
 package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.reflect.TypeToken;
-import nl.tudelft.oopp.demo.data.*;
 
-import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.URI;
 import java.util.List;
 
-public class GetServerCommunication extends ServerCommunication{
+import nl.tudelft.oopp.demo.data.Moderator;
+import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
+import nl.tudelft.oopp.demo.data.User;
+
+public class GetServerCommunication extends ServerCommunication {
 
     /** Retrieves a room from the server.
      * @param code room identification code
