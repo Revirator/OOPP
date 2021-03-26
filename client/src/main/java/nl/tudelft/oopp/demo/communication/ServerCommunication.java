@@ -99,7 +99,7 @@ public class ServerCommunication {
      * @return true if the user is banned or there is a server error and false otherwise
      */
     public static boolean checkIfBanned(User user) {
-        return PutServerCommunication.checkIfBanned(user);
+        return GetServerCommunication.checkIfBanned(user);
     }
 
     /**

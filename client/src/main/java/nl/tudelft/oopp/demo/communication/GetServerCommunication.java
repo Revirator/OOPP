@@ -178,4 +178,29 @@ public class GetServerCommunication extends ServerCommunication {
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
+
+    /** Sends a request to the server to check if the user's IP is ..
+     * .. in the list of banned IPs for this lecture.
+     * @param user the student we want to check
+     * @return true if the user is banned or there is a server error and false otherwise
+     */
+    public static boolean checkIfBanned(User user) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:8080/users/isBanned/"
+                        + user.getRoom().getRoomId() + "/" + ((Student) user).getIpAddress()))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return true;
+        }
+        return gson.fromJson(response.body(), Boolean.class);
+    }
 }
