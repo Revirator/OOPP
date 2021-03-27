@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -23,8 +24,14 @@
                   <Font name="Arial" size="24.0" />
                </font>
             </Text>
-            <Button fx:id="exportQuestions" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exportQuestions" text="Export questions" GridPane.columnIndex="2" />
-            <Button fx:id="endLecture" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#endLecture" text="End lecture" GridPane.columnIndex="3" />
+            <Button fx:id="exportQuestions" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exportQuestions" text="Export questions" GridPane.columnIndex="2" >
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="endLecture" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#endLecture" text="End lecture" GridPane.columnIndex="3" >
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <CheckBox fx:id="zenMode" mnemonicParsing="false" onAction="#zenMode" text="Zen Mode" GridPane.columnIndex="1" />
          </children>
       </GridPane>
@@ -94,6 +101,9 @@
                                  <opaqueInsets>
                                     <Insets bottom="6.0" />
                                  </opaqueInsets>
+                                 <cursor>
+                                    <Cursor fx:constant="TEXT" />
+                                 </cursor>
                               </TextArea>
                               <Label maxWidth="1.7976931348623157E308" minWidth="-Infinity" styleClass="normalText" text="How many answers (1-10):" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                  <font>
@@ -128,6 +138,9 @@
                                  <font>
                                     <Font name="Arial" size="10.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                            </children>
                         </GridPane>

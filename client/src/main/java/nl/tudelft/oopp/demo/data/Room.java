@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.data;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Room {
     // these match the properties in Room entity on server
@@ -111,42 +112,12 @@ public class Room {
         return peopleThinkingLectureIsTooSlow;
     }
 
-    public void votedTooSlow() {
-        this.peopleThinkingLectureIsTooSlow++;
-    }
-
-    public void votedTooFast() {
-        this.peopleThinkingLectureIsTooFast++;
-    }
-
-    /** Decrements one of the fields depending on the feedback received.
-     * @param condition feedback
-     */
-    public void resetVote(String condition) {
-        if (condition.equals("resetSlow")) {
-            peopleThinkingLectureIsTooSlow--;
-        }
-        if (condition.equals("resetFast")) {
-            peopleThinkingLectureIsTooFast--;
-        }
-    }
-
     public void end() {
         this.active = false;
     }
 
-    /** Should be a getter. Doesn't work for now.
-     * @return the list of participants
-     */
     public List<User> getParticipants() {
-        // Used for testing purposes at the moment
-        ArrayList<User> test = new ArrayList<>();
-        test.add(new Moderator("TEST1",this));
-        test.add(new Student("TEST2",this));
-        return  test;
-        // should be
-        // return this.participants;
-        // but this is always returning null atm cause of the server
+        return this.participants;
     }
 
     public List<Student> getStudents() {
@@ -157,7 +128,28 @@ public class Room {
         return this.moderators;
     }
 
-    public void addParticipant(User user) {
-        this.participants.add(user);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Room)) {
+            return false;
+        }
+        Room room = (Room) o;
+        return isActive() == room.isActive()
+                && getPeopleThinkingLectureIsTooFast() == room.getPeopleThinkingLectureIsTooFast()
+                && getPeopleThinkingLectureIsTooSlow() == room.getPeopleThinkingLectureIsTooSlow()
+                && getRoomName().equals(room.getRoomName())
+                && getStudentsLink().equals(room.getStudentsLink())
+                && getModeratorLink().equals(room.getModeratorLink())
+                && getStartingTime().equals(room.getStartingTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRoomId(), getRoomName(), getStudentsLink(), getModeratorLink(),
+                getStartingTime(), isActive(), getParticipants(), getStudents(), getModerators(),
+                getPeopleThinkingLectureIsTooFast(), getPeopleThinkingLectureIsTooSlow());
     }
 }

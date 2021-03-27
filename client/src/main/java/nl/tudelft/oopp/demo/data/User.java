@@ -37,6 +37,10 @@ public class User {
         return room;
     }
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     /** Returns role type of this user.
      * @return String - "Student", "Moderator" or "User"
      */
