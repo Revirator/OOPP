@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,25 +71,22 @@ public class UserController {
 
     /**
      * POST mapping, adds a new student to a room.
-     * @param roomId the id of the room
-     * @param nickname the nickname of the new student
+     * @param data the JSON of a Student object to be added to the DB
      * @return id of the new student
      */
-    @PostMapping("/addUser/Student/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Student/{roomId}/{nickname}
-    public Long addStudent(@PathVariable long roomId, @PathVariable String nickname) {
-        return userService.addStudent(nickname,roomId);
+    @PostMapping("/addUser/Student") // http://localhost:8080/users/addUser/Student
+    public Long addStudent(@RequestBody String data) {
+        return userService.addStudent(data);
     }
-
 
     /**
      * POST mapping, adds a new moderator to a room.
-     * @param roomId the id of the room
-     * @param nickname the nickname of the new moderator
+     * @param data the JSON of a Moderator object to be added to the DB
      * @return id of the new moderator
      */
-    @PostMapping("/addUser/Moderator/{roomId}/{nickname}") // http://localhost:8080/users/addUser/Moderator/{roomId}/{nickname}
-    public Long addModerator(@PathVariable long roomId, @PathVariable String nickname) {
-        return userService.addModerator(nickname,roomId);
+    @PostMapping("/addUser/Moderator") // http://localhost:8080/users/addUser/Moderator
+    public Long addModerator(@RequestBody String data) {
+        return userService.addModerator(data);
     }
 
     @PutMapping("/ban/{studentId}") // http://localhost:8080/users/ban/{studentId}

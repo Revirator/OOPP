@@ -62,29 +62,28 @@ public class UserService {
     }
 
     /** Adds the student to the DB.
-     * @param nickname the nickname of the student
-     * @param roomId the id of the room the student is in
+     * @param data the JSON of a Student object to be added to the DB
      * @return the id of the student
      */
-    public Long addStudent(String nickname, long roomId) {
-        Room room = roomRepository.getOne(roomId);
-        Student student = new Student(nickname,room);
-        studentUserRepository.save(student);
-        room.addParticipant(student);
-        return student.getId();
+    public Long addStudent(String data) {
+        String[] dataArray = data.split(", ");
+
+        String studentName = dataArray[0];
+        String ipAddress = dataArray[1];
+        Room room = roomRepository.getOne(Long.parseLong(dataArray[2]));
+        return studentUserRepository.save(new Student(studentName,room,ipAddress)).getId();
     }
 
     /** Adds the moderator to the DB.
-     * @param nickname the nickname of the moderator
-     * @param roomId the id of the room the student is in
+     * @param data the JSON of a Moderator object to be added to the DB
      * @return the id of the moderator
      */
-    public Long addModerator(String nickname, long roomId) {
-        Room room = roomRepository.getOne(roomId);
-        Moderator moderator = new Moderator(nickname,room);
-        moderatorUserRepository.save(moderator);
-        room.addParticipant(moderator);
-        return moderator.getId();
+    public Long addModerator(String data) {
+        String[] dataArray = data.split(", ");
+
+        String moderatorName = dataArray[0];
+        Room room = roomRepository.getOne(Long.parseLong(dataArray[1]));
+        return moderatorUserRepository.save(new Moderator(moderatorName,room)).getId();
     }
 
     /** Updates the banned field of the student with the corresponding id.
