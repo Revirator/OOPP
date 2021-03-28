@@ -220,6 +220,7 @@ public class SplashController {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Please enter a valid date and time.");
                 alert.show();
+                return;
             }
 
             Room newRoom = new Room(roomName.getText(), targetTime, true);
