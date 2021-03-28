@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
+import java.net.URL;
 import java.util.Comparator;
 
 import javafx.collections.ObservableList;
@@ -14,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomController;
-import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentQuestionCell extends ListCell<Question> {
@@ -73,8 +73,13 @@ public class StudentQuestionCell extends ListCell<Question> {
         ownerLabel.setAlignment(Pos.CENTER_LEFT);
 
         // Create buttons in wrappers
-        Button upVoteButton = new Button("Vote");
+        Button upVoteButton = new Button();
         upVoteButton.setId("UpvoteButton");
+        upVoteButton.setPrefWidth(30);
+        URL path = StudentQuestionCell.class.getResource("/images/likeBlue.png");
+        upVoteButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         upVoteButton.setCursor(Cursor.HAND);
         HBox upVoteWrapper = new HBox(upVoteButton, upVotesLabel);
         upVoteWrapper.setAlignment(Pos.CENTER_LEFT);
@@ -82,7 +87,13 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         Button markAnsweredButton = new Button("Mark as answered");
         markAnsweredButton.setCursor(Cursor.HAND);
-        Button deleteButton = new Button("Delete");
+
+        Button deleteButton = new Button();
+        deleteButton.setPrefWidth(27);
+        path = StudentQuestionCell.class.getResource("/images/redTrash.png");
+        deleteButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         deleteButton.setCursor(Cursor.HAND);
         HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
         buttonWrapper.setId("AnsweredOrDelete");
@@ -90,7 +101,12 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Align buttons
         markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
 
-        Button editQuestionButton = new Button("Edit");
+        Button editQuestionButton = new Button();
+        editQuestionButton.setPrefWidth(25);
+        path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        editQuestionButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         editQuestionButton.setCursor(Cursor.HAND);
         editQuestionButton.setId("EditButton");
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
