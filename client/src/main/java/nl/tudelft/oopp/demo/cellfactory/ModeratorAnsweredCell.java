@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.cellfactory;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -10,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
+import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorAnsweredCell extends ListCell<Question> {
@@ -22,14 +24,14 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
     private boolean editingAnswer;
     private TextField editableQuestion;
     private TextField editableAnswer;
-    private ModeratorRoomController mrc;
+    private RoomController mrc;
 
     /**
      * Constructor for moderator answer cell.
      * @param answered ObservableList of answered questions
      */
     public ModeratorAnsweredCell(ObservableList<Question> answered,
-                                 ModeratorRoomController mrc) {
+                                 RoomController mrc) {
         super();
 
         this.answered = answered;
@@ -79,6 +81,10 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         editAnswerButton.setAlignment(Pos.CENTER_LEFT);
         editQuestionButton.setAlignment(Pos.CENTER_RIGHT);
         deleteButton.setAlignment(Pos.CENTER_RIGHT);
+
+        editAnswerButton.setCursor(Cursor.HAND);
+        editQuestionButton.setCursor(Cursor.HAND);
+        deleteButton.setCursor(Cursor.HAND);
 
         // Create wrappers
         HBox answerWrapper = new HBox(answerLabel, editAnswerButton);
@@ -156,7 +162,8 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
             // User saves changes
             if (editingAnswer) {
 
-                mrc.setAnswer(this.question, editableAnswer.getText());
+                ((ModeratorRoomController) mrc).setAnswer(this.question,
+                        editableAnswer.getText());
 
                 answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
                 question.setAnswer(editableAnswer.getText());

@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.cellfactory;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -12,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
+import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorQuestionCell extends ListCell<Question> {
@@ -23,7 +25,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private ObservableList<Question> answered;
     private TextField editableLabel;
     private boolean editing;
-    private ModeratorRoomController mrc;
+    private RoomController mrc;
 
     /**
      * Constructor for moderator question cell.
@@ -31,7 +33,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
      * @param answered ObservableList of answered questions
      */
     public ModeratorQuestionCell(ObservableList<Question> questions,
-                                 ObservableList<Question> answered, ModeratorRoomController mrc) {
+                                 ObservableList<Question> answered, RoomController mrc) {
 
         super();
 
@@ -70,12 +72,16 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create buttons
         Button answerButton = new Button("Answer");
+        answerButton.setCursor(Cursor.HAND);
         Button editButton = new Button("Edit question");
+        editButton.setCursor(Cursor.HAND);
         Button deleteButton = new Button("Delete");
+        deleteButton.setCursor(Cursor.HAND);
 
         // Create text area
         TextArea answerBox = new TextArea("");
         answerBox.setWrapText(true);
+        answerBox.setCursor(Cursor.TEXT);
 
         // Wrap edit and delete button
         HBox editDeleteWrapper = new HBox(editButton, deleteButton);
@@ -152,7 +158,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
             // Send answer to server to store in db
-            mrc.setAnswer(this.question, answerBox.getText());
+            ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
 
             question.setAnswer(answerBox.getText());   // Those will probably get removed later
             questions.remove(question);             // since they change stuff only locally

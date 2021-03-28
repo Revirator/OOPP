@@ -13,15 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class SplashView extends Application {
+public class SplashView extends MainView {
 
     /**
      * Font sizes for splash screen.
      */
-    private DoubleProperty subTitleFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty preBoxFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty boxFontSize = new SimpleDoubleProperty(10);
-    private DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
 
     /**
      * Creates the splash screen scene and loads it on the primary stage.
@@ -44,24 +42,29 @@ public class SplashView extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // Bind font sizes to screen size
-        subTitleFontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(65));
+        bindFonts(scene);
+    }
 
+    /**
+     * Makes all font sizes responsive in the UI.
+     * @param scene current scene
+     */
+    @Override
+    public void bindFonts(Scene scene) {
+
+        // Bind font sizes to screen size
         preBoxFontSize.bind(Bindings.min(20,
                 scene.widthProperty().add(scene.heightProperty()).divide(85)));
 
         boxFontSize.bind(Bindings.min(15,
                 scene.widthProperty().add(scene.heightProperty()).divide(100)));
 
-        buttonFontSize.bind(Bindings.min(12,
-                scene.widthProperty().add(scene.heightProperty()).divide(100)));
+        // Bind shared fonts
+        super.bindFonts(scene);
+
+        Parent root = scene.getRoot();
 
         // Put the font sizes on all according nodes
-        for (Node node : root.lookupAll(".subTitle")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
-                    subTitleFontSize.asString(), ";"));
-        }
-
         for (Node node : root.lookupAll(".preBoxText")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     preBoxFontSize.asString(), ";"));
@@ -72,11 +75,6 @@ public class SplashView extends Application {
                     boxFontSize.asString(), ";"));
         }
 
-        for (Node node : root.lookupAll(".buttonText")) {
-            node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
-                    buttonFontSize.asString(), ";"));
-        }
-
         for (Node node : root.lookupAll(".createRoom")) {
             node.styleProperty().bind(Bindings.concat("-fx-background-color: #f1be3e;"));
         }
@@ -84,8 +82,6 @@ public class SplashView extends Application {
         for (Node node : root.lookupAll(".enterRoom")) {
             node.styleProperty().bind(Bindings.concat("-fx-background-color: #adeaf7;"));
         }
-
-
     }
 
     public static void main(String[] args) {

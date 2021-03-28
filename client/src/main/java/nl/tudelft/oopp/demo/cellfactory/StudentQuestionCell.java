@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -12,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
@@ -24,7 +26,7 @@ public class StudentQuestionCell extends ListCell<Question> {
     private ObservableList<Question> answered;
     private boolean editing;
     private TextField editableLabel;
-    private StudentRoomController src;
+    private RoomController src;
 
     /** Initialized for each question by StudentView.
      * Constructor for student question cell.
@@ -32,7 +34,7 @@ public class StudentQuestionCell extends ListCell<Question> {
      * @param answered ObservableList of all answered questions
      */
     public StudentQuestionCell(ObservableList<Question> questions,
-                               ObservableList<Question> answered, StudentRoomController src) {
+                               ObservableList<Question> answered, RoomController src) {
 
         super();
 
@@ -73,12 +75,15 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Create buttons in wrappers
         Button upVoteButton = new Button("Vote");
         upVoteButton.setId("UpvoteButton");
+        upVoteButton.setCursor(Cursor.HAND);
         HBox upVoteWrapper = new HBox(upVoteButton, upVotesLabel);
         upVoteWrapper.setAlignment(Pos.CENTER_LEFT);
         upVoteWrapper.setSpacing(5);
 
         Button markAnsweredButton = new Button("Mark as answered");
+        markAnsweredButton.setCursor(Cursor.HAND);
         Button deleteButton = new Button("Delete");
+        deleteButton.setCursor(Cursor.HAND);
         HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
         buttonWrapper.setId("AnsweredOrDelete");
 
@@ -86,6 +91,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
 
         Button editQuestionButton = new Button("Edit");
+        editQuestionButton.setCursor(Cursor.HAND);
         editQuestionButton.setId("EditButton");
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
@@ -212,6 +218,7 @@ public class StudentQuestionCell extends ListCell<Question> {
 
             HBox answeredOrDelete = (HBox) gridPane.lookup("#AnsweredOrDelete");
             Button editButton = (Button) gridPane.lookup("#EditButton");
+            editButton.setCursor(Cursor.HAND);
             // Button upvoteButton = (Button) gridPane.lookup("#UpvoteButton");
             if (!this.question.isOwner()) {
                 answeredOrDelete.setVisible(false);
