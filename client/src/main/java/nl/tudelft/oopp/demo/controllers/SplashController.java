@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
@@ -111,6 +112,8 @@ public class SplashController {
                     Stage stage = (Stage) anchor.getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
+                    stage.getIcons().add(new Image(getClass()
+                            .getResourceAsStream("/images/logo.png")));
                     stage.show();
 
                     Student student = new Student(nickName.getText(), room);
@@ -283,6 +286,7 @@ public class SplashController {
         Stage newStage = new Stage();
         Scene scene = new Scene(root);
         newStage.setScene(scene);
+        newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         newStage.show();
 
         LinkRoomController linkRoomController = loader.getController();
