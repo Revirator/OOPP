@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.config;
 
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -28,12 +29,14 @@ public class UserConfig {
 
             roomRepository.save(pts);
 
-            Student senne = new Student("Senne", pts);
-            Student pavel = new Student("Pavel", pts);
-            Student bora = new Student("Bora", pts);
-            Student emke = new Student("Emke", pts);
-            Student nadine = new Student("Nadine", pts);
-            Student denis = new Student("Denis", pts);
+            String ipAddress = InetAddress.getLocalHost().getHostAddress().toString();
+
+            Student senne = new Student("Senne", pts, ipAddress);
+            Student pavel = new Student("Pavel", pts, ipAddress);
+            Student bora = new Student("Bora", pts, ipAddress);
+            Student emke = new Student("Emke", pts, ipAddress);
+            Student nadine = new Student("Nadine", pts, ipAddress);
+            Student denis = new Student("Denis", pts, ipAddress);
 
             studentUserRepository.saveAll(List.of(senne, pavel, bora, emke, nadine, denis));
 

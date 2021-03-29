@@ -6,6 +6,7 @@ import java.net.http.HttpResponse;
 
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
 public class PostServerCommunication extends ServerCommunication {
@@ -51,14 +52,21 @@ public class PostServerCommunication extends ServerCommunication {
      * @return Long - the id of the user
      */
     public static Long sendUser(User user, long roomID) {
-        String requestUrl = "http://localhost:8080/users/addUser/" + user.getRole()
-                +  "/" + roomID + "/" + user.getNickname();
-
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestUrl))
-                .POST(HttpRequest.BodyPublishers.ofString(""))
+        if (user == null) {
+            return (long) -1;
+        }
+        String requestBody = "";
+        if (user.getRole().equals("Student")) {
+            requestBody = user.getNickname() + ", "
+                    + ((Student) user).getIpAddress() + ", " + roomID;
+        }
+        if (user.getRole().equals("Moderator")) {
+            requestBody = user.getNickname() + ", " + roomID;
+        }
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/users/addUser/" + user.getRole()))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> response;
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {

@@ -75,9 +75,12 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         answerLabel.setAlignment(Pos.CENTER_LEFT);
 
         // Create buttons
-        Button editAnswerButton = new Button("Edit answer");
-        Button editQuestionButton = new Button("Edit question");
+        Button editAnswerButton = new Button();
+        editAnswerButton.setId("editAnswer");
+        Button editQuestionButton = new Button();
+        editQuestionButton.setId("editQuestion");
         Button deleteButton = new Button();
+        deleteButton.setId("deleteButton");
 
         // Align buttons
         editAnswerButton.setAlignment(Pos.CENTER_LEFT);
@@ -258,8 +261,27 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
             // Show graphic representation
             setGraphic(anchorPane);
+
+
+            Button editAnswer = (Button) gridPane.lookup("#editAnswer");
+            Button editQuestion = (Button) gridPane.lookup("#editQuestion");
+            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
+
+            // TODO: modify when 2nd answer button added (Senne)
+            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
+            // if zen mode is active
+            if (mrcCast.getZenMode()) {
+                editAnswer.setVisible(false);
+                editQuestion.setVisible(false);
+                deleteButton.setVisible(false);
+            } else {
+                editAnswer.setVisible(true);
+                editQuestion.setVisible(true);
+                deleteButton.setVisible(true);
+            }
         }
     }
+
 
     private void setButtonStyle(Button button, URL path) {
         button.setStyle("-fx-background-image: url('" + path + "');"
