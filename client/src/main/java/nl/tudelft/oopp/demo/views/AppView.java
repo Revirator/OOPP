@@ -33,8 +33,8 @@ public abstract class AppView extends MainView {
     /*
     Observable lists for questions, answered questions and participants.
      */
-    private ObservableList<Question> questions = FXCollections.observableArrayList();
-    private ObservableList<Question> answered = FXCollections.observableArrayList();
+    protected ObservableList<Question> questions = FXCollections.observableArrayList();
+    protected ObservableList<Question> answered = FXCollections.observableArrayList();
     private ObservableList<User> participants = FXCollections.observableArrayList();
 
     private User user;
@@ -132,7 +132,7 @@ public abstract class AppView extends MainView {
             }
         }
 
-        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+        // newly answered questions are on top
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
     }

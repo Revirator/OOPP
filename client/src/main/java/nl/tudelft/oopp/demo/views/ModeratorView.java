@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
+import java.util.List;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -143,6 +145,17 @@ public class ModeratorView extends AppView {
 
         // Bind shared fonts
         super.bindFonts(scene);
+    }
+
+    /**
+     * Most upvoted questions are displayed on top for Moderator.
+     * @param questionList list of current questions
+     * @param answeredList list of current answered questions
+     */
+    @Override
+    public void update(List<Question> questionList, List<Question> answeredList) {
+        super.update(questionList, answeredList);
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
     }
 
     /**
