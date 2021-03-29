@@ -31,29 +31,34 @@ public class UserController {
         this.userService = userService;
     }
 
+    // FOR SOME REASON THESE RETURN ALL USERS
 
-    /**
-     * GET mapping.
-     * @param roomId the id of the required room
-     * @return all students for a specific room
-     */
-    @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
-    @ResponseBody
-    public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
-        return userService.getStudents(roomId);
-    }
+    //    /**
+    //     * GET mapping.
+    //     * @param roomId the id of the required room
+    //     * @return all students for a specific room
+    //     */
+    //    @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
+    //    @ResponseBody
+    //    public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
+    //        logRequest("to get all students for the room with an id '" + roomId + "'");
+    //        return userService.getStudents(roomId);
+    //    }
+    //
+    //    /**
+    //     * GET mapping.
+    //     * @param roomId the id of the required room
+    //     * @return all moderators for a specific room
+    //     */
+    //    @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
+    //    @ResponseBody
+    //    public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
+    //        logRequest("to get all moderators for the room with an id '" + roomId + "'");
+    //        return userService.getModerators(roomId);
+    //    }
 
 
-    /**
-     * GET mapping.
-     * @param roomId the id of the required room
-     * @return all moderators for a specific room
-     */
-    @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
-    @ResponseBody
-    public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
-        return userService.getModerators(roomId);
-    }
+
 
 
     /**

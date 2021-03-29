@@ -27,6 +27,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private boolean editing;
     private RoomController mrc;
 
+
     /**
      * Constructor for moderator question cell.
      * @param questions ObservableList of current questions
@@ -72,14 +73,18 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create buttons
         Button answerButton = new Button("Answer");
+        answerButton.setId("answerButton");
         answerButton.setCursor(Cursor.HAND);
         Button editButton = new Button("Edit question");
+        editButton.setId("editButton");
         editButton.setCursor(Cursor.HAND);
         Button deleteButton = new Button("Delete");
+        deleteButton.setId("deleteButton");
         deleteButton.setCursor(Cursor.HAND);
 
         // Create text area
         TextArea answerBox = new TextArea("");
+        answerBox.setId("answerBox");
         answerBox.setWrapText(true);
         answerBox.setCursor(Cursor.TEXT);
 
@@ -89,6 +94,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Wrap answer button and text area
         HBox answerWrapper = new HBox(answerBox, answerButton);
+        answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
         // Align buttons
@@ -216,7 +222,28 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // Show graphic representation
             setGraphic(anchorPane);
+
+
+            Button editButton = (Button) gridPane.lookup("#editButton");
+            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
+            HBox answerWrapper = (HBox) gridPane.lookup("#answerWrapper");
+
+            // TODO: modify when 2nd answer button added (Senne)
+            // TODO: Create zen cell?
+            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
+            // if zen mode is active
+            if (mrcCast.getZenMode()) {
+                answerWrapper.setVisible(false);
+                editButton.setVisible(false);
+                deleteButton.setVisible(false);
+            } else {
+                answerWrapper.setVisible(true);
+                editButton.setVisible(true);
+                deleteButton.setVisible(true);
+            }
         }
     }
+
+
 
 }

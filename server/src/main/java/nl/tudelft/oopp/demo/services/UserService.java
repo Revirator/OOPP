@@ -39,23 +39,25 @@ public class UserService {
     }
 
 
-    /** Called by UserController.
-     * @return a List of students.
-     *          Example:
-     *          GET http://localhost:8080/users/students/{roomId}
-     */
-    public List<Student> getStudents(long roomId) {
-        return studentUserRepository.findAllByRoomRoomId(roomId);
-    }
+    // FOR SOME REASON THESE RETURN ALL USERS
 
-    /** Called by UserController.
-     * @return a List of moderators.
-     *          Example:
-     *          GET http://localhost:8080/users/moderators/{roomId}
-     */
-    public List<Moderator> getModerators(long roomId) {
-        return moderatorUserRepository.findAllByRoomRoomId(roomId);
-    }
+    //    /** Called by UserController.
+    //     * @return a List of students.
+    //     *          Example:
+    //     *          GET http://localhost:8080/users/students/{roomId}
+    //     */
+    //    public List<Student> getStudents(long roomId) {
+    //        return studentUserRepository.findAllByRoomRoomId(roomId);
+    //    }
+    //
+    //    /** Called by UserController.
+    //     * @return a List of moderators.
+    //     *          Example:
+    //     *          GET http://localhost:8080/users/moderators/{roomId}
+    //     */
+    //    public List<Moderator> getModerators(long roomId) {
+    //        return moderatorUserRepository.findAllByRoomRoomId(roomId);
+    //    }
 
     public Optional<Student> getStudentById(Long studentId) {
         return studentUserRepository.findById(studentId);

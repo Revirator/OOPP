@@ -215,7 +215,7 @@ public class SplashController {
 
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
-
+            // TODO: the room should not be created in this case!
             if (targetTime.isBefore(LocalDateTime.now())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Please enter a valid date and time.");

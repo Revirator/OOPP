@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
@@ -17,7 +18,9 @@ import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
+
 public class ModeratorRoomController extends RoomController {
+
 
     @FXML
     private Button endLecture;
@@ -26,12 +29,17 @@ public class ModeratorRoomController extends RoomController {
     private Label lectureName;
 
     @FXML
+    private CheckBox zenMode;
+
+    @FXML
     private Label tooSlowLabel;
 
     @FXML
     private Label tooFastLabel;
 
     private ModeratorView moderatorView;
+
+    private boolean zenModeActive;
 
     /**
      * Used in SplashController to pass the user and the room object.
@@ -45,6 +53,7 @@ public class ModeratorRoomController extends RoomController {
         this.moderatorView = moderatorView;
         this.lectureName.setText(room.getRoomName());
         setFeedback();
+        zenModeActive = false;
     }
 
     /**
@@ -151,6 +160,29 @@ public class ModeratorRoomController extends RoomController {
             printWriter.close();
         }
     }
+
+
+    /** Callback method for the "Zen Mode" button in Moderator Room.
+     * Update in ModeratorQuestionCell makes the following buttons invisible: ..
+     *  .. "edit", "answer", "mark answered", "delete"
+     *  .. as well as answer text box
+     */
+    public void zenMode() {
+
+        // zen mode becomes active
+        if (!zenModeActive) {
+            zenModeActive = true;
+        } else {
+            zenModeActive = false;
+        }
+    }
+
+
+    public boolean getZenMode() {
+        return zenModeActive;
+    }
+
+
 
     /**
      * Set the answer on the server-side.

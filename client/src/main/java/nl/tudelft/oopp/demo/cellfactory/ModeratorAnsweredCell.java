@@ -74,8 +74,11 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
         // Create buttons
         Button editAnswerButton = new Button("Edit answer");
+        editAnswerButton.setId("editAnswer");
         Button editQuestionButton = new Button("Edit question");
+        editQuestionButton.setId("editQuestion");
         Button deleteButton = new Button("Delete");
+        deleteButton.setId("deleteButton");
 
         // Align buttons
         editAnswerButton.setAlignment(Pos.CENTER_LEFT);
@@ -237,6 +240,26 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
             // Show graphic representation
             setGraphic(anchorPane);
+
+
+            Button editAnswer = (Button) gridPane.lookup("#editAnswer");
+            Button editQuestion = (Button) gridPane.lookup("#editQuestion");
+            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
+
+            // TODO: modify when 2nd answer button added (Senne)
+            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
+            // if zen mode is active
+            if (mrcCast.getZenMode()) {
+                editAnswer.setVisible(false);
+                editQuestion.setVisible(false);
+                deleteButton.setVisible(false);
+            } else {
+                editAnswer.setVisible(true);
+                editQuestion.setVisible(true);
+                deleteButton.setVisible(true);
+            }
         }
     }
+
+
 }
