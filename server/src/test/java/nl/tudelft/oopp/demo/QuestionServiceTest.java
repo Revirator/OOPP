@@ -53,10 +53,10 @@ public class QuestionServiceTest {
     public QuestionServiceTest() {
         this.roomOne = new Room(
                 LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
-                "Software Quality And Testing");
+                "Software Quality And Testing", true);
         this.roomTwo = new Room(
                 LocalDateTime.of(2021, Month.MAY, 19, 10, 58, 00),
-                "OOPP");
+                "OOPP", true);
     }
 
 

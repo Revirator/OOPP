@@ -215,11 +215,12 @@ public class SplashController {
 
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
-
+            // TODO: the room should not be created in this case!
             if (targetTime.isBefore(LocalDateTime.now())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Please enter a valid date and time.");
                 alert.show();
+                return;
             }
 
             Room newRoom = new Room(roomName.getText(), targetTime, true);
@@ -277,7 +278,8 @@ public class SplashController {
             flag = false;
 
         } else if (name.contains("/") || code.contains("/")
-                || name.contains("=") || code.contains("=")) {
+                || name.contains("=") || code.contains("=")
+                || name.contains(",") || code.contains(",")) {
             alert.setContentText("The name or the link contains illegal characters.");
             flag = false;
 
