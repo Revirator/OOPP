@@ -130,7 +130,7 @@ public abstract class AppView extends MainView {
             if (qToUpdate == null && aToUpdate == null) {
                 questions.add(q);
             }
-            // if question recently answered, move to questions
+            // if question recently answered, move to answered
             else if (answeredList.contains(q) && qToUpdate != null) {
                 questions.remove(q);
                 answered.add(q);
@@ -142,7 +142,7 @@ public abstract class AppView extends MainView {
                 aToUpdate.setAnswer(q.getAnswer());
             }
             // update values question in questions
-            else {
+            else if (questionList.contains(q) && qToUpdate != null){
                 qToUpdate.setUpvotes(q.getUpvotes());
                 qToUpdate.setText(q.getText());
                 qToUpdate.setAnswer(q.getAnswer());
@@ -152,34 +152,6 @@ public abstract class AppView extends MainView {
 
         questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
-
-
-
-//        answered.clear();
-//        answered.addAll(answeredList);
-//
-//        // questionList contains both answered and non-answered questions!
-//        for (Question q : questionList) {
-//
-//            Question toUpdate = searchQuestion(q.getId());
-//
-//            // if question exists and is NOT answered, update its values.
-//            if (toUpdate != null) {
-//                if (answered.contains(toUpdate)) {
-//                    questions.remove(toUpdate);
-//                } else {
-//                    toUpdate.setUpvotes(q.getUpvotes());
-//                    toUpdate.setText(q.getText());
-//                    toUpdate.setAnswer(q.getAnswer());
-//                }
-//                // if new question, just add it to the questions.
-//            } else if (!answered.contains(q)) {
-//                questions.add(q);
-//            }
-//        }
-//
-//        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
-//        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
     }
 
@@ -256,6 +228,22 @@ public abstract class AppView extends MainView {
      */
     public ObservableList<Question> getAnswered() {
         return answered;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param questions ObservableList of questions
+     */
+    public void setQuestions(ObservableList<Question> questions) {
+        this.questions = questions;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param answered ObservableList of answered questions
+     */
+    public void setAnswered(ObservableList<Question> answered) {
+        this.answered = answered;
     }
 
     /**
