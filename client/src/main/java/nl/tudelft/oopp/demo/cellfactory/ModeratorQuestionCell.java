@@ -74,9 +74,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         // Create buttons
 
         // 'Answered' button
-        Button answerButton = new Button("Mark answered");
-        answerButton.setId("answerButton");
-        answerButton.setCursor(Cursor.HAND);
+        Button answeredButton = new Button("Mark answered");
+        answeredButton.setId("answeredButton");
+        answeredButton.setCursor(Cursor.HAND);
 
         // 'Reply' button
         Button replyButton = new Button("Reply");
@@ -104,12 +104,12 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox, answerButton, replyButton);
+        HBox answerWrapper = new HBox(answerBox, answeredButton, replyButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
         // Align buttons
-        answerButton.setAlignment(Pos.CENTER_LEFT);
+        answeredButton.setAlignment(Pos.CENTER_LEFT);
         deleteButton.setAlignment(Pos.CENTER_RIGHT);
         editButton.setAlignment(Pos.CENTER_RIGHT);
 
@@ -136,7 +136,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
 
-        // Click event for upvote
+        // Click event for the 'Edit' button
         editButton.setOnAction(event -> {
 
             if (this.question == null) {
@@ -168,23 +168,34 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             }
         });
 
-        // Click event for solved
-        answerButton.setOnAction(event -> {
+        // Click event for the 'Mark answered' button
+        answeredButton.setOnAction(event -> {
 
             // Next line marks the question as answered in the DB
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
             // Send answer to server to store in db
-            ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
+            //((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
 
-            question.setAnswer(answerBox.getText());   // Those will probably get removed later
+            //question.setAnswer(answerBox.getText());   // Those will probably get removed later
             questions.remove(question);             // since they change stuff only locally
             answered.add(question);
             answerBox.clear();
 
         });
 
-        // Click event for delete
+        // Click event for the 'Reply' button
+        replyButton.setOnAction(event -> {
+
+            // Send answer to server to store in db
+            ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
+
+            question.setAnswer(answerBox.getText());   // Those will probably get removed later
+            answerBox.clear();
+
+        });
+
+        // Click event for the 'Delete' button
         deleteButton.setOnAction(event -> {
 
             // Send to server to delete from DB
