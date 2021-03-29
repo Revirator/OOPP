@@ -175,7 +175,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
             // The if is to submit the already written text before marking
-            if(!answerBox.getText().equals("")) {
+            if (!answerBox.getText().equals("")) {
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
             }
 
