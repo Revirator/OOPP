@@ -102,13 +102,13 @@ public class StudentQuestionCell extends ListCell<Question> {
         markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
 
         Button editQuestionButton = new Button();
+        editQuestionButton.setId("EditButton");
         editQuestionButton.setPrefWidth(25);
         path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
         editQuestionButton.setStyle("-fx-background-image: url('" + path + "');"
                 + " -fx-background-repeat: no-repeat;"
                 + " -fx-background-size: 100% 100%;");
         editQuestionButton.setCursor(Cursor.HAND);
-        editQuestionButton.setId("EditButton");
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
         // Add elements to grid pane
@@ -183,14 +183,14 @@ public class StudentQuestionCell extends ListCell<Question> {
                         this.question, editableLabel.getText());
 
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
-                editQuestionButton.setText("Edit");
+                // editQuestionButton.setText("Edit");
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
             } else { // User wants to make changes
                 questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
                 editableLabel.setText(question.getText());
-                editQuestionButton.setText("Save changes");
+                // editQuestionButton.setText("Save changes");
                 editing = true;
             }
         });

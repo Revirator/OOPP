@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
+import java.net.URL;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -75,15 +77,32 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         // Create buttons
         Button editAnswerButton = new Button("Edit answer");
         Button editQuestionButton = new Button("Edit question");
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button();
 
         // Align buttons
         editAnswerButton.setAlignment(Pos.CENTER_LEFT);
         editQuestionButton.setAlignment(Pos.CENTER_RIGHT);
         deleteButton.setAlignment(Pos.CENTER_RIGHT);
 
+        editAnswerButton.setPrefWidth(25);
+        URL path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        editAnswerButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         editAnswerButton.setCursor(Cursor.HAND);
+
+        editQuestionButton.setPrefWidth(25);
+        path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        editQuestionButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         editQuestionButton.setCursor(Cursor.HAND);
+
+        deleteButton.setPrefWidth(27);
+        path = StudentQuestionCell.class.getResource("/images/redTrash.png");
+        deleteButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         deleteButton.setCursor(Cursor.HAND);
 
         // Create wrappers

@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
+import java.net.URL;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -73,9 +75,19 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         // Create buttons
         Button answerButton = new Button("Answer");
         answerButton.setCursor(Cursor.HAND);
-        Button editButton = new Button("Edit question");
+        Button editButton = new Button();
+        editButton.setPrefWidth(25);
+        URL path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        editButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         editButton.setCursor(Cursor.HAND);
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button();
+        deleteButton.setPrefWidth(27);
+        path = StudentQuestionCell.class.getResource("/images/redTrash.png");
+        deleteButton.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
         deleteButton.setCursor(Cursor.HAND);
 
         // Create text area
@@ -136,7 +148,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 gridPane.getChildren().remove(editableLabel);
                 gridPane.add(questionLabel, 0, 1);
                 question.setText(editableLabel.getText());
-                editButton.setText("Edit question");
+                // editButton.setText("Edit question");
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
@@ -145,7 +157,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 gridPane.getChildren().remove(questionLabel);
                 gridPane.add(editableLabel, 0,1);
                 editableLabel.setText(question.getText());
-                editButton.setText("Save changes");
+                // editButton.setText("Save changes");
                 editing = true;
 
             }
