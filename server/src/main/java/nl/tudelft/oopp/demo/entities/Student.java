@@ -19,14 +19,11 @@ public class Student extends User {
     /** Initializes a new instance of student that is added to the DB.
      * @param nickname the nickname of the student
      * @param room the room the student is in
+     * @param ipAddress the IP address of the student
      */
-    public Student(String nickname, Room room) {
+    public Student(String nickname, Room room, String ipAddress) {
         super(nickname, room);
-        try {
-            this.ipAddress = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        this.ipAddress = ipAddress;
         this.banned = false;
     }
 

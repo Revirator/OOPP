@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.controllers;
 
 import static nl.tudelft.oopp.demo.config.LoggerConfig.logRequest;
 
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,10 +99,9 @@ public class RoomController {
      * POST mapping, adds a new room to the DB.
      * @param data the data needed for the creation
      * @return the newly created room
-     * @throws MalformedURLException MalformedURLException
      */
     @PostMapping   // http://localhost:8080/rooms
-    public Room addNewRoom(@RequestBody String data) throws MalformedURLException {
+    public Room addNewRoom(@RequestBody String data) {
         logRequest("to create a new room");
         return roomService.addNewRoom(data);
     }
