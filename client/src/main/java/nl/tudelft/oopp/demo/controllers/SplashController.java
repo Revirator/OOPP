@@ -13,15 +13,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.Student;
-import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 import nl.tudelft.oopp.demo.views.StudentView;
 
@@ -40,23 +41,19 @@ public class SplashController {
     private DatePicker date;    // the value of date user enters
     @FXML
     private TextField hour;     // the value of hour user enters
+    @FXML
+    private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
 
 
     /**
      * Handles clicking the "join room" button.
      */
-    public void buttonClicked(ActionEvent actionEvent) throws IOException {
+    public void joinRoom(ActionEvent actionEvent) {
 
-        // Check if one of the fields is empty
-        if (nickName.getText().equals("") || link.getText().equals("")) {
+        if (joinRoomSanitation(nickName.getText(), link.getText()) == true) {
 
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please enter both nickname and link.");
-            alert.show();
-
-        } else {        // If not: try to get a room from the server
             String code = link.getText();
-            Room room = ServerCommunication.getRoom(code);
+            Room room = ServerCommunication.getRoom(code, true);
 
             // Using alert temporary until the other features are implemented
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -69,17 +66,31 @@ public class SplashController {
                 // If you are a Moderator you don't have to wait in the waiting room
                 if (code.contains("M") || room.getStartingTime().isBefore(LocalDateTime.now())) {
                     if (code.contains("M")) {
-                        // TODO: Send Moderator entity to server to store in db
-                        User moderator = new Moderator(nickName.getText(), room);
+                        Moderator moderator = new Moderator(nickName.getText(), room);
+                        moderator = new Moderator(
+                                ServerCommunication.sendUser(moderator, room.getRoomId()),
+                                moderator.getNickname(),
+                                moderator.getRoom());
                         ModeratorView moderatorView = new ModeratorView();
                         moderatorView.setData(moderator, room);
                         moderatorView.start((Stage) anchor.getScene().getWindow());
                     } else {
-                        // TODO: Send Student entity to server to store in db
-                        User student = new Student(nickName.getText(), room);
-                        StudentView studentView = new StudentView();
-                        studentView.setData(student, room);
-                        studentView.start((Stage) anchor.getScene().getWindow());
+                        Student student = new Student(nickName.getText(), room);
+                        if (ServerCommunication.checkIfBanned(student)) {
+                            Alert error = new Alert(Alert.AlertType.ERROR);
+                            error.setContentText("You are banned from this lecture!");
+                            error.show();
+                        } else {
+                            student = new Student(
+                                    ServerCommunication.sendUser(student, room.getRoomId()),
+                                    student.getNickname(),
+                                    student.getRoom(),
+                                    student.getIpAddress(),
+                                    student.isBanned());
+                            StudentView studentView = new StudentView();
+                            studentView.setData(student, room);
+                            studentView.start((Stage) anchor.getScene().getWindow());
+                        }
                     }
                 } else {
                     // Here the view should change to the waiting room view instead
@@ -103,21 +114,59 @@ public class SplashController {
                     stage.setScene(scene);
                     stage.show();
 
-                    User student = new Student(nickName.getText(), room);
-                    WaitingRoomController waitingRoomController = loader.getController();
-                    waitingRoomController.setData(student, room);
-                    waitingRoomController.main(new String[0]);
+                    Student student = new Student(nickName.getText(), room);
+                    if (ServerCommunication.checkIfBanned(student)) {
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.setContentText("You are banned from this lecture!");
+                        error.show();
+                    } else {
+                        student = new Student(
+                                ServerCommunication.sendUser(student, room.getRoomId()),
+                                student.getNickname(),
+                                student.getRoom(),
+                                student.getIpAddress(),
+                                student.isBanned());
+                        WaitingRoomController waitingRoomController = loader.getController();
+                        waitingRoomController.setData(student, room);
+                        waitingRoomController.main(new String[0]);
+                    }
                 }
             }
         }
     }
 
-    /**
-     * Handles clicking the "create instant room" button.
-     */
-    public void startRoom(ActionEvent actionEvent) throws IOException {
 
-        // TODO: Send Moderator entity to server to store in db
+    /**
+     * Handles clicking the "create room" button.
+     */
+    public void startRoom(ActionEvent actionEvent) {
+        if (scheduledBox.isSelected()) {
+            scheduleRoom();
+        } else {
+            instantRoom();
+        }
+    }
+
+
+    /**
+     * Handles the check/uncheck action of the checkbox.
+     */
+    public void checkboxPress() {
+        if (scheduledBox.isSelected()) {
+            date.setDisable(false);
+            hour.setDisable(false);
+        } else {
+            date.setDisable(true);
+            hour.setDisable(true);
+        }
+    }
+
+
+    /**
+     * Called by startRoom when scheduledBox is unchecked.
+     * Creates a room instantly.
+     */
+    private void instantRoom() {
         if (roomName.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please enter name of room");
@@ -128,8 +177,11 @@ public class SplashController {
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
-
-            User moderator = new Moderator(nickName.getText(), newRoom);
+            Moderator moderator = new Moderator(nickName.getText(), newRoom);
+            moderator = new Moderator(
+                    ServerCommunication.sendUser(moderator, newRoom.getRoomId()),
+                    moderator.getNickname(),
+                    moderator.getRoom());
             ModeratorView moderatorView = new ModeratorView();
             moderatorView.setData(moderator, newRoom);
             moderatorView.start(primaryStage);
@@ -137,13 +189,11 @@ public class SplashController {
     }
 
 
-    /** Checkstyle wants a comment - to be edited.
-     * @param actionEvent - to be edited
-     * @throws IOException - to be edited
+    /**
+     * Called by startRoom when scheduledBox is checked.
+     * Creates a scheduled room.
      */
-    public void scheduleRoom(ActionEvent actionEvent) throws IOException {
-
-        // TODO: Send Moderator entity to server to store in db
+    private void scheduleRoom() {
         if (date.getValue() == null
                 || hour.getText().equals("")
                 || !hour.getText().matches("^\\d{2}:\\d{2}$")
@@ -165,15 +215,38 @@ public class SplashController {
 
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
-
+            // TODO: the room should not be created in this case!
             if (targetTime.isBefore(LocalDateTime.now())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Please enter a valid date and time.");
                 alert.show();
+                return;
             }
 
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
+
+            // Change it to a window with the links
+            /*
+            URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(xmlUrl);
+            Parent root = null;
+
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setContentText("Something went wrong! Could not load the links");
+                error.show();
+            }
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+             */
 
             // TODO: Make sure links are copyable
             Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
@@ -182,12 +255,43 @@ public class SplashController {
             alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink()
                     + "\n Student link: " + newRoom.getStudentsLink());
             alertMod.show();
-
         }
     }
 
 
+    /**
+     * Checks if the required user input for joining a room is proper.
+     * (Also shows an alert informing the user about what's wrong)
+     * @return true if is, false if it's not
+     */
+    public static boolean joinRoomSanitation(String name, String code) {
+        boolean flag = true;
 
+        Alert alert = new Alert(Alert.AlertType.ERROR);
 
+        if (name.equals("") || code.equals("")) {
+            alert.setContentText("Please enter both nickname and link.");
+            flag = false;
 
+        } else if (name.contains(" ") || code.contains(" ")) {
+            alert.setContentText("The name and the link cannot contain empty spaces.");
+            flag = false;
+
+        } else if (name.contains("/") || code.contains("/")
+                || name.contains("=") || code.contains("=")
+                || name.contains(",") || code.contains(",")) {
+            alert.setContentText("The name or the link contains illegal characters.");
+            flag = false;
+
+        } else if (name.length() < 2 || name.length() > 20) {
+            alert.setContentText("The name should be between 2 and 20 characters.");
+            flag = false;
+        }
+
+        if (flag == false) {
+            alert.show();
+        }
+
+        return flag;
+    }
 }

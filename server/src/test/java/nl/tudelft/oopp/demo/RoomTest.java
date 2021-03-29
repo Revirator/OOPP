@@ -57,10 +57,6 @@ public class RoomTest {
 
     @Test
     public void testLinkGenerator() {
-        assertTrue(roomOne.getStudentsLink().toString().contains("http://localhost:8080/rooms/"));
-        assertTrue(roomOne.getModeratorLink().toString().contains("http://localhost:8080/rooms/M"));
-        assertTrue(roomTwo.getStudentsLink().toString().contains("http://localhost:8080/rooms/"));
-        assertTrue(roomTwo.getModeratorLink().toString().contains("http://localhost:8080/rooms/M"));
         assertNotEquals(roomTwo.getStudentsLink(), roomOne.getStudentsLink());
         assertNotEquals(roomTwo.getModeratorLink(), roomOne.getModeratorLink());
     }

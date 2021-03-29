@@ -33,7 +33,7 @@ public class RoomServerCommunicationTest {
 
     @Test
     public void testGetRoomEmptyString() {
-        assertNull(ServerCommunication.getRoom(""));
+        assertNull(ServerCommunication.getRoom("", false));
     }
 
     @Test

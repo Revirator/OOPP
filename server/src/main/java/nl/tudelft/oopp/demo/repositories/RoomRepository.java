@@ -11,7 +11,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     Room findById(long id);
 
-    Room findFirstByStudentsLink(URL link);  // Those queries can't search by using a String
+    Room findFirstByStudentsLink(String link);  // Those queries can't search by using a String
 
-    Room findFirstByModeratorLink(URL link);
+    Room findFirstByModeratorLink(String link);
 }
