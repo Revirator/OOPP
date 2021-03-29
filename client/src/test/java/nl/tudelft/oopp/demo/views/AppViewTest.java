@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AppViewTest {
 
@@ -17,6 +17,10 @@ public class AppViewTest {
     private Question questionB;
     private Question questionC;
 
+    /**
+     * Constructor for AppView.
+     * Here studentView is used but modView would be fine too.
+     */
     public AppViewTest() {
 
         this.studentView = new StudentView();
@@ -43,11 +47,13 @@ public class AppViewTest {
     @Test
     public void testUpdateRemoveDelQ() {
 
-        ObservableList<Question> questionsBefore = FXCollections.observableArrayList(List.of(questionA, questionB, questionC));
+        ObservableList<Question> questionsBefore = FXCollections
+                .observableArrayList(List.of(questionA, questionB, questionC));
         studentView.setQuestions(questionsBefore);
         ObservableList<Question> answeredBefore = studentView.getAnswered();
 
-        ObservableList<Question> questionsAfter = FXCollections.observableArrayList(List.of(questionA));
+        ObservableList<Question> questionsAfter = FXCollections
+                .observableArrayList(List.of(questionA));
 
         studentView.update(List.of(questionA), new ArrayList<Question>());
 
@@ -58,14 +64,18 @@ public class AppViewTest {
     @Test
     public void testUpdateRemoveDelA() {
 
-        ObservableList<Question> questionsBefore = FXCollections.observableArrayList(List.of(questionC));
-        ObservableList<Question> answeredBefore = FXCollections.observableArrayList(List.of(questionA, questionB));
+        ObservableList<Question> questionsBefore = FXCollections
+                    .observableArrayList(List.of(questionC));
+        ObservableList<Question> answeredBefore = FXCollections
+                .observableArrayList(List.of(questionA, questionB));
 
         studentView.setQuestions(questionsBefore);
         studentView.setAnswered(answeredBefore);
 
-        ObservableList<Question> questionsAfter = FXCollections.observableArrayList(List.of(questionC));
-        ObservableList<Question> answeredAfter = FXCollections.observableArrayList(List.of(questionA));
+        ObservableList<Question> questionsAfter = FXCollections
+                .observableArrayList(List.of(questionC));
+        ObservableList<Question> answeredAfter = FXCollections
+                .observableArrayList(List.of(questionA));
 
         studentView.update(List.of(questionA, questionC), List.of(questionA));
 
@@ -79,14 +89,18 @@ public class AppViewTest {
         List<Question> questionList = List.of(questionA, questionB, questionC);
         List<Question> answeredList = List.of(questionA, questionA);
 
-        ObservableList<Question> questionsBefore = FXCollections.observableArrayList(List.of(questionA));
-        ObservableList<Question> answeredBefore = FXCollections.observableArrayList(List.of(questionB));
+        ObservableList<Question> questionsBefore = FXCollections
+                .observableArrayList(List.of(questionA));
+        ObservableList<Question> answeredBefore = FXCollections
+                .observableArrayList(List.of(questionB));
 
         studentView.setQuestions(questionsBefore);
         studentView.setAnswered(answeredBefore);
 
-        ObservableList<Question> questionsAfter = FXCollections.observableArrayList(List.of(questionC));
-        ObservableList<Question> answeredAfter = FXCollections.observableArrayList(List.of(questionB, questionA));
+        ObservableList<Question> questionsAfter = FXCollections
+                .observableArrayList(List.of(questionC));
+        ObservableList<Question> answeredAfter = FXCollections
+                .observableArrayList(List.of(questionB, questionA));
 
         studentView.update(questionList, answeredList);
 
