@@ -95,16 +95,34 @@ public abstract class AppView extends MainView {
 
     /**
      * Updates the questions and answered questions.
-     * @param questionList list of current questions
+     * @param questionList list of current questions (also containing all answered questions)
      * @param answeredList list of current answered questions
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
-//        answered.clear();
-//        answered.addAll(answeredList);
+        // remove deleted (non-answered) questions from view
+        Iterator<Question> qIterator = questions.iterator();
+        while (qIterator.hasNext()) {
+            Question q = qIterator.next();
+            if (!questionList.contains(q)) {
+                qIterator.remove();
+            }
+        }
 
+        // remove deleted (answered) questions from view
+        // also uses questionList to check, because this contains all questions
+        Iterator<Question> aIterator = answered.iterator();
+        while (aIterator.hasNext()) {
+            Question q = aIterator.next();
+            if (!questionList.contains(q)) {
+                aIterator.remove();
+            }
+        }
+
+        // check for every question in the updated list
         for (Question q : questionList) {
 
+            // previous version of questions
             Question qToUpdate = searchQuestion(q.getId());
             Question aToUpdate = searchAnswer(q.getId());
 
@@ -112,41 +130,56 @@ public abstract class AppView extends MainView {
             if (qToUpdate == null && aToUpdate == null) {
                 questions.add(q);
             }
-            
-
-        }
-
-        // remove deleted questions from view
-        Iterator<Question> iterator = questions.iterator();
-        while (iterator.hasNext()) {
-            Question q = iterator.next();
-            if (!questionList.contains(q)) {
-                iterator.remove();
+            // if question recently answered, move to questions
+            else if (answeredList.contains(q) && qToUpdate != null) {
+                questions.remove(q);
+                answered.add(q);
             }
-        }
-
-        // questionList contains both answered and non-answered questions!
-        for (Question q : questionList) {
-
-            Question toUpdate = searchQuestion(q.getId());
-
-            // if question exists and is NOT answered, update its values.
-            if (toUpdate != null) {
-                if (answered.contains(toUpdate)) {
-                    questions.remove(toUpdate);
-                } else {
-                    toUpdate.setUpvotes(q.getUpvotes());
-                    toUpdate.setText(q.getText());
-                    toUpdate.setAnswer(q.getAnswer());
-                }
-                // if new question, just add it to the questions.
-            } else if (!answered.contains(q)) {
-                questions.add(q);
+            // update values question in answers
+            else if (answeredList.contains(q) && aToUpdate != null) {
+                aToUpdate.setUpvotes(q.getUpvotes());
+                aToUpdate.setText(q.getText());
+                aToUpdate.setAnswer(q.getAnswer());
             }
+            // update values question in questions
+            else {
+                qToUpdate.setUpvotes(q.getUpvotes());
+                qToUpdate.setText(q.getText());
+                qToUpdate.setAnswer(q.getAnswer());
+            }
+
         }
 
         questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
+
+
+
+//        answered.clear();
+//        answered.addAll(answeredList);
+//
+//        // questionList contains both answered and non-answered questions!
+//        for (Question q : questionList) {
+//
+//            Question toUpdate = searchQuestion(q.getId());
+//
+//            // if question exists and is NOT answered, update its values.
+//            if (toUpdate != null) {
+//                if (answered.contains(toUpdate)) {
+//                    questions.remove(toUpdate);
+//                } else {
+//                    toUpdate.setUpvotes(q.getUpvotes());
+//                    toUpdate.setText(q.getText());
+//                    toUpdate.setAnswer(q.getAnswer());
+//                }
+//                // if new question, just add it to the questions.
+//            } else if (!answered.contains(q)) {
+//                questions.add(q);
+//            }
+//        }
+//
+//        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+//        answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
     }
 
