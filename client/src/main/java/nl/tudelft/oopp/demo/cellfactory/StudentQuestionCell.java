@@ -62,15 +62,18 @@ public class StudentQuestionCell extends ListCell<Question> {
         Label questionLabel = new Label();
         Label upVotesLabel = new Label();
         Label ownerLabel = new Label();
+        Label answerLabel = new Label("Answer: ");
 
         // Assign ID's to labels
         questionLabel.setId("questionLabel");
         upVotesLabel.setId("upVotesLabel");
         ownerLabel.setId("ownerLabel");
+        answerLabel.setId("answerLabel");
 
         // Position labels
         questionLabel.setAlignment(Pos.CENTER_LEFT);
         ownerLabel.setAlignment(Pos.CENTER_LEFT);
+        answerLabel.setAlignment(Pos.CENTER_LEFT);
 
         // Create buttons in wrappers
         Button upVoteButton = new Button("Vote");
@@ -96,13 +99,13 @@ public class StudentQuestionCell extends ListCell<Question> {
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
         // Add elements to grid pane
-        gridPane.add(buttonWrapper, 1,2);
-        gridPane.add(upVoteWrapper, 0,2);
+        gridPane.add(buttonWrapper, 1,3);
+        gridPane.add(upVoteWrapper, 0,3);
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionWrapper, 0,1);
+        gridPane.add(answerLabel, 0, 2);
 
         // Give background colours
-
         gridPane.styleProperty().setValue("-fx-background-color: white");
         anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
         // gP.setGridLinesVisible(true);
@@ -116,8 +119,6 @@ public class StudentQuestionCell extends ListCell<Question> {
         AnchorPane.setLeftAnchor(gridPane, 10.0);
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
-
-
 
 
         // Click event for upvote
@@ -143,7 +144,6 @@ public class StudentQuestionCell extends ListCell<Question> {
         });
 
 
-
         // Click event for delete
         deleteButton.setOnAction(event -> {
 
@@ -152,7 +152,6 @@ public class StudentQuestionCell extends ListCell<Question> {
                 questions.remove(question);
             }
         });
-
 
 
         // Click event for editing
@@ -178,7 +177,6 @@ public class StudentQuestionCell extends ListCell<Question> {
                 editing = true;
             }
         });
-
     }
 
 
@@ -215,6 +213,8 @@ public class StudentQuestionCell extends ListCell<Question> {
             questionLabel.setText(item.getText());
             ownerLabel.setText(item.getOwner());
 
+            Label answerLabel = (Label) gridPane.lookup("#answerLabel");
+            answerLabel.setText("Answer: " + question.getAnswer());
 
             HBox answeredOrDelete = (HBox) gridPane.lookup("#AnsweredOrDelete");
             Button editButton = (Button) gridPane.lookup("#EditButton");
