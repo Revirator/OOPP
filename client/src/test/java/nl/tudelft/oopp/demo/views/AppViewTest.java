@@ -2,11 +2,11 @@ package nl.tudelft.oopp.demo.views;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import nl.tudelft.oopp.demo.data.Question;
 
