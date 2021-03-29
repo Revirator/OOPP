@@ -100,8 +100,21 @@ public abstract class AppView extends MainView {
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
-        answered.clear();
-        answered.addAll(answeredList);
+//        answered.clear();
+//        answered.addAll(answeredList);
+
+        for (Question q : questionList) {
+
+            Question qToUpdate = searchQuestion(q.getId());
+            Question aToUpdate = searchAnswer(q.getId());
+
+            // if new question, add to questions
+            if (qToUpdate == null && aToUpdate == null) {
+                questions.add(q);
+            }
+            
+
+        }
 
         // remove deleted questions from view
         Iterator<Question> iterator = questions.iterator();
@@ -145,6 +158,21 @@ public abstract class AppView extends MainView {
     private Question searchQuestion(long questionId) {
 
         for (Question q : questions) {
+            if (q.getId() == questionId) {
+                return q;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if this question id exists in the answeredList.
+     * @param questionId
+     * @return
+     */
+    private Question searchAnswer(long questionId) {
+
+        for (Question q : answered) {
             if (q.getId() == questionId) {
                 return q;
             }
