@@ -58,22 +58,24 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
 
-        // Create all labels
+        // Create all labels and assign ids
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-        Label answerLabel = new Label("Answer: ");
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
+
+        Label upVotesLabel = new Label();
         upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
+
+        Label answerLabel = new Label("Answer: ");
         answerLabel.setId("answerLabel");
 
         // Position labels
+        answerLabel.setAlignment(Pos.CENTER_LEFT);
         questionLabel.setAlignment(Pos.CENTER_LEFT);
         ownerLabel.setAlignment(Pos.CENTER_LEFT);
-        answerLabel.setAlignment(Pos.CENTER_LEFT);
+
 
         // Create buttons in wrappers
         Button upVoteButton = new Button("Vote");
@@ -128,7 +130,6 @@ public class StudentQuestionCell extends ListCell<Question> {
             // Sort questions again
             questions.sort(Comparator.comparing(Question::getUpvotes,
                         Comparator.reverseOrder()));
-
         });
 
 
