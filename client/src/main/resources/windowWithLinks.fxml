@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="260.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.LinkRoomController">
+    <top>
+        <AnchorPane fx:id="anchorWaitingRoom" prefWidth="420.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+            <children>
+                <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headerText" text="QuestionMe">
+                    <font>
+                        <Font name="Arial" size="24.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+    </top>
+
+    <center>
+        <GridPane alignment="CENTER" prefWidth="420.0" style="-fx-background-color: #E5E5E5;" GridPane.hgrow="SOMETIMES" GridPane.valignment="BASELINE" GridPane.vgrow="SOMETIMES">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="280" minWidth="60.0" percentWidth="49.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="100" minWidth="60.0" percentWidth="30.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Room code for students:" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
+                    <font>
+                        <Font name="Arial" size="14" />
+                    </font>
+                </Label>
+                <Label text="Room code for moderators:" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                    <font>
+                        <Font name="Arial" size="14" />
+                    </font>
+                </Label>
+                <TextField fx:id="studentCode" maxWidth="175.0" text="6e9cc675c2164d4a95" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <font>
+                        <Font name="Arial" size="14" />
+                    </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+                </TextField>
+                <TextField fx:id="moderatorCode" maxWidth="175.0" text="Mfb51573b1c6246e39" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                    <font>
+                        <Font name="Arial" size="14" />
+                    </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+                </TextField>
+                <Button fx:id="copyStudentCode" mnemonicParsing="false" onAction="#copyStudentsCode" prefWidth="30" styleClass="Button" stylesheets="@copyButton.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+                <Button fx:id="copyModeratorCode" mnemonicParsing="false" onAction="#copyModeratorsCode" prefWidth="30" styleClass="Button" stylesheets="@copyButton.css" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <ImageView fx:id="copiedStudent" fitHeight="75" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@images/copied.png" />
+               </image></ImageView>
+            <ImageView fx:id="copiedModerator" fitHeight="75" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@images/copied.png" />
+               </image></ImageView>
+            </children>
+        </GridPane>
+    </center>
+</BorderPane>

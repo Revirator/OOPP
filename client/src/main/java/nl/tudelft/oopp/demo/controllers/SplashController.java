@@ -184,6 +184,7 @@ public class SplashController {
             ModeratorView moderatorView = new ModeratorView();
             moderatorView.setData(moderator, newRoom);
             moderatorView.start(primaryStage);
+            loadRoomWithLinks(newRoom);
         }
     }
 
@@ -224,36 +225,7 @@ public class SplashController {
 
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
-
-            // Change it to a window with the links
-            /*
-            URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(xmlUrl);
-            Parent root = null;
-
-            try {
-                root = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText("Something went wrong! Could not load the links");
-                error.show();
-            }
-
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.showAndWait();
-             */
-
-            // TODO: Make sure links are copyable
-            Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
-            alertMod.setTitle("Links for the room " + roomName.getText());
-            alertMod.setHeaderText("Links for the room " + roomName.getText());
-            alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink()
-                    + "\n Student link: " + newRoom.getStudentsLink());
-            alertMod.show();
+            loadRoomWithLinks(newRoom);
         }
     }
 
@@ -292,5 +264,29 @@ public class SplashController {
         }
 
         return flag;
+    }
+
+    private void loadRoomWithLinks(Room room) {
+        URL xmlUrl = getClass().getResource("/windowWithLinks.fxml");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(xmlUrl);
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText("Something went wrong! Could not load the links");
+            error.show();
+        }
+
+        Stage newStage = new Stage();
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        newStage.show();
+
+        LinkRoomController linkRoomController = loader.getController();
+        linkRoomController.setData(room);
+        linkRoomController.main(new String[0]);
     }
 }
