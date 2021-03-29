@@ -72,12 +72,23 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
 
         // Create buttons
-        Button answerButton = new Button("Answer");
+
+        // 'Answered' button
+        Button answerButton = new Button("Mark answered");
         answerButton.setId("answerButton");
         answerButton.setCursor(Cursor.HAND);
+
+        // 'Reply' button
+        Button replyButton = new Button("Reply");
+        replyButton.setId("replyButton");
+        replyButton.setCursor(Cursor.HAND);
+
+        // 'Edit' button
         Button editButton = new Button("Edit question");
         editButton.setId("editButton");
         editButton.setCursor(Cursor.HAND);
+
+        // 'Delete' button
         Button deleteButton = new Button("Delete");
         deleteButton.setId("deleteButton");
         deleteButton.setCursor(Cursor.HAND);
@@ -93,7 +104,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox, answerButton);
+        HBox answerWrapper = new HBox(answerBox, answerButton, replyButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
@@ -243,7 +254,4 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             }
         }
     }
-
-
-
 }
