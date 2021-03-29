@@ -1,14 +1,16 @@
 package nl.tudelft.oopp.demo.views;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import nl.tudelft.oopp.demo.data.Question;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
 
 public class AppViewTest {
 
