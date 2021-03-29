@@ -101,21 +101,21 @@ public abstract class AppView extends MainView {
     public void update(List<Question> questionList, List<Question> answeredList) {
 
         // remove deleted (non-answered) questions from view
-        Iterator<Question> qIterator = questions.iterator();
-        while (qIterator.hasNext()) {
-            Question q = qIterator.next();
+        Iterator<Question> queIterator = questions.iterator();
+        while (queIterator.hasNext()) {
+            Question q = queIterator.next();
             if (!questionList.contains(q)) {
-                qIterator.remove();
+                queIterator.remove();
             }
         }
 
         // remove deleted (answered) questions from view
         // also uses questionList to check, because this contains all questions
-        Iterator<Question> aIterator = answered.iterator();
-        while (aIterator.hasNext()) {
-            Question q = aIterator.next();
+        Iterator<Question> ansIterator = answered.iterator();
+        while (ansIterator.hasNext()) {
+            Question q = ansIterator.next();
             if (!questionList.contains(q)) {
-                aIterator.remove();
+                ansIterator.remove();
             }
         }
 
@@ -123,29 +123,30 @@ public abstract class AppView extends MainView {
         for (Question q : questionList) {
 
             // previous version of questions
-            Question qToUpdate = searchQuestion(q.getId());
-            Question aToUpdate = searchAnswer(q.getId());
+            Question queToUpdate = searchQuestion(q.getId());
+            Question ansToUpdate = searchAnswer(q.getId());
 
             // if new question, add to questions
-            if (qToUpdate == null && aToUpdate == null) {
+            if (queToUpdate == null && ansToUpdate == null) {
                 questions.add(q);
-            }
-            // if question recently answered, move to answered
-            else if (answeredList.contains(q) && qToUpdate != null) {
+
+            } else if (answeredList.contains(q) && queToUpdate != null) {
+                // if question recently answered, move to answered
                 questions.remove(q);
                 answered.add(q);
-            }
-            // update values question in answers
-            else if (answeredList.contains(q) && aToUpdate != null) {
-                aToUpdate.setUpvotes(q.getUpvotes());
-                aToUpdate.setText(q.getText());
-                aToUpdate.setAnswer(q.getAnswer());
-            }
-            // update values question in questions
-            else if (questionList.contains(q) && qToUpdate != null){
-                qToUpdate.setUpvotes(q.getUpvotes());
-                qToUpdate.setText(q.getText());
-                qToUpdate.setAnswer(q.getAnswer());
+
+            } else if (answeredList.contains(q) && ansToUpdate != null) {
+                // update values question in answers
+                ansToUpdate.setUpvotes(q.getUpvotes());
+                ansToUpdate.setText(q.getText());
+                ansToUpdate.setAnswer(q.getAnswer());
+
+            } else if (questionList.contains(q) && queToUpdate != null) {
+                // update values question in questions
+                queToUpdate.setUpvotes(q.getUpvotes());
+                queToUpdate.setText(q.getText());
+                queToUpdate.setAnswer(q.getAnswer());
+
             }
 
         }
@@ -158,7 +159,7 @@ public abstract class AppView extends MainView {
     /**
      * Checks if this question id exists in the questionList.
      * @param questionId question id to check
-     * @return true if exists, else false.
+     * @return question if exists, else null
      */
     private Question searchQuestion(long questionId) {
 
@@ -172,8 +173,8 @@ public abstract class AppView extends MainView {
 
     /**
      * Checks if this question id exists in the answeredList.
-     * @param questionId
-     * @return
+     * @param questionId question id to check
+     * @return question if exists, else null
      */
     private Question searchAnswer(long questionId) {
 
