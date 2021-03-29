@@ -73,21 +73,22 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
 
         // Create buttons
-        Button answerButton = new Button("Answer");
+        Button answerButton = new Button();
+        answerButton.setPrefWidth(27);
+        URL path = StudentQuestionCell.class.getResource("/images/replyBlue.png");
+        setButtonStyle(answerButton, path);
         answerButton.setCursor(Cursor.HAND);
+
         Button editButton = new Button();
         editButton.setPrefWidth(25);
-        URL path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
-        editButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        setButtonStyle(editButton, path);
         editButton.setCursor(Cursor.HAND);
+
         Button deleteButton = new Button();
         deleteButton.setPrefWidth(27);
         path = StudentQuestionCell.class.getResource("/images/redTrash.png");
-        deleteButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
 
         // Create text area
@@ -148,7 +149,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 gridPane.getChildren().remove(editableLabel);
                 gridPane.add(questionLabel, 0, 1);
                 question.setText(editableLabel.getText());
-                // editButton.setText("Edit question");
+                editButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editButton, url);
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
@@ -156,8 +159,10 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
                 gridPane.getChildren().remove(questionLabel);
                 gridPane.add(editableLabel, 0,1);
+                editButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editButton, url);
                 editableLabel.setText(question.getText());
-                // editButton.setText("Save changes");
                 editing = true;
 
             }
@@ -231,4 +236,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         }
     }
 
+    private void setButtonStyle(Button button, URL path) {
+        button.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
+    }
 }

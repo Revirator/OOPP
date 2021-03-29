@@ -86,23 +86,17 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
         editAnswerButton.setPrefWidth(25);
         URL path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
-        editAnswerButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        setButtonStyle(editAnswerButton, path);
         editAnswerButton.setCursor(Cursor.HAND);
 
         editQuestionButton.setPrefWidth(25);
         path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
-        editQuestionButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        setButtonStyle(editQuestionButton, path);
         editQuestionButton.setCursor(Cursor.HAND);
 
         deleteButton.setPrefWidth(27);
         path = StudentQuestionCell.class.getResource("/images/redTrash.png");
-        deleteButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
 
         // Create wrappers
@@ -156,7 +150,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
                 question.setText(editableQuestion.getText());
-                editQuestionButton.setText("Edit question");
+                editQuestionButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editQuestionButton, url);
                 questionLabel.setText(editableQuestion.getText());
                 editingQuestion = false;
 
@@ -164,7 +160,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 questionWrapper.getChildren().addAll(editableQuestion, editQuestionButton);
                 editableQuestion.setText(question.getText());
-                editQuestionButton.setText("Save changes");
+                editQuestionButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editQuestionButton, url);
                 editingQuestion = true;
 
             }
@@ -186,7 +184,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
                 question.setAnswer(editableAnswer.getText());
-                editAnswerButton.setText("Edit answer");
+                editAnswerButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editAnswerButton, url);
                 answerLabel.setText("Answer: " + editableAnswer.getText());
                 editingAnswer = false;
 
@@ -194,7 +194,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 answerWrapper.getChildren().addAll(editableAnswer, editAnswerButton);
                 editableAnswer.setText(question.getAnswer());
-                editAnswerButton.setText("Save changes");
+                editAnswerButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editAnswerButton, url);
                 editingAnswer = true;
 
             }
@@ -257,5 +259,11 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
             // Show graphic representation
             setGraphic(anchorPane);
         }
+    }
+
+    private void setButtonStyle(Button button, URL path) {
+        button.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
     }
 }

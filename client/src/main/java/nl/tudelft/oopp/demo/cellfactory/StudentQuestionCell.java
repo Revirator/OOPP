@@ -77,23 +77,22 @@ public class StudentQuestionCell extends ListCell<Question> {
         upVoteButton.setId("UpvoteButton");
         upVoteButton.setPrefWidth(30);
         URL path = StudentQuestionCell.class.getResource("/images/likeBlue.png");
-        upVoteButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        setButtonStyle(upVoteButton, path);
         upVoteButton.setCursor(Cursor.HAND);
         HBox upVoteWrapper = new HBox(upVoteButton, upVotesLabel);
         upVoteWrapper.setAlignment(Pos.CENTER_LEFT);
         upVoteWrapper.setSpacing(5);
 
-        Button markAnsweredButton = new Button("Mark as answered");
+        Button markAnsweredButton = new Button();
+        markAnsweredButton.setPrefWidth(25);
+        path = StudentQuestionCell.class.getResource("/images/checkmark.png");
+        setButtonStyle(markAnsweredButton, path);
         markAnsweredButton.setCursor(Cursor.HAND);
 
         Button deleteButton = new Button();
         deleteButton.setPrefWidth(27);
         path = StudentQuestionCell.class.getResource("/images/redTrash.png");
-        deleteButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
         HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
         buttonWrapper.setId("AnsweredOrDelete");
@@ -105,9 +104,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         editQuestionButton.setId("EditButton");
         editQuestionButton.setPrefWidth(25);
         path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
-        editQuestionButton.setStyle("-fx-background-image: url('" + path + "');"
-                + " -fx-background-repeat: no-repeat;"
-                + " -fx-background-size: 100% 100%;");
+        setButtonStyle(editQuestionButton, path);
         editQuestionButton.setCursor(Cursor.HAND);
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
@@ -181,16 +178,19 @@ public class StudentQuestionCell extends ListCell<Question> {
 
                 src.editQuestion(
                         this.question, editableLabel.getText());
-
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
-                // editQuestionButton.setText("Edit");
+                editQuestionButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editQuestionButton, url);
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
             } else { // User wants to make changes
                 questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
+                editQuestionButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editQuestionButton, url);
                 editableLabel.setText(question.getText());
-                // editQuestionButton.setText("Save changes");
                 editing = true;
             }
         });
@@ -250,4 +250,9 @@ public class StudentQuestionCell extends ListCell<Question> {
         }
     }
 
+    private void setButtonStyle(Button button, URL path) {
+        button.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
+    }
 }
