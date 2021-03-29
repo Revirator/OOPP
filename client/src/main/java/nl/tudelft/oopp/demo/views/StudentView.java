@@ -113,7 +113,7 @@ public class StudentView extends AppView {
         questions.add(question);
 
         // Sort based on time
-        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
         return true;
     }
