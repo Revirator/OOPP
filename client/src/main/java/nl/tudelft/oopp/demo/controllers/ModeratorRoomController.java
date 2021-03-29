@@ -137,11 +137,17 @@ public class ModeratorRoomController extends RoomController {
             fileChooser.getExtensionFilters().addAll(new FileChooser
                     .ExtensionFilter("Text Files (*.txt,*.md)", "*.txt", "*.md"));
             File selectedFile = fileChooser.showSaveDialog(null);
+            if (selectedFile == null) {
+                return;
+            }
             PrintWriter printWriter = null;
             try {
                 printWriter = new PrintWriter(selectedFile);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            }
+            if (printWriter == null) {
+                return;
             }
             List<Question> answeredQuestions = ServerCommunication
                     .getAnsweredQuestions(room.getRoomId());

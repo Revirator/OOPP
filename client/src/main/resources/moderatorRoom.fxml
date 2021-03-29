@@ -11,8 +11,8 @@
       <GridPane prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS" prefWidth="300" />
-            <ColumnConstraints hgrow="ALWAYS" prefWidth="10" />
-            <ColumnConstraints hgrow="ALWAYS" prefWidth="10" />
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="-80" />
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints prefHeight="48" vgrow="ALWAYS" />
@@ -23,7 +23,7 @@
                   <Font name="Arial" size="24.0" />
                </font>
             </Text>
-            <Button fx:id="exportQuestions" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exportQuestions" text="Export questions" GridPane.columnIndex="1">
+            <Button id="exportQuestions" fx:id="exportQuestions" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exportQuestions" prefWidth="31" stylesheets="@exportButton.css" GridPane.columnIndex="1">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>

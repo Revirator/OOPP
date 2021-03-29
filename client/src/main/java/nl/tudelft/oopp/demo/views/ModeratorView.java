@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
-import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
