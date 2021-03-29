@@ -174,14 +174,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Next line marks the question as answered in the DB
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
-            // Send answer to server to store in db
-            //((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
-
-            //question.setAnswer(answerBox.getText());   // Those will probably get removed later
-            questions.remove(question);             // since they change stuff only locally
+            // Next 2 lines are to make the change to look instant
+            questions.remove(question);
             answered.add(question);
-            answerBox.clear();
-
         });
 
         // Click event for the 'Reply' button
@@ -191,8 +186,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
 
             question.setAnswer(answerBox.getText());   // Those will probably get removed later
+            answerBox.setPromptText(answerBox.getText());
             answerBox.clear();
-
+            answerBox.deselect();
         });
 
         // Click event for the 'Delete' button
@@ -204,7 +200,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Remove question from list
             questions.remove(question);
         });
-
     }
 
     /**
@@ -245,6 +240,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Show graphic representation
             setGraphic(anchorPane);
 
+            // Next 2 lines are for showing the current answer to the question as prompt
+            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
+            answerBox.setPromptText(question.getAnswer());
 
             Button editButton = (Button) gridPane.lookup("#editButton");
             Button deleteButton = (Button) gridPane.lookup("#deleteButton");
