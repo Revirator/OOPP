@@ -100,6 +100,9 @@ public abstract class AppView extends MainView {
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
+        // TODO: isOwner = false after upvote by someone else?
+        // TODO: isOwner = false after reply by moderator?
+
         // remove deleted (non-answered) questions from view
         Iterator<Question> queIterator = questions.iterator();
         while (queIterator.hasNext()) {
@@ -114,17 +117,17 @@ public abstract class AppView extends MainView {
         Iterator<Question> ansIterator = answered.iterator();
         while (ansIterator.hasNext()) {
             Question q = ansIterator.next();
-            if (!questionList.contains(q)) {
+            if (!questionList.contains(q)) { // Why not answeredList?
                 ansIterator.remove();
             }
         }
 
-        // check for every question in the updated list
+        // check for every question in the updated list (both answered/unanswered)
         for (Question q : questionList) {
 
             // previous version of questions
             Question queToUpdate = searchQuestion(q.getId());
-            Question ansToUpdate = searchAnswer(q.getId());
+            Question ansToUpdate = searchAnswered(q.getId());
 
             // if new question, add to questions
             if (queToUpdate == null && ansToUpdate == null) {
@@ -146,7 +149,6 @@ public abstract class AppView extends MainView {
                 queToUpdate.setUpvotes(q.getUpvotes());
                 queToUpdate.setText(q.getText());
                 queToUpdate.setAnswer(q.getAnswer());
-
             }
 
         }
@@ -176,7 +178,7 @@ public abstract class AppView extends MainView {
      * @param questionId question id to check
      * @return question if exists, else null
      */
-    private Question searchAnswer(long questionId) {
+    private Question searchAnswered(long questionId) {
 
         for (Question q : answered) {
             if (q.getId() == questionId) {

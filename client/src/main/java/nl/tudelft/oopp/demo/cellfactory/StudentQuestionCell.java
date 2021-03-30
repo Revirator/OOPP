@@ -58,19 +58,24 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
 
-        // Create all labels
+        // Create all labels and assign ids
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
+
+        Label upVotesLabel = new Label();
         upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
 
+        Label answerLabel = new Label("Answer: ");
+        answerLabel.setId("answerLabel");
+
         // Position labels
+        answerLabel.setAlignment(Pos.CENTER_LEFT);
         questionLabel.setAlignment(Pos.CENTER_LEFT);
         ownerLabel.setAlignment(Pos.CENTER_LEFT);
+
 
         // Create buttons in wrappers
         Button upVoteButton = new Button("Vote");
@@ -96,13 +101,13 @@ public class StudentQuestionCell extends ListCell<Question> {
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
         // Add elements to grid pane
-        gridPane.add(buttonWrapper, 1,2);
-        gridPane.add(upVoteWrapper, 0,2);
+        gridPane.add(buttonWrapper, 1,3);
+        gridPane.add(upVoteWrapper, 0,3);
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionWrapper, 0,1);
+        gridPane.add(answerLabel, 0, 2);
 
         // Give background colours
-
         gridPane.styleProperty().setValue("-fx-background-color: white");
         anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
         // gP.setGridLinesVisible(true);
@@ -118,16 +123,13 @@ public class StudentQuestionCell extends ListCell<Question> {
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
 
-
-
         // Click event for upvote
         upVoteButton.setOnAction(event -> {
 
             src.upvoteQuestion(this.question);
-            // Sort questions again
-            questions.sort(Comparator.comparing(Question::getUpvotes,
-                        Comparator.reverseOrder()));
-
+            //   // Not needed anymore now we sort by time
+            //            questions.sort(Comparator.comparing(Question::getUpvotes,
+            //                        Comparator.reverseOrder()));
         });
 
 
@@ -143,7 +145,6 @@ public class StudentQuestionCell extends ListCell<Question> {
         });
 
 
-
         // Click event for delete
         deleteButton.setOnAction(event -> {
 
@@ -152,7 +153,6 @@ public class StudentQuestionCell extends ListCell<Question> {
                 questions.remove(question);
             }
         });
-
 
 
         // Click event for editing
@@ -178,7 +178,6 @@ public class StudentQuestionCell extends ListCell<Question> {
                 editing = true;
             }
         });
-
     }
 
 
@@ -220,6 +219,8 @@ public class StudentQuestionCell extends ListCell<Question> {
 
             ownerLabel.setText(item.getOwner());
 
+            Label answerLabel = (Label) gridPane.lookup("#answerLabel");
+            answerLabel.setText("Answer: " + question.getAnswer());
 
             HBox answeredOrDelete = (HBox) gridPane.lookup("#AnsweredOrDelete");
             Button editButton = (Button) gridPane.lookup("#EditButton");
