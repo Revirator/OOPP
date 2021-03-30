@@ -95,41 +95,60 @@ public abstract class AppView extends MainView {
 
     /**
      * Updates the questions and answered questions.
-     * @param questionList list of current questions
+     * @param questionList list of current questions (also containing all answered questions)
      * @param answeredList list of current answered questions
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
-        answered.clear();
-        answered.addAll(answeredList);
-
-        // remove deleted questions from view
-        Iterator<Question> iterator = questions.iterator();
-        while (iterator.hasNext()) {
-            Question q = iterator.next();
+        // remove deleted (non-answered) questions from view
+        Iterator<Question> queIterator = questions.iterator();
+        while (queIterator.hasNext()) {
+            Question q = queIterator.next();
             if (!questionList.contains(q)) {
-                iterator.remove();
+                queIterator.remove();
             }
         }
 
-        // questionList contains both answered and non-answered questions!
+        // remove deleted (answered) questions from view
+        // also uses questionList to check, because this contains all questions
+        Iterator<Question> ansIterator = answered.iterator();
+        while (ansIterator.hasNext()) {
+            Question q = ansIterator.next();
+            if (!questionList.contains(q)) {
+                ansIterator.remove();
+            }
+        }
+
+        // check for every question in the updated list
         for (Question q : questionList) {
 
-            Question toUpdate = searchQuestion(q.getId());
+            // previous version of questions
+            Question queToUpdate = searchQuestion(q.getId());
+            Question ansToUpdate = searchAnswer(q.getId());
 
-            // if question exists and is NOT answered, update its values.
-            if (toUpdate != null) {
-                if (answered.contains(toUpdate)) {
-                    questions.remove(toUpdate);
-                } else {
-                    toUpdate.setUpvotes(q.getUpvotes());
-                    toUpdate.setText(q.getText());
-                    toUpdate.setAnswer(q.getAnswer());
-                }
-                // if new question, just add it to the questions.
-            } else if (!answered.contains(q)) {
+            // if new question, add to questions
+            if (queToUpdate == null && ansToUpdate == null) {
                 questions.add(q);
+
+            } else if (answeredList.contains(q) && queToUpdate != null) {
+                // if question recently answered, move to answered
+                questions.remove(q);
+                answered.add(q);
+
+            } else if (answeredList.contains(q) && ansToUpdate != null) {
+                // update values question in answers
+                ansToUpdate.setUpvotes(q.getUpvotes());
+                ansToUpdate.setText(q.getText());
+                ansToUpdate.setAnswer(q.getAnswer());
+
+            } else if (questionList.contains(q) && queToUpdate != null) {
+                // update values question in questions
+                queToUpdate.setUpvotes(q.getUpvotes());
+                queToUpdate.setText(q.getText());
+                queToUpdate.setAnswer(q.getAnswer());
+
             }
+
         }
 
         questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
@@ -140,11 +159,26 @@ public abstract class AppView extends MainView {
     /**
      * Checks if this question id exists in the questionList.
      * @param questionId question id to check
-     * @return true if exists, else false.
+     * @return question if exists, else null
      */
     private Question searchQuestion(long questionId) {
 
         for (Question q : questions) {
+            if (q.getId() == questionId) {
+                return q;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if this question id exists in the answeredList.
+     * @param questionId question id to check
+     * @return question if exists, else null
+     */
+    private Question searchAnswer(long questionId) {
+
+        for (Question q : answered) {
             if (q.getId() == questionId) {
                 return q;
             }
@@ -195,6 +229,22 @@ public abstract class AppView extends MainView {
      */
     public ObservableList<Question> getAnswered() {
         return answered;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param questions ObservableList of questions
+     */
+    public void setQuestions(ObservableList<Question> questions) {
+        this.questions = questions;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param answered ObservableList of answered questions
+     */
+    public void setAnswered(ObservableList<Question> answered) {
+        this.answered = answered;
     }
 
     /**
