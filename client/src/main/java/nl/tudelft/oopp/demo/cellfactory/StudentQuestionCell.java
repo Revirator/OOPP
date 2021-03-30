@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
+import java.net.URL;
 import java.util.Comparator;
 
 import javafx.collections.ObservableList;
@@ -14,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomController;
-import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentQuestionCell extends ListCell<Question> {
@@ -78,16 +78,26 @@ public class StudentQuestionCell extends ListCell<Question> {
 
 
         // Create buttons in wrappers
-        Button upVoteButton = new Button("Vote");
+        Button upVoteButton = new Button();
         upVoteButton.setId("UpvoteButton");
+        upVoteButton.setPrefWidth(28);
+        URL path = StudentQuestionCell.class.getResource("/images/likeBlue.png");
+        setButtonStyle(upVoteButton, path);
         upVoteButton.setCursor(Cursor.HAND);
         HBox upVoteWrapper = new HBox(upVoteButton, upVotesLabel);
         upVoteWrapper.setAlignment(Pos.CENTER_LEFT);
         upVoteWrapper.setSpacing(5);
 
-        Button markAnsweredButton = new Button("Mark as answered");
+        Button markAnsweredButton = new Button();
+        markAnsweredButton.setPrefWidth(28);
+        path = StudentQuestionCell.class.getResource("/images/checkmark.png");
+        setButtonStyle(markAnsweredButton, path);
         markAnsweredButton.setCursor(Cursor.HAND);
-        Button deleteButton = new Button("Delete");
+
+        Button deleteButton = new Button();
+        deleteButton.setPrefWidth(28);
+        path = StudentQuestionCell.class.getResource("/images/redTrash.png");
+        setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
         HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
         buttonWrapper.setId("AnsweredOrDelete");
@@ -95,9 +105,12 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Align buttons
         markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
 
-        Button editQuestionButton = new Button("Edit");
-        editQuestionButton.setCursor(Cursor.HAND);
+        Button editQuestionButton = new Button();
         editQuestionButton.setId("EditButton");
+        editQuestionButton.setPrefWidth(25);
+        path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        setButtonStyle(editQuestionButton, path);
+        editQuestionButton.setCursor(Cursor.HAND);
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
 
         // Add elements to grid pane
@@ -165,16 +178,19 @@ public class StudentQuestionCell extends ListCell<Question> {
 
                 src.editQuestion(
                         this.question, editableLabel.getText());
-
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
-                editQuestionButton.setText("Edit");
+                editQuestionButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editQuestionButton, url);
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
             } else { // User presses "edit"
                 questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
+                editQuestionButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editQuestionButton, url);
                 editableLabel.setText(question.getText());
-                editQuestionButton.setText("Save changes");
                 editing = true;
             }
         });
@@ -240,4 +256,9 @@ public class StudentQuestionCell extends ListCell<Question> {
         }
     }
 
+    private void setButtonStyle(Button button, URL path) {
+        button.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
+    }
 }

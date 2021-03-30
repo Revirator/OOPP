@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
+import java.net.URL;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -73,11 +75,11 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         answerLabel.setAlignment(Pos.CENTER_LEFT);
 
         // Create buttons
-        Button editAnswerButton = new Button("Edit answer");
+        Button editAnswerButton = new Button();
         editAnswerButton.setId("editAnswer");
-        Button editQuestionButton = new Button("Edit question");
+        Button editQuestionButton = new Button();
         editQuestionButton.setId("editQuestion");
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button();
         deleteButton.setId("deleteButton");
 
         // Align buttons
@@ -85,8 +87,19 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         editQuestionButton.setAlignment(Pos.CENTER_RIGHT);
         deleteButton.setAlignment(Pos.CENTER_RIGHT);
 
+        editAnswerButton.setPrefWidth(25);
+        URL path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        setButtonStyle(editAnswerButton, path);
         editAnswerButton.setCursor(Cursor.HAND);
+
+        editQuestionButton.setPrefWidth(25);
+        path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        setButtonStyle(editQuestionButton, path);
         editQuestionButton.setCursor(Cursor.HAND);
+
+        deleteButton.setPrefWidth(28);
+        path = StudentQuestionCell.class.getResource("/images/redTrash.png");
+        setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
 
         // Create wrappers
@@ -140,7 +153,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
                 question.setText(editableQuestion.getText());
-                editQuestionButton.setText("Edit question");
+                editQuestionButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editQuestionButton, url);
                 questionLabel.setText(editableQuestion.getText());
                 editingQuestion = false;
 
@@ -148,7 +163,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 questionWrapper.getChildren().addAll(editableQuestion, editQuestionButton);
                 editableQuestion.setText(question.getText());
-                editQuestionButton.setText("Save changes");
+                editQuestionButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editQuestionButton, url);
                 editingQuestion = true;
 
             }
@@ -170,7 +187,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
                 question.setAnswer(editableAnswer.getText());
-                editAnswerButton.setText("Edit answer");
+                editAnswerButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editAnswerButton, url);
                 answerLabel.setText("Answer: " + editableAnswer.getText());
                 editingAnswer = false;
 
@@ -178,7 +197,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 answerWrapper.getChildren().addAll(editableAnswer, editAnswerButton);
                 editableAnswer.setText(question.getAnswer());
-                editAnswerButton.setText("Save changes");
+                editAnswerButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editAnswerButton, url);
                 editingAnswer = true;
 
             }
@@ -262,4 +283,9 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
     }
 
 
+    private void setButtonStyle(Button button, URL path) {
+        button.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
+    }
 }

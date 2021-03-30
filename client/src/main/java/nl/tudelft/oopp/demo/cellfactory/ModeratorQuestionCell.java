@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
+import java.net.URL;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -73,24 +75,33 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create buttons
 
-        // 'Answered' button
-        Button answeredButton = new Button("Mark answered");
-        answeredButton.setId("answeredButton");
-        answeredButton.setCursor(Cursor.HAND);
-
         // 'Reply' button
-        Button replyButton = new Button("Reply");
+        Button replyButton = new Button();
         replyButton.setId("replyButton");
+        replyButton.setPrefWidth(26);
+        URL path = StudentQuestionCell.class.getResource("/images/replyBlue.png");
+        setButtonStyle(replyButton, path);
         replyButton.setCursor(Cursor.HAND);
 
-        // 'Edit' button
-        Button editButton = new Button("Edit question");
+        Button answerButton = new Button();
+        answerButton.setId("answeredButton");
+        answerButton.setPrefWidth(28);
+        path = StudentQuestionCell.class.getResource("/images/checkmark.png");
+        setButtonStyle(answerButton, path);
+        answerButton.setCursor(Cursor.HAND);
+
+        Button editButton = new Button();
         editButton.setId("editButton");
+        editButton.setPrefWidth(25);
+        path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        setButtonStyle(editButton, path);
         editButton.setCursor(Cursor.HAND);
 
-        // 'Delete' button
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button();
         deleteButton.setId("deleteButton");
+        deleteButton.setPrefWidth(28);
+        path = StudentQuestionCell.class.getResource("/images/redTrash.png");
+        setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
 
         // Create text area
@@ -104,12 +115,12 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox, answeredButton, replyButton);
+        HBox answerWrapper = new HBox(answerBox, answerButton, replyButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
         // Align buttons
-        answeredButton.setAlignment(Pos.CENTER_LEFT);
+        answerButton.setAlignment(Pos.CENTER_LEFT);
         deleteButton.setAlignment(Pos.CENTER_RIGHT);
         editButton.setAlignment(Pos.CENTER_RIGHT);
 
@@ -153,7 +164,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 gridPane.getChildren().remove(editableLabel);
                 gridPane.add(questionLabel, 0, 1);
                 question.setText(editableLabel.getText());
-                editButton.setText("Edit question");
+                editButton.setPrefWidth(25);
+                URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+                setButtonStyle(editButton, url);
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
@@ -161,15 +174,17 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
                 gridPane.getChildren().remove(questionLabel);
                 gridPane.add(editableLabel, 0,1);
+                editButton.setPrefWidth(27);
+                URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
+                setButtonStyle(editButton, url);
                 editableLabel.setText(question.getText());
-                editButton.setText("Save changes");
                 editing = true;
 
             }
         });
 
         // Click event for the 'Mark answered' button
-        answeredButton.setOnAction(event -> {
+        answerButton.setOnAction(event -> {
 
             // Next line marks the question as answered in the DB
             ServerCommunication.markQuestionAsAnswered(question.getId());
@@ -267,5 +282,11 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 deleteButton.setVisible(true);
             }
         }
+    }
+
+    private void setButtonStyle(Button button, URL path) {
+        button.setStyle("-fx-background-image: url('" + path + "');"
+                + " -fx-background-repeat: no-repeat;"
+                + " -fx-background-size: 100% 100%;");
     }
 }

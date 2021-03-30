@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
@@ -63,6 +64,10 @@ public class StudentView extends AppView {
 
         // Set scene on primary stage
         primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        primaryStage.setOnCloseRequest(e -> {
+            // TODO: remove user from DB (on a new branch)
+        });
         primaryStage.show();
 
         // Create responsive lists
