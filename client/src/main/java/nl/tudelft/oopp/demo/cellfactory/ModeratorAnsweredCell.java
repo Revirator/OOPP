@@ -97,7 +97,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         setButtonStyle(editQuestionButton, path);
         editQuestionButton.setCursor(Cursor.HAND);
 
-        deleteButton.setPrefWidth(27);
+        deleteButton.setPrefWidth(28);
         path = StudentQuestionCell.class.getResource("/images/redTrash.png");
         setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);

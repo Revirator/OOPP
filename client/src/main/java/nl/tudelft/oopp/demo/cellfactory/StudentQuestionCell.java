@@ -75,7 +75,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Create buttons in wrappers
         Button upVoteButton = new Button();
         upVoteButton.setId("UpvoteButton");
-        upVoteButton.setPrefWidth(30);
+        upVoteButton.setPrefWidth(28);
         URL path = StudentQuestionCell.class.getResource("/images/likeBlue.png");
         setButtonStyle(upVoteButton, path);
         upVoteButton.setCursor(Cursor.HAND);
@@ -84,13 +84,13 @@ public class StudentQuestionCell extends ListCell<Question> {
         upVoteWrapper.setSpacing(5);
 
         Button markAnsweredButton = new Button();
-        markAnsweredButton.setPrefWidth(25);
+        markAnsweredButton.setPrefWidth(28);
         path = StudentQuestionCell.class.getResource("/images/checkmark.png");
         setButtonStyle(markAnsweredButton, path);
         markAnsweredButton.setCursor(Cursor.HAND);
 
         Button deleteButton = new Button();
-        deleteButton.setPrefWidth(27);
+        deleteButton.setPrefWidth(28);
         path = StudentQuestionCell.class.getResource("/images/redTrash.png");
         setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
