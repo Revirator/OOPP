@@ -26,10 +26,10 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="100" minWidth="60.0" percentWidth="30.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="40" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="40" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label text="Room code for students:" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
@@ -60,11 +60,11 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <ImageView fx:id="copiedStudent" fitHeight="88" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <ImageView fx:id="copiedStudent" fitHeight="105" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <image>
                   <Image url="@images/copied.png" />
                </image></ImageView>
-            <ImageView fx:id="copiedModerator" fitHeight="88" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+            <ImageView fx:id="copiedModerator" fitHeight="105" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
                <image>
                   <Image url="@images/copied.png" />
                </image></ImageView>

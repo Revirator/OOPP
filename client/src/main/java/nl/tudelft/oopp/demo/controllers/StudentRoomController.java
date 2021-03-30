@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -39,6 +42,9 @@ public class StudentRoomController extends RoomController {
 
     @FXML
     private Label lectureName;
+
+    @FXML
+    private ImageView sentFeedback;
 
     private StudentView studentView;
 
@@ -169,6 +175,10 @@ public class StudentRoomController extends RoomController {
             resetButton.setDisable(false);
             tooSlowButton.setDisable(true);
             tooFastButton.setVisible(false);
+            sentFeedback.setVisible(true);
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1.5), e -> sentFeedback.setVisible(false)));
+            timeline.play();
             ServerCommunication.sendFeedback(room.getStudentsLink(), "slow");
         }
     }
@@ -190,6 +200,10 @@ public class StudentRoomController extends RoomController {
             resetButton.setDisable(false);
             tooSlowButton.setVisible(false);
             tooFastButton.setDisable(true);
+            sentFeedback.setVisible(true);
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1.5), e -> sentFeedback.setVisible(false)));
+            timeline.play();
             ServerCommunication.sendFeedback(room.getStudentsLink(), "fast");
         }
     }
