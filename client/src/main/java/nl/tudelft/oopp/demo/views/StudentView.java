@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.views;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.List;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -111,8 +112,8 @@ public class StudentView extends AppView {
 
         questions.add(question);
 
-        // Sort based on votes
-        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+        // Sort based on time
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
         return true;
     }
@@ -132,6 +133,17 @@ public class StudentView extends AppView {
         answeredListView.setCellFactory(param ->
                 new StudentAnsweredCell(super.getAnswered(), roomController));
         participantsListView.setCellFactory(param -> new ParticipantCell());
+    }
+
+    /**
+     * Newest questions are displayed on top for Student.
+     * @param questionList list of current questions
+     * @param answeredList list of current answered questions
+     */
+    @Override
+    public void update(List<Question> questionList, List<Question> answeredList) {
+        super.update(questionList, answeredList);
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 
     /**
