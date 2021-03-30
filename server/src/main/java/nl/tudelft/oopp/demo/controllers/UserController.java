@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
-import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Student;
 import nl.tudelft.oopp.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,8 +98,13 @@ public class UserController {
         userService.banStudent(studentId);
     }
 
-    @GetMapping("/isBanned/{roomId}/{ipAddress}")
+    @GetMapping("/isBanned/{roomId}/{ipAddress}") // http://localhost:8080/users/isBanned/{roomId}/{ipAddress}
     public boolean checkIfBanned(@PathVariable Long roomId, @PathVariable String ipAddress) {
         return userService.checkIfBanned(roomId, ipAddress);
+    }
+
+    @DeleteMapping("/remove/{userId}") // http://localhost:8080/users/remove/{userId}
+    public boolean removeUser(@PathVariable long userId) {
+        return userService.removeUser(userId);
     }
 }

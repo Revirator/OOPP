@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -66,7 +67,7 @@ public class StudentView extends AppView {
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         primaryStage.setOnCloseRequest(e -> {
-            // TODO: remove user from DB (on a new branch)
+            ServerCommunication.removeUser(super.getUser().getId());
         });
         primaryStage.show();
 
