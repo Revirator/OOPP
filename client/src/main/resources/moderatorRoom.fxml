@@ -8,9 +8,9 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.ModeratorRoomController">
    <top>
-      <AnchorPane prefHeight="48.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="anchor" prefHeight="48.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <children>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="QuestionMe" GridPane.columnIndex="0" GridPane.halignment="LEFT">
+            <Text fill="WHITE" layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QuestionMe">
                <font>
                   <Font name="Arial" size="24.0" />
                </font>
@@ -37,8 +37,8 @@
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="150.0" minHeight="50.0" prefHeight="80" vgrow="ALWAYS" />
-                  <RowConstraints maxHeight="130.0" minHeight="50.0" prefHeight="110" vgrow="ALWAYS" />
-                  <RowConstraints maxHeight="250.0" minHeight="50.0" prefHeight="120" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="130.0" minHeight="50.0" prefHeight="125" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="250.0" minHeight="50.0" prefHeight="105" vgrow="ALWAYS" />
                   <RowConstraints maxHeight="250.0" minHeight="50.0" prefHeight="100" vgrow="ALWAYS" />
                </rowConstraints>
                <children>
@@ -57,21 +57,21 @@
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </GridPane.margin>
                      <children>
-                        <Label text="Export Questions" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                        <Label text="Export Questions:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
-                        <Button id="exportQuestions" fx:id="exportQuestions" alignment="CENTER" mnemonicParsing="false" onAction="#exportQuestions" prefWidth="31" stylesheets="@exportButton.css" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                        <Button id="exportQuestions" fx:id="exportQuestions" alignment="CENTER" mnemonicParsing="false" onAction="#exportQuestions" prefWidth="31" stylesheets="@exportButton.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>
-                        <Label text="End Lecture" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                        <Label text="End Lecture:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
-                        <Button fx:id="endLecture" alignment="CENTER" mnemonicParsing="false" onAction="#endLecture" text="End lecture" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                        <Button fx:id="endLecture" alignment="CENTER" mnemonicParsing="false" onAction="#endLecture" text="End lecture" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>
@@ -80,19 +80,22 @@
                   <GridPane style="-fx-background-color: white;" GridPane.rowIndex="1">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="55" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="20" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="20" minHeight="10.0" prefHeight="50.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="40" minHeight="10.0" prefHeight="10.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="40" minHeight="10.0" prefHeight="50.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <GridPane.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </GridPane.margin>
                      <children>
-                        <Label styleClass="subTitleText" text="Live Feedback" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="BASELINE">
+                        <Label styleClass="subTitleText" text="Live Feedback" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="0" GridPane.valignment="BASELINE">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
@@ -102,43 +105,45 @@
                         </Label>
                         <Label fx:id="tooSlowLabel" styleClass="percentage" text="42%" textFill="RED" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <font>
-                              <Font name="Arial" size="14.0" />
+                              <Font name="Arial" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="tooFastLabel" styleClass="percentage" text="69%" textFill="RED" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <Label fx:id="tooFastLabel" styleClass="percentage" text="69%" textFill="RED" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="Arial" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="normalText" text="think it is going too slow" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="normalText" text="think it is too slow" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </Label>
-                        <Label styleClass="normalText" text="think it is too fast" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <Label styleClass="normalText" text="think it is going too fast" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
                      </children>
                   </GridPane>
-
                   <GridPane style="-fx-background-color: white;" GridPane.rowIndex="3">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="50" minHeight="10.0" prefHeight="23.8000244140625" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="50" minHeight="10.0" prefHeight="10" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="50" minHeight="10.0" prefHeight="25" vgrow="ALWAYS" />
                      </rowConstraints>
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
                      </GridPane.margin>
                      <children>
-                        <CheckBox fx:id="zenMode" mnemonicParsing="false" onAction="#zenMode" text="Zen Mode" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.columnIndex="0" />
+                        <CheckBox fx:id="zenMode" mnemonicParsing="false" onAction="#zenMode" text="Zen Mode" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font></CheckBox>
                      </children>
                   </GridPane>
-
-                  <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;">
+                  <GridPane style="-fx-background-color: white;">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                      </columnConstraints>
