@@ -64,6 +64,9 @@ public class StudentView extends AppView {
         // Set scene on primary stage
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        primaryStage.setOnCloseRequest(e -> {
+            // TODO: remove user from DB (on a new branch)
+        });
         primaryStage.show();
 
         // Create responsive lists

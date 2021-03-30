@@ -27,8 +27,8 @@
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="30" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
@@ -42,21 +42,15 @@
                         <Font name="Arial" size="14" />
                     </font>
                 </Label>
-                <TextField fx:id="studentCode" maxWidth="175.0" text="6e9cc675c2164d4a95" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                <TextField fx:id="studentCode" disable="true" maxWidth="175.0" text="6e9cc675c2164d4a95" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Arial" size="14" />
                     </font>
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
                 </TextField>
-                <TextField fx:id="moderatorCode" maxWidth="175.0" text="Mfb51573b1c6246e39" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                <TextField fx:id="moderatorCode" disable="true" maxWidth="175.0" text="Mfb51573b1c6246e39" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Arial" size="14" />
                     </font>
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
                 </TextField>
                 <Button fx:id="copyStudentCode" mnemonicParsing="false" onAction="#copyStudentsCode" prefWidth="30" styleClass="Button" stylesheets="@copyButton.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <cursor>
@@ -66,11 +60,11 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <ImageView fx:id="copiedStudent" fitHeight="75" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <ImageView fx:id="copiedStudent" fitHeight="88" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <image>
                   <Image url="@images/copied.png" />
                </image></ImageView>
-            <ImageView fx:id="copiedModerator" fitHeight="75" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+            <ImageView fx:id="copiedModerator" fitHeight="88" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
                <image>
                   <Image url="@images/copied.png" />
                </image></ImageView>
