@@ -181,10 +181,7 @@ public class Question {
         }
         Question question1 = (Question) o;
         return getId().equals(question1.getId())
-                && getText().equals(question1.getText())
-                && getAnswer().equals(question1.getAnswer())
-                && getOwner().equals(question1.getOwner())
-                && upvotes.equals(question1.upvotes);
+                && getOwner().equals(question1.getOwner());
     }
 
     /**

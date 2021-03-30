@@ -127,9 +127,9 @@ public class StudentQuestionCell extends ListCell<Question> {
         upVoteButton.setOnAction(event -> {
 
             src.upvoteQuestion(this.question);
-            // Sort questions again
-            questions.sort(Comparator.comparing(Question::getUpvotes,
-                        Comparator.reverseOrder()));
+            //   // Not needed anymore now we sort by time
+            //            questions.sort(Comparator.comparing(Question::getUpvotes,
+            //                        Comparator.reverseOrder()));
         });
 
 
