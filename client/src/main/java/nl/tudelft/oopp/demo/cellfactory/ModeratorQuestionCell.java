@@ -72,12 +72,23 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
 
         // Create buttons
-        Button answerButton = new Button("Answer");
-        answerButton.setId("answerButton");
-        answerButton.setCursor(Cursor.HAND);
+
+        // 'Answered' button
+        Button answeredButton = new Button("Mark answered");
+        answeredButton.setId("answeredButton");
+        answeredButton.setCursor(Cursor.HAND);
+
+        // 'Reply' button
+        Button replyButton = new Button("Reply");
+        replyButton.setId("replyButton");
+        replyButton.setCursor(Cursor.HAND);
+
+        // 'Edit' button
         Button editButton = new Button("Edit question");
         editButton.setId("editButton");
         editButton.setCursor(Cursor.HAND);
+
+        // 'Delete' button
         Button deleteButton = new Button("Delete");
         deleteButton.setId("deleteButton");
         deleteButton.setCursor(Cursor.HAND);
@@ -93,12 +104,12 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox, answerButton);
+        HBox answerWrapper = new HBox(answerBox, answeredButton, replyButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
         // Align buttons
-        answerButton.setAlignment(Pos.CENTER_LEFT);
+        answeredButton.setAlignment(Pos.CENTER_LEFT);
         deleteButton.setAlignment(Pos.CENTER_RIGHT);
         editButton.setAlignment(Pos.CENTER_RIGHT);
 
@@ -125,7 +136,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
 
-        // Click event for upvote
+        // Click event for the 'Edit' button
         editButton.setOnAction(event -> {
 
             if (this.question == null) {
@@ -157,23 +168,35 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             }
         });
 
-        // Click event for solved
-        answerButton.setOnAction(event -> {
+        // Click event for the 'Mark answered' button
+        answeredButton.setOnAction(event -> {
 
             // Next line marks the question as answered in the DB
             ServerCommunication.markQuestionAsAnswered(question.getId());
+
+            // The if is to submit the already written text before marking
+            if (!answerBox.getText().equals("")) {
+                ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
+            }
+
+            // Next 2 lines are to make the change to look instant
+            questions.remove(question);
+            answered.add(question);
+        });
+
+        // Click event for the 'Reply' button
+        replyButton.setOnAction(event -> {
 
             // Send answer to server to store in db
             ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
 
             question.setAnswer(answerBox.getText());   // Those will probably get removed later
-            questions.remove(question);             // since they change stuff only locally
-            answered.add(question);
+            answerBox.setPromptText(answerBox.getText());
             answerBox.clear();
-
+            answerBox.deselect();
         });
 
-        // Click event for delete
+        // Click event for the 'Delete' button
         deleteButton.setOnAction(event -> {
 
             // Send to server to delete from DB
@@ -182,7 +205,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Remove question from list
             questions.remove(question);
         });
-
     }
 
     /**
@@ -223,6 +245,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Show graphic representation
             setGraphic(anchorPane);
 
+            // Next 2 lines are for showing the current answer to the question as prompt
+            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
+            answerBox.setPromptText(question.getAnswer());
 
             Button editButton = (Button) gridPane.lookup("#editButton");
             Button deleteButton = (Button) gridPane.lookup("#deleteButton");
@@ -243,7 +268,4 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             }
         }
     }
-
-
-
 }
