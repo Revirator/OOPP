@@ -160,7 +160,7 @@ public class StudentQuestionCell extends ListCell<Question> {
 
             questionWrapper.getChildren().clear();
 
-            // User saves changes
+            // User presses "save changes"
             if (editing) {
 
                 src.editQuestion(
@@ -171,7 +171,7 @@ public class StudentQuestionCell extends ListCell<Question> {
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
 
-            } else { // User wants to make changes
+            } else { // User presses "edit"
                 questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
                 editableLabel.setText(question.getText());
                 editQuestionButton.setText("Save changes");
@@ -212,7 +212,12 @@ public class StudentQuestionCell extends ListCell<Question> {
 
             // Update question and number of votes
             upVotesLabel.setText(String.valueOf(item.getUpvotes()));
-            questionLabel.setText(item.getText());
+
+            // don't update while editing (NullPointerException)
+            if (questionLabel != null) {
+                questionLabel.setText(item.getText());
+            }
+
             ownerLabel.setText(item.getOwner());
 
 
