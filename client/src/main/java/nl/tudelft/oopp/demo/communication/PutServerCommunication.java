@@ -110,6 +110,30 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
+    /** Updates attribute "isBeingWritten" of question corresponding to this id in database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsIsBeingWritten(long questionId) {
+        String url = "http://localhost:8080/questions/markAsBeingWritten/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+    }
+
     /** Updates attribute "answer" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to set answer of in database

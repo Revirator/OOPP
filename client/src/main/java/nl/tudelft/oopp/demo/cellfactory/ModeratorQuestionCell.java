@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import nl.tudelft.oopp.demo.communication.PutServerCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
@@ -263,9 +264,18 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Show graphic representation
             setGraphic(anchorPane);
 
-            // Next 2 lines are for showing the current answer to the question as prompt
+            // Next few lines are for showing the current answer to the question as prompt
             TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
-            answerBox.setPromptText(question.getAnswer());
+
+            if (!answerBox.getText().equals("")) {
+                PutServerCommunication.markQuestionAsIsBeingWritten(question.getId());
+            }
+
+            if (question.isBeingAnswered()) {
+                answerBox.setPromptText("Someone is answering...");
+            } else {
+                answerBox.setPromptText(question.getAnswer());
+            }
 
             Button editButton = (Button) gridPane.lookup("#editButton");
             Button deleteButton = (Button) gridPane.lookup("#deleteButton");
