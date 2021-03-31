@@ -55,7 +55,7 @@ public class RoomController {
     @ResponseBody
     public Room getExampleRoom() {
         logRequest("to get the example room");
-        return roomService.getRoomById(4);
+        return roomService.getRoomById(1);
     }
 
 
