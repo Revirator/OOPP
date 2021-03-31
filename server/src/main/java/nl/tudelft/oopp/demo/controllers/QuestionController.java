@@ -117,6 +117,17 @@ public class QuestionController {
 
 
     /**
+     * PUT mapping, marks a question in the DB as isBeingWritten.
+     * @param questionId the id of the required question
+     */
+    @PutMapping("/markAsBeingWritten/{questionId}")
+    // http://localhost:8080/questions/markAnswered/{questionId}
+    public void markQuestionAsIsBeingWritten(@PathVariable long questionId) {
+        questionService.markQuestionAsIsBeingWritten(questionId);
+    }
+
+
+    /**
      * DELETE mapping, deletes a question from the DB.
      * @param questionId the id of the required question
      */

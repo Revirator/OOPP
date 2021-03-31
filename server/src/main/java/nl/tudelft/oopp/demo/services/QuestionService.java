@@ -171,6 +171,18 @@ public class QuestionService {
 
 
 
+    @Transactional
+    public void markQuestionAsIsBeingWritten(long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+
+        questionToModify.setIsBeingAnswered(true);
+    }
+
+
+
     /** Called by QuestionController.
      * Increments the upvote amount by one of the question with provided id.
      * @param questionId - Id of Question to be incremented
