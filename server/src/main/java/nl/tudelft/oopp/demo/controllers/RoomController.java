@@ -102,8 +102,9 @@ public class RoomController {
      */
     @PostMapping   // http://localhost:8080/rooms
     public Room addNewRoom(@RequestBody String data) {
-        logRequest("to create a new room");
-        return roomService.addNewRoom(data);
+        Room room = roomService.addNewRoom(data);
+        logRequest("to create a new room with an id '" + room.getRoomId() + "'");
+        return room;
     }
 
 

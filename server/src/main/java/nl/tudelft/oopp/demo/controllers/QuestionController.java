@@ -85,10 +85,12 @@ public class QuestionController {
      */
     @PostMapping   // http://localhost:8080/questions
     public Long addNewQuestion(@RequestBody String payload) {
-        logRequest("to add a new question to the room with an id '"
-                + getFirstNumber(payload) + "'");
+        Long questionId = questionService.addNewQuestion(payload);
 
-        return questionService.addNewQuestion(payload);
+        logRequest("to add a new question with an id '" + questionId +
+                "' to the room with an id '" + getFirstNumber(payload) + "'");
+
+        return questionId;
     }
 
 
