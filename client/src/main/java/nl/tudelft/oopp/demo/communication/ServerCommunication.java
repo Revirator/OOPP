@@ -66,6 +66,14 @@ public class ServerCommunication {
         return PostServerCommunication.sendUser(user, roomID);
     }
 
+    /** Sends the ID of the user that needs to be removed from the DB.
+     * @param userId the ID of the user
+     * @return true if the user has been removed from the DB, false otherwise
+     */
+    public static boolean removeUser(long userId) {
+        return DeleteServerCommunication.removeUser(userId);
+    }
+
     /**
      * Fetches a list of all students.
      * @param roomID ID of the room
