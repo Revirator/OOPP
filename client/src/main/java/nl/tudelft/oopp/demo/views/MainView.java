@@ -33,13 +33,10 @@ public abstract class MainView extends Application {
         }
 
 
-
         for (Node node : root.lookupAll(".buttonText")) {
             node.styleProperty().bind(Bindings.concat("-fx-font-size: ",
                     buttonFontSize.asString(), ";"));
         }
 
     }
-
-
 }

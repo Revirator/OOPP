@@ -1,4 +1,7 @@
+package nl.tudelft.oopp.demo.views;
+
 import static org.junit.jupiter.api.Assertions.*;
-class ModeratorViewTest {
-  
+
+public class ModeratorViewTest {
+
 }
