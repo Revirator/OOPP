@@ -1,10 +1,11 @@
 package nl.tudelft.oopp.demo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -16,11 +17,12 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.services.QuestionService;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,39 +32,55 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@RunWith(SpringRunner.class)
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class) // automatically closes repo after each test
 public class QuestionServiceTest {
 
-    @SpyBean
-    private QuestionService questionService;
-
-    @Autowired
+    // We are mocking the repositories, since these are tested in isolation.
+    @Mock
     private QuestionRepository questionRepository;
-
-    @Autowired
+    @Mock
     private RoomRepository roomRepository;
-
+    @Mock
+    private QuestionService questionService;
+    @Mock
+    private Question question1;
 
     private Room roomOne;
     private Room roomTwo;
+    private Question question2;
+    private Question question3;
 
-    /** Constructor for this test class.
-     * Creates an example room in which test questions are asked.
-     */
-    public QuestionServiceTest() {
-        this.roomOne = new Room(
-                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
-                "Software Quality And Testing", true);
-        this.roomTwo = new Room(
-                LocalDateTime.of(2021, Month.MAY, 19, 10, 58, 00),
-                "OOPP", true);
+
+    @BeforeEach
+    void setUp() {
+        questionService = new QuestionService(questionRepository, roomRepository);
     }
 
 
 
+        /** Constructor for this test class.
+         * Creates example rooms in which test questions are asked.
+         */
+        public QuestionServiceTest() {
+            this.roomOne = new Room(
+                    LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
+                    "Software Quality And Testing", true);
+            this.roomTwo = new Room(
+                    LocalDateTime.of(2021, Month.MAY, 19, 10, 58, 00),
+                    "OOPP", true);
+            question1 = new Question(1, roomOne,
+                    "What's the square root of -1?", "Senne",2);
+            question2 = new Question(2, roomOne,
+                    "Is Java a programming language?","Albert",20);
+            question3 = new Question(3,roomOne,
+                    "What is the idea behind the TU Delft logo?", "Henkie", 50);
+        }
+
+
+
     @Test
-    @Order(1)
     public void testClientDataParsing() {
 
         String payload = "2& Sandra& When is lab assignment 3 due?";
@@ -79,25 +97,115 @@ public class QuestionServiceTest {
     }
 
 
+
     @Test
-    @Order(2)
-    public void testEmptyGetRequest() {
+    public void canGetQuestions() {
         List<Question> questions = questionService.getQuestions();
-        System.out.println(questions);
         assertEquals(new ArrayList<>(), questions);
+        verify(questionRepository).findAllByOrderByUpvotesDesc();
     }
 
     @Test
-    @Order(3)
+    public void canGetAnsweredQuestions() {
+        List<Question> questions = questionService.getAnsweredQuestions(0);
+        assertEquals(new ArrayList<>(), questions);
+        verify(questionRepository).
+                findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(0, true);
+    }
+
+
+    @Test
+    public void canGetQuestionsByRoom() {
+        List<Question> questions = questionService.getQuestionsByRoom(0);
+        verify(questionRepository).findAllByOrderByUpvotesDesc();
+    }
+
+
+    @Test
+    public void testInvalidPostRequest() {
+        String payload = "0& Sandra& When is lab assignment 3 due?";
+
+        given(roomRepository.existsById(any())).willReturn(false);
+
+        assertThrows(IllegalStateException.class, () -> {
+            questionService.addNewQuestion(payload);
+        });
+        verify(questionRepository, never()).save(any());
+    }
+
+
+
+    @Test
+    public void testPostQuestionRequest() {
+
+        String payload = "1& Sandra& When is lab assignment 3 due?";
+        given(roomRepository.existsById(any())).willReturn(true);
+
+        questionService.addNewQuestion(payload);
+
+        ArgumentCaptor<Question> questionArgumentCaptor =
+                ArgumentCaptor.forClass(Question.class);
+
+        verify(questionRepository).save(questionArgumentCaptor.capture());
+
+        Question capturedQuestion = questionArgumentCaptor.getValue();
+        assertEquals(capturedQuestion.getText(), "When is lab assignment 3 due?");
+    }
+
+
+    @Test
+    public void testAnswerNonExistingQuestion() {
+        assertThrows(IllegalStateException.class, () -> {
+            questionService.setAnswer((long)0, "Id 0 does not exist");
+        });
+
+    }
+
+
+
+    @Test
+    public void testEmptyAnswer() {
+
+        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+
+        assertDoesNotThrow(() -> {
+            questionService.setAnswer((long)1, "Answer to test question");
+        });
+
+        verify(question1).setAnswer(anyString());
+    }
+
+
+    @Test
     public void testInvalidDeleteRequest() {
+
+        given(questionRepository.existsById((long)0)).willReturn(false);
+
         assertThrows(IllegalStateException.class, () -> {
             questionService.deleteQuestion((long)0);
         });
+        verify(questionRepository, never()).deleteById(any());
     }
 
+
     @Test
-    @Order(4)
+    public void testDeleteRequest() {
+
+        given(questionRepository.existsById((long)1)).willReturn(true);
+
+        assertDoesNotThrow(() -> {
+            questionService.deleteQuestion((long)1);
+        });
+
+        verify(questionRepository).deleteById((long)1);
+
+    }
+
+
+
+    @Test
     public void testInvalidPutEditRequest() {
+
         assertThrows(IllegalStateException.class, () -> {
             questionService.updateQuestion((long)0, "Invalid update");
         });
@@ -105,178 +213,80 @@ public class QuestionServiceTest {
 
 
     @Test
-    @Order(5)
-    public void testInvalidPostRequest() {
-        String payload = "0& Sandra& When is lab assignment 3 due?";
-        assertThrows(IllegalStateException.class, () -> {
-            questionService.addNewQuestion(payload);
-        });
-    }
-
-
-    @Test
-    @Order(6)
-    public void testPostQuestionRequest() {
-
-        roomRepository.saveAndFlush(roomOne);    // roomId 1
-        List<Room> rooms = roomRepository.findAll();
-        System.out.println(rooms);
-        assertTrue(roomRepository.existsById((long)1));
-        Room output = roomRepository.findById(1);
-        assertEquals(roomOne, output);
-
-        String payload = "1& Sandra& When is lab assignment 3 due?";
-        Long questionId = questionService.addNewQuestion(payload);
-        assertEquals(1, questionId);
-        System.out.println("######### " + questionId + " ###########");   // questionId 1
-
-        List<Question> questions = questionRepository.findAll();
-        System.out.println("*********** " + questions + " *********");
-        assertEquals("Sandra", questions.get(0).getOwner());
-
-        System.out.println("%%%%%%%%%%%%%%%" + roomOne.getQuestions() + " %%%%%%%%%%%%%%%");
-    }
-
-
-    // Sequence generator continues from most recent count,
-    // even though entries in repository are dropped each test.
-    @Test
-    @Order(7)
-    public void testPostTwoQuestions() {
-
-        roomRepository.saveAndFlush(roomOne);    // roomId 2
-
-        //        List<Room> rooms = roomRepository.findAll();
-        //        System.out.println("%%%%%%%%%% " + rooms.get(0).getRoomId() + " %%%%%%%%%%%%");
-
-        String payload1 = "2& Sandra& When is lab assignment 3 due?";
-        String payload2 = "2& Albert& Will answers be published?";
-
-        Long questionId1 = questionService.addNewQuestion(payload1);   // questionId 2
-        Long questionId2 = questionService.addNewQuestion(payload2);  // questionId 3
-        assertEquals(2, questionId1);
-        assertEquals(3, questionId2);
-        System.out.println("######### " + questionId1 + " ###########");
-        System.out.println("######### " + questionId2 + " ###########");
-
-        List<Question> questions = questionRepository.findAll();
-        System.out.println("*********** " + questions + " *********");
-        assertEquals("Will answers be published?", questions.get(1).getText());
-    }
-
-
-
-
-    @Test
-    @Order(8)
-    public void testDeleteRequest() {
-
-        roomRepository.saveAndFlush(roomOne);    // roomId 3
-
-        String payload = "3& Pim& Could you repeat that?";
-        Long questionId = questionService.addNewQuestion(payload);    // questionId 4
-        assertEquals(4, questionId);
-        System.out.println("######### " + questionId + " ###########");
-
-        assertTrue(questionRepository.existsById((long)4));
-        questionService.deleteQuestion((long)4);
-        assertFalse(questionRepository.existsById((long)4));
-
-    }
-
-
-
-    @Test
-    @Order(9)
-    public void testPutRequest() {
-
-        roomRepository.saveAndFlush(roomOne);  // roomId 4
-
-        String payload = "4& Pim& Could you repeat that?";
-        questionService.addNewQuestion(payload);   // questionId 5
-        questionService.updateQuestion((long)5, "Can I update this?");
-
-        List<Question> questions = questionRepository.findAll();
-        System.out.println("*********** " + questions + " *********");
-        assertEquals("Can I update this?", questions.get(0).getText());
-
-    }
-
-    @Test
-    @Order(10)
-    public void testAnswerNonExistingQuestion() {
-        assertThrows(IllegalStateException.class, () -> {
-            questionService.setAnswer((long)0, "Id 0 does not exist");
-        });
-    }
-
-
-    @Test
-    @Order(11)
-    public void testEmptyAnswer() {
-
-        roomRepository.saveAndFlush(roomOne);  // roomId 5
-
-        String payload = "5& Frank& Can I get an empty answer?";
-        questionService.addNewQuestion(payload);    // questionId 6
-
-        List<Question> questions = questionRepository.findAll();
-        System.out.println("*********** " + questions + " ********* ID: "
-                + questions.get(0).getId());
-
-        questionService.setAnswer((long)6, "");
-        assertEquals("", questions.get(0).getAnswer());
-    }
-
-    @Test
-    @Order(12)
     public void testAnswerPutRequest() {
 
-        roomRepository.saveAndFlush(roomOne);  // roomId 6
+        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
 
-        String payload = "6& Jan& Can I get an answer?";
-        questionService.addNewQuestion(payload);  // questionId 7
+        assertDoesNotThrow(() -> {
+            questionService.updateQuestion((long)1, "Updated question");
+        });
 
-        List<Question> questions = questionRepository.findAll();
-        System.out.println("*********** " + questions + " *********ID: "
-                + questions.get(0).getId());
+        verify(question1).setText(anyString());
 
-        questionService.setAnswer((long)7, "Yes you can.");
-        assertEquals("Yes you can.", questions.get(0).getAnswer());
+    }
 
+
+
+    @Test
+    public void testInvalidMarkAnswered() {
+
+        assertThrows(IllegalStateException.class, () -> {
+            questionService.markQuestionAsAnswered((long)0);
+        });
     }
 
 
     @Test
-    @Order(13)
-    public void testGetByRoomRequest() {
+    public void testMarkAnswered() {
+        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
 
-        roomRepository.saveAndFlush(roomOne);   // roomId 7
-        roomRepository.saveAndFlush(roomTwo);   // roomId 8
+        assertDoesNotThrow(() -> {
+            questionService.markQuestionAsAnswered((long)1);
+        });
 
-        Question quOne = new Question(roomOne, "Question one?", "Sietse");
-        Question quTwo = new Question(roomOne, "Question two?", "Bill");
-        Question quThree = new Question(roomTwo, "Question three?", "Wrong");
-
-        String payload = "7& Sietse& Question one?";
-        String payloadtwo = "7& Bill& Question two?";
-        String payloadthree = "8& Wrong& Question three?";
-
-        questionService.addNewQuestion(payload);        // questionId 8
-        questionService.addNewQuestion(payloadtwo);     // questionId 9
-        questionService.addNewQuestion(payloadthree);   // questionId 10
-
-        List<Question> listAllQuestions = List.of(quOne, quTwo, quThree);
-        List<Question> listQuestionRoomFour = List.of(quOne, quTwo);
-
-        assertEquals(questionService.getQuestionsByRoom(7).toString(),
-                listQuestionRoomFour.toString());
-        assertNotEquals(questionService.getQuestionsByRoom(7).toString(),
-                listAllQuestions.toString());
-
+        verify(question1).setAsAnswered();
     }
 
 
+    @Test
+    public void testInvalidUpvote() {
+        assertThrows(IllegalStateException.class, () -> {
+            questionService.upvote((long)0);
+        });
+    }
+
+
+    @Test
+    public void testInvalidDeUpvote() {
+        assertThrows(IllegalStateException.class, () -> {
+            questionService.deUpvote((long)0);
+        });
+    }
+
+
+
+    @Test
+    public void testUpvote() {
+        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+
+        assertDoesNotThrow(() -> {
+            questionService.upvote((long)1);
+        });
+
+        verify(question1).upvote();
+    }
+
+
+    @Test
+    public void testDeUpvote() {
+        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+
+        assertDoesNotThrow(() -> {
+            questionService.deUpvote((long)1);
+        });
+
+        verify(question1).deUpvote();
+    }
 
 
 }
