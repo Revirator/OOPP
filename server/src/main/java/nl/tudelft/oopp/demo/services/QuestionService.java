@@ -171,14 +171,44 @@ public class QuestionService {
 
 
 
+    /** Called by QuestionController.
+     * Changes the isBeingWritten value of a question to true.
+     * @param questionId - Id of Question to be modified
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/markAsIsBeingWritten/2
+     */
     @Transactional
-    public void markQuestionAsIsBeingWritten(long questionId) {
+    public void markQuestionAsIsBeingAnswered(long questionId) {
         Question questionToModify = questionRepository.findById(questionId)
                 .orElseThrow(() ->
                         new IllegalStateException("Question with id "
                                 + questionId + " does not exist!"));
 
-        questionToModify.setIsBeingAnswered(true);
+        questionToModify.setIsBeingAnswered();
+
+        System.out.println("######## MARKED TRUE ISBEINGANSWERED QUESTION ID: "
+                + questionId + " ################");
+    }
+
+
+
+    /** Called by QuestionController.
+     * Changes the isBeingWritten value of a question to false.
+     * @param questionId - Id of Question to be modified
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/markAsIsBeingWritten/2
+     */
+    @Transactional
+    public void markQuestionAsNotBeingAnswered(long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+
+        questionToModify.setIsNotBeingAnswered();
+
+        System.out.println("######## MARKED FALSE ISBEINGANSWERED QUESTION ID: "
+                + questionId + " ################");
     }
 
 

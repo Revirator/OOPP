@@ -139,12 +139,16 @@ public class Question {
         upvotes--;
     }
 
-    public Boolean isBeingWritten() {
+    public Boolean isBeingAnswered() {
         return this.isBeingAnswered;
     }
 
-    public void setIsBeingAnswered(Boolean written) {
-        this.isBeingAnswered = written;
+    public void setIsBeingAnswered() {
+        this.isBeingAnswered = true;
+    }
+
+    public void setIsNotBeingAnswered() {
+        this.isBeingAnswered = false;
     }
 
     @Override

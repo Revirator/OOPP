@@ -117,13 +117,24 @@ public class QuestionController {
 
 
     /**
-     * PUT mapping, marks a question in the DB as isBeingWritten.
+     * PUT mapping, sets a question isBeingWritten in the DB to true.
      * @param questionId the id of the required question
      */
-    @PutMapping("/markAsBeingWritten/{questionId}")
-    // http://localhost:8080/questions/markAnswered/{questionId}
-    public void markQuestionAsIsBeingWritten(@PathVariable long questionId) {
-        questionService.markQuestionAsIsBeingWritten(questionId);
+    @PutMapping("/markAsBeingAnswered/{questionId}")
+    // http://localhost:8080/questions/markAsBeingAnswered/{questionId}
+    public void markQuestionAsIsBeingAnswered(@PathVariable long questionId) {
+        questionService.markQuestionAsIsBeingAnswered(questionId);
+    }
+
+
+    /**
+     * PUT mapping, sets a question isBeingWritten in the DB to false.
+     * @param questionId the id of the required question
+     */
+    @PutMapping("/markAsNotBeingAnswered/{questionId}")
+    // http://localhost:8080/questions/markAsNotBeingAnswered/{questionId}
+    public void markQuestionAsNotBeingAnswered(@PathVariable long questionId) {
+        questionService.markQuestionAsNotBeingAnswered(questionId);
     }
 
 
