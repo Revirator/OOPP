@@ -124,7 +124,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox,answerButton, replyButton);
+        HBox answerWrapper = new HBox(answerBox, replyButton, answerButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 

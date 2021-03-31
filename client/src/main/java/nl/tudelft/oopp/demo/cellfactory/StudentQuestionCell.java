@@ -11,8 +11,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -57,10 +59,30 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+        ColumnConstraints columnZeroConstraints = new ColumnConstraints();
+        columnZeroConstraints.setPrefWidth(330);
+        columnZeroConstraints.setPercentWidth(90);
+        ColumnConstraints columnOneConstraints = new ColumnConstraints();
+        columnOneConstraints.setPrefWidth(20);
+        gridPane.getColumnConstraints().add(columnZeroConstraints);
+        gridPane.getColumnConstraints().add(columnOneConstraints);
+
+        RowConstraints firstRow = new RowConstraints();
+        firstRow.setPrefHeight(20);
+        RowConstraints secondRow = new RowConstraints();
+        secondRow.setPrefHeight(60);
+        RowConstraints lastRow = new RowConstraints();
+        lastRow.setPrefHeight(30);
+        gridPane.getRowConstraints().add(firstRow);
+        gridPane.getRowConstraints().add(secondRow);
+        gridPane.getRowConstraints().add(lastRow);
+        gridPane.getRowConstraints().add(lastRow);
 
         // Create all labels and assign ids
         Label questionLabel = new Label();
         questionLabel.setId("questionLabel");
+        questionLabel.setPrefWidth(310);
+        questionLabel.wrapTextProperty().setValue(true);
 
         Label upVotesLabel = new Label();
         upVotesLabel.setId("upVotesLabel");
@@ -68,14 +90,10 @@ public class StudentQuestionCell extends ListCell<Question> {
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
 
-        Label answerLabel = new Label("Answer: ");
+        // TODO: make the question label 2 lines
+        Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
-
-        // Position labels
-        answerLabel.setAlignment(Pos.CENTER_LEFT);
-        questionLabel.setAlignment(Pos.CENTER_LEFT);
-        ownerLabel.setAlignment(Pos.CENTER_LEFT);
-
+        questionLabel.wrapTextProperty().setValue(true);
 
         // Create buttons in wrappers
         Button upVoteButton = new Button();
@@ -89,6 +107,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         upVoteWrapper.setSpacing(5);
 
         Button markAnsweredButton = new Button();
+        markAnsweredButton.setId("AnswerButton");
         markAnsweredButton.setPrefWidth(28);
         path = StudentQuestionCell.class.getResource("/images/checkmark.png");
         markAnsweredButton.setTooltip(new Tooltip("Mark as answered"));
@@ -96,15 +115,11 @@ public class StudentQuestionCell extends ListCell<Question> {
         markAnsweredButton.setCursor(Cursor.HAND);
 
         Button deleteButton = new Button();
+        deleteButton.setId("DeleteButton");
         deleteButton.setPrefWidth(28);
         path = StudentQuestionCell.class.getResource("/images/redTrash.png");
         setButtonStyle(deleteButton, path);
         deleteButton.setCursor(Cursor.HAND);
-        HBox buttonWrapper = new HBox(markAnsweredButton, deleteButton);
-        buttonWrapper.setId("AnsweredOrDelete");
-
-        // Align buttons
-        markAnsweredButton.setAlignment(Pos.CENTER_RIGHT);
 
         Button editQuestionButton = new Button();
         editQuestionButton.setId("EditButton");
@@ -113,20 +128,20 @@ public class StudentQuestionCell extends ListCell<Question> {
         path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
         setButtonStyle(editQuestionButton, path);
         editQuestionButton.setCursor(Cursor.HAND);
-        HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
+        HBox questionWrapper = new HBox(
+                questionLabel, editQuestionButton, markAnsweredButton, deleteButton);
+        questionWrapper.setPrefWidth(200);
+        questionWrapper.setSpacing(10);
 
         // Add elements to grid pane
-        gridPane.add(buttonWrapper, 1,3);
-        gridPane.add(upVoteWrapper, 0,3);
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionWrapper, 0,1);
         gridPane.add(answerLabel, 0, 2);
+        gridPane.add(upVoteWrapper, 0,3);
 
         // Give background colours
         gridPane.styleProperty().setValue("-fx-background-color: white");
         anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
-        // gP.setGridLinesVisible(true);
-
 
         // Align grid pane
         gridPane.setAlignment(Pos.CENTER);
@@ -242,16 +257,17 @@ public class StudentQuestionCell extends ListCell<Question> {
             Label answerLabel = (Label) gridPane.lookup("#answerLabel");
             answerLabel.setText("Answer: " + question.getAnswer());
 
-            HBox answeredOrDelete = (HBox) gridPane.lookup("#AnsweredOrDelete");
+            Button answerButton = (Button) gridPane.lookup("#AnswerButton");
+            Button deleteButton = (Button) gridPane.lookup("#DeleteButton");
             Button editButton = (Button) gridPane.lookup("#EditButton");
             editButton.setCursor(Cursor.HAND);
-            // Button upvoteButton = (Button) gridPane.lookup("#UpvoteButton");
             if (!this.question.isOwner()) {
-                answeredOrDelete.setVisible(false);
+                answerButton.setVisible(false);
+                deleteButton.setVisible(false);
                 editButton.setVisible(false);
-                // upvoteButton.setVisible(false);
             } else {
-                answeredOrDelete.setVisible(true);
+                answerButton.setVisible(true);
+                deleteButton.setVisible(true);
                 editButton.setVisible(true);
             }
 

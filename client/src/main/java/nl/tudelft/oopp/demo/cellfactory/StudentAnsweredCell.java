@@ -5,11 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.controllers.RoomController;
-import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
-import nl.tudelft.oopp.demo.data.Student;
 
 public class StudentAnsweredCell extends ListCell<Question> {
 
@@ -40,6 +39,17 @@ public class StudentAnsweredCell extends ListCell<Question> {
 
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+        ColumnConstraints columnZeroConstraints = new ColumnConstraints();
+        columnZeroConstraints.setPrefWidth(250);
+        columnZeroConstraints.setPercentWidth(70);
+        ColumnConstraints columnOneConstraints = new ColumnConstraints();
+        columnOneConstraints.setPrefWidth(60);
+        columnOneConstraints.setPercentWidth(18);
+        ColumnConstraints columnTwoConstraints = new ColumnConstraints();
+        columnTwoConstraints.setPrefWidth(50);
+        gridPane.getColumnConstraints().add(columnZeroConstraints);
+        gridPane.getColumnConstraints().add(columnOneConstraints);
+        gridPane.getColumnConstraints().add(columnTwoConstraints);
 
         // Create all labels with ID's
         Label questionLabel = new Label();
@@ -54,16 +64,10 @@ public class StudentAnsweredCell extends ListCell<Question> {
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
 
-        // Position labels
-        questionLabel.setAlignment(Pos.CENTER_LEFT);
-        ownerLabel.setAlignment(Pos.CENTER_LEFT);
-        upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
-        answerLabel.setAlignment(Pos.CENTER_LEFT);
-
         // Add elements to grid pane
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionLabel, 0,1);
-        gridPane.add(upVotesLabel, 1,1);
+        gridPane.add(upVotesLabel, 2,0);
         gridPane.add(answerLabel, 0,2);
 
         // Give background colours
