@@ -135,7 +135,7 @@ public class QuestionController {
     @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void updateQuestion(@PathVariable("questionId") Long questionId,
                                @RequestBody String question) {
-        logRequest("to update the question with an id '" + question + "'");
+        logRequest("to update the question with an id '" + questionId + "'");
         questionService.updateQuestion(questionId, question);
     }
 
@@ -149,6 +149,7 @@ public class QuestionController {
     // http://localhost:8080/questions/setanswer/{questionId}
     public void setAnswer(@PathVariable("questionId") Long questionId,
                           @RequestBody String answer) {
+        logRequest("to update the answer to the question with an id '" + questionId + "'");
         questionService.setAnswer(questionId, answer);
     }
 
