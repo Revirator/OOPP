@@ -1,32 +1,33 @@
 package nl.tudelft.oopp.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@DataJpaTest
 public class QuestionTest {
 
 
     private Question question1;
     private Question question2;
     private Question question3;
+    private Question questionWithoutId;
     private Room roomOne;
 
 
-    /** Initializes test Questions.
+    /** Initializes test Room and Questions.
      *
      */
-    public QuestionTest() throws MalformedURLException {
+    public QuestionTest() {
         roomOne = new Room(1,
                 LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
                 "Linear Algebra");
@@ -36,6 +37,7 @@ public class QuestionTest {
                 "Is Java a programming language?","Albert",20);
         question3 = new Question(3,roomOne,
                 "What is the idea behind the TU Delft logo?", "Henkie", 50);
+        questionWithoutId = new Question(roomOne, "Could you repeat that?", "Victor");
     }
 
 
@@ -44,6 +46,7 @@ public class QuestionTest {
         assertNotNull(question1);
         assertNotNull(question2);
         assertNotNull(question3);
+        assertNotNull(questionWithoutId);
     }
 
     @Test
@@ -51,6 +54,7 @@ public class QuestionTest {
         assertEquals(1, question1.getId());
         assertEquals(2, question2.getId());
         assertEquals(3, question3.getId());
+        assertEquals(0, questionWithoutId.getId());
     }
 
 
@@ -59,7 +63,18 @@ public class QuestionTest {
         assertEquals("Senne", question1.getOwner());
         assertEquals("Albert", question2.getOwner());
         assertEquals("Henkie", question3.getOwner());
+        assertEquals("Victor", questionWithoutId.getOwner());
     }
+
+
+    @Test
+    public void getRoomTest() {
+        assertEquals(1, question1.getRoom());
+        assertEquals(1, question2.getRoom());
+        assertEquals(1, question3.getRoom());
+        assertEquals(1, questionWithoutId.getRoom());
+    }
+
 
     @Test
     public void testGetText() {
@@ -67,8 +82,16 @@ public class QuestionTest {
     }
 
     @Test
-    public void testGetUpvotes() {
-        assertEquals(50, question3.getUpvotes());
+    public void testSetText() {
+        question1.setText("Are real numbers complex too?");
+        assertNotNull(question1.getText());
+        assertEquals("Are real numbers complex too?", question1.getText());
+    }
+
+    @Test
+    public void testGetAnswer() {
+        assertEquals("", question2.getAnswer());
+        assertEquals("", questionWithoutId.getAnswer());
     }
 
     @Test
@@ -77,6 +100,61 @@ public class QuestionTest {
         assertEquals("This is only defined in the complex number system.",
                 question1.getAnswer());
     }
+
+    @Test
+    public void testGetUpvotes() {
+        assertEquals(50, question3.getUpvotes());
+        assertEquals(0, questionWithoutId.getUpvotes());
+    }
+
+    @Test
+    public void testUpvote() {
+        question3.upvote();
+        question3.upvote();
+        question3.upvote();
+        assertEquals(53, question3.getUpvotes());
+        question3.deUpvote();
+        assertEquals(52, question3.getUpvotes());
+    }
+
+    @Test
+    public void testGetIsAnswered() {
+        assertFalse(question1.getIsAnswered());
+        assertFalse(question2.getIsAnswered());
+        assertFalse(questionWithoutId.getIsAnswered());
+    }
+
+    @Test
+    public void testSetIsAnswered() {
+        questionWithoutId.setAsAnswered();
+        assertTrue(questionWithoutId.getIsAnswered());
+    }
+
+    @Test
+    public void testNotEquals() {
+        assertFalse(question1.equals(question2));
+        Question sameQuestion = new Question(roomOne,
+                "Could you repeat that?", "Victor");
+        assertTrue(sameQuestion.equals(questionWithoutId));
+    }
+
+    @Test
+    public void testSameObject() {
+        assertTrue(question2.equals(question2));
+        assertFalse(question2.equals(null));
+    }
+
+
+    @Test
+    public void testToString() {
+        Question question4 = new Question(roomOne,
+                "When is the deadline?", "Stefan");
+        String time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
+        System.out.println(question4);
+        assertEquals(time + " -- " + "When is the deadline?", question4.toString());
+        //        time + " -- " + text + (!answer.equals("") ? "- " + answer : "");
+    }
+
 
 
 }

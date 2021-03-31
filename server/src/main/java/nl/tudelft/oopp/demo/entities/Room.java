@@ -39,13 +39,14 @@ public class Room {
     private String moderatorLink;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startingTime;
-    private String roomName;                    // course name e.g.
+    private String roomName;
     private boolean active;
     private int peopleThinkingLectureIsTooFast;
     private int peopleThinkingLectureIsTooSlow;
 
 
     // don't request 2 lists in 1 query!
+    // When this room is removed, the lists will be removed too.
 
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonManagedReference
@@ -199,8 +200,6 @@ public class Room {
      */
     public void addParticipant(User user) {
         this.participants.add(user);
-        // Sort by nicknames
-        // this.participants.sort();
     }
 
     public void removeParticipant(User user) {
