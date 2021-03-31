@@ -55,7 +55,7 @@ public class RoomController {
     @ResponseBody
     public Room getExampleRoom() {
         logRequest("to get the example room");
-        return roomService.getRoomById(4);
+        return roomService.getRoomById(1);
     }
 
 
@@ -102,8 +102,9 @@ public class RoomController {
      */
     @PostMapping   // http://localhost:8080/rooms
     public Room addNewRoom(@RequestBody String data) {
-        logRequest("to create a new room");
-        return roomService.addNewRoom(data);
+        Room room = roomService.addNewRoom(data);
+        logRequest("to create a new room with an id '" + room.getRoomId() + "'");
+        return room;
     }
 
 

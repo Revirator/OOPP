@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
-import java.util.Comparator;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -10,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -91,6 +91,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         Button markAnsweredButton = new Button();
         markAnsweredButton.setPrefWidth(28);
         path = StudentQuestionCell.class.getResource("/images/checkmark.png");
+        markAnsweredButton.setTooltip(new Tooltip("Mark as answered"));
         setButtonStyle(markAnsweredButton, path);
         markAnsweredButton.setCursor(Cursor.HAND);
 
@@ -107,6 +108,7 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         Button editQuestionButton = new Button();
         editQuestionButton.setId("EditButton");
+        editQuestionButton.setTooltip(new Tooltip("Edit question"));
         editQuestionButton.setPrefWidth(25);
         path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
         setButtonStyle(editQuestionButton, path);
@@ -179,6 +181,7 @@ public class StudentQuestionCell extends ListCell<Question> {
                 src.editQuestion(
                         this.question, editableLabel.getText());
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
+                editQuestionButton.setTooltip(new Tooltip("Edit question"));
                 editQuestionButton.setPrefWidth(25);
                 URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
                 setButtonStyle(editQuestionButton, url);
@@ -187,6 +190,7 @@ public class StudentQuestionCell extends ListCell<Question> {
 
             } else { // User presses "edit"
                 questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
+                editQuestionButton.setTooltip(new Tooltip("Save changes"));
                 editQuestionButton.setPrefWidth(27);
                 URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
                 setButtonStyle(editQuestionButton, url);
