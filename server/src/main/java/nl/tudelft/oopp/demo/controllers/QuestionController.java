@@ -87,8 +87,8 @@ public class QuestionController {
     public Long addNewQuestion(@RequestBody String payload) {
         Long questionId = questionService.addNewQuestion(payload);
 
-        logRequest("to add a new question with an id '" + questionId +
-                "' to the room with an id '" + getFirstNumber(payload) + "'");
+        logRequest("to add a new question with an id '" + questionId
+                + "' to the room with an id '" + getFirstNumber(payload) + "'");
 
         return questionId;
     }
