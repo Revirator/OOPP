@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 public class QuestionTest {
 
 
-
     private Question question1;
     private Question question2;
     private Question question3;
