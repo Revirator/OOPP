@@ -13,9 +13,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
@@ -62,6 +62,8 @@ public class ModeratorView extends AppView {
 
         // Set scene on primary stage
         primaryStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         primaryStage.setOnCloseRequest(e -> {
             ServerCommunication.removeUser(super.getUser().getId());
@@ -70,9 +72,6 @@ public class ModeratorView extends AppView {
 
         // Create responsive lists
         linkLists(root, mrc);
-
-        // Add choice boxes to screen
-        createChoiceBoxes(scene);
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -96,28 +95,6 @@ public class ModeratorView extends AppView {
         answeredListView.setCellFactory(param ->
                 new ModeratorAnsweredCell(super.getAnswered(), roomController));
         participantsListView.setCellFactory(param -> new ModeratorParticipantCell());
-    }
-
-    /**
-     * Creates the choice boxes for polls.
-     * @param scene current scene
-     */
-    private void createChoiceBoxes(Scene scene) {
-        Parent root = scene.getRoot();
-
-        // Reference to choice boxes
-        ChoiceBox<String> answers = (ChoiceBox) root.lookup("#answerAmount");
-        ChoiceBox<String> correctAnswer = (ChoiceBox) root.lookup("#correctAnswer");
-
-        // Amount of answers
-        for (int i = 1; i < 11; i++) {
-            answers.getItems().add(String.valueOf(i));
-        }
-
-        // Letters for correct answer
-        for (char letter = 'A'; letter <= 'J'; letter++) {
-            correctAnswer.getItems().add(String.valueOf(letter));
-        }
     }
 
     /**

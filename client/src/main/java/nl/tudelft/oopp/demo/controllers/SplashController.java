@@ -290,6 +290,8 @@ public class SplashController {
         Stage newStage = new Stage();
         Scene scene = new Scene(root);
         newStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
         newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         newStage.show();
 
