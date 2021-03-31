@@ -112,6 +112,8 @@ public class SplashController {
                     Stage stage = (Stage) anchor.getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
+                    AnchorPane anchorPane = (AnchorPane) root.lookup("#anchorWaitingRoom");
+                    anchorPane.requestFocus();
                     stage.getIcons().add(new Image(getClass()
                             .getResourceAsStream("/images/logo.png")));
                     stage.show();
@@ -286,6 +288,8 @@ public class SplashController {
         Stage newStage = new Stage();
         Scene scene = new Scene(root);
         newStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
         newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         newStage.show();
 
