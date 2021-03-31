@@ -13,6 +13,7 @@ public class Question {
     private Integer upvotes;
     private boolean voted;
     private boolean isOwner;
+    private boolean isBeingAnswered;
 
     /** Constructor with Room object (matches server-side Question entity).
      * @param room - Room where this question is asked. (FK)
@@ -29,6 +30,7 @@ public class Question {
         this.upvotes = 0;
         this.voted = false;
         this.isOwner = isOwner;
+        this.isBeingAnswered = false;
     }
 
     /** Constructor with Room id, not object (testing purposes).
@@ -45,6 +47,7 @@ public class Question {
         this.upvotes = 0;
         this.voted = false;
         this.isOwner = true;
+        this.isBeingAnswered = false;
     }
 
     /** Constructor with votes for testing purposes.
@@ -63,6 +66,7 @@ public class Question {
         this.upvotes = upvotes;
         this.voted = false;
         this.isOwner = isOwner;
+        this.isBeingAnswered = false;
     }
 
     /**
@@ -81,6 +85,10 @@ public class Question {
         this.id = id;
     }
 
+    /**
+     * Getter for the room Id.
+     * @return String containing question
+     */
     public long getRoom() {
         return this.room;
     }
@@ -210,5 +218,13 @@ public class Question {
      */
     public boolean isOwner() {
         return isOwner;
+    }
+
+    /**
+     * Check if the question is currently being answered by somebody.
+     * @return true if this question was posted by this user, false otherwise.
+     */
+    public boolean isBeingAnswered() {
+        return isBeingAnswered;
     }
 }
