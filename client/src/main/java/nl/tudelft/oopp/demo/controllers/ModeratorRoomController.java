@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
@@ -183,11 +184,16 @@ public class ModeratorRoomController extends RoomController {
      */
     public void zenMode() {
 
+
         // zen mode becomes active
         if (!zenModeActive) {
             zenModeActive = true;
+
+            moderatorView.bindZenCellFactory();
+
         } else {
             zenModeActive = false;
+            moderatorView.bindCellFactory(this);
         }
     }
 

@@ -269,23 +269,6 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
             // Show graphic representation
             setGraphic(anchorPane);
 
-
-            Button editAnswer = (Button) gridPane.lookup("#editAnswer");
-            Button editQuestion = (Button) gridPane.lookup("#editQuestion");
-            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
-
-            // TODO: modify when 2nd answer button added (Senne)
-            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
-            // if zen mode is active
-            if (mrcCast.getZenMode()) {
-                editAnswer.setVisible(false);
-                editQuestion.setVisible(false);
-                deleteButton.setVisible(false);
-            } else {
-                editAnswer.setVisible(true);
-                editQuestion.setVisible(true);
-                deleteButton.setVisible(true);
-            }
         }
     }
 
