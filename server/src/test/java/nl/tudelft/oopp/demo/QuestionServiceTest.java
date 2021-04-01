@@ -32,8 +32,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-//@RunWith(SpringRunner.class)
 @ExtendWith(MockitoExtension.class) // automatically closes repo after each test
 public class QuestionServiceTest {
 
@@ -42,6 +40,7 @@ public class QuestionServiceTest {
     private QuestionRepository questionRepository;
     @Mock
     private RoomRepository roomRepository;
+
     @Mock
     private QuestionService questionService;
     @Mock
@@ -215,7 +214,8 @@ public class QuestionServiceTest {
     @Test
     public void testAnswerPutRequest() {
 
-        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1)).
+                willReturn(java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.updateQuestion((long)1, "Updated question");
@@ -238,7 +238,8 @@ public class QuestionServiceTest {
 
     @Test
     public void testMarkAnswered() {
-        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1)).
+                willReturn(java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.markQuestionAsAnswered((long)1);
@@ -267,7 +268,8 @@ public class QuestionServiceTest {
 
     @Test
     public void testUpvote() {
-        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1)).willReturn
+                (java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.upvote((long)1);
@@ -279,7 +281,8 @@ public class QuestionServiceTest {
 
     @Test
     public void testDeUpvote() {
-        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1)).willReturn
+                (java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.deUpvote((long)1);
