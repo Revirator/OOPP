@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -57,29 +58,31 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
-        columnZeroConstraints.setPrefWidth(240);
-        columnZeroConstraints.setPercentWidth(60);
+        columnZeroConstraints.setPrefWidth(330);
+        columnZeroConstraints.setPercentWidth(90);
         ColumnConstraints columnOneConstraints = new ColumnConstraints();
-        columnOneConstraints.setPrefWidth(100);
-        columnOneConstraints.setPercentWidth(35);
-        ColumnConstraints columnTwoConstraints = new ColumnConstraints();
-        columnTwoConstraints.setPrefWidth(10);
+        columnOneConstraints.setPrefWidth(30);
         gridPane.getColumnConstraints().add(columnZeroConstraints);
         gridPane.getColumnConstraints().add(columnOneConstraints);
-        gridPane.getColumnConstraints().add(columnTwoConstraints);
+
+        RowConstraints firstRow = new RowConstraints();
+        firstRow.setPrefHeight(30);
+        gridPane.getRowConstraints().add(firstRow);
 
         // Create all labels with ID
         Label questionLabel = new Label();
         questionLabel.setId("questionLabel");
-
-        Label upVotesLabel = new Label();
-        upVotesLabel.setId("upVotesLabel");
+        questionLabel.setPrefWidth(330);
+        questionLabel.wrapTextProperty().setValue(true);
 
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
 
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
+        answerLabel.setPrefWidth(330);
+        answerLabel.wrapTextProperty().setValue(true);
 
         // Create buttons
         Button editAnswerButton = new Button();
@@ -109,19 +112,16 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         // Create wrappers
         HBox answerWrapper = new HBox(answerLabel, editAnswerButton);
         HBox questionWrapper = new HBox(questionLabel, editQuestionButton);
-        HBox upvoteWrapper = new HBox(upVotesLabel, deleteButton);
 
         // Set wrapper spacing
         answerWrapper.setSpacing(10);
         questionWrapper.setSpacing(10);
-        upvoteWrapper.setSpacing(10);
-        upvoteWrapper.setAlignment(Pos.CENTER_RIGHT);
 
         // Add elements to grid pane
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionWrapper, 0,1);
         gridPane.add(answerWrapper, 0,2);
-        gridPane.add(upvoteWrapper, 1,0);
+        gridPane.add(deleteButton, 1, 0);
 
         // Give background colours
         gridPane.styleProperty().setValue("-fx-background-color: white");
@@ -247,10 +247,6 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
             // Update question object
             this.question = item;
-
-            // Look for number of votes and question and update
-            Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
-            upVotesLabel.setText(item.getUpvotes() + " votes");
 
             Label questionLabel = (Label) gridPane.lookup("#questionLabel");
 

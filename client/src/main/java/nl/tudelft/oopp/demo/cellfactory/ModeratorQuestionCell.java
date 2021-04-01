@@ -70,14 +70,16 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create all labels
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
-        upVotesLabel.setId("upVotesLabel");
-        ownerLabel.setId("ownerLabel");
+        questionLabel.setPrefWidth(460);
+        questionLabel.wrapTextProperty().setValue(true);
 
+        Label upVotesLabel = new Label();
+        upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
+        ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
 
         // Create buttons
         Button replyButton = new Button();
