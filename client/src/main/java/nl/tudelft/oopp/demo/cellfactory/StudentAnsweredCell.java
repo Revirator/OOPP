@@ -7,6 +7,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
@@ -40,20 +42,26 @@ public class StudentAnsweredCell extends ListCell<Question> {
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
-        columnZeroConstraints.setPrefWidth(250);
-        columnZeroConstraints.setPercentWidth(70);
+        columnZeroConstraints.setPrefWidth(330);
+        columnZeroConstraints.setPercentWidth(90);
         ColumnConstraints columnOneConstraints = new ColumnConstraints();
-        columnOneConstraints.setPrefWidth(60);
-        columnOneConstraints.setPercentWidth(18);
-        ColumnConstraints columnTwoConstraints = new ColumnConstraints();
-        columnTwoConstraints.setPrefWidth(50);
+        columnOneConstraints.setPrefWidth(20);
         gridPane.getColumnConstraints().add(columnZeroConstraints);
         gridPane.getColumnConstraints().add(columnOneConstraints);
-        gridPane.getColumnConstraints().add(columnTwoConstraints);
+
+        RowConstraints firstRow = new RowConstraints();
+        firstRow.setPrefHeight(15);
+        RowConstraints middleRows = new RowConstraints();
+        middleRows.setPrefHeight(60);
+        gridPane.getRowConstraints().add(firstRow);
+        gridPane.getRowConstraints().add(middleRows);
+        gridPane.getRowConstraints().add(middleRows);
 
         // Create all labels with ID's
         Label questionLabel = new Label();
         questionLabel.setId("questionLabel");
+        questionLabel.setPrefWidth(440);
+        questionLabel.wrapTextProperty().setValue(true);
 
         Label upVotesLabel = new Label();
         upVotesLabel.setId("upVotesLabel");
@@ -61,13 +69,17 @@ public class StudentAnsweredCell extends ListCell<Question> {
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
 
+        HBox ownerUpVotesWrapper = new HBox(ownerLabel, upVotesLabel);
+        ownerUpVotesWrapper.setSpacing(260);
+
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
+        answerLabel.setPrefWidth(440);
+        answerLabel.wrapTextProperty().setValue(true);
 
         // Add elements to grid pane
-        gridPane.add(ownerLabel, 0, 0);
+        gridPane.add(ownerUpVotesWrapper, 0, 0);
         gridPane.add(questionLabel, 0,1);
-        gridPane.add(upVotesLabel, 2,0);
         gridPane.add(answerLabel, 0,2);
 
         // Give background colours

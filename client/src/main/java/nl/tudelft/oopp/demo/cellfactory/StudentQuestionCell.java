@@ -69,13 +69,13 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         RowConstraints firstRow = new RowConstraints();
         firstRow.setPrefHeight(20);
-        RowConstraints secondRow = new RowConstraints();
-        secondRow.setPrefHeight(60);
+        RowConstraints middleRows = new RowConstraints();
+        middleRows.setPrefHeight(60);
         RowConstraints lastRow = new RowConstraints();
         lastRow.setPrefHeight(30);
         gridPane.getRowConstraints().add(firstRow);
-        gridPane.getRowConstraints().add(secondRow);
-        gridPane.getRowConstraints().add(lastRow);
+        gridPane.getRowConstraints().add(middleRows);
+        gridPane.getRowConstraints().add(middleRows);
         gridPane.getRowConstraints().add(lastRow);
 
         // Create all labels and assign ids
@@ -90,10 +90,10 @@ public class StudentQuestionCell extends ListCell<Question> {
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
 
-        // TODO: make the question label 2 lines
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
-        questionLabel.wrapTextProperty().setValue(true);
+        answerLabel.setPrefWidth(440);
+        answerLabel.wrapTextProperty().setValue(true);
 
         // Create buttons in wrappers
         Button upVoteButton = new Button();
