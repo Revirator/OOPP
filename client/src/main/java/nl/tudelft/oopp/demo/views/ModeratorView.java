@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
+import nl.tudelft.oopp.demo.cellfactory.ZenAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.ZenQuestionCell;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
@@ -33,6 +35,7 @@ public class ModeratorView extends AppView {
      */
     private DoubleProperty percentageFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty normalFontSize = new SimpleDoubleProperty(10);
+    private Parent root;
 
     /**
      * Creates the moderator screen scene and loads it on the primary stage.
@@ -44,7 +47,7 @@ public class ModeratorView extends AppView {
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = null;
+        root = null;
 
         try {
             root = loader.load();
@@ -79,10 +82,9 @@ public class ModeratorView extends AppView {
 
     /**
      * Bind the correct cells to the list views.
-     * @param root parent node of the view
      * @param roomController current room controller
      */
-    public void bindCellFactory(Parent root, RoomController roomController) {
+    public void bindCellFactory(RoomController roomController) {
         // Look up all list views
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
@@ -95,6 +97,21 @@ public class ModeratorView extends AppView {
         answeredListView.setCellFactory(param ->
                 new ModeratorAnsweredCell(super.getAnswered(), roomController));
         participantsListView.setCellFactory(param -> new ModeratorParticipantCell());
+    }
+
+    /**
+     * Bind the correct cells to the list views.
+     */
+    public void bindZenCellFactory() {
+        // Look up all list views
+        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
+
+        // Set cell creation per list view
+        questionListView.setCellFactory(param ->
+                new ZenQuestionCell());
+        answeredListView.setCellFactory(param ->
+                new ZenAnsweredCell());
     }
 
     /**

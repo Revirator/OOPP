@@ -33,6 +33,7 @@ public class StudentView extends AppView {
     Font sizes specific for student screen.
      */
     private DoubleProperty pollButtonFontSize = new SimpleDoubleProperty(10);
+    private Parent root;
 
     /**
      * Creates the student screen scene and loads it on the primary stage.
@@ -45,7 +46,7 @@ public class StudentView extends AppView {
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/studentRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = null;
+        root = null;
 
         try {
             root = loader.load();
@@ -129,10 +130,9 @@ public class StudentView extends AppView {
 
     /**
      * Bind the correct cells to the three list views.
-     * @param root parent node of the view
      * @param roomController current room controller
      */
-    public void bindCellFactory(Parent root, RoomController roomController) {
+    public void bindCellFactory(RoomController roomController) {
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
         ListView<User> participantsListView = (ListView<User>) root.lookup("#participantsListView");
