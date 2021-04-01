@@ -31,33 +31,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    // FOR SOME REASON THESE RETURN ALL USERS
-
-    //    /**
-    //     * GET mapping.
-    //     * @param roomId the id of the required room
-    //     * @return all students for a specific room
-    //     */
-    //    @GetMapping("students/{roomId}")   // http://localhost:8080/users/students/{roomId}
-    //    @ResponseBody
-    //    public List<Student> getStudents(@PathVariable("roomId") Long roomId) {
-    //        logRequest("to get all students for the room with an id '" + roomId + "'");
-    //        return userService.getStudents(roomId);
-    //    }
-    //
-    //    /**
-    //     * GET mapping.
-    //     * @param roomId the id of the required room
-    //     * @return all moderators for a specific room
-    //     */
-    //    @GetMapping("moderators/{roomId}")   // http://localhost:8080/users/moderators/{roomId}
-    //    @ResponseBody
-    //    public List<Moderator> getModerators(@PathVariable("roomId") Long roomId) {
-    //        logRequest("to get all moderators for the room with an id '" + roomId + "'");
-    //        return userService.getModerators(roomId);
-    //    }
-
-
 
 
 
@@ -93,15 +66,19 @@ public class UserController {
         return userService.addModerator(data);
     }
 
+
     @PutMapping("/ban/{studentId}") // http://localhost:8080/users/ban/{studentId}
     public void banStudent(@PathVariable Long studentId) {
         userService.banStudent(studentId);
     }
 
+
+
     @GetMapping("/isBanned/{roomId}/{ipAddress}") // http://localhost:8080/users/isBanned/{roomId}/{ipAddress}
     public boolean checkIfBanned(@PathVariable Long roomId, @PathVariable String ipAddress) {
         return userService.checkIfBanned(roomId, ipAddress);
     }
+
 
     @DeleteMapping("/remove/{userId}") // http://localhost:8080/users/remove/{userId}
     public boolean removeUser(@PathVariable long userId) {
