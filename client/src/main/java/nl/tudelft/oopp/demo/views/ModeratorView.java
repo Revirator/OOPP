@@ -147,14 +147,6 @@ public class ModeratorView extends AppView {
     }
 
     /**
-     * Getter for the root node.
-     * @return root node
-     */
-    public Node getRoot() {
-        return this.root;
-    }
-
-    /**
      * Most upvoted questions are displayed on top for Moderator.
      * @param questionList list of current questions
      * @param answeredList list of current answered questions
