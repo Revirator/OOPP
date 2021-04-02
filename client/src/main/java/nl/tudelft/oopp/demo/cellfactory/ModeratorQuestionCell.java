@@ -268,7 +268,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
 
             if (!answerBox.getText().equals("")) {
-                PutServerCommunication.markQuestionAsIsBeingWritten(question.getId());
+                PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
             }
 
             if (question.isBeingAnswered()) {
