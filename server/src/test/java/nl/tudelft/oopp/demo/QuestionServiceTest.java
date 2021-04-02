@@ -1,10 +1,13 @@
 package nl.tudelft.oopp.demo;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.time.LocalDateTime;
@@ -17,17 +20,15 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.services.QuestionService;
-import org.junit.jupiter.api.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 
 @DataJpaTest
@@ -59,23 +60,23 @@ public class QuestionServiceTest {
 
 
 
-        /** Constructor for this test class.
-         * Creates example rooms in which test questions are asked.
-         */
-        public QuestionServiceTest() {
-            this.roomOne = new Room(
-                    LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
-                    "Software Quality And Testing", true);
-            this.roomTwo = new Room(
-                    LocalDateTime.of(2021, Month.MAY, 19, 10, 58, 00),
-                    "OOPP", true);
-            question1 = new Question(1, roomOne,
-                    "What's the square root of -1?", "Senne",2);
-            question2 = new Question(2, roomOne,
-                    "Is Java a programming language?","Albert",20);
-            question3 = new Question(3,roomOne,
-                    "What is the idea behind the TU Delft logo?", "Henkie", 50);
-        }
+    /** Constructor for this test class.
+     * Creates example rooms in which test questions are asked.
+     */
+    public QuestionServiceTest() {
+        this.roomOne = new Room(
+                LocalDateTime.of(2021, Month.MAY, 19, 10, 45, 00),
+                "Software Quality And Testing", true);
+        this.roomTwo = new Room(
+                LocalDateTime.of(2021, Month.MAY, 19, 10, 58, 00),
+                "OOPP", true);
+        question1 = new Question(1, roomOne,
+                "What's the square root of -1?", "Senne",2);
+        question2 = new Question(2, roomOne,
+                "Is Java a programming language?","Albert",20);
+        question3 = new Question(3,roomOne,
+                "What is the idea behind the TU Delft logo?", "Henkie", 50);
+    }
 
 
 
@@ -108,8 +109,8 @@ public class QuestionServiceTest {
     public void canGetAnsweredQuestions() {
         List<Question> questions = questionService.getAnsweredQuestions(0);
         assertEquals(new ArrayList<>(), questions);
-        verify(questionRepository).
-                findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(0, true);
+        verify(questionRepository)
+                .findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(0, true);
     }
 
 
@@ -165,7 +166,8 @@ public class QuestionServiceTest {
     @Test
     public void testEmptyAnswer() {
 
-        given(questionRepository.findById((long)1)).willReturn(java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1))
+                .willReturn(java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.setAnswer((long)1, "Answer to test question");
@@ -214,8 +216,8 @@ public class QuestionServiceTest {
     @Test
     public void testAnswerPutRequest() {
 
-        given(questionRepository.findById((long)1)).
-                willReturn(java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1))
+                .willReturn(java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.updateQuestion((long)1, "Updated question");
@@ -238,8 +240,8 @@ public class QuestionServiceTest {
 
     @Test
     public void testMarkAnswered() {
-        given(questionRepository.findById((long)1)).
-                willReturn(java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1))
+                .willReturn(java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.markQuestionAsAnswered((long)1);
@@ -268,8 +270,8 @@ public class QuestionServiceTest {
 
     @Test
     public void testUpvote() {
-        given(questionRepository.findById((long)1)).willReturn
-                (java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1)).willReturn(
+                java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.upvote((long)1);
@@ -281,8 +283,8 @@ public class QuestionServiceTest {
 
     @Test
     public void testDeUpvote() {
-        given(questionRepository.findById((long)1)).willReturn
-                (java.util.Optional.ofNullable(question1));
+        given(questionRepository.findById((long)1)).willReturn(
+                java.util.Optional.ofNullable(question1));
 
         assertDoesNotThrow(() -> {
             questionService.deUpvote((long)1);

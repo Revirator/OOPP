@@ -1,12 +1,18 @@
 package nl.tudelft.oopp.demo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import nl.tudelft.oopp.demo.controllers.QuestionController;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDateTime;
+import java.time.Month;
+
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
-import nl.tudelft.oopp.demo.services.QuestionService;
 import nl.tudelft.oopp.demo.services.RoomService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,21 +20,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.time.LocalDateTime;
-import java.time.Month;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 
@@ -70,31 +65,31 @@ public class RoomControllerTest {
 
     @Test
     public void testGetAllRooms() throws Exception {
-        mockMvc.perform(get("/rooms")).
-                andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(get("/rooms"))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).getRooms();
     }
 
 
     @Test
     public void testGetRoomByCodeLog() throws Exception {
-        mockMvc.perform(get("/rooms/{roomCode}/log", roomCode)).
-                andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(get("/rooms/{roomCode}/log", roomCode))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).getRoomByCode(roomCode);
     }
 
 
     @Test
     public void testGetRoomByCode() throws Exception {
-        mockMvc.perform(get("/rooms/{roomCode}", roomCode)).
-                andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(get("/rooms/{roomCode}", roomCode))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).getRoomByCode(roomCode);
     }
 
     @Test
     public void testUpdateRoomStatus() throws Exception {
-        mockMvc.perform(put("/rooms/update/{roomCode}", roomCode)).
-                andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(put("/rooms/update/{roomCode}", roomCode))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).updateRoomStatusByLink(roomCode);
     }
 
@@ -103,8 +98,8 @@ public class RoomControllerTest {
     public void testAddNewRoom() throws Exception {
         String payload = "Software Quality And Testing, 2021-05-19T10:45, true";
 
-        mockMvc.perform(post("/rooms").content(payload)).
-                andExpect(status().isOk());
+        mockMvc.perform(post("/rooms").content(payload))
+                .andExpect(status().isOk());
         verify(roomService).addNewRoom(payload);
     }
 
@@ -120,16 +115,16 @@ public class RoomControllerTest {
     @Test
     public void testGetStudents() throws Exception {
         given(roomService.getRoomById(roomId)).willReturn(roomOne);
-        mockMvc.perform(get("/rooms/students/{roomId}", String.valueOf(roomId))).
-                andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(get("/rooms/students/{roomId}", String.valueOf(roomId)))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).getRoomById(roomId);
     }
 
     @Test
     public void testGetModerators() throws Exception {
         given(roomService.getRoomById(roomId)).willReturn(roomOne);
-        mockMvc.perform(get("/rooms/moderators/{roomId}", String.valueOf(roomId))).
-                andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(get("/rooms/moderators/{roomId}", String.valueOf(roomId)))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).getRoomById(roomId);
     }
 

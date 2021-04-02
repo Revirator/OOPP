@@ -1,18 +1,13 @@
 package nl.tudelft.oopp.demo;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.Mockito.verify;
-import static org.mockito.BDDMockito.given;
 
 import nl.tudelft.oopp.demo.controllers.QuestionController;
-import nl.tudelft.oopp.demo.repositories.QuestionRepository;
-import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.services.QuestionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,15 +55,15 @@ public class QuestionControllerTest {
     public void testAddNewQuestion() throws Exception {
         String payload = "2& Sandra& When is lab assignment 3 due?";
 
-        mockMvc.perform(post("/questions").content(payload)).
-                andExpect(status().isOk());
+        mockMvc.perform(post("/questions").content(payload))
+                .andExpect(status().isOk());
         verify(questionService).addNewQuestion(payload);
     }
 
     @Test
     public void testGetAnsweredQuestions() throws Exception {
-        mockMvc.perform(get("/questions/answered/{roomId}", roomId)).
-                andExpect(status().isOk());
+        mockMvc.perform(get("/questions/answered/{roomId}", roomId))
+                .andExpect(status().isOk());
         verify(questionService).getAnsweredQuestions(roomId);
     }
 
