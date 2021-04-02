@@ -183,20 +183,18 @@ public class ModeratorRoomController extends RoomController {
      */
     public void zenMode() {
 
+
         // zen mode becomes active
         if (!zenModeActive) {
             zenModeActive = true;
+
+            moderatorView.bindZenCellFactory();
+
         } else {
             zenModeActive = false;
+            moderatorView.bindCellFactory(this);
         }
     }
-
-
-    public boolean getZenMode() {
-        return zenModeActive;
-    }
-
-
 
     /**
      * Set the answer on the server-side.

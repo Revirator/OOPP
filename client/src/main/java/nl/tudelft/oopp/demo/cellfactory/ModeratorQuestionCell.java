@@ -270,23 +270,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
             answerBox.setPromptText(question.getAnswer());
 
-            Button editButton = (Button) gridPane.lookup("#editButton");
-            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
-            HBox answerWrapper = (HBox) gridPane.lookup("#answerWrapper");
-
-            // TODO: modify when 2nd answer button added (Senne)
-            // TODO: Create zen cell?
-            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
-            // if zen mode is active
-            if (mrcCast.getZenMode()) {
-                answerWrapper.setVisible(false);
-                editButton.setVisible(false);
-                deleteButton.setVisible(false);
-            } else {
-                answerWrapper.setVisible(true);
-                editButton.setVisible(true);
-                deleteButton.setVisible(true);
-            }
         }
     }
 
