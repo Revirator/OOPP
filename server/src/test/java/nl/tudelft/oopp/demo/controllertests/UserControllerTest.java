@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo;
+package nl.tudelft.oopp.demo.controllertests;
 
 import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.anyString;

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo;
+package nl.tudelft.oopp.demo.servicetests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo;
+package nl.tudelft.oopp.demo.controllertests;
 
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
