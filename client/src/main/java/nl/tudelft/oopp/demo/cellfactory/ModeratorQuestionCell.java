@@ -199,7 +199,8 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             if (!answerBox.getText().equals("")) {
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
             }
-            
+
+            answerBox.clear();
         });
 
         // Click event for the 'Reply' button
