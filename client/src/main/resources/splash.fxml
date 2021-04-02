@@ -122,11 +122,11 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.40003204345703" minWidth="10.0" prefWidth="187.60004425048828" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="33.0" vgrow="ALWAYS" />
-                        <RowConstraints vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="43.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="46.0" minHeight="35.0" prefHeight="35.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
                         <Label styleClass="preBoxText" text="Date:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
@@ -155,12 +155,12 @@
                               <Cursor fx:constant="TEXT" />
                            </cursor>
                         </TextField>
-                        <Label contentDisplay="CENTER" styleClass="preBoxText" text="Room name:" textAlignment="RIGHT">
+                        <Label contentDisplay="CENTER" styleClass="preBoxText" text="Room name:" textAlignment="RIGHT" GridPane.halignment="CENTER">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
                            <GridPane.margin>
-                              <Insets left="12.0" />
+                              <Insets />
                            </GridPane.margin>
                         </Label>
                         <TextField fx:id="roomName" maxWidth="1.7976931348623157E308" promptText="Room name (e.g. R&amp;L)" styleClass="boxText" GridPane.columnIndex="1">
@@ -204,10 +204,13 @@
                               </Button>
                            </children>
                         </GridPane>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="96.0" styleClass="preBoxText" text="Nickname:" GridPane.rowIndex="1">
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="preBoxText" text="Nickname:" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
                         </Label>
                         <TextField fx:id="ownerName" layoutX="117.0" layoutY="14.0" maxWidth="1.7976931348623157E308" promptText="Your name" styleClass="boxText" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <cursor>
