@@ -234,7 +234,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // The if is to submit the already written text before marking
             if (!answerBox.getText().equals("")) {
-                String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
+                String answer = answerBox.getText();
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
             }
 
@@ -245,7 +245,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Click event for the 'Reply' button
         replyButton.setOnAction(event -> {
-            String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
+            String answer = answerBox.getText(); //  + " -" + mrc.getUser().getNickname();
 
             // Send answer to server to store in db
             ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
