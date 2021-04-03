@@ -206,11 +206,13 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         // Click event for the 'Reply' button
         replyButton.setOnAction(event -> {
 
-            // Send answer to server to store in db
-            ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
+            String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
 
-            question.setAnswer(answerBox.getText());   // Those will probably get removed later
-            answerBox.setPromptText(answerBox.getText());
+            // Send answer to server to store in db
+            ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
+
+            question.setAnswer(answer);   // Those will probably get removed later
+            answerBox.setPromptText(answer);
             answerBox.clear();
             answerBox.deselect();
         });
