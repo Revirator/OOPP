@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
+import java.sql.Time;
 
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -32,6 +34,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private TextField editableLabel;
     private boolean editing;
     private RoomController mrc;
+    private boolean startTyping;
 
 
     /**
@@ -49,7 +52,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         this.editableLabel = new TextField();
         this.editing = false;
         this.mrc = mrc;
-
+        this.startTyping = false;
         // Create visual cell
         createCell();
     }
@@ -150,10 +153,38 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
-//        answerBox.setOnKeyTyped(event -> {
-//
-//            PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
-//        });
+        // creates a service that allows a method to be called every timeframe
+        ScheduledService<Boolean> service = new ScheduledService<>() {
+            @Override
+            protected Task<Boolean> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected Boolean call() {
+                        updateMessage("Checking for updates..");
+                        return true;
+                    }
+                };
+            }
+        };
+
+        // setting up and starting the thread
+        service.setPeriod(Duration.seconds(1));
+
+        service.setOnSucceeded(e -> {
+            PutServerCommunication.markQuestionAsIsNotBeingAnswered(question.getId());
+            startTyping = false;
+        });
+        
+        answerBox.setOnKeyTyped(event -> {
+            if(startTyping == false) {
+                PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
+                startTyping = true;
+                service.restart();
+            }
+
+            service.setDelay(Duration.seconds(2));
+        });
+
 
         // Click event for the 'Edit' button
         editButton.setOnAction(event -> {
