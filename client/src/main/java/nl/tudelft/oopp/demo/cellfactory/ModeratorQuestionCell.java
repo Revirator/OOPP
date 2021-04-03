@@ -197,7 +197,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // The if is to submit the already written text before marking
             if (!answerBox.getText().equals("")) {
-                ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
+
+                String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
+                ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
             }
 
             answerBox.clear();
