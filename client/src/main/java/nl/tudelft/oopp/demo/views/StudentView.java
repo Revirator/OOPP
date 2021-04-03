@@ -16,10 +16,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -31,6 +33,7 @@ public class StudentView extends AppView {
     Font sizes specific for student screen.
      */
     private DoubleProperty pollButtonFontSize = new SimpleDoubleProperty(10);
+    private Parent root;
 
     /**
      * Creates the student screen scene and loads it on the primary stage.
@@ -43,7 +46,7 @@ public class StudentView extends AppView {
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/studentRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = null;
+        root = null;
 
         try {
             root = loader.load();
@@ -64,9 +67,11 @@ public class StudentView extends AppView {
 
         // Set scene on primary stage
         primaryStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         primaryStage.setOnCloseRequest(e -> {
-            // TODO: remove user from DB (on a new branch)
+            ServerCommunication.removeUser(super.getUser().getId());
         });
         primaryStage.show();
 
@@ -125,10 +130,9 @@ public class StudentView extends AppView {
 
     /**
      * Bind the correct cells to the three list views.
-     * @param root parent node of the view
      * @param roomController current room controller
      */
-    public void bindCellFactory(Parent root, RoomController roomController) {
+    public void bindCellFactory(RoomController roomController) {
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
         ListView<User> participantsListView = (ListView<User>) root.lookup("#participantsListView");

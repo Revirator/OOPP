@@ -100,9 +100,6 @@ public abstract class AppView extends MainView {
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
-        // TODO: isOwner = false after upvote by someone else?
-        // TODO: isOwner = false after reply by moderator?
-
         // remove deleted (non-answered) questions from view
         Iterator<Question> queIterator = questions.iterator();
         while (queIterator.hasNext()) {
@@ -214,7 +211,7 @@ public abstract class AppView extends MainView {
         participantsListView.setSelectionModel(new NoSelectionModel<>());
 
         // Bind the correct cells to the list views
-        bindCellFactory(root, roomController);
+        bindCellFactory(roomController);
     }
 
     /**
@@ -268,10 +265,9 @@ public abstract class AppView extends MainView {
     /**
      * Binds the correct cells to all three list views.
      * Implemented by children because they have different cells.
-     * @param root parent node of the view
      * @param roomController current room controller
      */
-    public abstract void bindCellFactory(Parent root, RoomController roomController);
+    public abstract void bindCellFactory(RoomController roomController);
 
     /**
      * Makes all font sizes responsive in the UI.

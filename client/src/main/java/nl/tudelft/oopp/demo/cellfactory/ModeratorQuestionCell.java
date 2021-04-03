@@ -14,7 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
@@ -64,6 +66,14 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+        ColumnConstraints columnZeroConstraints = new ColumnConstraints();
+        columnZeroConstraints.setPrefWidth(250);
+        columnZeroConstraints.setPercentWidth(70);
+        ColumnConstraints columnOneConstraints = new ColumnConstraints();
+        columnOneConstraints.setPrefWidth(100);
+        columnOneConstraints.setPercentWidth(30);
+        gridPane.getColumnConstraints().add(columnZeroConstraints);
+        gridPane.getColumnConstraints().add(columnOneConstraints);
 
         // Create all labels
         Label questionLabel = new Label();
@@ -75,16 +85,11 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         upVotesLabel.setId("upVotesLabel");
         ownerLabel.setId("ownerLabel");
 
-        // Position labels
-        questionLabel.setAlignment(Pos.CENTER_LEFT);
-        ownerLabel.setAlignment(Pos.CENTER_LEFT);
-        upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
 
         // Create buttons
-
-        // 'Reply' button
         Button replyButton = new Button();
         replyButton.setId("replyButton");
+        replyButton.setTooltip(new Tooltip("Answer question"));
         replyButton.setPrefWidth(26);
         URL path = StudentQuestionCell.class.getResource("/images/replyBlue.png");
         setButtonStyle(replyButton, path);
@@ -92,6 +97,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         Button answerButton = new Button();
         answerButton.setId("answeredButton");
+        answerButton.setTooltip(new Tooltip("Mark as answered"));
         answerButton.setPrefWidth(28);
         path = StudentQuestionCell.class.getResource("/images/checkmark.png");
         setButtonStyle(answerButton, path);
@@ -99,6 +105,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         Button editButton = new Button();
         editButton.setId("editButton");
+        editButton.setTooltip(new Tooltip("Edit Question"));
         editButton.setPrefWidth(25);
         path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
         setButtonStyle(editButton, path);
@@ -115,6 +122,8 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         TextArea answerBox = new TextArea("");
         answerBox.setId("answerBox");
         answerBox.setWrapText(true);
+        answerBox.setPrefHeight(125);
+        answerBox.setPrefWidth(200);
         answerBox.setCursor(Cursor.TEXT);
 
         // Wrap edit and delete button
@@ -122,14 +131,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox, answerButton, replyButton);
+        HBox answerWrapper = new HBox(answerBox,answerButton, replyButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
-
-        // Align buttons
-        answerButton.setAlignment(Pos.CENTER_LEFT);
-        deleteButton.setAlignment(Pos.CENTER_RIGHT);
-        editButton.setAlignment(Pos.CENTER_RIGHT);
 
         // Add elements to grid pane
         gridPane.add(ownerLabel, 0, 0);
@@ -207,6 +211,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 gridPane.getChildren().remove(editableLabel);
                 gridPane.add(questionLabel, 0, 1);
                 question.setText(editableLabel.getText());
+                editButton.setTooltip(new Tooltip("Edit question"));
                 editButton.setPrefWidth(25);
                 URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
                 setButtonStyle(editButton, url);
@@ -217,6 +222,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
                 gridPane.getChildren().remove(questionLabel);
                 gridPane.add(editableLabel, 0,1);
+                editButton.setTooltip(new Tooltip("Save Changes"));
                 editButton.setPrefWidth(27);
                 URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
                 setButtonStyle(editButton, url);
@@ -238,9 +244,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
             }
 
-            // Next 2 lines are to make the change to look instant
-            questions.remove(question);
-            answered.add(question);
+            answerBox.clear();
         });
 
         // Click event for the 'Reply' button
@@ -314,24 +318,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // Show graphic representation
             setGraphic(anchorPane);
-
-            Button editButton = (Button) gridPane.lookup("#editButton");
-            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
-            HBox answerWrapper = (HBox) gridPane.lookup("#answerWrapper");
-
-            // TODO: modify when 2nd answer button added (Senne)
-            // TODO: Create zen cell?
-            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
-            // if zen mode is active
-            if (mrcCast.getZenMode()) {
-                answerWrapper.setVisible(false);
-                editButton.setVisible(false);
-                deleteButton.setVisible(false);
-            } else {
-                answerWrapper.setVisible(true);
-                editButton.setVisible(true);
-                deleteButton.setVisible(true);
-            }
         }
     }
 

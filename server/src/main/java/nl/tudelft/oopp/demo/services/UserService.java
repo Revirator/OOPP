@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,5 +112,25 @@ public class UserService {
         List<String> ipAddresses = studentList.stream()
                 .map(s -> s.getIpAddress()).collect(Collectors.toList());
         return ipAddresses.contains(ipAddress);
+    }
+
+    /** Checks if the ID is linked to an existing Student/Moderator ..
+     * .. and if it is, it is removed from the respective DB and ..
+     * .. the method returns true.
+     * If the ID is not in the DB the method returns false.
+     */
+    @Transactional
+    public boolean removeUser(long userId) {
+        User userToBeRemoved = studentUserRepository.getOne(userId);
+        if (userToBeRemoved == null) {
+            userToBeRemoved = moderatorUserRepository.getOne(userId);
+            if (userToBeRemoved == null) {
+                return false;
+            }
+            moderatorUserRepository.deleteById(userId);
+            return true;
+        }
+        studentUserRepository.deleteById(userId);
+        return true;
     }
 }

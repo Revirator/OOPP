@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -89,11 +90,13 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
         editAnswerButton.setPrefWidth(25);
         URL path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        editAnswerButton.setTooltip(new Tooltip("Edit answer"));
         setButtonStyle(editAnswerButton, path);
         editAnswerButton.setCursor(Cursor.HAND);
 
         editQuestionButton.setPrefWidth(25);
         path = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
+        editQuestionButton.setTooltip(new Tooltip("Edit question"));
         setButtonStyle(editQuestionButton, path);
         editQuestionButton.setCursor(Cursor.HAND);
 
@@ -153,6 +156,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
                 question.setText(editableQuestion.getText());
+                editQuestionButton.setTooltip(new Tooltip("Edit question"));
                 editQuestionButton.setPrefWidth(25);
                 URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
                 setButtonStyle(editQuestionButton, url);
@@ -163,6 +167,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 questionWrapper.getChildren().addAll(editableQuestion, editQuestionButton);
                 editableQuestion.setText(question.getText());
+                editQuestionButton.setTooltip(new Tooltip("Save changes"));
                 editQuestionButton.setPrefWidth(27);
                 URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
                 setButtonStyle(editQuestionButton, url);
@@ -187,6 +192,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
                 question.setAnswer(editableAnswer.getText());
+                editAnswerButton.setTooltip(new Tooltip("Edit answer"));
                 editAnswerButton.setPrefWidth(25);
                 URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
                 setButtonStyle(editAnswerButton, url);
@@ -197,6 +203,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
                 answerWrapper.getChildren().addAll(editableAnswer, editAnswerButton);
                 editableAnswer.setText(question.getAnswer());
+                editAnswerButton.setTooltip(new Tooltip("Save changes"));
                 editAnswerButton.setPrefWidth(27);
                 URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
                 setButtonStyle(editAnswerButton, url);
@@ -262,23 +269,6 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
             // Show graphic representation
             setGraphic(anchorPane);
 
-
-            Button editAnswer = (Button) gridPane.lookup("#editAnswer");
-            Button editQuestion = (Button) gridPane.lookup("#editQuestion");
-            Button deleteButton = (Button) gridPane.lookup("#deleteButton");
-
-            // TODO: modify when 2nd answer button added (Senne)
-            ModeratorRoomController mrcCast = (ModeratorRoomController) mrc;
-            // if zen mode is active
-            if (mrcCast.getZenMode()) {
-                editAnswer.setVisible(false);
-                editQuestion.setVisible(false);
-                deleteButton.setVisible(false);
-            } else {
-                editAnswer.setVisible(true);
-                editQuestion.setVisible(true);
-                deleteButton.setVisible(true);
-            }
         }
     }
 

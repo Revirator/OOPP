@@ -85,10 +85,12 @@ public class QuestionController {
      */
     @PostMapping   // http://localhost:8080/questions
     public Long addNewQuestion(@RequestBody String payload) {
-        logRequest("to add a new question to the room with an id '"
-                + getFirstNumber(payload) + "'");
+        Long questionId = questionService.addNewQuestion(payload);
 
-        return questionService.addNewQuestion(payload);
+        logRequest("to add a new question with an id '" + questionId
+                + "' to the room with an id '" + getFirstNumber(payload) + "'");
+
+        return questionId;
     }
 
 
@@ -157,7 +159,7 @@ public class QuestionController {
     @PutMapping(path = "{questionId}")   // http://localhost:8080/questions/{questionId}
     public void updateQuestion(@PathVariable("questionId") Long questionId,
                                @RequestBody String question) {
-        logRequest("to update the question with an id '" + question + "'");
+        logRequest("to update the question with an id '" + questionId + "'");
         questionService.updateQuestion(questionId, question);
     }
 
@@ -171,6 +173,7 @@ public class QuestionController {
     // http://localhost:8080/questions/setanswer/{questionId}
     public void setAnswer(@PathVariable("questionId") Long questionId,
                           @RequestBody String answer) {
+        logRequest("to update the answer to the question with an id '" + questionId + "'");
         questionService.setAnswer(questionId, answer);
     }
 

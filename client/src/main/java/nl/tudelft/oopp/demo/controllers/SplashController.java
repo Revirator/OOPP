@@ -42,6 +42,8 @@ public class SplashController {
     @FXML
     private TextField hour;     // the value of hour user enters
     @FXML
+    private TextField ownerName; // the value of the name of the instant room owner
+    @FXML
     private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
 
 
@@ -94,40 +96,44 @@ public class SplashController {
                     }
                 } else {
                     // Here the view should change to the waiting room view instead
-
-                    URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(xmlUrl);
-                    Parent root = null;
-
-                    try {
-                        root = loader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Alert error = new Alert(Alert.AlertType.ERROR);
-                        error.setContentText("Something went wrong! Could not load the room");
-                        error.show();
-                    }
-
-                    Stage stage = (Stage) anchor.getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.getIcons().add(new Image(getClass()
-                            .getResourceAsStream("/images/logo.png")));
-                    stage.show();
-
                     Student student = new Student(nickName.getText(), room);
                     if (ServerCommunication.checkIfBanned(student)) {
                         Alert error = new Alert(Alert.AlertType.ERROR);
                         error.setContentText("You are banned from this lecture!");
                         error.show();
                     } else {
+
+                        URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(xmlUrl);
+                        Parent root = null;
+
+                        try {
+                            root = loader.load();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Alert error = new Alert(Alert.AlertType.ERROR);
+                            error.setContentText("Something went wrong! Could not load the room");
+                            error.show();
+                        }
+
+                        Stage stage = (Stage) anchor.getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.getIcons().add(new Image(getClass()
+                                .getResourceAsStream("/images/logo.png")));
+                        stage.show();
+
                         student = new Student(
                                 ServerCommunication.sendUser(student, room.getRoomId()),
                                 student.getNickname(),
                                 student.getRoom(),
                                 student.getIpAddress(),
                                 student.isBanned());
+                        long studentId = student.getId();
+                        stage.setOnCloseRequest(e -> {
+                            ServerCommunication.removeUser(studentId);
+                        });
                         WaitingRoomController waitingRoomController = loader.getController();
                         waitingRoomController.setData(student, room);
                         waitingRoomController.main(new String[0]);
@@ -157,9 +163,11 @@ public class SplashController {
         if (scheduledBox.isSelected()) {
             date.setDisable(false);
             hour.setDisable(false);
+            ownerName.setDisable(true);
         } else {
             date.setDisable(true);
             hour.setDisable(true);
+            ownerName.setDisable(false);
         }
     }
 
@@ -179,7 +187,7 @@ public class SplashController {
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
-            Moderator moderator = new Moderator(nickName.getText(), newRoom);
+            Moderator moderator = new Moderator(ownerName.getText(), newRoom);
             moderator = new Moderator(
                     ServerCommunication.sendUser(moderator, newRoom.getRoomId()),
                     moderator.getNickname(),
@@ -286,6 +294,8 @@ public class SplashController {
         Stage newStage = new Stage();
         Scene scene = new Scene(root);
         newStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
         newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         newStage.show();
 
