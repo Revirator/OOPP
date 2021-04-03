@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
@@ -80,6 +81,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
         ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
 
         // Create buttons
         Button replyButton = new Button();

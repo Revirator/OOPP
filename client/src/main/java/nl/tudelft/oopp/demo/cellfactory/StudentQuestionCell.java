@@ -15,6 +15,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -67,15 +68,12 @@ public class StudentQuestionCell extends ListCell<Question> {
         gridPane.getColumnConstraints().add(columnZeroConstraints);
         gridPane.getColumnConstraints().add(columnOneConstraints);
 
-        RowConstraints firstRow = new RowConstraints();
-        firstRow.setPrefHeight(20);
-        RowConstraints middleRows = new RowConstraints();
-        middleRows.setPrefHeight(60);
+        RowConstraints rowConstraints = new RowConstraints();
         RowConstraints lastRow = new RowConstraints();
         lastRow.setPrefHeight(30);
-        gridPane.getRowConstraints().add(firstRow);
-        gridPane.getRowConstraints().add(middleRows);
-        gridPane.getRowConstraints().add(middleRows);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
         gridPane.getRowConstraints().add(lastRow);
 
         // Create all labels and assign ids
@@ -89,11 +87,14 @@ public class StudentQuestionCell extends ListCell<Question> {
 
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
 
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
         answerLabel.setPrefWidth(440);
         answerLabel.wrapTextProperty().setValue(true);
+        answerLabel.setStyle("-fx-border-color: black");
 
         // Create buttons in wrappers
         Button upVoteButton = new Button();

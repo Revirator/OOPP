@@ -15,6 +15,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -67,22 +68,28 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
 
         RowConstraints firstRow = new RowConstraints();
         firstRow.setPrefHeight(30);
+        RowConstraints rowConstraints = new RowConstraints();
         gridPane.getRowConstraints().add(firstRow);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
 
         // Create all labels with ID
         Label questionLabel = new Label();
         questionLabel.setId("questionLabel");
-        questionLabel.setPrefWidth(330);
+        questionLabel.setPrefWidth(325);
         questionLabel.wrapTextProperty().setValue(true);
 
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
         ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
 
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
-        answerLabel.setPrefWidth(330);
+        answerLabel.setPrefWidth(325);
         answerLabel.wrapTextProperty().setValue(true);
+        answerLabel.setStyle("-fx-border-color: black");
 
         // Create buttons
         Button editAnswerButton = new Button();
