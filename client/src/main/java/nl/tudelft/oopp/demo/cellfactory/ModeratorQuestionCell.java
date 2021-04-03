@@ -179,7 +179,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Trigger event for every time something is entered in the answerBox
         answerBox.setOnKeyTyped(event -> {
-            if(startTyping == false) {
+            if (startTyping == false) {
                 PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
                 startTyping = true;
                 service.restart();
