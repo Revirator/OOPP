@@ -71,8 +71,11 @@ public class StudentQuestionCell extends ListCell<Question> {
         RowConstraints rowConstraints = new RowConstraints();
         RowConstraints lastRow = new RowConstraints();
         lastRow.setPrefHeight(30);
+        RowConstraints middleRow = new RowConstraints();
+        middleRow.setPrefHeight(5);
         gridPane.getRowConstraints().add(rowConstraints);
         gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(middleRow);
         gridPane.getRowConstraints().add(rowConstraints);
         gridPane.getRowConstraints().add(lastRow);
 
@@ -137,8 +140,8 @@ public class StudentQuestionCell extends ListCell<Question> {
         // Add elements to grid pane
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionWrapper, 0,1);
-        gridPane.add(answerLabel, 0, 2);
-        gridPane.add(upVoteWrapper, 0,3);
+        gridPane.add(answerLabel, 0, 3);
+        gridPane.add(upVoteWrapper, 0,4);
 
         // Give background colours
         gridPane.styleProperty().setValue("-fx-background-color: white");
