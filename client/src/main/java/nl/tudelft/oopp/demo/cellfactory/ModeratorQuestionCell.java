@@ -34,7 +34,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private TextField editableLabel;
     private boolean editing;
     private RoomController mrc;
-    private boolean startTyping;
+    private boolean startTyping;    // used for the 'Someone is answering...'
 
 
     /**
@@ -153,7 +153,8 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
-        // creates a service that allows a method to be called every timeframe
+        // creates a service that will be used to know when
+        // to mark a question as not being answered
         ScheduledService<Boolean> service = new ScheduledService<>() {
             @Override
             protected Task<Boolean> createTask() {
@@ -167,14 +168,16 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             }
         };
 
-        // setting up and starting the thread
         service.setPeriod(Duration.seconds(1));
 
+        // When the service is done it sends a request
+        // to mark question as no longer being answered
         service.setOnSucceeded(e -> {
             PutServerCommunication.markQuestionAsIsNotBeingAnswered(question.getId());
             startTyping = false;
         });
-        
+
+        // Trigger event for every time something is entered in the answerBox
         answerBox.setOnKeyTyped(event -> {
             if(startTyping == false) {
                 PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
@@ -182,6 +185,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 service.restart();
             }
 
+            // 2 seconds delay after the person has stopped writing
             service.setDelay(Duration.seconds(2));
         });
 
@@ -299,11 +303,8 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             upVotesLabel.setText(item.getUpvotes() + " Votes");
 
             // Next few lines are for showing the current answer to the question as prompt
+            // or showing 'Someone is answering...' in case some is... answering
             TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
-
-//            if (!answerBox.getText().equals("")) {
-//                PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
-//            }
 
             if (item.isBeingAnswered()) {
                 answerBox.setPromptText("Someone is answering...");
@@ -339,13 +340,4 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 + " -fx-background-repeat: no-repeat;"
                 + " -fx-background-size: 100% 100%;");
     }
-
-//    private void updatePrompt() {
-//
-//        for(Question q : questions) {
-//            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
-//            answerBox.setPromptText("Someone is answering...");
-//           // updateItem(q, false);
-//        }
-//    }
 }
