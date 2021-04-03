@@ -3,6 +3,8 @@ package nl.tudelft.oopp.demo.cellfactory;
 import java.net.URL;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -13,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.PutServerCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
@@ -147,6 +150,10 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
+//        answerBox.setOnKeyTyped(event -> {
+//
+//            PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
+//        });
 
         // Click event for the 'Edit' button
         editButton.setOnAction(event -> {
@@ -203,7 +210,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Click event for the 'Reply' button
         replyButton.setOnAction(event -> {
-
             String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
 
             // Send answer to server to store in db
@@ -261,21 +267,21 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ownerLabel.setText(item.getOwner());
             upVotesLabel.setText(item.getUpvotes() + " Votes");
 
-            // Show graphic representation
-            setGraphic(anchorPane);
-
             // Next few lines are for showing the current answer to the question as prompt
             TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
 
-            if (!answerBox.getText().equals("")) {
-                PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
-            }
+//            if (!answerBox.getText().equals("")) {
+//                PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
+//            }
 
-            if (question.isBeingAnswered()) {
+            if (item.isBeingAnswered()) {
                 answerBox.setPromptText("Someone is answering...");
             } else {
-                answerBox.setPromptText(question.getAnswer());
+                answerBox.setPromptText(this.question.getAnswer());
             }
+
+            // Show graphic representation
+            setGraphic(anchorPane);
 
             Button editButton = (Button) gridPane.lookup("#editButton");
             Button deleteButton = (Button) gridPane.lookup("#deleteButton");
@@ -302,4 +308,13 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 + " -fx-background-repeat: no-repeat;"
                 + " -fx-background-size: 100% 100%;");
     }
+
+//    private void updatePrompt() {
+//
+//        for(Question q : questions) {
+//            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
+//            answerBox.setPromptText("Someone is answering...");
+//           // updateItem(q, false);
+//        }
+//    }
 }
