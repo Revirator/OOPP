@@ -156,6 +156,21 @@ public class ModeratorView extends AppView {
     @Override
     public void update(List<Question> questionList, List<Question> answeredList) {
         super.update(questionList, answeredList);
+
+        String notif = "  - Someone is answering...";
+
+        for(Question q : questions) {
+
+            if(q.isBeingAnswered() && !q.getText().contains(notif)) {
+                q.setText(q.getText() + notif);
+            }
+
+            if (!q.isBeingAnswered() && q.getText().contains(notif)) {
+                String s = q.getText().substring(0, q.getText().length() - notif.length());
+                q.setText(s);
+            }
+        }
+
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
     }
 
