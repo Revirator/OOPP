@@ -47,17 +47,6 @@ public class RoomController {
     }
 
 
-    /**
-     * GET mapping.
-     * @return a JSON object of an example Room
-     */
-    @GetMapping("example")   // http://localhost:8080/rooms/example
-    @ResponseBody
-    public Room getExampleRoom() {
-        logRequest("to get the example room");
-        return roomService.getRoomById(1);
-    }
-
 
     /**
      * GET mapping with logging.
@@ -103,8 +92,11 @@ public class RoomController {
     @PostMapping   // http://localhost:8080/rooms
     public Room addNewRoom(@RequestBody String data) {
         Room room = roomService.addNewRoom(data);
-        logRequest("to create a new room with an id '" + room.getRoomId() + "'");
-        return room;
+        if (room != null) {
+            logRequest("to create a new room with an id '" + room.getRoomId() + "'");
+            return room;
+        }
+        return null;
     }
 
 
@@ -124,7 +116,7 @@ public class RoomController {
      * @param roomId the id of the required room
      * @return all students in a specific room
      */
-    @GetMapping("/students/{roomId}") // http://localhost:8080/rooms/participants/{roomId}
+    @GetMapping("/students/{roomId}") // http://localhost:8080/rooms/students/{roomId}
     public List<Student> getStudents(@PathVariable String roomId) {
         Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
         return room.getStudents().stream().filter(s -> !s.isBanned()).collect(Collectors.toList());
@@ -136,7 +128,7 @@ public class RoomController {
      * @param roomId the id of the required room
      * @return all moderators in a specific room
      */
-    @GetMapping("/moderators/{roomId}") // http://localhost:8080/rooms/participants/{roomId}
+    @GetMapping("/moderators/{roomId}") // http://localhost:8080/rooms/moderators/{roomId}
     public List<Moderator> getModerators(@PathVariable String roomId) {
         Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
         return room.getModerators();
