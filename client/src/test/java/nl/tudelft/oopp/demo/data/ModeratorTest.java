@@ -1,10 +1,12 @@
 package nl.tudelft.oopp.demo.data;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
 
 public class ModeratorTest {
 
@@ -12,6 +14,9 @@ public class ModeratorTest {
     private Moderator moderator2;
     private Room room;
 
+    /**
+     * Constructor for this test.
+     */
     public ModeratorTest() {
         room = new Room("testRoom", LocalDateTime.now(), true);
         moderator1 = new Moderator((long) 25, "Mod1", room);

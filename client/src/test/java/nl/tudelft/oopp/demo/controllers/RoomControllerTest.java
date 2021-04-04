@@ -1,15 +1,15 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import nl.tudelft.oopp.demo.data.Question;
-import nl.tudelft.oopp.demo.data.Room;
-import nl.tudelft.oopp.demo.data.User;
-import nl.tudelft.oopp.demo.views.AppView;
-import nl.tudelft.oopp.demo.views.ModeratorView;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
+import org.junit.jupiter.api.Test;
+
 
 public class RoomControllerTest {
 

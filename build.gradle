@@ -67,7 +67,7 @@ subprojects {
         jacoco {
             enabled = true
             includes = ['nl.tudelft.*']
-            excludes = ['nl.tudelft.oopp.demo.config']
+            excludes = ['nl.tudelft.oopp.demo.config', 'nl.tudelft.oopp.demo.cellfactory']
         }
 
     }
