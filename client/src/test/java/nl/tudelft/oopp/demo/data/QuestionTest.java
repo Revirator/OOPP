@@ -1,13 +1,11 @@
 package nl.tudelft.oopp.demo.data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.time.LocalDateTime;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class QuestionTest {
@@ -33,10 +31,22 @@ public class QuestionTest {
 
 
     @Test
-    public void testConstructor() {
+    public void testBasicConstructor() {
         assertNotNull(question1);
         assertNotNull(question2);
         assertNotNull(question3);
+    }
+
+    @Test
+    public void testSecondConstructor() {
+        Question question = new Question(123, "New question", "Paul", true);
+        assertNotNull(question);
+    }
+
+    @Test
+    public void testThirdConstructor() {
+        Question question = new Question(123, 2, "New question", "Paul", 23, true);
+        assertNotNull(question);
     }
 
     @Test
@@ -80,5 +90,35 @@ public class QuestionTest {
         question2.setAnswer("Have some patience.");
         assertEquals("Have some patience.",
                 question2.getAnswer());
+    }
+
+    @Test
+    public void testNotInstance() {
+        String word = "word";
+        assertFalse(question1.equals(word));
+    }
+
+    @Test
+    public void testSameQuestion() {
+        Question questionA = new Question(123, 2, "New question", "Paul", 23, true);
+        Question questionB = new Question(123, 2, "New question", "Paul", 23, true);
+        assertTrue(questionA.equals(questionB));
+    }
+
+    @Test
+    public void testToString() {
+        String expected = "[" + question1.getTime() + "] "
+                + question1.getOwner() + ": " + question1.getText() + "\n";
+        assertEquals(expected, question1.toString());
+    }
+
+    @Test
+    public void testVoted() {
+        assertFalse(question1.voted());
+    }
+
+    @Test
+    public void testIsOwner() {
+        assertTrue(question1.isOwner());
     }
 }
