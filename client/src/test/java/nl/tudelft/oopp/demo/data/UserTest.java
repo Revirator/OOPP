@@ -1,10 +1,14 @@
 package nl.tudelft.oopp.demo.data;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
 
 public class UserTest {
 
@@ -12,6 +16,9 @@ public class UserTest {
     private User user2;
     private Room room;
 
+    /**
+     * Constructor for this test.
+     */
     public UserTest() {
         room = new Room("testRoom", LocalDateTime.now(), true);
         user1 = new User((long) 23, "User1", room);
