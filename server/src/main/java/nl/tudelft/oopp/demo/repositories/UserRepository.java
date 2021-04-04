@@ -11,7 +11,7 @@ public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 
     List<T> findAllByRoomRoomId(long roomId);
 
-    T findById(long studentId);
+    T findById(long userId);
 
     void deleteById(Long userId);
 }

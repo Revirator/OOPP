@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoomService {
 
+
     private final RoomRepository roomRepository;
+
 
     /** Constructor for RoomService.
      * @param roomRepository - retrieves rooms from database.
@@ -25,6 +27,7 @@ public class RoomService {
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
+
 
     /** Called by RoomController.
      * @return a List of rooms.
@@ -78,6 +81,7 @@ public class RoomService {
             room.resetVote(feedback);
         }
     }
+
 
     /** Updates the status (active/inactive) of a room.
      * @param link the link to a Lecture

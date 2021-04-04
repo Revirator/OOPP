@@ -108,7 +108,7 @@
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="83.19998779296876" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="152.00001220703126" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="152.00001220703126" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label styleClass="subTitle" text="Create room" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -122,18 +122,19 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.40003204345703" minWidth="10.0" prefWidth="187.60004425048828" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="43.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="46.0" minHeight="35.0" prefHeight="35.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
-                        <Label styleClass="preBoxText" text="Date:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <Label styleClass="preBoxText" text="Date:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="date" disable="true" maxWidth="1.7976931348623157E308" promptText="Scheduled date" showWeekNumbers="true" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <DatePicker fx:id="date" disable="true" maxWidth="1.7976931348623157E308" promptText="Scheduled date" showWeekNumbers="true" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -141,12 +142,12 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </DatePicker>
-                        <Label styleClass="preBoxText" text="Hour:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <Label styleClass="preBoxText" text="Hour:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="hour" disable="true" maxWidth="1.7976931348623157E308" promptText="15:30" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                        <TextField fx:id="hour" disable="true" maxWidth="1.7976931348623157E308" promptText="15:30" styleClass="boxText" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -154,12 +155,12 @@
                               <Cursor fx:constant="TEXT" />
                            </cursor>
                         </TextField>
-                        <Label contentDisplay="CENTER" styleClass="preBoxText" text="Room name:" textAlignment="RIGHT">
+                        <Label contentDisplay="CENTER" styleClass="preBoxText" text="Room name:" textAlignment="RIGHT" GridPane.halignment="CENTER">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
                            <GridPane.margin>
-                              <Insets left="12.0" />
+                              <Insets />
                            </GridPane.margin>
                         </Label>
                         <TextField fx:id="roomName" maxWidth="1.7976931348623157E308" promptText="Room name (e.g. R&amp;L)" styleClass="boxText" GridPane.columnIndex="1">
@@ -170,7 +171,7 @@
                               <Cursor fx:constant="TEXT" />
                            </cursor>
                         </TextField>
-                        <GridPane alignment="TOP_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                        <GridPane alignment="TOP_RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                            <columnConstraints>
                               <ColumnConstraints />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.20001220703125" minWidth="10.0" prefWidth="107.20001220703125" />
@@ -203,6 +204,22 @@
                               </Button>
                            </children>
                         </GridPane>
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="preBoxText" text="Nickname:" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Arial" size="16.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="ownerName" layoutX="117.0" layoutY="14.0" maxWidth="1.7976931348623157E308" promptText="Your name" styleClass="boxText" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <cursor>
+                              <Cursor fx:constant="TEXT" />
+                           </cursor>
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </TextField>
                      </children>
                   </GridPane>
                </children>

@@ -42,6 +42,8 @@ public class SplashController {
     @FXML
     private TextField hour;     // the value of hour user enters
     @FXML
+    private TextField ownerName; // the value of the name of the instant room owner
+    @FXML
     private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
 
 
@@ -161,9 +163,11 @@ public class SplashController {
         if (scheduledBox.isSelected()) {
             date.setDisable(false);
             hour.setDisable(false);
+            ownerName.setDisable(true);
         } else {
             date.setDisable(true);
             hour.setDisable(true);
+            ownerName.setDisable(false);
         }
     }
 
@@ -183,7 +187,7 @@ public class SplashController {
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
-            Moderator moderator = new Moderator(nickName.getText(), newRoom);
+            Moderator moderator = new Moderator(ownerName.getText(), newRoom);
             moderator = new Moderator(
                     ServerCommunication.sendUser(moderator, newRoom.getRoomId()),
                     moderator.getNickname(),

@@ -200,9 +200,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
             }
 
-            // Next 2 lines are to make the change to look instant
-            questions.remove(question);
-            answered.add(question);
+            answerBox.clear();
         });
 
         // Click event for the 'Reply' button

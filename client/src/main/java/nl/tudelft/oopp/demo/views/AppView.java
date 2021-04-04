@@ -100,9 +100,6 @@ public abstract class AppView extends MainView {
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
-        // TODO: isOwner = false after upvote by someone else?
-        // TODO: isOwner = false after reply by moderator?
-
         // remove deleted (non-answered) questions from view
         Iterator<Question> queIterator = questions.iterator();
         while (queIterator.hasNext()) {
