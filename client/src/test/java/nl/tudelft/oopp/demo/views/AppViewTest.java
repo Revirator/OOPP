@@ -11,7 +11,11 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import nl.tudelft.oopp.demo.data.*;
+import nl.tudelft.oopp.demo.data.Moderator;
+import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.Student;
+import nl.tudelft.oopp.demo.data.User;
 
 import org.junit.jupiter.api.Test;
 
@@ -76,7 +80,6 @@ public class AppViewTest {
 
         ObservableList<Question> questionsBefore = FXCollections
                 .observableArrayList(List.of(questionA, questionB, questionC));
-        ObservableList<Question> answeredBefore = appView.getAnswered();
 
         appView.setQuestions(questionsBefore);
 
@@ -84,6 +87,8 @@ public class AppViewTest {
                 .observableArrayList(List.of(questionA));
 
         appView.update(List.of(questionA), new ArrayList<Question>());
+
+        ObservableList<Question> answeredBefore = appView.getAnswered();
 
         assertEquals(questionsAfter, appView.getQuestions());
         assertEquals(answeredBefore, appView.getAnswered());

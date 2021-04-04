@@ -1,14 +1,15 @@
 package nl.tudelft.oopp.demo.views;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import nl.tudelft.oopp.demo.data.Question;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ModeratorViewTest {
 
@@ -16,6 +17,9 @@ public class ModeratorViewTest {
     private Question questionA;
     private Question questionB;
 
+    /**
+     * Constructor for this test.
+     */
     public ModeratorViewTest() {
         this.moderatorView = new ModeratorView();
         questionA = new Question(7, "Question A", "Patrick");
