@@ -181,14 +181,14 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         // When the service is done it sends a request
         // to mark question as no longer being answered
         service.setOnSucceeded(e -> {
-            PutServerCommunication.markQuestionAsIsNotBeingAnswered(question.getId());
+            ServerCommunication.markQuestionAsIsNotBeingAnswered(question.getId());
             startTyping = false;
         });
 
         // Trigger event for every time something is entered in the answerBox
         answerBox.setOnKeyTyped(event -> {
             if (startTyping == false) {
-                PutServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
+                ServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
                 startTyping = true;
                 service.restart();
             }
