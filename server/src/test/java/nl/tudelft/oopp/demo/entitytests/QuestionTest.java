@@ -131,6 +131,24 @@ public class QuestionTest {
     }
 
     @Test
+    public void testIsBeingAnswered() {
+        assertEquals(question1.isBeingAnswered(), false);
+    }
+
+    @Test
+    public void testSetIsBeingAnswered() {
+        question1.setIsBeingAnswered();
+        assertEquals(question1.isBeingAnswered(), true);
+    }
+
+    @Test
+    public void testSetIsNotBeingAnswered() {
+        question1.setIsBeingAnswered();
+        question1.setIsNotBeingAnswered();
+        assertEquals(question1.isBeingAnswered(), false);
+    }
+
+    @Test
     public void testNotEquals() {
         assertFalse(question1.equals(question2));
         Question sameQuestion = new Question(roomOne,
@@ -152,9 +170,5 @@ public class QuestionTest {
         String time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         System.out.println(question4);
         assertEquals(time + " -- " + "When is the deadline?", question4.toString());
-        //        time + " -- " + text + (!answer.equals("") ? "- " + answer : "");
     }
-
-
-
 }
