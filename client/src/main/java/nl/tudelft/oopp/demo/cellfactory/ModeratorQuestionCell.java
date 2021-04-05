@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
@@ -70,14 +71,17 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create all labels
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
-        upVotesLabel.setId("upVotesLabel");
-        ownerLabel.setId("ownerLabel");
+        questionLabel.setPrefWidth(460);
+        questionLabel.wrapTextProperty().setValue(true);
 
+        Label upVotesLabel = new Label();
+        upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
+        ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
 
         // Create buttons
         Button replyButton = new Button();
@@ -124,7 +128,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox,answerButton, replyButton);
+        HBox answerWrapper = new HBox(answerBox, replyButton, answerButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
