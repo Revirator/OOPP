@@ -8,7 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -28,7 +28,7 @@ public class StudentQuestionCell extends ListCell<Question> {
     private ObservableList<Question> questions;
     private ObservableList<Question> answered;
     private boolean editing;
-    private TextField editableLabel;
+    private TextArea editableLabel;
     private RoomController src;
 
     /** Initialized for each question by StudentView.
@@ -44,7 +44,10 @@ public class StudentQuestionCell extends ListCell<Question> {
         this.questions = questions;
         this.answered = answered;
         this.editing = false;
-        this.editableLabel = new TextField();
+        this.editableLabel = new TextArea();
+        editableLabel.setPrefHeight(60);
+        editableLabel.setPrefWidth(308);
+        editableLabel.setWrapText(true);
         this.src = src;
 
         // Create visual cell
@@ -199,7 +202,8 @@ public class StudentQuestionCell extends ListCell<Question> {
 
                 src.editQuestion(
                         this.question, editableLabel.getText());
-                questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
+                questionWrapper.getChildren().addAll(questionLabel,
+                        editQuestionButton, markAnsweredButton, deleteButton);
                 editQuestionButton.setTooltip(new Tooltip("Edit question"));
                 editQuestionButton.setPrefWidth(25);
                 URL url = StudentQuestionCell.class.getResource("/images/colouredPencil.png");
@@ -208,7 +212,8 @@ public class StudentQuestionCell extends ListCell<Question> {
                 editing = false;
 
             } else { // User presses "edit"
-                questionWrapper.getChildren().addAll(editableLabel, editQuestionButton);
+                questionWrapper.getChildren().addAll(editableLabel,
+                        editQuestionButton, markAnsweredButton, deleteButton);
                 editQuestionButton.setTooltip(new Tooltip("Save changes"));
                 editQuestionButton.setPrefWidth(27);
                 URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
@@ -259,12 +264,11 @@ public class StudentQuestionCell extends ListCell<Question> {
             ownerLabel.setText(item.getOwner());
 
             Label answerLabel = (Label) gridPane.lookup("#answerLabel");
-            answerLabel.setText("Answer: " + question.getAnswer());
+            answerLabel.setText("Answer: " + item.getAnswer());
 
             Button answerButton = (Button) gridPane.lookup("#AnswerButton");
             Button deleteButton = (Button) gridPane.lookup("#DeleteButton");
             Button editButton = (Button) gridPane.lookup("#EditButton");
-            editButton.setCursor(Cursor.HAND);
             if (!this.question.isOwner()) {
                 answerButton.setVisible(false);
                 deleteButton.setVisible(false);

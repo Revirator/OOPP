@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -28,7 +27,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private Question question;
     private ObservableList<Question> questions;
     private ObservableList<Question> answered;
-    private TextField editableLabel;
+    private TextArea editableLabel;
     private boolean editing;
     private RoomController mrc;
 
@@ -45,7 +44,10 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         this.questions = questions;
         this.answered = answered;
-        this.editableLabel = new TextField();
+        this.editableLabel = new TextArea();
+        editableLabel.setPrefHeight(60);
+        editableLabel.setPrefWidth(400);
+        editableLabel.setWrapText(true);
         this.editing = false;
         this.mrc = mrc;
 

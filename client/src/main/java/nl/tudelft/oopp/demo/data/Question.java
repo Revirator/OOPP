@@ -190,8 +190,8 @@ public class Question {
      */
     @Override
     public String toString() {
-        return "[" + time + "] " + owner + ": " +  text
-                + (!answer.equals("") ? "\n- " + answer : "\n");
+        return "[" + time + "]\n" + owner + ": " +  text
+                + (!answer.equals("") ? "\n- " + answer + "\n" : "\n");
     }
 
 

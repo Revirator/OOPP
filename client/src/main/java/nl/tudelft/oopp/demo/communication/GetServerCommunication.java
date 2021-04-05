@@ -28,7 +28,7 @@ public class GetServerCommunication extends ServerCommunication {
         HttpRequest request;
         HttpResponse<String> response;
 
-        if (toLog == true) {
+        if (toLog) {
             request = HttpRequest.newBuilder().GET()
                     .uri(URI.create("http://localhost:8080/rooms/" + code + "/log")).build();
 
@@ -179,7 +179,6 @@ public class GetServerCommunication extends ServerCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
-    // TODO: Move the path variables to the request body
     /** Sends a request to the server to check if the user's IP is ..
      * .. in the list of banned IPs for this lecture.
      * @param user the student we want to check

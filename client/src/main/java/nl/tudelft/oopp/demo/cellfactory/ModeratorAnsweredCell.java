@@ -8,7 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -28,8 +28,8 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
     private ObservableList<Question> answered;
     private boolean editingQuestion;
     private boolean editingAnswer;
-    private TextField editableQuestion;
-    private TextField editableAnswer;
+    private TextArea editableQuestion;
+    private TextArea editableAnswer;
     private RoomController mrc;
 
     /**
@@ -43,8 +43,14 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         this.answered = answered;
         editingAnswer = false;
         editingQuestion = false;
-        editableAnswer = new TextField();
-        editableQuestion = new TextField();
+        editableAnswer = new TextArea();
+        editableAnswer.setPrefHeight(60);
+        editableAnswer.setPrefWidth(323);
+        editableAnswer.setWrapText(true);
+        editableQuestion = new TextArea();
+        editableQuestion.setPrefHeight(60);
+        editableQuestion.setPrefWidth(323);
+        editableQuestion.setWrapText(true);
         this.mrc = mrc;
 
         // Create visual cell
