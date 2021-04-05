@@ -17,6 +17,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Transactional
     void deleteById(Long questionId);
 
-    //    List<Question> findAllByRoom(Room room);
 
 }

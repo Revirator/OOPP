@@ -21,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.PutServerCommunication;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
@@ -77,14 +78,17 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create all labels
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
-        upVotesLabel.setId("upVotesLabel");
-        ownerLabel.setId("ownerLabel");
+        questionLabel.setPrefWidth(460);
+        questionLabel.wrapTextProperty().setValue(true);
 
+        Label upVotesLabel = new Label();
+        upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
+        ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
 
         // Create buttons
         Button replyButton = new Button();
@@ -131,7 +135,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox,answerButton, replyButton);
+        HBox answerWrapper = new HBox(answerBox, replyButton, answerButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
@@ -240,7 +244,9 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // The if is to submit the already written text before marking
             if (!answerBox.getText().equals("")) {
-                String answer = answerBox.getText();
+
+                String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
+
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
             }
 
@@ -249,7 +255,8 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Click event for the 'Reply' button
         replyButton.setOnAction(event -> {
-            String answer = answerBox.getText(); //  + " -" + mrc.getUser().getNickname();
+
+            String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
 
             // Send answer to server to store in db
             ((ModeratorRoomController) mrc).setAnswer(this.question, answer);

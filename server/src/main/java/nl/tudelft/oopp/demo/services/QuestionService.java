@@ -30,6 +30,7 @@ public class QuestionService {
         this.roomRepository = roomRepository;
     }
 
+
     /** Called by QuestionController.
      * @return a List of questions ordered by number of upvotes.
      *          Example:
@@ -38,6 +39,7 @@ public class QuestionService {
     public List<Question> getQuestions() {
         return questionRepository.findAllByOrderByUpvotesDesc();
     }
+
 
     /**
      * Uses a stream to filter out only the questions connected to the right room.
@@ -51,6 +53,7 @@ public class QuestionService {
                 .collect(Collectors.toList());
     }
 
+
     /** Called by QuestionController.
      * @param room - the id of the room of which we want the questions
      * @return a List of questions from a with an answer (text) ordered by time.
@@ -60,6 +63,7 @@ public class QuestionService {
     public List<Question> getAnsweredQuestions(long room) {
         return questionRepository.findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(room, true);
     }
+
 
     /** Parses data sent by client to create a new Question with id.
      * Stores new question in database.
@@ -85,6 +89,7 @@ public class QuestionService {
                 + newQuestion.getId() + " #################");
         return newQuestion.getId();
     }
+
 
 
     /** Called by QuestionController.

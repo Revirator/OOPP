@@ -254,11 +254,6 @@ public class SplashController {
         if (name.equals("") || code.equals("")) {
             alert.setContentText("Please enter both nickname and link.");
             flag = false;
-
-        } else if (name.contains(" ") || code.contains(" ")) {
-            alert.setContentText("The name and the link cannot contain empty spaces.");
-            flag = false;
-
         } else if (name.contains("/") || code.contains("/")
                 || name.contains("=") || code.contains("=")
                 || name.contains(",") || code.contains(",")) {

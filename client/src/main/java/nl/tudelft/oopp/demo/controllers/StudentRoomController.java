@@ -99,6 +99,11 @@ public class StudentRoomController extends RoomController {
         super.setRoom(newRoom);
         // The server returns a student with the room field being null
         Student tempStudent = (Student) ServerCommunication.getStudent(student.getId());
+        if (tempStudent == null) {
+            Stage stage = (Stage) anchor.getScene().getWindow();
+            stage.close();
+            return;
+        }
         if (!((Student) student).isBanned() && tempStudent.isBanned()) {
             super.setUser(new Student(tempStudent.getId(), tempStudent.getNickname(), room,
                     tempStudent.getIpAddress(), tempStudent.isBanned()));

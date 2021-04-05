@@ -165,7 +165,7 @@ public class Question {
                 && getText().equals(question1.getText())
                 && getAnswer().equals(question1.getAnswer())
                 && getOwner().equals(question1.getOwner())
-                && getTime().equals(question1.getTime())
+                // && getTime().equals(question1.getTime())
                 && getUpvotes() == question1.getUpvotes();
     }
 
