@@ -190,9 +190,6 @@ public class QuestionService {
                                 + questionId + " does not exist!"));
 
         questionToModify.setIsBeingAnswered();
-
-        System.out.println("######## MARKED TRUE ISBEINGANSWERED QUESTION ID: "
-                + questionId + " ################");
     }
 
 
@@ -211,9 +208,6 @@ public class QuestionService {
                                 + questionId + " does not exist!"));
 
         questionToModify.setIsNotBeingAnswered();
-
-        System.out.println("######## MARKED FALSE ISBEINGANSWERED QUESTION ID: "
-                + questionId + " ################");
     }
 
 
