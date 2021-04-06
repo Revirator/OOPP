@@ -13,6 +13,7 @@ public class Question {
     private Integer upvotes;
     private boolean voted;
     private boolean isOwner;
+    private boolean beingAnswered;
 
     /** Constructor with Room object (matches server-side Question entity).
      * @param room - Room where this question is asked. (FK)
@@ -20,7 +21,7 @@ public class Question {
      * @param owner - nickname of person who asked this question.
      * @param isOwner - true if this user is owner, false otherwise.
      */
-    public Question(long room, String text, String owner, boolean isOwner) {
+    public Question(long room, String text, String owner, boolean isOwner, boolean beingAnswered) {
         this.room = room;
         this.text = text;
         this.answer = "";
@@ -29,10 +30,11 @@ public class Question {
         this.upvotes = 0;
         this.voted = false;
         this.isOwner = isOwner;
+        this.beingAnswered = beingAnswered;
     }
 
     /** Constructor with Room id, not object (testing purposes).
-     //* @param roomId - ID of Room where this question is asked. (FK)
+     * @param room - ID of Room where this question is asked. (FK)
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.
      */
@@ -45,6 +47,7 @@ public class Question {
         this.upvotes = 0;
         this.voted = false;
         this.isOwner = true;
+        this.beingAnswered = false;
     }
 
     /** Constructor with votes for testing purposes.
@@ -63,6 +66,7 @@ public class Question {
         this.upvotes = upvotes;
         this.voted = false;
         this.isOwner = isOwner;
+        this.beingAnswered = false;
     }
 
     /**
@@ -81,6 +85,10 @@ public class Question {
         this.id = id;
     }
 
+    /**
+     * Getter for the room Id.
+     * @return String containing question
+     */
     public long getRoom() {
         return this.room;
     }
@@ -210,5 +218,17 @@ public class Question {
      */
     public boolean isOwner() {
         return isOwner;
+    }
+
+    /**
+     * Check if the question is currently being answered by somebody.
+     * @return true if this question was posted by this user, false otherwise.
+     */
+    public boolean isBeingAnswered() {
+        return beingAnswered;
+    }
+
+    public void setIsBeingAnswered(boolean beingAnswered) {
+        this.beingAnswered = beingAnswered;
     }
 }

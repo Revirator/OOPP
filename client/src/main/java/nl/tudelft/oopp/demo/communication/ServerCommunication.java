@@ -36,7 +36,6 @@ public class ServerCommunication {
         return GetServerCommunication.getRoom(code, toLog);
     }
 
-
     /**
      * Sends room to the server, returns a room with URLs.
      * @param room primitive room
@@ -45,7 +44,6 @@ public class ServerCommunication {
     public static Room makeRoom(Room room) {
         return PostServerCommunication.makeRoom(room);
     }
-
 
     /** Sends feedback to the server which is processed and the rooms are updated.
      * @param url the students link connected to a room
@@ -170,6 +168,26 @@ public class ServerCommunication {
      */
     public static boolean markQuestionAsAnswered(long questionId) {
         return PutServerCommunication.markQuestionAsAnswered(questionId);
+    }
+
+    /** Updates attribute "isBeingAnswered" of question
+     * corresponding to this id to true in the database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsIsBeingAnswered(long questionId) {
+        return PutServerCommunication.markQuestionAsIsBeingAnswered(questionId);
+    }
+
+    /** Updates attribute "isBeingAnswered" of question
+     * corresponding to this id to false in the database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsIsNotBeingAnswered(long questionId) {
+        return PutServerCommunication.markQuestionAsIsNotBeingAnswered(questionId);
     }
 
     /** Makes POST request to server, to store new question in database.

@@ -1,8 +1,12 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
+import java.sql.Time;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -15,6 +19,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
+import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
@@ -30,6 +35,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private TextArea editableLabel;
     private boolean editing;
     private RoomController mrc;
+    private boolean startTyping;    // used for the 'Someone is answering...'
 
 
     /**
@@ -50,7 +56,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editableLabel.setWrapText(true);
         this.editing = false;
         this.mrc = mrc;
-
+        this.startTyping = false;
         // Create visual cell
         createCell();
     }
@@ -156,6 +162,42 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
+        // creates a service that will be used to know when
+        // to mark a question as not being answered
+        ScheduledService<Boolean> service = new ScheduledService<>() {
+            @Override
+            protected Task<Boolean> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected Boolean call() {
+                        updateMessage("Checking for updates..");
+                        return true;
+                    }
+                };
+            }
+        };
+
+        service.setPeriod(Duration.seconds(1));
+
+        // When the service is done it sends a request
+        // to mark question as no longer being answered
+        service.setOnSucceeded(e -> {
+            ServerCommunication.markQuestionAsIsNotBeingAnswered(question.getId());
+            startTyping = false;
+        });
+
+        // Trigger event for every time something is entered in the answerBox
+        answerBox.setOnKeyTyped(event -> {
+            if (startTyping == false) {
+                ServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
+                startTyping = true;
+                service.restart();
+            }
+
+            // 2 seconds delay after the person has stopped writing
+            service.setDelay(Duration.seconds(2));
+        });
+
 
         // Click event for the 'Edit' button
         editButton.setOnAction(event -> {
@@ -205,6 +247,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             if (!answerBox.getText().equals("")) {
 
                 String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
+
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
             }
 
@@ -271,13 +314,18 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ownerLabel.setText(item.getOwner());
             upVotesLabel.setText(item.getUpvotes() + " Votes");
 
+            // Next few lines are for showing the current answer to the question as prompt
+            // or showing 'Someone is answering...' in case some is... answering
+            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
+
+            if (item.isBeingAnswered()) {
+                answerBox.setPromptText("Someone is answering...");
+            } else {
+                answerBox.setPromptText(this.question.getAnswer());
+            }
+
             // Show graphic representation
             setGraphic(anchorPane);
-
-            // Next 2 lines are for showing the current answer to the question as prompt
-            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
-            answerBox.setPromptText(question.getAnswer());
-
         }
     }
 

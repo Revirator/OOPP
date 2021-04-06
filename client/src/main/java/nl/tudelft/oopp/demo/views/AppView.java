@@ -146,8 +146,8 @@ public abstract class AppView extends MainView {
                 queToUpdate.setUpvotes(q.getUpvotes());
                 queToUpdate.setText(q.getText());
                 queToUpdate.setAnswer(q.getAnswer());
+                queToUpdate.setIsBeingAnswered(q.isBeingAnswered());
             }
-
         }
 
         // newly answered questions are on top

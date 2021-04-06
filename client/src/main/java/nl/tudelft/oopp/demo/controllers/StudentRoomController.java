@@ -147,7 +147,7 @@ public class StudentRoomController extends RoomController {
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
                 Question newQuestion = new Question(room.getRoomId(), questionBox.getText(),
-                        student.getNickname(), true);
+                        student.getNickname(), true, false);
                 Long newId = ServerCommunication.postQuestion(newQuestion);
                 newQuestion.setId(newId);
                 questionBox.clear();

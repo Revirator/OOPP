@@ -177,6 +177,42 @@ public class QuestionService {
 
 
     /** Called by QuestionController.
+     * Changes the isBeingWritten value of a question to true.
+     * @param questionId - Id of Question to be modified
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/markAsIsBeingWritten/2
+     */
+    @Transactional
+    public void markQuestionAsIsBeingAnswered(long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+
+        questionToModify.setIsBeingAnswered();
+    }
+
+
+
+    /** Called by QuestionController.
+     * Changes the isBeingWritten value of a question to false.
+     * @param questionId - Id of Question to be modified
+     *                 Example:
+     *                 PUT http://localhost:8080/questions/markAsIsBeingWritten/2
+     */
+    @Transactional
+    public void markQuestionAsNotBeingAnswered(long questionId) {
+        Question questionToModify = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Question with id "
+                                + questionId + " does not exist!"));
+
+        questionToModify.setIsNotBeingAnswered();
+    }
+
+
+
+    /** Called by QuestionController.
      * Increments the upvote amount by one of the question with provided id.
      * @param questionId - Id of Question to be incremented
      *                 Example:
