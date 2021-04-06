@@ -63,34 +63,11 @@ public abstract class AppView extends MainView {
      */
     public void updateParticipants(List<Student> studentList, List<Moderator> moderatorList) {
         participants.clear();
-        /*
-        for (User s : participants) {
-            if (s.getRole().equals("Student") && ((Student) s).isBanned()) {
-                participants.remove(s);
-            }
-        }
-
-        for (Student s : studentList) {
-            s.setRoom(this.room);
-            if (!participants.contains(s) && !s.isBanned()) {
-                participants.add(s);
-            }
-        }
-
-        for (Moderator m : moderatorList) {
-            m.setRoom(this.room);
-            if (!participants.contains(m)) {
-                participants.add(m);
-            }
-        }
-        */
 
         studentList.sort(Comparator.comparing(Student::getNickname));
         moderatorList.sort(Comparator.comparing(Moderator::getNickname));
         participants.addAll(moderatorList);
         participants.addAll(studentList);
-        // participants.sort(Comparator.comparing(User::getNickname));
-        // participants.sort(Comparator.comparing(User::getRole));
     }
 
     /**
@@ -231,6 +208,14 @@ public abstract class AppView extends MainView {
     }
 
     /**
+     * Getter for the observable list of participants.
+     * @return ObservableList of participants
+     */
+    public ObservableList<User> getParticipants() {
+        return participants;
+    }
+
+    /**
      * Setter that's only used in testing.
      * @param questions ObservableList of questions
      */
@@ -244,6 +229,14 @@ public abstract class AppView extends MainView {
      */
     public void setAnswered(ObservableList<Question> answered) {
         this.answered = answered;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param participants ObservableList of participants
+     */
+    public void setParticipants(ObservableList<User> participants) {
+        this.participants = participants;
     }
 
     /**
