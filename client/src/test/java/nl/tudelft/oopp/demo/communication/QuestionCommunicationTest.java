@@ -367,30 +367,30 @@ public class QuestionCommunicationTest {
     @Test
     public void testMarkQAsIsNotBAnswered() {
         new MockServerClient("localhost", 8080)
-                .when(
-                        request()
-                                .withMethod("PUT")
-                                .withPath("/questions/markAsNotBeingAnswered/30")
-                )
-                .respond(
-                        response()
-                                .withStatusCode(200)
-                );
+            .when(
+                    request()
+                            .withMethod("PUT")
+                            .withPath("/questions/markAsNotBeingAnswered/30")
+            )
+            .respond(
+                    response()
+                            .withStatusCode(200)
+            );
         assertTrue(ServerCommunication.markQuestionAsIsNotBeingAnswered(30));
     }
 
     @Test
     public void testMarkQAsIsNotBAnsweredStatus() {
         new MockServerClient("localhost", 8080)
-                .when(
-                        request()
-                                .withMethod("PUT")
-                                .withPath("/questions/markAsNotBeingAnswered/31")
-                )
-                .respond(
-                        response()
-                                .withStatusCode(400)
-                );
+            .when(
+                    request()
+                            .withMethod("PUT")
+                            .withPath("/questions/markAsNotBeingAnswered/31")
+            )
+            .respond(
+                    response()
+                            .withStatusCode(400)
+            );
         assertFalse(ServerCommunication.markQuestionAsIsNotBeingAnswered(31));
     }
 }

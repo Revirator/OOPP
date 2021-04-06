@@ -20,13 +20,15 @@ public class RoomCommunicationTest {
 
     private static ClientAndServer mockServer;
     private Room roomA;
-    private Room roomB;
     private LocalDateTime dateTime;
 
+
+    /**
+     * Constructor for this test.
+     */
     public RoomCommunicationTest() {
         dateTime = LocalDateTime.now();
         roomA = new Room("room A", dateTime, true);
-        roomB = new Room("room B", dateTime, true);
     }
 
     @BeforeEach
