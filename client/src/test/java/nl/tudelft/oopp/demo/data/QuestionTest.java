@@ -40,7 +40,7 @@ public class QuestionTest {
 
     @Test
     public void testSecondConstructor() {
-        Question question = new Question(123, "New question", "Paul", true);
+        Question question = new Question(123, "New question", "Paul");
         assertNotNull(question);
     }
 
@@ -108,7 +108,7 @@ public class QuestionTest {
 
     @Test
     public void testToString() {
-        String expected = "[" + question1.getTime() + "] "
+        String expected = "[" + question1.getTime() + "]\n"
                 + question1.getOwner() + ": " + question1.getText() + "\n";
         assertEquals(expected, question1.toString());
     }
