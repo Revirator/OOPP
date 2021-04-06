@@ -89,6 +89,14 @@ public abstract class RoomController {
     }
 
     /**
+     * Getter for the current AppView.
+     * @return current AppView
+     */
+    public AppView getAppView() {
+        return this.appView;
+    }
+
+    /**
      * Calls methods in ServerCommunication to get updated lists from the database.
      * Updates the actual view.
      */
@@ -106,7 +114,6 @@ public abstract class RoomController {
         List<Student> studentList = ServerCommunication.getStudents(room.getRoomId());
         List<Moderator> moderatorList = ServerCommunication.getModerators(room.getRoomId());
         appView.updateParticipants(studentList, moderatorList);
-
     }
 
     /** Updates the room object and the feedback by calling the getRoom() ..

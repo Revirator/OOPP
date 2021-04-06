@@ -96,8 +96,6 @@ public class QuestionServiceTest {
 
     }
 
-
-
     @Test
     public void canGetQuestions() {
         List<Question> questions = questionService.getQuestions();
@@ -134,7 +132,6 @@ public class QuestionServiceTest {
     }
 
 
-
     @Test
     public void testPostQuestionRequest() {
 
@@ -162,7 +159,6 @@ public class QuestionServiceTest {
     }
 
 
-
     @Test
     public void testEmptyAnswer() {
 
@@ -175,7 +171,6 @@ public class QuestionServiceTest {
 
         verify(question1).setAnswer(anyString());
     }
-
 
     @Test
     public void testInvalidDeleteRequest() {
@@ -203,7 +198,6 @@ public class QuestionServiceTest {
     }
 
 
-
     @Test
     public void testInvalidPutEditRequest() {
 
@@ -226,7 +220,6 @@ public class QuestionServiceTest {
         verify(question1).setText(anyString());
 
     }
-
 
 
     @Test
@@ -267,7 +260,6 @@ public class QuestionServiceTest {
     }
 
 
-
     @Test
     public void testUpvote() {
         given(questionRepository.findById((long)1)).willReturn(
@@ -292,6 +284,4 @@ public class QuestionServiceTest {
 
         verify(question1).deUpvote();
     }
-
-
 }
