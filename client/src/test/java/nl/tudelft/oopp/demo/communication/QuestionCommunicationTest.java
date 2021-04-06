@@ -37,6 +37,10 @@ public class QuestionCommunicationTest {
         mockServer = startClientAndServer(8080);
     }
 
+    @AfterEach
+    public void stopMockServer() {
+        mockServer.stop();
+    }
 
     @Test
     public void testGetQuestions() {
@@ -330,8 +334,63 @@ public class QuestionCommunicationTest {
         assertFalse(ServerCommunication.deUpvoteQuestion((long) 31));
     }
 
-    @AfterEach
-    public void stopMockServer() {
-        mockServer.stop();
+    @Test
+    public void testMarkQAsIsBAnswered() {
+        new MockServerClient("localhost", 8080)
+            .when(
+                    request()
+                    .withMethod("PUT")
+                    .withPath("/questions/markAsBeingAnswered/30")
+            )
+            .respond(
+                    response()
+                    .withStatusCode(200)
+            );
+        assertTrue(ServerCommunication.markQuestionAsIsBeingAnswered(30));
+    }
+
+    @Test
+    public void testMarkQAsIsBAnsweredStatus() {
+        new MockServerClient("localhost", 8080)
+            .when(
+                    request()
+                            .withMethod("PUT")
+                            .withPath("/questions/markAsBeingAnswered/31")
+            )
+            .respond(
+                    response()
+                            .withStatusCode(400)
+            );
+        assertFalse(ServerCommunication.markQuestionAsIsBeingAnswered(31));
+    }
+
+    @Test
+    public void testMarkQAsIsNotBAnswered() {
+        new MockServerClient("localhost", 8080)
+                .when(
+                        request()
+                                .withMethod("PUT")
+                                .withPath("/questions/markAsNotBeingAnswered/30")
+                )
+                .respond(
+                        response()
+                                .withStatusCode(200)
+                );
+        assertTrue(ServerCommunication.markQuestionAsIsNotBeingAnswered(30));
+    }
+
+    @Test
+    public void testMarkQAsIsNotBAnsweredStatus() {
+        new MockServerClient("localhost", 8080)
+                .when(
+                        request()
+                                .withMethod("PUT")
+                                .withPath("/questions/markAsNotBeingAnswered/31")
+                )
+                .respond(
+                        response()
+                                .withStatusCode(400)
+                );
+        assertFalse(ServerCommunication.markQuestionAsIsNotBeingAnswered(31));
     }
 }

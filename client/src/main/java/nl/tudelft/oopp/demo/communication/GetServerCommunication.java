@@ -37,7 +37,6 @@ public class GetServerCommunication extends ServerCommunication {
                     .uri(URI.create("http://localhost:8080/rooms/" + code)).build();
         }
 
-
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
