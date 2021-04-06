@@ -37,6 +37,7 @@ public class Question {
     private String time;
     private Integer upvotes;
     private Boolean isAnswered = false;
+    private Boolean isBeingAnswered = false;
 
 
 
@@ -61,6 +62,7 @@ public class Question {
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = upvotes;
         this.isAnswered = false;
+        this.isBeingAnswered = false;
     }
 
 
@@ -77,6 +79,7 @@ public class Question {
         this.time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         this.upvotes = 0;
         this.isAnswered = false;
+        this.isBeingAnswered = false;
     }
 
     //    public Room getRoom() {
@@ -134,6 +137,18 @@ public class Question {
 
     public void deUpvote() {
         upvotes--;
+    }
+
+    public Boolean isBeingAnswered() {
+        return this.isBeingAnswered;
+    }
+
+    public void setIsBeingAnswered() {
+        this.isBeingAnswered = true;
+    }
+
+    public void setIsNotBeingAnswered() {
+        this.isBeingAnswered = false;
     }
 
     @Override

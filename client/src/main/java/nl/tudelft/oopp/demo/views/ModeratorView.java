@@ -154,6 +154,7 @@ public class ModeratorView extends AppView {
     @Override
     public void update(List<Question> questionList, List<Question> answeredList) {
         super.update(questionList, answeredList);
+
         questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
     }
 

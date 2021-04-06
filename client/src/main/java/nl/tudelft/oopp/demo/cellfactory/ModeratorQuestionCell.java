@@ -1,20 +1,25 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
+import java.sql.Time;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
+import javafx.util.Duration;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
@@ -27,9 +32,10 @@ public class ModeratorQuestionCell extends ListCell<Question> {
     private Question question;
     private ObservableList<Question> questions;
     private ObservableList<Question> answered;
-    private TextField editableLabel;
+    private TextArea editableLabel;
     private boolean editing;
     private RoomController mrc;
+    private boolean startTyping;    // used for the 'Someone is answering...'
 
 
     /**
@@ -44,10 +50,13 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         this.questions = questions;
         this.answered = answered;
-        this.editableLabel = new TextField();
+        this.editableLabel = new TextArea();
+        editableLabel.setPrefHeight(60);
+        editableLabel.setPrefWidth(400);
+        editableLabel.setWrapText(true);
         this.editing = false;
         this.mrc = mrc;
-
+        this.startTyping = false;
         // Create visual cell
         createCell();
     }
@@ -70,14 +79,17 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Create all labels
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
-        upVotesLabel.setId("upVotesLabel");
-        ownerLabel.setId("ownerLabel");
+        questionLabel.setPrefWidth(460);
+        questionLabel.wrapTextProperty().setValue(true);
 
+        Label upVotesLabel = new Label();
+        upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
+        ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
 
         // Create buttons
         Button replyButton = new Button();
@@ -124,7 +136,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         editDeleteWrapper.setSpacing(5);
 
         // Wrap answer button and text area
-        HBox answerWrapper = new HBox(answerBox,answerButton, replyButton);
+        HBox answerWrapper = new HBox(answerBox, replyButton, answerButton);
         answerWrapper.setId("answerWrapper");
         answerWrapper.setSpacing(5);
 
@@ -149,6 +161,42 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         AnchorPane.setLeftAnchor(gridPane, 10.0);
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
+
+        // creates a service that will be used to know when
+        // to mark a question as not being answered
+        ScheduledService<Boolean> service = new ScheduledService<>() {
+            @Override
+            protected Task<Boolean> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected Boolean call() {
+                        updateMessage("Checking for updates..");
+                        return true;
+                    }
+                };
+            }
+        };
+
+        service.setPeriod(Duration.seconds(1));
+
+        // When the service is done it sends a request
+        // to mark question as no longer being answered
+        service.setOnSucceeded(e -> {
+            ServerCommunication.markQuestionAsIsNotBeingAnswered(question.getId());
+            startTyping = false;
+        });
+
+        // Trigger event for every time something is entered in the answerBox
+        answerBox.setOnKeyTyped(event -> {
+            if (startTyping == false) {
+                ServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
+                startTyping = true;
+                service.restart();
+            }
+
+            // 2 seconds delay after the person has stopped writing
+            service.setDelay(Duration.seconds(2));
+        });
 
 
         // Click event for the 'Edit' button
@@ -197,7 +245,10 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
             // The if is to submit the already written text before marking
             if (!answerBox.getText().equals("")) {
-                ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
+
+                String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
+
+                ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
             }
 
             answerBox.clear();
@@ -206,11 +257,13 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         // Click event for the 'Reply' button
         replyButton.setOnAction(event -> {
 
-            // Send answer to server to store in db
-            ((ModeratorRoomController) mrc).setAnswer(this.question, answerBox.getText());
+            String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
 
-            question.setAnswer(answerBox.getText());   // Those will probably get removed later
-            answerBox.setPromptText(answerBox.getText());
+            // Send answer to server to store in db
+            ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
+
+            question.setAnswer(answer);   // Those will probably get removed later
+            answerBox.setPromptText(answer);
             answerBox.clear();
             answerBox.deselect();
         });
@@ -261,13 +314,18 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             ownerLabel.setText(item.getOwner());
             upVotesLabel.setText(item.getUpvotes() + " Votes");
 
+            // Next few lines are for showing the current answer to the question as prompt
+            // or showing 'Someone is answering...' in case some is... answering
+            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
+
+            if (item.isBeingAnswered()) {
+                answerBox.setPromptText("Someone is answering...");
+            } else {
+                answerBox.setPromptText(this.question.getAnswer());
+            }
+
             // Show graphic representation
             setGraphic(anchorPane);
-
-            // Next 2 lines are for showing the current answer to the question as prompt
-            TextArea answerBox = (TextArea) gridPane.lookup("#answerBox");
-            answerBox.setPromptText(question.getAnswer());
-
         }
     }
 

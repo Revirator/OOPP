@@ -1,17 +1,15 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
-import nl.tudelft.oopp.demo.data.Question;
-import nl.tudelft.oopp.demo.data.Room;
 import org.junit.jupiter.api.Test;
 
 
-
 public class QuestionTest {
-
 
 
     private Question question1;
@@ -34,10 +32,22 @@ public class QuestionTest {
 
 
     @Test
-    public void testConstructor() {
+    public void testBasicConstructor() {
         assertNotNull(question1);
         assertNotNull(question2);
         assertNotNull(question3);
+    }
+
+    @Test
+    public void testSecondConstructor() {
+        Question question = new Question(123, "New question", "Paul");
+        assertNotNull(question);
+    }
+
+    @Test
+    public void testThirdConstructor() {
+        Question question = new Question(123, 2, "New question", "Paul", 23, true);
+        assertNotNull(question);
     }
 
     @Test
@@ -81,5 +91,35 @@ public class QuestionTest {
         question2.setAnswer("Have some patience.");
         assertEquals("Have some patience.",
                 question2.getAnswer());
+    }
+
+    @Test
+    public void testNotInstance() {
+        String word = "word";
+        assertFalse(question1.equals(word));
+    }
+
+    @Test
+    public void testSameQuestion() {
+        Question questionA = new Question(123, 2, "New question", "Paul", 23, true);
+        Question questionB = new Question(123, 2, "New question", "Paul", 23, true);
+        assertTrue(questionA.equals(questionB));
+    }
+
+    @Test
+    public void testToString() {
+        String expected = "[" + question1.getTime() + "]\n"
+                + question1.getOwner() + ": " + question1.getText() + "\n";
+        assertEquals(expected, question1.toString());
+    }
+
+    @Test
+    public void testVoted() {
+        assertFalse(question1.voted());
+    }
+
+    @Test
+    public void testIsOwner() {
+        assertTrue(question1.isOwner());
     }
 }

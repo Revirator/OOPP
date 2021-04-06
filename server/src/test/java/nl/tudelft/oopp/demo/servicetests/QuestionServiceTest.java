@@ -41,7 +41,6 @@ public class QuestionServiceTest {
     private QuestionRepository questionRepository;
     @Mock
     private RoomRepository roomRepository;
-
     @Mock
     private QuestionService questionService;
     @Mock
@@ -57,7 +56,6 @@ public class QuestionServiceTest {
     void setUp() {
         questionService = new QuestionService(questionRepository, roomRepository);
     }
-
 
 
     /** Constructor for this test class.
@@ -79,7 +77,6 @@ public class QuestionServiceTest {
     }
 
 
-
     @Test
     public void testClientDataParsing() {
 
@@ -97,13 +94,13 @@ public class QuestionServiceTest {
     }
 
 
-
     @Test
     public void canGetQuestions() {
         List<Question> questions = questionService.getQuestions();
         assertEquals(new ArrayList<>(), questions);
         verify(questionRepository).findAllByOrderByUpvotesDesc();
     }
+
 
     @Test
     public void canGetAnsweredQuestions() {
@@ -130,9 +127,9 @@ public class QuestionServiceTest {
         assertThrows(IllegalStateException.class, () -> {
             questionService.addNewQuestion(payload);
         });
+
         verify(questionRepository, never()).save(any());
     }
-
 
 
     @Test
@@ -158,9 +155,7 @@ public class QuestionServiceTest {
         assertThrows(IllegalStateException.class, () -> {
             questionService.setAnswer((long)0, "Id 0 does not exist");
         });
-
     }
-
 
 
     @Test
@@ -199,9 +194,7 @@ public class QuestionServiceTest {
         });
 
         verify(questionRepository).deleteById((long)1);
-
     }
-
 
 
     @Test
@@ -224,9 +217,31 @@ public class QuestionServiceTest {
         });
 
         verify(question1).setText(anyString());
-
     }
 
+    @Test
+    public void testMarkAnswerAsIsBeingAnswered() {
+        given(questionRepository.findById((long)1))
+                .willReturn(java.util.Optional.ofNullable(question1));
+
+        assertDoesNotThrow(() -> {
+            questionService.markQuestionAsIsBeingAnswered((long)1);
+        });
+
+        verify(question1).setIsBeingAnswered();
+    }
+
+    @Test
+    public void testMarkAnswerAsIsNotBeingAnswered() {
+        given(questionRepository.findById((long)1))
+                .willReturn(java.util.Optional.ofNullable(question1));
+
+        assertDoesNotThrow(() -> {
+            questionService.markQuestionAsNotBeingAnswered((long)1);
+        });
+
+        verify(question1).setIsNotBeingAnswered();
+    }
 
 
     @Test
@@ -292,6 +307,4 @@ public class QuestionServiceTest {
 
         verify(question1).deUpvote();
     }
-
-
 }

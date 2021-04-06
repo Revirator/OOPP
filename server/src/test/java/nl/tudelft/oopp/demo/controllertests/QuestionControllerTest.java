@@ -75,6 +75,20 @@ public class QuestionControllerTest {
     }
 
     @Test
+    public void testMarkAsIsBeingAnswered() throws Exception {
+        mockMvc.perform(put("/questions/markAsBeingAnswered/{questionId}", questionId))
+                .andExpect(status().isOk());
+        verify(questionService).markQuestionAsIsBeingAnswered(questionId);
+    }
+
+    @Test
+    public void testMarkAsIsNotBeingAnswered() throws Exception {
+        mockMvc.perform(put("/questions/markAsNotBeingAnswered/{questionId}", questionId))
+                .andExpect(status().isOk());
+        verify(questionService).markQuestionAsNotBeingAnswered(questionId);
+    }
+
+    @Test
     public void testDeleteQuestion() throws Exception {
 
         mockMvc.perform(delete("/questions/{questionId}", questionId))
