@@ -105,6 +105,20 @@ public class RoomControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void testUpvoteQuestionVotedFound() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        q.upvote();
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.deUpvoteQuestion(q.getId());
+            }).thenReturn(true);
+
+            assertEquals(mrc.upvoteQuestion(q), true);
+            assertEquals(q.voted(), false);
+        }
+    }
+
+    @Test
     public void testSetData() {
         User dummyUser = new User("Dummy", testRoom);
         Room dummyRoom = new Room("Roomy", LocalDateTime.now(), true);
@@ -118,6 +132,4 @@ public class RoomControllerTest extends ApplicationTest {
         assertEquals(mrc.getRoom(), dummyRoom);
         assertEquals(mrc.getAppView(), dummyAppView);
     }
-
-
 }
