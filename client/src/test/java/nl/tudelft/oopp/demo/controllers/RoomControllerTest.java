@@ -75,6 +75,38 @@ public class RoomControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void testEditFoundQuestion() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        String update = "New text";
+
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.editQuestion(q.getId(), update);
+            }).thenReturn(true);
+
+            assertEquals(mrc.editQuestion(q, update), true);
+            assertEquals(q.getText(), update);
+        }
+    }
+
+    @Test
+    public void testEditNotFoundQuestion() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        String update = "New text";
+
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.editQuestion(q.getId(), update);
+            }).thenReturn(false);
+
+            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
+                assertEquals(mrc.editQuestion(q, update), false);
+                assertEquals(q.getText(), "testQuestion");
+            }
+        }
+    }
+
+    @Test
     public void testDeleteQuestionFound() {
         Question q = new Question(23, "testQuestion", "Jessica");
 
@@ -127,7 +159,7 @@ public class RoomControllerTest extends ApplicationTest {
 
             try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
                 assertEquals(mrc.upvoteQuestion(q), false);
-                assertEquals(q.voted(), false);
+                assertEquals(q.voted(), true);
             }
         }
     }
@@ -157,7 +189,7 @@ public class RoomControllerTest extends ApplicationTest {
 
             try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
                 assertEquals(mrc.upvoteQuestion(q), false);
-                assertEquals(q.voted(), true);
+                assertEquals(q.voted(), false);
             }
         }
     }
