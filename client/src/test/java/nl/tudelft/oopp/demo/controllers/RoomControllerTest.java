@@ -97,15 +97,13 @@ public class RoomControllerTest extends ApplicationTest {
             }).thenReturn(false);
 
             try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-
                 assertEquals(mrc.deleteQuestion(q), false);
             }
         }
     }
 
     @Test
-    public void testUpvoteQuestionVotedFound() {
+    public void testUpvoteFoundQuestionVoted() {
         Question q = new Question(23, "testQuestion", "Jessica");
         q.upvote();
         try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
@@ -115,6 +113,52 @@ public class RoomControllerTest extends ApplicationTest {
 
             assertEquals(mrc.upvoteQuestion(q), true);
             assertEquals(q.voted(), false);
+        }
+    }
+
+    @Test
+    public void testUpvoteNotFoundQuestionVoted() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        q.upvote();
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.deUpvoteQuestion(q.getId());
+            }).thenReturn(false);
+
+            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
+                assertEquals(mrc.upvoteQuestion(q), false);
+                assertEquals(q.voted(), false);
+            }
+        }
+    }
+
+    @Test
+    public void testUpvoteFoundQuestionNotVoted() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        q.deUpvote();
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.upvoteQuestion(q.getId());
+            }).thenReturn(true);
+
+            assertEquals(mrc.upvoteQuestion(q), true);
+            assertEquals(q.voted(), true);
+        }
+    }
+
+    @Test
+    public void testUpvoteNotFoundQuestionNotVoted() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        q.deUpvote();
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.upvoteQuestion(q.getId());
+            }).thenReturn(false);
+
+            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
+                assertEquals(mrc.upvoteQuestion(q), false);
+                assertEquals(q.voted(), true);
+            }
         }
     }
 
