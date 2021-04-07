@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -55,8 +56,29 @@ public class Student extends User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Student)) {
+            return false;
+        }
+
+        if (!super.equals(o)) {
+            return false;
+        }
+        Student student = (Student) o;
+        return getId() == student.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getIpAddress(), isBanned());
+    }
+
+    @Override
     public String toString() {
-        return "Student " + super.getNickname() + " in room " + getRoom();
+        return "Student " + super.getNickname() + " in room " + getRoomId();
     }
 }
 

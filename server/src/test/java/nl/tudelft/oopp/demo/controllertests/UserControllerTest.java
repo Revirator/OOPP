@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 public class UserControllerTest {
@@ -50,7 +49,6 @@ public class UserControllerTest {
         verify(userService).getStudentById(studentId);
     }
 
-
     @Test
     public void testAddStudent() throws Exception {
         String payload = "Pim, 127.0.0.1, 1";
@@ -74,7 +72,6 @@ public class UserControllerTest {
         verify(userService).banStudent(studentId);
     }
 
-
     @Test
     public void testRemoveUser() throws Exception {
         mockMvc.perform(delete("/users/remove/{userId}", 2L))
@@ -89,5 +86,4 @@ public class UserControllerTest {
                 .andDo(MockMvcResultHandlers.print());
         verify(userService).checkIfBanned(anyLong(), anyString());
     }
-
 }
