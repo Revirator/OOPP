@@ -72,8 +72,7 @@ public class GetServerCommunication extends ServerCommunication {
             System.out.println("Status: " + response.statusCode());
             return List.of();
         }
-        return gson.fromJson(response.body(), new TypeToken<List<Student>>() {
-        }.getType());
+        return gson.fromJson(response.body(), new TypeToken<List<Student>>(){}.getType());
     }
 
     /** Sends an id to the server.
