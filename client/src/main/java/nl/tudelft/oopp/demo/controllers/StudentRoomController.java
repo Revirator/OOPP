@@ -59,8 +59,9 @@ public class StudentRoomController extends RoomController {
     public void setData(User user, Room room, StudentView studentView) {
         super.setData(user, room, studentView);
         this.studentView = studentView;
-        this.lectureName.setText(room.getRoomName());
         this.questionAllowed = true;
+        this.lectureName.setText(room.getRoomName());
+
 
         // creates a service that allows a method to be called every timeframe
         ScheduledService<Boolean> serviceAllow = new ScheduledService<>() {
@@ -239,5 +240,14 @@ public class StudentRoomController extends RoomController {
                 ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
             }
         }
+    }
+
+    /**
+     * Getter for questionAllowed.
+     * (Used for testing)
+     * @return boolean
+     */
+    public boolean getQuestionAllowed () {
+        return this.questionAllowed;
     }
 }
