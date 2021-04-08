@@ -1,12 +1,10 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ZenAnsweredCell extends ListCell<Question> {

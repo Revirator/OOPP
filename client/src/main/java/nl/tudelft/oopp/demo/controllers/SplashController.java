@@ -57,7 +57,7 @@ public class SplashController {
             String code = link.getText();
             Room room = ServerCommunication.getRoom(code, true);
 
-            // Using alert temporary until the other features are implemented
+            // Using alert
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
             if (room == null) {     // The room is null when the code is invalid
@@ -95,7 +95,7 @@ public class SplashController {
                         }
                     }
                 } else {
-                    // Here the view should change to the waiting room view instead
+
                     Student student = new Student(nickName.getText(), room);
                     if (ServerCommunication.checkIfBanned(student)) {
                         Alert error = new Alert(Alert.AlertType.ERROR);
@@ -265,7 +265,7 @@ public class SplashController {
             flag = false;
         }
 
-        if (flag == false) {
+        if (!flag) {
             alert.show();
         }
 

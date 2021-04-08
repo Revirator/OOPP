@@ -5,7 +5,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import javafx.scene.control.Alert;
-import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
 public class PutServerCommunication extends ServerCommunication {
@@ -37,8 +36,7 @@ public class PutServerCommunication extends ServerCommunication {
      * @param code the room link as a String
      */
     public static void updateRoomStatus(String code) {
-        // Including the code in the body of the request and ..
-        // .. not in the URL might be better, but I couldn't get it to work.
+
         String url = "http://localhost:8080/rooms/update/" + code;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
