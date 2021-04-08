@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @AutoConfigureMockMvc
 public class QuestionControllerTest {
 
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -75,6 +74,20 @@ public class QuestionControllerTest {
     }
 
     @Test
+    public void testMarkAsIsBeingAnswered() throws Exception {
+        mockMvc.perform(put("/questions/markAsBeingAnswered/{questionId}", questionId))
+                .andExpect(status().isOk());
+        verify(questionService).markQuestionAsIsBeingAnswered(questionId);
+    }
+
+    @Test
+    public void testMarkAsIsNotBeingAnswered() throws Exception {
+        mockMvc.perform(put("/questions/markAsNotBeingAnswered/{questionId}", questionId))
+                .andExpect(status().isOk());
+        verify(questionService).markQuestionAsNotBeingAnswered(questionId);
+    }
+
+    @Test
     public void testDeleteQuestion() throws Exception {
 
         mockMvc.perform(delete("/questions/{questionId}", questionId))
@@ -104,7 +117,6 @@ public class QuestionControllerTest {
         verify(questionService).updateQuestion(questionId, "Test question");
     }
 
-
     @Test
     public void testSetAnswer() throws Exception {
         mockMvc.perform(put("/questions/setanswer/{questionId}", questionId)
@@ -112,5 +124,4 @@ public class QuestionControllerTest {
                 .andExpect(status().isOk());
         verify(questionService).setAnswer(questionId, "Test answer");
     }
-
 }

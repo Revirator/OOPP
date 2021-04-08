@@ -25,12 +25,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-
-
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 public class RoomControllerTest {
-
 
     private final String roomCode = "434frfg3";
     private final long roomId = 5L;
@@ -45,13 +42,11 @@ public class RoomControllerTest {
     @Mock
     private Room roomOne;
 
-
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(
                 new RoomController(roomService)).build();
     }
-
 
     /** Constructor for this test class.
      * Creates example rooms.
@@ -62,7 +57,6 @@ public class RoomControllerTest {
                 "Software Quality And Testing", true);
     }
 
-
     @Test
     public void testGetAllRooms() throws Exception {
         mockMvc.perform(get("/rooms"))
@@ -70,14 +64,12 @@ public class RoomControllerTest {
         verify(roomService).getRooms();
     }
 
-
     @Test
     public void testGetRoomByCodeLog() throws Exception {
         mockMvc.perform(get("/rooms/{roomCode}/log", roomCode))
                 .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).getRoomByCode(roomCode);
     }
-
 
     @Test
     public void testGetRoomByCode() throws Exception {
@@ -93,7 +85,6 @@ public class RoomControllerTest {
         verify(roomService).updateRoomStatusByLink(roomCode);
     }
 
-
     @Test
     public void testAddNewRoom() throws Exception {
         String payload = "Software Quality And Testing, 2021-05-19T10:45, true";
@@ -102,7 +93,6 @@ public class RoomControllerTest {
                 .andExpect(status().isOk());
         verify(roomService).addNewRoom(payload);
     }
-
 
     @Test
     public void testUpdateFeedback() throws Exception {
@@ -127,5 +117,4 @@ public class RoomControllerTest {
                 .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
         verify(roomService).getRoomById(roomId);
     }
-
 }

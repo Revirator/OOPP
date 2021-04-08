@@ -29,14 +29,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ExtendWith(MockitoExtension.class) // automatically closes repo after each test
 public class UserServiceTest {
 
-
-    // We are mocking the repositories, since these are tested in isolation.
     @Mock
     private UserRepository<Student> studentUserRepository;
     @Mock
@@ -59,7 +56,6 @@ public class UserServiceTest {
                 moderatorUserRepository, roomRepository);
     }
 
-
     /** Constructor for this test class.
      * Creates an example room in which test Users are.
      */
@@ -70,7 +66,6 @@ public class UserServiceTest {
         student1 = new Student(1, "Pim", roomOne);
         moderator1 = new Moderator(2, "Stefan", roomOne);
     }
-
 
     @Test
     public void testGetStudentById() {
@@ -97,7 +92,6 @@ public class UserServiceTest {
         assertEquals("Pim", capturedStudent.getNickname());
     }
 
-
     @Test
     public void testAddModerator() {
         String payload = "Stefan, 2";
@@ -115,8 +109,6 @@ public class UserServiceTest {
         Moderator capturedModerator = moderatorArgumentCaptor.getValue();
         assertEquals("Stefan", capturedModerator.getNickname());
     }
-
-
 
     @Test
     public void testBanStudent() {
@@ -141,7 +133,6 @@ public class UserServiceTest {
         verify(studentUserRepository).deleteById(any());
     }
 
-
     @Test
     public void testRemoveModerator() {
         given(moderatorUserRepository.getOne(any())).willReturn(moderator1);
@@ -149,10 +140,8 @@ public class UserServiceTest {
         verify(moderatorUserRepository).deleteById(any());
     }
 
-
     @Test
     public void testDeleteNull() {
         assertFalse(userService.removeUser(0));
     }
-
 }

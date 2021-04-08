@@ -42,12 +42,12 @@
                         <Font name="Arial" size="14" />
                     </font>
                 </Label>
-                <TextField fx:id="studentCode" disable="true" maxWidth="175.0" text="6e9cc675c2164d4a95" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                <TextField fx:id="studentCode" editable="false" maxWidth="175.0" text="6e9cc675c2164d4a95" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Arial" size="14" />
                     </font>
                 </TextField>
-                <TextField fx:id="moderatorCode" disable="true" maxWidth="175.0" text="Mfb51573b1c6246e39" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                <TextField fx:id="moderatorCode" editable="false" maxWidth="175.0" text="Mfb51573b1c6246e39" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Arial" size="14" />
                     </font>

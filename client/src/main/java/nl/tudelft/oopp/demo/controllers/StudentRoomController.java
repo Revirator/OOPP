@@ -100,6 +100,11 @@ public class StudentRoomController extends RoomController {
         super.setRoom(newRoom);
         // The server returns a student with the room field being null
         Student tempStudent = (Student) ServerCommunication.getStudent(student.getId());
+        if (tempStudent == null) {
+            Stage stage = (Stage) anchor.getScene().getWindow();
+            stage.close();
+            return;
+        }
         if (!((Student) student).isBanned() && tempStudent.isBanned()) {
             super.setUser(new Student(tempStudent.getId(), tempStudent.getNickname(), room,
                     tempStudent.getIpAddress(), tempStudent.isBanned()));
@@ -143,7 +148,7 @@ public class StudentRoomController extends RoomController {
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
                 Question newQuestion = new Question(room.getRoomId(), questionBox.getText(),
-                        student.getNickname(), true);
+                        student.getNickname(), true, false);
                 Long newId = ServerCommunication.postQuestion(newQuestion);
                 newQuestion.setId(newId);
                 questionBox.clear();

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
@@ -14,8 +12,7 @@ import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -23,7 +20,6 @@ public class UserService {
     private final RoomRepository roomRepository;
     private final UserRepository<Student> studentUserRepository;
     private final UserRepository<Moderator> moderatorUserRepository;
-
 
     /** Constructor for UserService.
      * @param studentUserRepository - retrieves Students from database.
@@ -39,7 +35,6 @@ public class UserService {
         this.roomRepository = roomRepository;
     }
 
-
     /** Finds Student by id.
      * @param studentId - long
      * @return Optional of Student having this id
@@ -47,7 +42,6 @@ public class UserService {
     public Optional<Student> getStudentById(Long studentId) {
         return studentUserRepository.findById(studentId);
     }
-
 
     /** Adds the student to the DB.
      * @param data the JSON of a Student object to be added to the DB
@@ -62,7 +56,6 @@ public class UserService {
         return studentUserRepository.save(new Student(studentName,room,ipAddress)).getId();
     }
 
-
     /** Adds the moderator to the DB.
      * @param data the JSON of a Moderator object to be added to the DB
      * @return the id of the moderator
@@ -74,7 +67,6 @@ public class UserService {
         Room room = roomRepository.getOne(Long.parseLong(dataArray[1]));
         return moderatorUserRepository.save(new Moderator(moderatorName,room)).getId();
     }
-
 
 
     /** Updates the banned field of the student with the corresponding id.
@@ -101,8 +93,6 @@ public class UserService {
                 .map(s -> s.getIpAddress()).collect(Collectors.toList());
         return ipAddresses.contains(ipAddress);
     }
-
-
 
     /** Checks if the ID is linked to an existing Student/Moderator ..
      * .. and if it is, it is removed from the respective DB and ..
