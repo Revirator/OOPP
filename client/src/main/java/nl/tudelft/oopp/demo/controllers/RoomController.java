@@ -54,7 +54,10 @@ public abstract class RoomController {
             questionRefresher();
             participantRefresher();
         });
-        service.start();
+        try {
+            service.start();
+        } catch (Exception e) {}
+
     }
 
     /**
@@ -131,14 +134,14 @@ public abstract class RoomController {
     public boolean editQuestion(Question questionToEdit, String update) {
         if (update.length() > 0) {
 
-            questionToEdit.setText(update);
-
             if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
                 alert.show();
                 return false;
             }
+
+            questionToEdit.setText(update);
             return true;
         }
         return false;
@@ -169,21 +172,24 @@ public abstract class RoomController {
 
         // Check if user already voted on question
         if (question.voted()) {
-            question.deUpvote();
+
             if (!ServerCommunication.deUpvoteQuestion(question.getId())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
                 alert.show();
                 return false;
             }
+            question.deUpvote();
+
         } else {
-            question.upvote();
+
             if (!ServerCommunication.upvoteQuestion(question.getId())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
                 alert.show();
                 return false;
             }
+            question.upvote();
         }
         return true;
     }

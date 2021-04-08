@@ -2,14 +2,12 @@ package nl.tudelft.oopp.demo.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockConstruction;
-import static org.mockito.Mockito.when;
 import static org.testfx.api.FxAssert.verifyThat;
 
 import java.time.LocalDateTime;
 
 import com.sun.tools.javac.Main;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,8 +23,6 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.NodeMatchers;
-import org.testfx.osgi.service.TestFx;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -72,6 +68,38 @@ public class RoomControllerTest extends ApplicationTest {
         Question question = new Question(23, "testQuestion", "Jessica");
         assertFalse(mrc.editQuestion(question, ""));
         assertEquals("testQuestion", question.getText());
+    }
+
+    @Test
+    public void testEditFoundQuestion() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        String update = "New text";
+
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.editQuestion(q.getId(), update);
+            }).thenReturn(true);
+
+            assertEquals(mrc.editQuestion(q, update), true);
+            assertEquals(q.getText(), update);
+        }
+    }
+
+    @Test
+    public void testEditNotFoundQuestion() {
+        Question q = new Question(23, "testQuestion", "Jessica");
+        String update = "New text";
+
+        try (MockedStatic<ServerCommunication> theMock = Mockito.mockStatic(ServerCommunication.class)) {
+            theMock.when(() -> {
+                ServerCommunication.editQuestion(q.getId(), update);
+            }).thenReturn(false);
+
+            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
+                assertEquals(mrc.editQuestion(q, update), false);
+                assertEquals(q.getText(), "testQuestion");
+            }
+        }
     }
 
     @Test
@@ -127,7 +155,7 @@ public class RoomControllerTest extends ApplicationTest {
 
             try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
                 assertEquals(mrc.upvoteQuestion(q), false);
-                assertEquals(q.voted(), false);
+                assertEquals(q.voted(), true);
             }
         }
     }
@@ -157,7 +185,7 @@ public class RoomControllerTest extends ApplicationTest {
 
             try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
                 assertEquals(mrc.upvoteQuestion(q), false);
-                assertEquals(q.voted(), true);
+                assertEquals(q.voted(), false);
             }
         }
     }
