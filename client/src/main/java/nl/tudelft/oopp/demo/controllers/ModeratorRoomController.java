@@ -59,9 +59,9 @@ public class ModeratorRoomController extends RoomController {
     public void setData(User moderator, Room room, ModeratorView moderatorView) {
         super.setData(moderator, room, moderatorView);
         this.moderatorView = moderatorView;
+        zenModeActive = false;
         this.lectureName.setText(room.getRoomName());
         setFeedback();
-        zenModeActive = false;
     }
 
     /**
@@ -245,5 +245,13 @@ public class ModeratorRoomController extends RoomController {
         LinkRoomController linkRoomController = loader.getController();
         linkRoomController.setData(super.getRoom());
         linkRoomController.main(new String[0]);
+    }
+
+    /**
+     * zenModeActive getter
+     * (Used for testing).
+     */
+    public boolean isZenModeActive() {
+        return this.zenModeActive;
     }
 }
