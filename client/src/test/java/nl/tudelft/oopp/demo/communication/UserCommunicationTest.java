@@ -29,6 +29,9 @@ public class UserCommunicationTest {
     private Student student;
     private Moderator mod;
 
+    /**
+     * Constructor for this test.
+     */
     public UserCommunicationTest() {
         room = new Room(2, "testRoom", LocalDateTime.now(), true);
         student = new Student((long) 13, "testUser", room, "IpAddress", false);
