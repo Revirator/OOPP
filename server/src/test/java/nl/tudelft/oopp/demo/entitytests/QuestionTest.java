@@ -13,16 +13,13 @@ import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.Test;
 
-
 public class QuestionTest {
-
 
     private Question question1;
     private Question question2;
     private Question question3;
     private Question questionWithoutId;
     private Room roomOne;
-
 
     /** Initializes test Room and Questions.
      *
@@ -40,7 +37,6 @@ public class QuestionTest {
         questionWithoutId = new Question(roomOne, "Could you repeat that?", "Victor");
     }
 
-
     @Test
     public void testConstructor() {
         assertNotNull(question1);
@@ -57,7 +53,6 @@ public class QuestionTest {
         assertEquals(0, questionWithoutId.getId());
     }
 
-
     @Test
     public void testGetOwner() {
         assertEquals("Senne", question1.getOwner());
@@ -66,15 +61,13 @@ public class QuestionTest {
         assertEquals("Victor", questionWithoutId.getOwner());
     }
 
-
     @Test
     public void getRoomTest() {
-        assertEquals(1, question1.getRoom());
-        assertEquals(1, question2.getRoom());
-        assertEquals(1, question3.getRoom());
-        assertEquals(1, questionWithoutId.getRoom());
+        assertEquals(1, question1.getRoomId());
+        assertEquals(1, question2.getRoomId());
+        assertEquals(1, question3.getRoomId());
+        assertEquals(1, questionWithoutId.getRoomId());
     }
-
 
     @Test
     public void testGetText() {
@@ -162,13 +155,12 @@ public class QuestionTest {
         assertFalse(question2.equals(null));
     }
 
-
     @Test
     public void testToString() {
         Question question4 = new Question(roomOne,
                 "When is the deadline?", "Stefan");
         String time = LocalTime.now().getHour() + ":" + LocalTime.now().getMinute();
         System.out.println(question4);
-        assertEquals(time + " -- " + "When is the deadline?", question4.toString());
+        assertEquals("[" + time + "]\nStefan: When is the deadline?\n", question4.toString());
     }
 }

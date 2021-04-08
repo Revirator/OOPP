@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @AutoConfigureMockMvc
 public class QuestionControllerTest {
 
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -118,7 +117,6 @@ public class QuestionControllerTest {
         verify(questionService).updateQuestion(questionId, "Test question");
     }
 
-
     @Test
     public void testSetAnswer() throws Exception {
         mockMvc.perform(put("/questions/setanswer/{questionId}", questionId)
@@ -126,5 +124,4 @@ public class QuestionControllerTest {
                 .andExpect(status().isOk());
         verify(questionService).setAnswer(questionId, "Test answer");
     }
-
 }

@@ -19,11 +19,7 @@ public class LoggerConfig {
                 RequestContextHolder.currentRequestAttributes())
                 .getRequest();
 
-        // For now only the ip is added since I need some kind of ip-username relation
-        // to be able to add the name of the user to the log
         String ip = request.getRemoteAddr();
-
-        // The "requested" and the dot are for convenience
         DemoApplication.logger.info(ip + " requested " + requested + ".");
     }
 

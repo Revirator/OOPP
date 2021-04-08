@@ -1,24 +1,18 @@
 package nl.tudelft.oopp.demo.services;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import javax.transaction.Transactional;
 
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RoomService {
 
-
     private final RoomRepository roomRepository;
-
 
     /** Constructor for RoomService.
      * @param roomRepository - retrieves rooms from database.
@@ -28,14 +22,12 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-
     /** Called by RoomController.
      * @return a List of rooms.
      */
     public List<Room> getRooms() {
         return roomRepository.findAll();
     }
-
 
     /** Called by RoomController.
      * @param id the id of room.
@@ -44,7 +36,6 @@ public class RoomService {
     public Room getRoomById(long id) {
         return roomRepository.findById(id);
     }
-
 
     /** Called by RoomController.
      * @param string new Room object as a string to be stored in the database
@@ -63,7 +54,6 @@ public class RoomService {
         return updatedRoom;
     }
 
-
     /** Updates peopleThinkingLectureIsTooSlow or peopleThinkingLectureIsTooFast ..
      * .. depending on the feedback received.
      * @param url link connected to the room
@@ -81,7 +71,6 @@ public class RoomService {
             room.resetVote(feedback);
         }
     }
-
 
     /** Updates the status (active/inactive) of a room.
      * @param link the link to a Lecture
@@ -104,7 +93,6 @@ public class RoomService {
      * @return the room itself.
      */
     public Room getRoomByCode(String code) {
-        // Check if the code is for a student or a moderator (probably will get changed later)
         if (code.contains("M")) {
             return roomRepository.findFirstByModeratorLink(code);
         } else {
