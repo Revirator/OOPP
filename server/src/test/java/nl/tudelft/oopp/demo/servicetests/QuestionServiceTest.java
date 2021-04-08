@@ -30,13 +30,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ExtendWith(MockitoExtension.class) // automatically closes repo after each test
 public class QuestionServiceTest {
 
-    // We are mocking the repositories, since these are tested in isolation.
     @Mock
     private QuestionRepository questionRepository;
     @Mock
@@ -51,12 +49,10 @@ public class QuestionServiceTest {
     private Question question2;
     private Question question3;
 
-
     @BeforeEach
     void setUp() {
         questionService = new QuestionService(questionRepository, roomRepository);
     }
-
 
     /** Constructor for this test class.
      * Creates example rooms in which test questions are asked.
@@ -76,10 +72,8 @@ public class QuestionServiceTest {
                 "What is the idea behind the TU Delft logo?", "Henkie", 50);
     }
 
-
     @Test
     public void testClientDataParsing() {
-
         String payload = "2& Sandra& When is lab assignment 3 due?";
 
         String[] dataArray = payload.split("& ");
@@ -90,9 +84,7 @@ public class QuestionServiceTest {
         assertEquals(2, roomId);
         assertEquals("When is lab assignment 3 due?", questionText);
         assertEquals("Sandra", questionOwner);
-
     }
-
 
     @Test
     public void canGetQuestions() {
@@ -100,7 +92,6 @@ public class QuestionServiceTest {
         assertEquals(new ArrayList<>(), questions);
         verify(questionRepository).findAllByOrderByUpvotesDesc();
     }
-
 
     @Test
     public void canGetAnsweredQuestions() {
@@ -110,13 +101,11 @@ public class QuestionServiceTest {
                 .findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(0, true);
     }
 
-
     @Test
     public void canGetQuestionsByRoom() {
         List<Question> questions = questionService.getQuestionsByRoom(0);
         verify(questionRepository).findAllByOrderByUpvotesDesc();
     }
-
 
     @Test
     public void testInvalidPostRequest() {
@@ -127,14 +116,11 @@ public class QuestionServiceTest {
         assertThrows(IllegalStateException.class, () -> {
             questionService.addNewQuestion(payload);
         });
-
         verify(questionRepository, never()).save(any());
     }
 
-
     @Test
     public void testPostQuestionRequest() {
-
         String payload = "1& Sandra& When is lab assignment 3 due?";
         given(roomRepository.existsById(any())).willReturn(true);
 
@@ -149,7 +135,6 @@ public class QuestionServiceTest {
         assertEquals(capturedQuestion.getText(), "When is lab assignment 3 due?");
     }
 
-
     @Test
     public void testAnswerNonExistingQuestion() {
         assertThrows(IllegalStateException.class, () -> {
@@ -157,10 +142,8 @@ public class QuestionServiceTest {
         });
     }
 
-
     @Test
     public void testEmptyAnswer() {
-
         given(questionRepository.findById((long)1))
                 .willReturn(java.util.Optional.ofNullable(question1));
 
@@ -171,10 +154,8 @@ public class QuestionServiceTest {
         verify(question1).setAnswer(anyString());
     }
 
-
     @Test
     public void testInvalidDeleteRequest() {
-
         given(questionRepository.existsById((long)0)).willReturn(false);
 
         assertThrows(IllegalStateException.class, () -> {
@@ -183,10 +164,8 @@ public class QuestionServiceTest {
         verify(questionRepository, never()).deleteById(any());
     }
 
-
     @Test
     public void testDeleteRequest() {
-
         given(questionRepository.existsById((long)1)).willReturn(true);
 
         assertDoesNotThrow(() -> {
@@ -196,19 +175,15 @@ public class QuestionServiceTest {
         verify(questionRepository).deleteById((long)1);
     }
 
-
     @Test
     public void testInvalidPutEditRequest() {
-
         assertThrows(IllegalStateException.class, () -> {
             questionService.updateQuestion((long)0, "Invalid update");
         });
     }
 
-
     @Test
     public void testAnswerPutRequest() {
-
         given(questionRepository.findById((long)1))
                 .willReturn(java.util.Optional.ofNullable(question1));
 
@@ -243,7 +218,6 @@ public class QuestionServiceTest {
         verify(question1).setIsNotBeingAnswered();
     }
 
-
     @Test
     public void testInvalidMarkAnswered() {
 
@@ -251,7 +225,6 @@ public class QuestionServiceTest {
             questionService.markQuestionAsAnswered((long)0);
         });
     }
-
 
     @Test
     public void testMarkAnswered() {
@@ -265,7 +238,6 @@ public class QuestionServiceTest {
         verify(question1).setAsAnswered();
     }
 
-
     @Test
     public void testInvalidUpvote() {
         assertThrows(IllegalStateException.class, () -> {
@@ -273,15 +245,12 @@ public class QuestionServiceTest {
         });
     }
 
-
     @Test
     public void testInvalidDeUpvote() {
         assertThrows(IllegalStateException.class, () -> {
             questionService.deUpvote((long)0);
         });
     }
-
-
 
     @Test
     public void testUpvote() {
@@ -294,7 +263,6 @@ public class QuestionServiceTest {
 
         verify(question1).upvote();
     }
-
 
     @Test
     public void testDeUpvote() {

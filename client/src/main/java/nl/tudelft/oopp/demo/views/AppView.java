@@ -208,6 +208,14 @@ public abstract class AppView extends MainView {
     }
 
     /**
+     * Getter for the observable list of participants.
+     * @return ObservableList of participants
+     */
+    public ObservableList<User> getParticipants() {
+        return participants;
+    }
+
+    /**
      * Setter that's only used in testing.
      * @param questions ObservableList of questions
      */
@@ -221,6 +229,14 @@ public abstract class AppView extends MainView {
      */
     public void setAnswered(ObservableList<Question> answered) {
         this.answered = answered;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param participants ObservableList of participants
+     */
+    public void setParticipants(ObservableList<User> participants) {
+        this.participants = participants;
     }
 
     /**

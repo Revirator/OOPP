@@ -70,10 +70,9 @@ public abstract class User {
         return this.id;
     }
 
-    public long getRoom() {
+    public long getRoomId() {
         return room.getRoomId();
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -84,11 +83,11 @@ public abstract class User {
             return false;
         }
         User user = (User) o;
-        return getNickname().equals(user.getNickname()) && room.equals(user.room);
+        return getId() == user.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNickname());
+        return Objects.hash(getId(), room, getNickname());
     }
 }

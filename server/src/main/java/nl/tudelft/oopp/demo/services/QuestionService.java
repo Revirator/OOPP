@@ -3,22 +3,20 @@ package nl.tudelft.oopp.demo.services;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 
-import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final RoomRepository roomRepository;
-
 
     /** Constructor for QuestionService.
      * @param questionRepository - retrieves questions from database.
@@ -30,16 +28,12 @@ public class QuestionService {
         this.roomRepository = roomRepository;
     }
 
-
     /** Called by QuestionController.
      * @return a List of questions ordered by number of upvotes.
-     *          Example:
-     *          GET http://localhost:8080/questions
      */
     public List<Question> getQuestions() {
         return questionRepository.findAllByOrderByUpvotesDesc();
     }
-
 
     /**
      * Uses a stream to filter out only the questions connected to the right room.
@@ -49,21 +43,17 @@ public class QuestionService {
     public List<Question> getQuestionsByRoom(long roomID) {
         return getQuestions()
                 .stream()
-                .filter(q -> q.getRoom() == roomID)
+                .filter(q -> q.getRoomId() == roomID)
                 .collect(Collectors.toList());
     }
-
 
     /** Called by QuestionController.
      * @param room - the id of the room of which we want the questions
      * @return a List of questions from a with an answer (text) ordered by time.
-     *          Example:
-     *          GET http://localhost:8080/questions/answered/1
      */
     public List<Question> getAnsweredQuestions(long room) {
         return questionRepository.findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(room, true);
     }
-
 
     /** Parses data sent by client to create a new Question with id.
      * Stores new question in database.
@@ -71,7 +61,6 @@ public class QuestionService {
      * @param payload - data sent by client containing roomId, owner, question.
      */
     public Long addNewQuestion(String payload) {
-
         String[] dataArray = payload.split("& ");
         long roomId = Long.valueOf(dataArray[0]);
         String questionOwner = dataArray[1];
@@ -90,14 +79,10 @@ public class QuestionService {
         return newQuestion.getId();
     }
 
-
-
     /** Called by QuestionController.
      * Changes content of question with this id into a new question.
      * @param questionId - Id of Question to be modified
      * @param answer - answer to question as String (in requestBody)
-     *                 Example:
-     *                 PUT http://localhost:8080/questions/setanswer/6
      */
     @Transactional
     public void setAnswer(Long questionId, String answer) {
@@ -114,11 +99,8 @@ public class QuestionService {
                 + " ################");
     }
 
-
     /** Called by QuestionController.
      * @param questionId - Id of Question to be removed from database.
-     *                   Example:
-     *                   DELETE http://localhost:8080/questions/2
      */
     public void deleteQuestion(Long questionId) {
         questionRepository.findById(questionId);
@@ -130,14 +112,10 @@ public class QuestionService {
         questionRepository.deleteById(questionId);
     }
 
-
-
     /** Called by QuestionController.
      * Changes content of question with this id into a new question.
      * @param questionId - Id of Question to be modified
      * @param question - new question as String (in requestBody)
-     *                 Example:
-     *                 PUT http://localhost:8080/questions/6
      */
     @Transactional
     public void updateQuestion(Long questionId, String question) {
@@ -153,13 +131,9 @@ public class QuestionService {
         System.out.println("######## EDITED QUESTION ID: " + questionId + " ################");
     }
 
-
-
     /** Called by QuestionController.
      * Changes the isAnswered value of a question with this id.
      * @param questionId - Id of Question to be modified
-     *                 Example:
-     *                 PUT http://localhost:8080/questions/markAnswered/2
      */
     @Transactional
     public void markQuestionAsAnswered(long questionId) {
@@ -174,13 +148,9 @@ public class QuestionService {
                 + questionId + " ################");
     }
 
-
-
     /** Called by QuestionController.
      * Changes the isBeingWritten value of a question to true.
      * @param questionId - Id of Question to be modified
-     *                 Example:
-     *                 PUT http://localhost:8080/questions/markAsIsBeingWritten/2
      */
     @Transactional
     public void markQuestionAsIsBeingAnswered(long questionId) {
@@ -192,13 +162,9 @@ public class QuestionService {
         questionToModify.setIsBeingAnswered();
     }
 
-
-
     /** Called by QuestionController.
      * Changes the isBeingWritten value of a question to false.
      * @param questionId - Id of Question to be modified
-     *                 Example:
-     *                 PUT http://localhost:8080/questions/markAsIsBeingWritten/2
      */
     @Transactional
     public void markQuestionAsNotBeingAnswered(long questionId) {
@@ -210,13 +176,9 @@ public class QuestionService {
         questionToModify.setIsNotBeingAnswered();
     }
 
-
-
     /** Called by QuestionController.
      * Increments the upvote amount by one of the question with provided id.
      * @param questionId - Id of Question to be incremented
-     *                 Example:
-     *                 PUT http://localhost:8080/questions/upvote/42
      */
     @Transactional
     public void upvote(Long questionId) {
@@ -227,8 +189,6 @@ public class QuestionService {
         questionToModify.upvote();
         System.out.println("######## UPVOTED QUESTION ID: " + questionId + " ################");
     }
-
-
 
     /** Called by QuestionController.
      * Decrements the upvote amount by one of the question with provided id.

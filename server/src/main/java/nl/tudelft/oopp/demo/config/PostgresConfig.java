@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 @Profile("production")
 @Configuration
 @EnableJpaRepositories("nl.tudelft.oopp.demo")

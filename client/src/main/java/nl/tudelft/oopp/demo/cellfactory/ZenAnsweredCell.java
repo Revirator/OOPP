@@ -4,7 +4,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ZenAnsweredCell extends ListCell<Question> {
@@ -26,33 +29,39 @@ public class ZenAnsweredCell extends ListCell<Question> {
      * Creates a cell for answered questions.
      */
     private void createCell() {
-
-        // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+        ColumnConstraints columnZeroConstraints = new ColumnConstraints();
+        columnZeroConstraints.setPercentWidth(97);
+        gridPane.getColumnConstraints().add(columnZeroConstraints);
+
+        RowConstraints firstRow = new RowConstraints();
+        firstRow.setPrefHeight(20);
+        RowConstraints rowConstraints = new RowConstraints();
+        gridPane.getRowConstraints().add(firstRow);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
 
         // Create all labels with ID
         Label questionLabel = new Label();
         questionLabel.setId("questionLabel");
-
-        Label upVotesLabel = new Label();
-        upVotesLabel.setId("upVotesLabel");
+        questionLabel.setPrefWidth(400);
+        questionLabel.wrapTextProperty().setValue(true);
 
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
 
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
-
-        // Position labels
-        questionLabel.setAlignment(Pos.CENTER_LEFT);
-        ownerLabel.setAlignment(Pos.CENTER_LEFT);
-        upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
-        answerLabel.setAlignment(Pos.CENTER_LEFT);
+        answerLabel.setPrefWidth(400);
+        answerLabel.wrapTextProperty().setValue(true);
+        answerLabel.setStyle("-fx-border-color: black");
 
         // Add elements to grid pane
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionLabel, 0,1);
-        gridPane.add(upVotesLabel, 1,0);
         gridPane.add(answerLabel, 0,2);
 
         // Give background colours
@@ -91,10 +100,6 @@ public class ZenAnsweredCell extends ListCell<Question> {
             setText("");
 
         } else { // Non-empty list item
-
-            // Look for number of votes and question and update
-            Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
-            upVotesLabel.setText(item.getUpvotes() + " votes");
 
             Label questionLabel = (Label) gridPane.lookup("#questionLabel");
 

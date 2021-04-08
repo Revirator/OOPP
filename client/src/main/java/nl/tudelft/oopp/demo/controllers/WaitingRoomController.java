@@ -70,4 +70,20 @@ public class WaitingRoomController {
         studentView.setData(student, room);
         studentView.start((Stage) anchorWaitingRoom.getScene().getWindow());
     }
+
+    /**
+     * Used for testing.
+     * @return current student
+     */
+    public User getStudent() {
+        return student;
+    }
+
+    /**
+     * Used for testing.
+     * @return current room
+     */
+    public Room getRoom() {
+        return room;
+    }
 }
