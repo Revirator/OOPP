@@ -57,9 +57,9 @@ public class StudentRoomController extends RoomController {
      * @param studentView - corresponding view to this controller (to add questions)
      */
     public void setData(User user, Room room, StudentView studentView) {
+        this.questionAllowed = true;
         super.setData(user, room, studentView);
         this.studentView = studentView;
-        this.questionAllowed = true;
         this.lectureName.setText(room.getRoomName());
 
 
@@ -252,7 +252,7 @@ public class StudentRoomController extends RoomController {
      * (Used for testing)
      * @return boolean
      */
-    public boolean getQuestionAllowed () {
+    public boolean getQuestionAllowed() {
         return this.questionAllowed;
     }
 }

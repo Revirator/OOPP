@@ -1,12 +1,13 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.controllers.SplashController.joinRoomSanitation;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mockConstruction;
+
 import javafx.scene.control.Alert;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 
-import static nl.tudelft.oopp.demo.controllers.SplashController.joinRoomSanitation;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mockConstruction;
 
 class SplashControllerTest {
 
@@ -43,7 +44,7 @@ class SplashControllerTest {
             flag = joinRoomSanitation("Pav el","somecode");
         }
 
-        assertEquals(flag,false);
+        assertEquals(flag,true);
     }
 
     @Test

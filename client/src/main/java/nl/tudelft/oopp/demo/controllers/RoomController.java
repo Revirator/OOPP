@@ -54,10 +54,8 @@ public abstract class RoomController {
             questionRefresher();
             participantRefresher();
         });
-        try {
-            service.start();
-        } catch (Exception e) {}
 
+        service.start();
     }
 
     /**

@@ -1,16 +1,12 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import nl.tudelft.oopp.demo.data.Room;
-import nl.tudelft.oopp.demo.data.Student;
-import nl.tudelft.oopp.demo.data.User;
-import nl.tudelft.oopp.demo.views.StudentView;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import nl.tudelft.oopp.demo.data.Room;
+import nl.tudelft.oopp.demo.data.User;
+import nl.tudelft.oopp.demo.views.StudentView;
+import org.junit.jupiter.api.Test;
 
 
 public class StudentRoomControllerTest {
@@ -20,8 +16,10 @@ public class StudentRoomControllerTest {
     private StudentView view;
     private StudentRoomController src;
 
-    @BeforeEach
-    public void init() {
+
+    @Test
+    public void testSetData() {
+
         room = new Room("testRoom", LocalDateTime.now(), true);
         user = new User("testUser", room);
         view = new StudentView();
@@ -29,13 +27,12 @@ public class StudentRoomControllerTest {
 
         try {
             this.src.setData(user, room, view);
-        } catch (Exception e) { }
-    }
+        } catch (Exception e) {
+            // Empty catch block just to ignore
+            // UI issues during testing.
+        }
 
-    @Test
-    public void testSetData() {
-
-        // It tests only assigning room, user, view and questionAllowed.
+        // Tests only assigning room, user, view and questionAllowed.
         assertEquals(src.getRoom(), room);
         assertEquals(src.getUser(), user);
         assertEquals(src.getAppView(), view);
