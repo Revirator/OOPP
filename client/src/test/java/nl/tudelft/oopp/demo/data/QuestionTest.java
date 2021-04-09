@@ -40,7 +40,7 @@ public class QuestionTest {
 
     @Test
     public void testSecondConstructor() {
-        Question question = new Question(123, "New question", "Paul");
+        Question question = new Question(123, "New question", "Paul", true, false);
         assertNotNull(question);
     }
 
