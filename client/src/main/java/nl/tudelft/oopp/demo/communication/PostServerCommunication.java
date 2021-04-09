@@ -21,7 +21,6 @@ public class PostServerCommunication extends ServerCommunication {
             return null;
         }
 
-        // not the best way to do it (goes wrong if someone adds ", " in one of the fields
         String postRequestBody = room.getRoomName() + ", "
                 + room.getStartingTime() + ", " + room.isActive();
 
@@ -91,7 +90,6 @@ public class PostServerCommunication extends ServerCommunication {
             return (long)-1;
         }
 
-        // not the best way to do it (goes wrong if someone adds "& " in one of the fields
         String postRequestBody = newQuestion.getRoom() + "& "
                 + newQuestion.getOwner() + "& " + newQuestion.getText();
 

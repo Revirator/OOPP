@@ -32,32 +32,46 @@ public class LinkRoomController {
         this.room = room;
     }
 
-    /** Copies the student room code to the clipboard.
+    /**
+     * Copies the student room code to the clipboard.
      */
     public void copyStudentsCode() {
-        final ClipboardContent content = new ClipboardContent();
-        content.putString(studentCode.getText());
-        this.clipboard.setContent(content);
-        copiedStudent.setVisible(true);
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1.5), e -> copiedStudent.setVisible(false)));
-        timeline.play();
+        copyCode(studentCode.getText(), copiedStudent);
     }
 
-    /** Copies the moderator room code to the clipboard.
+    /**
+     * Copies the moderator room code to the clipboard.
      */
     public void copyModeratorsCode() {
+        copyCode(moderatorCode.getText(), copiedModerator);
+    }
+
+    /**
+     * Copies a given code to the clipboard.
+     * @param code code to copy
+     * @param imageView imageview to disable
+     */
+    public void copyCode(String code, ImageView imageView) {
         final ClipboardContent content = new ClipboardContent();
-        content.putString(moderatorCode.getText());
+        content.putString(code);
         this.clipboard.setContent(content);
-        copiedModerator.setVisible(true);
+        imageView.setVisible(true);
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1.5), e -> copiedModerator.setVisible(false)));
+                new KeyFrame(Duration.seconds(1.5), e -> imageView.setVisible(false)));
         timeline.play();
     }
 
     public void main(String[] args) {
         studentCode.setText(this.room.getStudentsLink());
         moderatorCode.setText(this.room.getModeratorLink());
+    }
+
+    /**
+     * Getter for room
+     * (Used for testing).
+     * @return
+     */
+    public Room getRoom() {
+        return this.room;
     }
 }

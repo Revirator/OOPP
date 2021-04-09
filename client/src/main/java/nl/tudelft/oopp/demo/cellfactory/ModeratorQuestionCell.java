@@ -1,11 +1,9 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
-import java.sql.Time;
 
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -262,7 +260,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             // Send answer to server to store in db
             ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
 
-            question.setAnswer(answer);   // Those will probably get removed later
+            question.setAnswer(answer);
             answerBox.setPromptText(answer);
             answerBox.clear();
             answerBox.deselect();

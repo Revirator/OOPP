@@ -3,7 +3,6 @@ package nl.tudelft.oopp.demo.views;
 import java.io.IOException;
 import java.net.URL;
 
-import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -17,7 +16,7 @@ import javafx.stage.Stage;
 
 public class SplashView extends MainView {
 
-    /**
+    /*
      * Font sizes for splash screen.
      */
     private DoubleProperty preBoxFontSize = new SimpleDoubleProperty(10);

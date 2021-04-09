@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-
 // DON'T RUN THE TESTS SEPARATELY!
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -69,8 +68,6 @@ public class RepositoryTest {
                 "What is the idea behind the TU Delft logo?", "Henkie", 50);
     }
 
-
-
     @Test
     @Order(1)
     public void testRoomSequenceGenerator() {
@@ -91,7 +88,6 @@ public class RepositoryTest {
                 + rooms.get(1).getRoomId());
     }
 
-
     @Test
     @Order(2)
     public void saveAndRetrieveRoomTest() {
@@ -102,11 +98,9 @@ public class RepositoryTest {
         assertEquals(3, output.getRoomId());
     }
 
-
     @Test
     @Order(3)
     public void saveAndRetrieveQuestionTest() {
-
         roomRepository.saveAndFlush(wdty1);          // roomId 4
         questionRepository.save(question1);         // questionId 1
 
@@ -117,7 +111,6 @@ public class RepositoryTest {
     @Test
     @Order(4)
     public void testQuestionSequenceGenerator() {
-
         roomRepository.saveAndFlush(wdty1);              // roomId 5
         questionRepository.saveAndFlush(question2);     // questionId 2
         questionRepository.saveAndFlush(question3);     // questionId 3
@@ -137,12 +130,9 @@ public class RepositoryTest {
         assertEquals(calculus, output);
     }
 
-
-
     @Test
     @Order(6)
     public void saveAndRetrieveStudentTest() {
-
         roomRepository.saveAndFlush(wdty1);     // roomId 7
         System.out.println("ROOMID TEST 6: " + wdty1.getRoomId());
         Student expected = new Student(
@@ -163,7 +153,6 @@ public class RepositoryTest {
     @Test
     @Order(7)
     public void saveAndRetrieveModeratorTest() {
-
         roomRepository.saveAndFlush(calculus);   // roomId 8
         System.out.println("ROOM ID TEST 7: " + calculus.getRoomId());
 
@@ -178,7 +167,6 @@ public class RepositoryTest {
         System.out.println(outputlist);
         assertEquals(expected, outputlist.get(0));
         assertEquals(expected, moderatorUserRepository.findById(2));
-
     }
 
     @Test
@@ -212,6 +200,4 @@ public class RepositoryTest {
                 questionRepository.findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(10, true);
         assertEquals(7, answered.get(0).getId());
     }
-
-
 }

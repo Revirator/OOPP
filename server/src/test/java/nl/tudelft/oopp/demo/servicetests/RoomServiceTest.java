@@ -23,13 +23,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ExtendWith(MockitoExtension.class)   // automatically closes repo after each test
 public class RoomServiceTest {
 
-    // We are mocking the repositories, since these are tested in isolation.
     @Mock
     private RoomRepository roomRepository;
     @Mock
@@ -41,7 +39,6 @@ public class RoomServiceTest {
     private Room roomTwo;
     @Mock
     private Room roomThree;
-
 
     @BeforeEach
     void setUp() {
@@ -63,14 +60,11 @@ public class RoomServiceTest {
                 "Computer Networks", false);
     }
 
-
-
     @Test
     public void getRoomsTest() {
         assertNotNull(roomService.getRooms());
         verify(roomRepository).findAll();
     }
-
 
     @Test
     public void getRoomByIdTest() {
@@ -91,7 +85,6 @@ public class RoomServiceTest {
         Room capturedRoom = roomArgumentCaptor.getValue();
         assertEquals("Software Quality And Testing", capturedRoom.getRoomName());
     }
-
 
     @Test
     public void testUpdateRoomSpeed() {
@@ -125,9 +118,4 @@ public class RoomServiceTest {
         verify(roomRepository).findFirstByStudentsLink(anyString());
         verify(roomOne).end();
     }
-
-
-
-
-
 }

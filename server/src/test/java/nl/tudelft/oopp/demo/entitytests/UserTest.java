@@ -13,8 +13,6 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
 import org.junit.jupiter.api.Test;
 
-
-
 public class UserTest {
 
     private Room roomOne;
@@ -69,10 +67,10 @@ public class UserTest {
 
     @Test
     public void testGetRoom() {
-        assertEquals(1, student1.getRoom());
-        assertEquals(1, studentWithoutId.getRoom());
-        assertEquals(1, moderator1.getRoom());
-        assertEquals(1, moderatorWithoutId.getRoom());
+        assertEquals(1, student1.getRoomId());
+        assertEquals(1, studentWithoutId.getRoomId());
+        assertEquals(1, moderator1.getRoomId());
+        assertEquals(1, moderatorWithoutId.getRoomId());
     }
 
     @Test

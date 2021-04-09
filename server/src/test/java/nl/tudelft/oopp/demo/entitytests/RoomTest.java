@@ -16,8 +16,6 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
 import org.junit.jupiter.api.Test;
 
-
-
 public class RoomTest {
 
     private Room roomOne;
@@ -48,8 +46,6 @@ public class RoomTest {
         assertNotNull(emptyRoom);
     }
 
-
-
     @Test
     public void testGetRoomId() {
         assertEquals(0, roomWithoutId.getRoomId());
@@ -68,13 +64,11 @@ public class RoomTest {
         assertEquals("CSE1200", roomTwo.getRoomName());
     }
 
-
     @Test
     public void getIsActive() {
         assertTrue(roomOne.isActive());
         assertFalse(roomWithoutId.isActive());
     }
-
 
     @Test
     public void getQuestions() {
@@ -105,7 +99,6 @@ public class RoomTest {
         assertEquals(new ArrayList<>(), roomOne.getParticipants());
     }
 
-
     @Test
     public void setStudents() {
         Student student1 = new Student(1, "Pieter", roomOne);
@@ -114,8 +107,6 @@ public class RoomTest {
         assertEquals(List.of(student1, student2), roomTwo.getStudents());
     }
 
-
-
     @Test
     public void testGetRoomLinks() {
         assertNotNull(roomOne.getStudentsLink());
@@ -123,7 +114,6 @@ public class RoomTest {
         assertNotNull(roomTwo.getStudentsLink());
         assertNotNull(roomTwo.getModeratorLink());
     }
-
 
     @Test
     public void testLinkGenerator() {
