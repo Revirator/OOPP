@@ -60,4 +60,13 @@ public class LinkRoomController {
         studentCode.setText(this.room.getStudentsLink());
         moderatorCode.setText(this.room.getModeratorLink());
     }
+
+    /**
+     * Getter for room
+     * (Used for testing).
+     * @return
+     */
+    public Room getRoom() {
+        return this.room;
+    }
 }
