@@ -81,6 +81,12 @@ public class UserCommunicationTest {
     }
 
     @Test
+    public void testGetStudentError() {
+        mockServer.stop();
+        assertEquals(ServerCommunication.getStudent((long) 15), null);
+    }
+
+    @Test
     public void testGetStudents() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -113,6 +119,12 @@ public class UserCommunicationTest {
     }
 
     @Test
+    public void testGetStudentsError() {
+        mockServer.stop();
+        assertEquals(ServerCommunication.getStudents(1), null);
+    }
+
+    @Test
     public void testGetModerators() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -142,6 +154,12 @@ public class UserCommunicationTest {
                             .withBody("")
             );
         assertEquals(new ArrayList<Moderator>(), ServerCommunication.getModerators(27));
+    }
+
+    @Test
+    public void testGetModeratorsError() {
+        mockServer.stop();
+        assertEquals(ServerCommunication.getModerators(1), null);
     }
 
     @Test
@@ -184,6 +202,12 @@ public class UserCommunicationTest {
     }
 
     @Test
+    public void testSendUserError() {
+        mockServer.stop();
+        assertEquals((long) -1, ServerCommunication.sendUser(mod, 20));
+    }
+
+    @Test
     public void testRemoveUser() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -211,6 +235,12 @@ public class UserCommunicationTest {
                             .withStatusCode(400)
             );
         assertFalse(ServerCommunication.removeUser(14));
+    }
+
+    @Test
+    public void testRemoveUserError() {
+        mockServer.stop();
+        assertFalse(ServerCommunication.removeUser(1));
     }
 
     @Test
@@ -288,4 +318,9 @@ public class UserCommunicationTest {
         assertTrue(ServerCommunication.checkIfBanned(student));
     }
 
+    @Test
+    public void testCheckIfBannedError() {
+        mockServer.stop();
+        assertTrue(ServerCommunication.checkIfBanned(student));
+    }
 }
