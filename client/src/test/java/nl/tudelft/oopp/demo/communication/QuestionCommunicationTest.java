@@ -75,7 +75,7 @@ public class QuestionCommunicationTest {
     }
 
     @Test
-    public void testGetQUestionsError() {
+    public void testGetQuestionsError() {
         mockServer.stop();
         assertEquals(null, ServerCommunication.getQuestions(25));
     }
@@ -191,6 +191,12 @@ public class QuestionCommunicationTest {
     }
 
     @Test
+    public void testSetAnswerError() {
+        mockServer.stop();
+        assertFalse(ServerCommunication.setAnswer(31, "testAnswer"));
+    }
+
+    @Test
     public void testEditQEmpty() {
         assertFalse(ServerCommunication.editQuestion(questionA.getId(), ""));
     }
@@ -224,6 +230,12 @@ public class QuestionCommunicationTest {
                     response()
                             .withStatusCode(400)
             );
+        assertFalse(ServerCommunication.editQuestion(31, "updateBody"));
+    }
+
+    @Test
+    public void testEditQuestionError() {
+        mockServer.stop();
         assertFalse(ServerCommunication.editQuestion(31, "updateBody"));
     }
 
@@ -304,6 +316,12 @@ public class QuestionCommunicationTest {
     }
 
     @Test
+    public void testMarkQAsError() {
+        mockServer.stop();
+        assertFalse(ServerCommunication.markQuestionAsAnswered(31));
+    }
+
+    @Test
     public void testUpvoteQuestion() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -332,6 +350,12 @@ public class QuestionCommunicationTest {
     }
 
     @Test
+    public void testUpvoteQuestionError() {
+        mockServer.stop();
+        assertFalse(ServerCommunication.upvoteQuestion((long) 31));
+    }
+
+    @Test
     public void testDeUpvoteQ() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -356,6 +380,12 @@ public class QuestionCommunicationTest {
                     response()
                             .withStatusCode(400)
             );
+        assertFalse(ServerCommunication.deUpvoteQuestion((long) 31));
+    }
+
+    @Test
+    public void testDeupvoteQuestionError() {
+        mockServer.stop();
         assertFalse(ServerCommunication.deUpvoteQuestion((long) 31));
     }
 
@@ -390,6 +420,12 @@ public class QuestionCommunicationTest {
     }
 
     @Test
+    public void testMarkQAsIsBAnsweredError() {
+        mockServer.stop();
+        assertFalse(ServerCommunication.markQuestionAsIsBeingAnswered(31));
+    }
+
+    @Test
     public void testMarkQAsIsNotBAnswered() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -416,6 +452,12 @@ public class QuestionCommunicationTest {
                     response()
                             .withStatusCode(400)
             );
+        assertFalse(ServerCommunication.markQuestionAsIsNotBeingAnswered(31));
+    }
+
+    @Test
+    public void testMarkQAsIsNotBAnsweredError() {
+        mockServer.stop();
         assertFalse(ServerCommunication.markQuestionAsIsNotBeingAnswered(31));
     }
 }
