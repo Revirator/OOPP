@@ -61,8 +61,8 @@ This application relies on the following tools:
 
 You can either download the code directly as ZIP file [here](https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-repositories/oopp-group-43/repository-template/-/archive/master/repository-template-master.zip) or:
 
-- Clone our repository using SSH via [this link](git@gitlab.ewi.tudelft.nl:cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git)
-- Clone our repository using HTTPS via [this link](https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git)
+- Clone our repository using SSH via `git@gitlab.ewi.tudelft.nl:cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git`
+- Clone our repository using HTTPS via `https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git`
 
 
 ### Configure database
@@ -104,8 +104,8 @@ file, which is ignored by git.
   (preferably IntelliJ Ultimate Edition, which can be installed via [this link](https://www.jetbrains.com/idea/))
 
 
-- Clone this repository on your local machine, using SSH via [this link](git@gitlab.ewi.tudelft.nl:cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git)
-  or using HTTPS via [this link](https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git).
+- Clone this repository on your local machine, using SSH via `git@gitlab.ewi.tudelft.nl:cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git`
+  or using HTTPS via `https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-repositories/oopp-group-43/repository-template.git`
 
 
 - In `application.properties`, set `spring.profiles.active= ` to `development` to use the in-memory database H2.
