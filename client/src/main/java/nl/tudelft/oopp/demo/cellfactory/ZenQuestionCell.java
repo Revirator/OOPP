@@ -6,6 +6,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ZenQuestionCell extends ListCell<Question> {
@@ -31,28 +33,44 @@ public class ZenQuestionCell extends ListCell<Question> {
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
-        columnZeroConstraints.setPrefWidth(250);
-        columnZeroConstraints.setPercentWidth(70);
+        columnZeroConstraints.setPercentWidth(85);
         ColumnConstraints columnOneConstraints = new ColumnConstraints();
-        columnOneConstraints.setPrefWidth(100);
-        columnOneConstraints.setPercentWidth(30);
+        columnOneConstraints.setPercentWidth(12);
         gridPane.getColumnConstraints().add(columnZeroConstraints);
         gridPane.getColumnConstraints().add(columnOneConstraints);
 
+        RowConstraints firstRow = new RowConstraints();
+        firstRow.setPrefHeight(20);
+        RowConstraints rowConstraints = new RowConstraints();
+        gridPane.getRowConstraints().add(firstRow);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
+
         // Create all labels
         Label questionLabel = new Label();
-        Label upVotesLabel = new Label();
-        Label ownerLabel = new Label();
-
-        // Assign ID's to labels
         questionLabel.setId("questionLabel");
-        upVotesLabel.setId("upVotesLabel");
-        ownerLabel.setId("ownerLabel");
+        questionLabel.setPrefWidth(340);
+        questionLabel.wrapTextProperty().setValue(true);
 
+        Label upVotesLabel = new Label();
+        upVotesLabel.setId("upVotesLabel");
+
+        Label ownerLabel = new Label();
+        ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
+
+        Label answerLabel = new Label();
+        answerLabel.setId("answerLabel");
+        answerLabel.setPrefWidth(340);
+        answerLabel.setStyle("-fx-border-color: black");
+        answerLabel.wrapTextProperty().setValue(true);
 
         // Add elements to grid pane
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionLabel, 0,1);
+        gridPane.add(answerLabel, 0,2);
         gridPane.add(upVotesLabel, 1,0);
 
         // Give background colours
@@ -94,14 +112,19 @@ public class ZenQuestionCell extends ListCell<Question> {
             // Look for question and owner label
             Label questionLabel = (Label) gridPane.lookup("#questionLabel");
             Label ownerLabel = (Label) gridPane.lookup("#ownerLabel");
-            Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
+            Label answerLabel = (Label) gridPane.lookup("#answerLabel");
 
             // Update question
             if (questionLabel != null) {
                 questionLabel.setText(item.getText());
             }
 
+            if (answerLabel != null) {
+                answerLabel.setText("Answer: " + item.getAnswer());
+            }
+
             ownerLabel.setText(item.getOwner());
+            Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
             upVotesLabel.setText(item.getUpvotes() + " Votes");
 
             // Show graphic representation
