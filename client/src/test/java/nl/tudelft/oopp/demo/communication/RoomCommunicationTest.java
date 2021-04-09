@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.communication;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
@@ -102,6 +103,11 @@ public class RoomCommunicationTest {
     }
 
     @Test
+    public void testMakeNullRoom() {
+        assertNull(ServerCommunication.makeRoom(null));
+    }
+
+    @Test
     public void testMakeEmptyRoomStatus() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -116,6 +122,12 @@ public class RoomCommunicationTest {
                             .withBody("")
             );
         assertNull(ServerCommunication.makeRoom(roomA));
+    }
+
+    @Test
+    public void testMakeRoomError() {
+        mockServer.stop();
+        assertEquals(roomA, ServerCommunication.makeRoom(roomA));
     }
 
     /**

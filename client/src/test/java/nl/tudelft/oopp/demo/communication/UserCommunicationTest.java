@@ -202,6 +202,12 @@ public class UserCommunicationTest {
     }
 
     @Test
+    public void testSendUserError() {
+        mockServer.stop();
+        assertEquals((long) -1, ServerCommunication.sendUser(mod, 20));
+    }
+
+    @Test
     public void testRemoveUser() {
         new MockServerClient("localhost", 8080)
             .when(

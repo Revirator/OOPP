@@ -268,6 +268,12 @@ public class QuestionCommunicationTest {
     }
 
     @Test
+    public void testPostQuestionError() {
+        mockServer.stop();
+        assertEquals((long) -1, ServerCommunication.postQuestion(questionB));
+    }
+
+    @Test
     public void testMarkQAsAn() {
         new MockServerClient("localhost", 8080)
             .when(
