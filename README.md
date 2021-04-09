@@ -83,12 +83,12 @@ When using PostgreSQL, all tables will be inserted into a database named 'Questi
 thus this database will have to be created beforehand.
 
 
-In the folder `nl.tudelft.oopp.demo.config`, our Config files can be found, serving as database loaders.
+In the folder `nl.tudelft.oopp.questionme.config`, our Config files can be found, serving as database loaders.
 
 ### Starting the server
 
-Start up the server by navigating to the `DemoApplication` file under `nl.tudelft.oopp.demo` and simply run this class.
-To open the client application, navigate to `MainApp` under `nl.tudelft.oopp.demo` and similarly, run this class.
+Start up the server by navigating to the `DemoApplication` file under `nl.tudelft.oopp.questionme` and simply run this class.
+To open the client application, navigate to `MainApp` under `nl.tudelft.oopp.questionme` and similarly, run this class.
 This should open a window displaying our splash screen. 
 
 In your console, you will see server logs containing information about each server request, 
