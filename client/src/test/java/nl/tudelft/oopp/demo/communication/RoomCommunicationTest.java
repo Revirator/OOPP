@@ -79,6 +79,12 @@ public class RoomCommunicationTest {
     }
 
     @Test
+    public void testGetRoomError() {
+        mockServer.stop();
+        assertNull(ServerCommunication.getRoom("testCode", false));
+    }
+
+    @Test
     public void testMakeEmptyRoom() {
         new MockServerClient("localhost", 8080)
             .when(

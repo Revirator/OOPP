@@ -9,6 +9,7 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import nl.tudelft.oopp.demo.data.Question;
 import org.junit.jupiter.api.AfterEach;
@@ -74,6 +75,12 @@ public class QuestionCommunicationTest {
     }
 
     @Test
+    public void testGetQUestionsError() {
+        mockServer.stop();
+        assertEquals(null, ServerCommunication.getQuestions(25));
+    }
+
+    @Test
     public void testgetAnsQue() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -105,6 +112,12 @@ public class QuestionCommunicationTest {
     }
 
     @Test
+    public void testGetAnsQueError() {
+        mockServer.stop();
+        assertEquals(List.of(), ServerCommunication.getAnsweredQuestions(25));
+    }
+
+    @Test
     public void testDeleteQuestion() {
         new MockServerClient("localhost", 8080)
             .when(
@@ -132,6 +145,12 @@ public class QuestionCommunicationTest {
                             .withStatusCode(400)
             );
         assertFalse(ServerCommunication.deleteQuestion(31));
+    }
+
+    @Test
+    public void deleteQuestionErrorTest() {
+        mockServer.stop();
+        assertEquals(false, ServerCommunication.deleteQuestion(1));
     }
 
     @Test
