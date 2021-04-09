@@ -19,8 +19,7 @@ public class ServerCommunication {
 
     protected static final HttpClient client = HttpClient.newBuilder().build();
 
-    // Had to modify the serializer because the room entity uses LocalDateTime
-    // and for some reason gson doesn't support that...
+
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>)
                 (json, typeOfT, context) -> LocalDateTime.parse(json.getAsString(),

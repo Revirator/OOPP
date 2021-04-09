@@ -180,7 +180,7 @@ public class Question {
      * @return true if equal, false if not equal
      */
     @Override
-    public boolean equals(Object o) {  // Needs to be redone if we ever use it
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }

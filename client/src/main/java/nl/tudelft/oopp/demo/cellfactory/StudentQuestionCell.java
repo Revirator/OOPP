@@ -164,9 +164,7 @@ public class StudentQuestionCell extends ListCell<Question> {
         upVoteButton.setOnAction(event -> {
 
             src.upvoteQuestion(this.question);
-            //   // Not needed anymore now we sort by time
-            //            questions.sort(Comparator.comparing(Question::getUpvotes,
-            //                        Comparator.reverseOrder()));
+
         });
 
 
@@ -176,8 +174,8 @@ public class StudentQuestionCell extends ListCell<Question> {
             if (this.question.isOwner()) {
                 // Next line marks the question as answered in the DB
                 ServerCommunication.markQuestionAsAnswered(question.getId());
-                answered.add(question);     // Those will probably get removed later
-                questions.remove(question); // since they change stuff only locally
+                answered.add(question);
+                questions.remove(question);
             }
         });
 
