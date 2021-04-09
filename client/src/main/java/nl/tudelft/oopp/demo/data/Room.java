@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class Room {
-    // these match the properties in Room entity on server
-    // but we only include what we need on client (there will be more added when needed)
-    // No setter necessary, since we don't update on client.
+
+    /*
+       these match the properties in Room entity on server
+       but we only include what we need on client
+       No setter necessary, since we don't update on client.
+    */
 
     private long roomId;
     private String roomName;

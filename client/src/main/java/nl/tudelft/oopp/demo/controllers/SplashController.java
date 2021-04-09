@@ -16,9 +16,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Moderator;
 import nl.tudelft.oopp.demo.data.Room;
@@ -42,6 +42,8 @@ public class SplashController {
     @FXML
     private TextField hour;     // the value of hour user enters
     @FXML
+    private TextField ownerName; // the value of the name of the instant room owner
+    @FXML
     private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
 
 
@@ -55,7 +57,7 @@ public class SplashController {
             String code = link.getText();
             Room room = ServerCommunication.getRoom(code, true);
 
-            // Using alert temporary until the other features are implemented
+            // Using alert
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
             if (room == null) {     // The room is null when the code is invalid
@@ -93,26 +95,6 @@ public class SplashController {
                         }
                     }
                 } else {
-                    // Here the view should change to the waiting room view instead
-
-                    URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(xmlUrl);
-                    Parent root = null;
-
-                    try {
-                        root = loader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Alert error = new Alert(Alert.AlertType.ERROR);
-                        error.setContentText("Something went wrong! Could not load the room");
-                        error.show();
-                    }
-
-                    Stage stage = (Stage) anchor.getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
 
                     Student student = new Student(nickName.getText(), room);
                     if (ServerCommunication.checkIfBanned(student)) {
@@ -120,12 +102,38 @@ public class SplashController {
                         error.setContentText("You are banned from this lecture!");
                         error.show();
                     } else {
+
+                        URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(xmlUrl);
+                        Parent root = null;
+
+                        try {
+                            root = loader.load();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Alert error = new Alert(Alert.AlertType.ERROR);
+                            error.setContentText("Something went wrong! Could not load the room");
+                            error.show();
+                        }
+
+                        Stage stage = (Stage) anchor.getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.getIcons().add(new Image(getClass()
+                                .getResourceAsStream("/images/logo.png")));
+                        stage.show();
+
                         student = new Student(
                                 ServerCommunication.sendUser(student, room.getRoomId()),
                                 student.getNickname(),
                                 student.getRoom(),
                                 student.getIpAddress(),
                                 student.isBanned());
+                        long studentId = student.getId();
+                        stage.setOnCloseRequest(e -> {
+                            ServerCommunication.removeUser(studentId);
+                        });
                         WaitingRoomController waitingRoomController = loader.getController();
                         waitingRoomController.setData(student, room);
                         waitingRoomController.main(new String[0]);
@@ -155,9 +163,11 @@ public class SplashController {
         if (scheduledBox.isSelected()) {
             date.setDisable(false);
             hour.setDisable(false);
+            ownerName.setDisable(true);
         } else {
             date.setDisable(true);
             hour.setDisable(true);
+            ownerName.setDisable(false);
         }
     }
 
@@ -177,7 +187,7 @@ public class SplashController {
             newRoom = ServerCommunication.makeRoom(newRoom);
 
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
-            Moderator moderator = new Moderator(nickName.getText(), newRoom);
+            Moderator moderator = new Moderator(ownerName.getText(), newRoom);
             moderator = new Moderator(
                     ServerCommunication.sendUser(moderator, newRoom.getRoomId()),
                     moderator.getNickname(),
@@ -185,6 +195,7 @@ public class SplashController {
             ModeratorView moderatorView = new ModeratorView();
             moderatorView.setData(moderator, newRoom);
             moderatorView.start(primaryStage);
+            loadRoomWithLinks(newRoom);
         }
     }
 
@@ -225,36 +236,7 @@ public class SplashController {
 
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
-
-            // Change it to a window with the links
-            /*
-            URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(xmlUrl);
-            Parent root = null;
-
-            try {
-                root = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setContentText("Something went wrong! Could not load the links");
-                error.show();
-            }
-
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.showAndWait();
-             */
-
-            // TODO: Make sure links are copyable
-            Alert alertMod = new Alert(Alert.AlertType.INFORMATION);
-            alertMod.setTitle("Links for the room " + roomName.getText());
-            alertMod.setHeaderText("Links for the room " + roomName.getText());
-            alertMod.setContentText("Moderator link: " + newRoom.getModeratorLink()
-                    + "\n Student link: " + newRoom.getStudentsLink());
-            alertMod.show();
+            loadRoomWithLinks(newRoom);
         }
     }
 
@@ -272,11 +254,6 @@ public class SplashController {
         if (name.equals("") || code.equals("")) {
             alert.setContentText("Please enter both nickname and link.");
             flag = false;
-
-        } else if (name.contains(" ") || code.contains(" ")) {
-            alert.setContentText("The name and the link cannot contain empty spaces.");
-            flag = false;
-
         } else if (name.contains("/") || code.contains("/")
                 || name.contains("=") || code.contains("=")
                 || name.contains(",") || code.contains(",")) {
@@ -288,10 +265,37 @@ public class SplashController {
             flag = false;
         }
 
-        if (flag == false) {
+        if (!flag) {
             alert.show();
         }
 
         return flag;
+    }
+
+    private void loadRoomWithLinks(Room room) {
+        URL xmlUrl = getClass().getResource("/windowWithLinks.fxml");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(xmlUrl);
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText("Something went wrong! Could not load the links");
+            error.show();
+        }
+
+        Stage newStage = new Stage();
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
+        newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        newStage.show();
+
+        LinkRoomController linkRoomController = loader.getController();
+        linkRoomController.setData(room);
+        linkRoomController.main(new String[0]);
     }
 }

@@ -5,11 +5,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Paint;
 import nl.tudelft.oopp.demo.controllers.RoomController;
-import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
-import nl.tudelft.oopp.demo.data.Student;
 
 public class StudentAnsweredCell extends ListCell<Question> {
 
@@ -40,30 +42,47 @@ public class StudentAnsweredCell extends ListCell<Question> {
 
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+        ColumnConstraints columnZeroConstraints = new ColumnConstraints();
+        columnZeroConstraints.setPrefWidth(330);
+        columnZeroConstraints.setPercentWidth(90);
+        ColumnConstraints columnOneConstraints = new ColumnConstraints();
+        columnOneConstraints.setPrefWidth(20);
+        gridPane.getColumnConstraints().add(columnZeroConstraints);
+        gridPane.getColumnConstraints().add(columnOneConstraints);
+
+        RowConstraints rowConstraints = new RowConstraints();
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
+        gridPane.getRowConstraints().add(rowConstraints);
 
         // Create all labels with ID's
         Label questionLabel = new Label();
         questionLabel.setId("questionLabel");
+        questionLabel.setPrefWidth(440);
+        questionLabel.wrapTextProperty().setValue(true);
 
         Label upVotesLabel = new Label();
         upVotesLabel.setId("upVotesLabel");
 
         Label ownerLabel = new Label();
         ownerLabel.setId("ownerLabel");
+        ownerLabel.wrapTextProperty().setValue(true);
+        ownerLabel.setPrefWidth(140);
+        ownerLabel.setTextFill(Paint.valueOf("#00A6D6"));
+
+        HBox ownerUpVotesWrapper = new HBox(ownerLabel, upVotesLabel);
+        ownerUpVotesWrapper.setSpacing(230);
 
         Label answerLabel = new Label();
         answerLabel.setId("answerLabel");
-
-        // Position labels
-        questionLabel.setAlignment(Pos.CENTER_LEFT);
-        ownerLabel.setAlignment(Pos.CENTER_LEFT);
-        upVotesLabel.setAlignment(Pos.CENTER_RIGHT);
-        answerLabel.setAlignment(Pos.CENTER_LEFT);
+        answerLabel.setPrefWidth(440);
+        answerLabel.wrapTextProperty().setValue(true);
+        answerLabel.setStyle("-fx-border-color: black");
 
         // Add elements to grid pane
-        gridPane.add(ownerLabel, 0, 0);
+        gridPane.add(ownerUpVotesWrapper, 0, 0);
         gridPane.add(questionLabel, 0,1);
-        gridPane.add(upVotesLabel, 1,1);
         gridPane.add(answerLabel, 0,2);
 
         // Give background colours

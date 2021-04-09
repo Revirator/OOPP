@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.views;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
+import java.util.List;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -11,13 +13,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.ModeratorQuestionCell;
-import nl.tudelft.oopp.demo.cellfactory.NoSelectionModel;
+import nl.tudelft.oopp.demo.cellfactory.ZenAnsweredCell;
+import nl.tudelft.oopp.demo.cellfactory.ZenQuestionCell;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.ModeratorRoomController;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -30,6 +35,7 @@ public class ModeratorView extends AppView {
      */
     private DoubleProperty percentageFontSize = new SimpleDoubleProperty(10);
     private DoubleProperty normalFontSize = new SimpleDoubleProperty(10);
+    private Parent root;
 
     /**
      * Creates the moderator screen scene and loads it on the primary stage.
@@ -41,7 +47,7 @@ public class ModeratorView extends AppView {
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/moderatorRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = null;
+        root = null;
 
         try {
             root = loader.load();
@@ -59,13 +65,16 @@ public class ModeratorView extends AppView {
 
         // Set scene on primary stage
         primaryStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        primaryStage.setOnCloseRequest(e -> {
+            ServerCommunication.removeUser(super.getUser().getId());
+        });
         primaryStage.show();
 
         // Create responsive lists
         linkLists(root, mrc);
-
-        // Add choice boxes to screen
-        createChoiceBoxes(scene);
 
         // Binds the font sizes relative to the screen size
         bindFonts(scene);
@@ -73,10 +82,9 @@ public class ModeratorView extends AppView {
 
     /**
      * Bind the correct cells to the list views.
-     * @param root parent node of the view
      * @param roomController current room controller
      */
-    public void bindCellFactory(Parent root, RoomController roomController) {
+    public void bindCellFactory(RoomController roomController) {
         // Look up all list views
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
@@ -92,25 +100,18 @@ public class ModeratorView extends AppView {
     }
 
     /**
-     * Creates the choice boxes for polls.
-     * @param scene current scene
+     * Bind the correct cells to the list views.
      */
-    private void createChoiceBoxes(Scene scene) {
-        Parent root = scene.getRoot();
+    public void bindZenCellFactory() {
+        // Look up all list views
+        ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
+        ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
 
-        // Reference to choice boxes
-        ChoiceBox<String> answers = (ChoiceBox) root.lookup("#answerAmount");
-        ChoiceBox<String> correctAnswer = (ChoiceBox) root.lookup("#correctAnswer");
-
-        // Amount of answers
-        for (int i = 1; i < 11; i++) {
-            answers.getItems().add(String.valueOf(i));
-        }
-
-        // Letters for correct answer
-        for (char letter = 'A'; letter <= 'J'; letter++) {
-            correctAnswer.getItems().add(String.valueOf(letter));
-        }
+        // Set cell creation per list view
+        questionListView.setCellFactory(param ->
+                new ZenQuestionCell());
+        answeredListView.setCellFactory(param ->
+                new ZenAnsweredCell());
     }
 
     /**
@@ -143,6 +144,18 @@ public class ModeratorView extends AppView {
 
         // Bind shared fonts
         super.bindFonts(scene);
+    }
+
+    /**
+     * Most upvoted questions are displayed on top for Moderator.
+     * @param questionList list of current questions
+     * @param answeredList list of current answered questions
+     */
+    @Override
+    public void update(List<Question> questionList, List<Question> answeredList) {
+        super.update(questionList, answeredList);
+
+        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
     }
 
     /**

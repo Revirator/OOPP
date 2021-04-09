@@ -1,0 +1,13 @@
+#exportQuestions {
+ -fx-background-image: url('images/exportOrangeBlue.png');
+ -fx-background-repeat: no-repeat;
+ -fx-background-position: center;
+ -fx-background-size: 90% 90%;
+}
+
+#showLinks {
+ -fx-background-image: url('images/popup.png');
+ -fx-background-repeat: no-repeat;
+ -fx-background-position: center;
+ -fx-background-size: 90% 90%;
+}

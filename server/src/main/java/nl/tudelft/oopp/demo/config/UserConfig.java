@@ -24,12 +24,12 @@ public class UserConfig {
         return args -> {
 
             Room pts = new Room(
-                    LocalDateTime.of(2021, Month.MARCH, 15, 8, 45, 00),
+                    LocalDateTime.of(2021, Month.MARCH, 15, 8, 45, 0),
                     "Probability Theory and Statistics", true);
 
             roomRepository.save(pts);
 
-            String ipAddress = InetAddress.getLocalHost().getHostAddress().toString();
+            String ipAddress = InetAddress.getLocalHost().getHostAddress();
 
             Student senne = new Student("Senne", pts, ipAddress);
             Student pavel = new Student("Pavel", pts, ipAddress);

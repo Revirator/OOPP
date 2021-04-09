@@ -1,0 +1,7 @@
+.Button {
+    -fx-background-image: url('images/clipboard.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 90% 90%;
+}
+

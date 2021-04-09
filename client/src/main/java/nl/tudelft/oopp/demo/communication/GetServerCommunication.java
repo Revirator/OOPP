@@ -28,7 +28,7 @@ public class GetServerCommunication extends ServerCommunication {
         HttpRequest request;
         HttpResponse<String> response;
 
-        if (toLog == true) {
+        if (toLog) {
             request = HttpRequest.newBuilder().GET()
                     .uri(URI.create("http://localhost:8080/rooms/" + code + "/log")).build();
 
@@ -36,7 +36,6 @@ public class GetServerCommunication extends ServerCommunication {
             request = HttpRequest.newBuilder().GET()
                     .uri(URI.create("http://localhost:8080/rooms/" + code)).build();
         }
-
 
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -73,8 +72,7 @@ public class GetServerCommunication extends ServerCommunication {
             System.out.println("Status: " + response.statusCode());
             return List.of();
         }
-        return gson.fromJson(response.body(), new TypeToken<List<Student>>() {
-        }.getType());
+        return gson.fromJson(response.body(), new TypeToken<List<Student>>(){}.getType());
     }
 
     /** Sends an id to the server.
@@ -139,7 +137,6 @@ public class GetServerCommunication extends ServerCommunication {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
-            // not sure? maybe return something else
             return null;
         }
 
@@ -173,7 +170,7 @@ public class GetServerCommunication extends ServerCommunication {
 
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
-            return List.of();     // Not sure if that is needed but leaving it anyways
+            return List.of();
         }
 
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());

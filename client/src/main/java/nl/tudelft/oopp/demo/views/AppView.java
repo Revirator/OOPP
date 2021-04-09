@@ -33,8 +33,8 @@ public abstract class AppView extends MainView {
     /*
     Observable lists for questions, answered questions and participants.
      */
-    private ObservableList<Question> questions = FXCollections.observableArrayList();
-    private ObservableList<Question> answered = FXCollections.observableArrayList();
+    protected ObservableList<Question> questions = FXCollections.observableArrayList();
+    protected ObservableList<Question> answered = FXCollections.observableArrayList();
     private ObservableList<User> participants = FXCollections.observableArrayList();
 
     private User user;
@@ -63,76 +63,71 @@ public abstract class AppView extends MainView {
      */
     public void updateParticipants(List<Student> studentList, List<Moderator> moderatorList) {
         participants.clear();
-        /*
-        for (User s : participants) {
-            if (s.getRole().equals("Student") && ((Student) s).isBanned()) {
-                participants.remove(s);
-            }
-        }
-
-        for (Student s : studentList) {
-            s.setRoom(this.room);
-            if (!participants.contains(s) && !s.isBanned()) {
-                participants.add(s);
-            }
-        }
-
-        for (Moderator m : moderatorList) {
-            m.setRoom(this.room);
-            if (!participants.contains(m)) {
-                participants.add(m);
-            }
-        }
-        */
 
         studentList.sort(Comparator.comparing(Student::getNickname));
         moderatorList.sort(Comparator.comparing(Moderator::getNickname));
         participants.addAll(moderatorList);
         participants.addAll(studentList);
-        // participants.sort(Comparator.comparing(User::getNickname));
-        // participants.sort(Comparator.comparing(User::getRole));
     }
 
     /**
      * Updates the questions and answered questions.
-     * @param questionList list of current questions
+     * @param questionList list of current questions (also containing all answered questions)
      * @param answeredList list of current answered questions
      */
     public void update(List<Question> questionList, List<Question> answeredList) {
 
-        answered.clear();
-        answered.addAll(answeredList);
-
-        // remove deleted questions from view
-        Iterator<Question> iterator = questions.iterator();
-        while (iterator.hasNext()) {
-            Question q = iterator.next();
+        // remove deleted (non-answered) questions from view
+        Iterator<Question> queIterator = questions.iterator();
+        while (queIterator.hasNext()) {
+            Question q = queIterator.next();
             if (!questionList.contains(q)) {
-                iterator.remove();
+                queIterator.remove();
             }
         }
 
-        // questionList contains both answered and non-answered questions!
+        // remove deleted (answered) questions from view
+        // also uses questionList to check, because this contains all questions
+        Iterator<Question> ansIterator = answered.iterator();
+        while (ansIterator.hasNext()) {
+            Question q = ansIterator.next();
+            if (!questionList.contains(q)) { // Why not answeredList?
+                ansIterator.remove();
+            }
+        }
+
+        // check for every question in the updated list (both answered/unanswered)
         for (Question q : questionList) {
 
-            Question toUpdate = searchQuestion(q.getId());
+            // previous version of questions
+            Question queToUpdate = searchQuestion(q.getId());
+            Question ansToUpdate = searchAnswered(q.getId());
 
-            // if question exists and is NOT answered, update its values.
-            if (toUpdate != null) {
-                if (answered.contains(toUpdate)) {
-                    questions.remove(toUpdate);
-                } else {
-                    toUpdate.setUpvotes(q.getUpvotes());
-                    toUpdate.setText(q.getText());
-                    toUpdate.setAnswer(q.getAnswer());
-                }
-                // if new question, just add it to the questions.
-            } else if (!answered.contains(q)) {
+            // if new question, add to questions
+            if (queToUpdate == null && ansToUpdate == null) {
                 questions.add(q);
+
+            } else if (answeredList.contains(q) && queToUpdate != null) {
+                // if question recently answered, move to answered
+                questions.remove(q);
+                answered.add(q);
+
+            } else if (answeredList.contains(q) && ansToUpdate != null) {
+                // update values question in answers
+                ansToUpdate.setUpvotes(q.getUpvotes());
+                ansToUpdate.setText(q.getText());
+                ansToUpdate.setAnswer(q.getAnswer());
+
+            } else if (questionList.contains(q) && queToUpdate != null) {
+                // update values question in questions
+                queToUpdate.setUpvotes(q.getUpvotes());
+                queToUpdate.setText(q.getText());
+                queToUpdate.setAnswer(q.getAnswer());
+                queToUpdate.setIsBeingAnswered(q.isBeingAnswered());
             }
         }
 
-        questions.sort(Comparator.comparing(Question::getTime, Comparator.naturalOrder()));
+        // newly answered questions are on top
         answered.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
     }
@@ -140,11 +135,26 @@ public abstract class AppView extends MainView {
     /**
      * Checks if this question id exists in the questionList.
      * @param questionId question id to check
-     * @return true if exists, else false.
+     * @return question if exists, else null
      */
     private Question searchQuestion(long questionId) {
 
         for (Question q : questions) {
+            if (q.getId() == questionId) {
+                return q;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if this question id exists in the answeredList.
+     * @param questionId question id to check
+     * @return question if exists, else null
+     */
+    private Question searchAnswered(long questionId) {
+
+        for (Question q : answered) {
             if (q.getId() == questionId) {
                 return q;
             }
@@ -178,7 +188,7 @@ public abstract class AppView extends MainView {
         participantsListView.setSelectionModel(new NoSelectionModel<>());
 
         // Bind the correct cells to the list views
-        bindCellFactory(root, roomController);
+        bindCellFactory(roomController);
     }
 
     /**
@@ -195,6 +205,38 @@ public abstract class AppView extends MainView {
      */
     public ObservableList<Question> getAnswered() {
         return answered;
+    }
+
+    /**
+     * Getter for the observable list of participants.
+     * @return ObservableList of participants
+     */
+    public ObservableList<User> getParticipants() {
+        return participants;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param questions ObservableList of questions
+     */
+    public void setQuestions(ObservableList<Question> questions) {
+        this.questions = questions;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param answered ObservableList of answered questions
+     */
+    public void setAnswered(ObservableList<Question> answered) {
+        this.answered = answered;
+    }
+
+    /**
+     * Setter that's only used in testing.
+     * @param participants ObservableList of participants
+     */
+    public void setParticipants(ObservableList<User> participants) {
+        this.participants = participants;
     }
 
     /**
@@ -216,10 +258,9 @@ public abstract class AppView extends MainView {
     /**
      * Binds the correct cells to all three list views.
      * Implemented by children because they have different cells.
-     * @param root parent node of the view
      * @param roomController current room controller
      */
-    public abstract void bindCellFactory(Parent root, RoomController roomController);
+    public abstract void bindCellFactory(RoomController roomController);
 
     /**
      * Makes all font sizes responsive in the UI.

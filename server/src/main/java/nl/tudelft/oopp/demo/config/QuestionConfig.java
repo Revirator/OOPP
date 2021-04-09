@@ -12,7 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 public class QuestionConfig {
 
@@ -22,11 +21,11 @@ public class QuestionConfig {
         return args -> {
 
             Room calcy1 = new Room(
-                    LocalDateTime.of(2021, Month.APRIL, 19, 8, 45, 00),
+                    LocalDateTime.of(2021, Month.MARCH, 19, 8, 45, 0),
                     "Calculus", true);
 
             Room adsy1 = new Room(
-                    LocalDateTime.of(2021, Month.JANUARY, 8, 11, 45, 00),
+                    LocalDateTime.of(2021, Month.JANUARY, 8, 11, 45, 0),
                     "Algorithms and Datastructures", true);
 
             roomRepository.save(calcy1);

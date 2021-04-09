@@ -2,16 +2,24 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Room;
@@ -51,9 +59,9 @@ public class ModeratorRoomController extends RoomController {
     public void setData(User moderator, Room room, ModeratorView moderatorView) {
         super.setData(moderator, room, moderatorView);
         this.moderatorView = moderatorView;
+        zenModeActive = false;
         this.lectureName.setText(room.getRoomName());
         setFeedback();
-        zenModeActive = false;
     }
 
     /**
@@ -146,11 +154,17 @@ public class ModeratorRoomController extends RoomController {
             fileChooser.getExtensionFilters().addAll(new FileChooser
                     .ExtensionFilter("Text Files (*.txt,*.md)", "*.txt", "*.md"));
             File selectedFile = fileChooser.showSaveDialog(null);
+            if (selectedFile == null) {
+                return;
+            }
             PrintWriter printWriter = null;
             try {
                 printWriter = new PrintWriter(selectedFile);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            }
+            if (printWriter == null) {
+                return;
             }
             List<Question> answeredQuestions = ServerCommunication
                     .getAnsweredQuestions(room.getRoomId());
@@ -169,20 +183,18 @@ public class ModeratorRoomController extends RoomController {
      */
     public void zenMode() {
 
+
         // zen mode becomes active
         if (!zenModeActive) {
             zenModeActive = true;
+
+            moderatorView.bindZenCellFactory();
+
         } else {
             zenModeActive = false;
+            moderatorView.bindCellFactory(this);
         }
     }
-
-
-    public boolean getZenMode() {
-        return zenModeActive;
-    }
-
-
 
     /**
      * Set the answer on the server-side.
@@ -203,5 +215,43 @@ public class ModeratorRoomController extends RoomController {
             return true;
         }
         return false;
+    }
+
+    /** Opens another window that display the room codes ..
+     * .. for students and moderators so that they can be copied.
+     */
+    public void showLinks() {
+        URL xmlUrl = getClass().getResource("/windowWithLinks.fxml");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(xmlUrl);
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setContentText("Something went wrong! Could not load the links");
+            error.show();
+        }
+
+        Stage newStage = new Stage();
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
+        newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        newStage.show();
+
+        LinkRoomController linkRoomController = loader.getController();
+        linkRoomController.setData(super.getRoom());
+        linkRoomController.main(new String[0]);
+    }
+
+    /**
+     * zenModeActive getter
+     * (Used for testing).
+     */
+    public boolean isZenModeActive() {
+        return this.zenModeActive;
     }
 }

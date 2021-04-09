@@ -4,17 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import nl.tudelft.oopp.demo.entities.Moderator;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.Student;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -22,7 +20,6 @@ public class UserService {
     private final RoomRepository roomRepository;
     private final UserRepository<Student> studentUserRepository;
     private final UserRepository<Moderator> moderatorUserRepository;
-
 
     /** Constructor for UserService.
      * @param studentUserRepository - retrieves Students from database.
@@ -38,27 +35,10 @@ public class UserService {
         this.roomRepository = roomRepository;
     }
 
-
-    // FOR SOME REASON THESE RETURN ALL USERS
-
-    //    /** Called by UserController.
-    //     * @return a List of students.
-    //     *          Example:
-    //     *          GET http://localhost:8080/users/students/{roomId}
-    //     */
-    //    public List<Student> getStudents(long roomId) {
-    //        return studentUserRepository.findAllByRoomRoomId(roomId);
-    //    }
-    //
-    //    /** Called by UserController.
-    //     * @return a List of moderators.
-    //     *          Example:
-    //     *          GET http://localhost:8080/users/moderators/{roomId}
-    //     */
-    //    public List<Moderator> getModerators(long roomId) {
-    //        return moderatorUserRepository.findAllByRoomRoomId(roomId);
-    //    }
-
+    /** Finds Student by id.
+     * @param studentId - long
+     * @return Optional of Student having this id
+     */
     public Optional<Student> getStudentById(Long studentId) {
         return studentUserRepository.findById(studentId);
     }
@@ -88,6 +68,7 @@ public class UserService {
         return moderatorUserRepository.save(new Moderator(moderatorName,room)).getId();
     }
 
+
     /** Updates the banned field of the student with the corresponding id.
      * @param studentId the id of the student
      */
@@ -111,5 +92,25 @@ public class UserService {
         List<String> ipAddresses = studentList.stream()
                 .map(s -> s.getIpAddress()).collect(Collectors.toList());
         return ipAddresses.contains(ipAddress);
+    }
+
+    /** Checks if the ID is linked to an existing Student/Moderator ..
+     * .. and if it is, it is removed from the respective DB and ..
+     * .. the method returns true.
+     * If the ID is not in the DB the method returns false.
+     */
+    @Transactional
+    public boolean removeUser(long userId) {
+        User userToBeRemoved = studentUserRepository.getOne(userId);
+        if (userToBeRemoved == null) {
+            userToBeRemoved = moderatorUserRepository.getOne(userId);
+            if (userToBeRemoved == null) {
+                return false;
+            }
+            moderatorUserRepository.deleteById(userId);
+            return true;
+        }
+        studentUserRepository.deleteById(userId);
+        return true;
     }
 }

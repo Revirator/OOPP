@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -40,6 +43,9 @@ public class StudentRoomController extends RoomController {
     @FXML
     private Label lectureName;
 
+    @FXML
+    private ImageView sentFeedback;
+
     private StudentView studentView;
 
     private boolean questionAllowed;
@@ -51,10 +57,11 @@ public class StudentRoomController extends RoomController {
      * @param studentView - corresponding view to this controller (to add questions)
      */
     public void setData(User user, Room room, StudentView studentView) {
+        this.questionAllowed = true;
         super.setData(user, room, studentView);
         this.studentView = studentView;
         this.lectureName.setText(room.getRoomName());
-        this.questionAllowed = true;
+
 
         // creates a service that allows a method to be called every timeframe
         ScheduledService<Boolean> serviceAllow = new ScheduledService<>() {
@@ -93,6 +100,11 @@ public class StudentRoomController extends RoomController {
         super.setRoom(newRoom);
         // The server returns a student with the room field being null
         Student tempStudent = (Student) ServerCommunication.getStudent(student.getId());
+        if (tempStudent == null) {
+            Stage stage = (Stage) anchor.getScene().getWindow();
+            stage.close();
+            return;
+        }
         if (!((Student) student).isBanned() && tempStudent.isBanned()) {
             super.setUser(new Student(tempStudent.getId(), tempStudent.getNickname(), room,
                     tempStudent.getIpAddress(), tempStudent.isBanned()));
@@ -136,7 +148,7 @@ public class StudentRoomController extends RoomController {
             } else {
                 // Create new question, id returned by server (needed for delete/edit).
                 Question newQuestion = new Question(room.getRoomId(), questionBox.getText(),
-                        student.getNickname(), true);
+                        student.getNickname(), true, false);
                 Long newId = ServerCommunication.postQuestion(newQuestion);
                 newQuestion.setId(newId);
                 questionBox.clear();
@@ -169,6 +181,10 @@ public class StudentRoomController extends RoomController {
             resetButton.setDisable(false);
             tooSlowButton.setDisable(true);
             tooFastButton.setVisible(false);
+            sentFeedback.setVisible(true);
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1.5), e -> sentFeedback.setVisible(false)));
+            timeline.play();
             ServerCommunication.sendFeedback(room.getStudentsLink(), "slow");
         }
     }
@@ -190,6 +206,10 @@ public class StudentRoomController extends RoomController {
             resetButton.setDisable(false);
             tooSlowButton.setVisible(false);
             tooFastButton.setDisable(true);
+            sentFeedback.setVisible(true);
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1.5), e -> sentFeedback.setVisible(false)));
+            timeline.play();
             ServerCommunication.sendFeedback(room.getStudentsLink(), "fast");
         }
     }
@@ -225,5 +245,14 @@ public class StudentRoomController extends RoomController {
                 ServerCommunication.sendFeedback(room.getStudentsLink(), "resetFast");
             }
         }
+    }
+
+    /**
+     * Getter for questionAllowed.
+     * (Used for testing)
+     * @return boolean
+     */
+    public boolean getQuestionAllowed() {
+        return this.questionAllowed;
     }
 }

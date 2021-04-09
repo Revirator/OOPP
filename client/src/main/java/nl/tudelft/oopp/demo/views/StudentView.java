@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.views;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.List;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -14,10 +15,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.cellfactory.ParticipantCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentAnsweredCell;
 import nl.tudelft.oopp.demo.cellfactory.StudentQuestionCell;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.controllers.StudentRoomController;
 import nl.tudelft.oopp.demo.data.Question;
@@ -29,6 +33,7 @@ public class StudentView extends AppView {
     Font sizes specific for student screen.
      */
     private DoubleProperty pollButtonFontSize = new SimpleDoubleProperty(10);
+    private Parent root;
 
     /**
      * Creates the student screen scene and loads it on the primary stage.
@@ -41,7 +46,7 @@ public class StudentView extends AppView {
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/studentRoom.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = null;
+        root = null;
 
         try {
             root = loader.load();
@@ -62,6 +67,12 @@ public class StudentView extends AppView {
 
         // Set scene on primary stage
         primaryStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        primaryStage.setOnCloseRequest(e -> {
+            ServerCommunication.removeUser(super.getUser().getId());
+        });
         primaryStage.show();
 
         // Create responsive lists
@@ -111,18 +122,17 @@ public class StudentView extends AppView {
 
         questions.add(question);
 
-        // Sort based on votes
-        questions.sort(Comparator.comparing(Question::getUpvotes, Comparator.reverseOrder()));
+        // Sort based on time
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
 
         return true;
     }
 
     /**
      * Bind the correct cells to the three list views.
-     * @param root parent node of the view
      * @param roomController current room controller
      */
-    public void bindCellFactory(Parent root, RoomController roomController) {
+    public void bindCellFactory(RoomController roomController) {
         ListView<Question> questionListView = (ListView<Question>) root.lookup("#questionListView");
         ListView<Question> answeredListView = (ListView<Question>) root.lookup("#answeredListView");
         ListView<User> participantsListView = (ListView<User>) root.lookup("#participantsListView");
@@ -132,6 +142,17 @@ public class StudentView extends AppView {
         answeredListView.setCellFactory(param ->
                 new StudentAnsweredCell(super.getAnswered(), roomController));
         participantsListView.setCellFactory(param -> new ParticipantCell());
+    }
+
+    /**
+     * Newest questions are displayed on top for Student.
+     * @param questionList list of current questions
+     * @param answeredList list of current answered questions
+     */
+    @Override
+    public void update(List<Question> questionList, List<Question> answeredList) {
+        super.update(questionList, answeredList);
+        questions.sort(Comparator.comparing(Question::getTime, Comparator.reverseOrder()));
     }
 
     /**

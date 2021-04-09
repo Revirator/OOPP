@@ -19,8 +19,7 @@ public class ServerCommunication {
 
     protected static final HttpClient client = HttpClient.newBuilder().build();
 
-    // Had to modify the serializer because the room entity uses LocalDateTime
-    // and for some reason gson doesn't support that...
+
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>)
                 (json, typeOfT, context) -> LocalDateTime.parse(json.getAsString(),
@@ -36,7 +35,6 @@ public class ServerCommunication {
         return GetServerCommunication.getRoom(code, toLog);
     }
 
-
     /**
      * Sends room to the server, returns a room with URLs.
      * @param room primitive room
@@ -45,7 +43,6 @@ public class ServerCommunication {
     public static Room makeRoom(Room room) {
         return PostServerCommunication.makeRoom(room);
     }
-
 
     /** Sends feedback to the server which is processed and the rooms are updated.
      * @param url the students link connected to a room
@@ -64,6 +61,14 @@ public class ServerCommunication {
      */
     public static Long sendUser(User user, long roomID) {
         return PostServerCommunication.sendUser(user, roomID);
+    }
+
+    /** Sends the ID of the user that needs to be removed from the DB.
+     * @param userId the ID of the user
+     * @return true if the user has been removed from the DB, false otherwise
+     */
+    public static boolean removeUser(long userId) {
+        return DeleteServerCommunication.removeUser(userId);
     }
 
     /**
@@ -162,6 +167,26 @@ public class ServerCommunication {
      */
     public static boolean markQuestionAsAnswered(long questionId) {
         return PutServerCommunication.markQuestionAsAnswered(questionId);
+    }
+
+    /** Updates attribute "isBeingAnswered" of question
+     * corresponding to this id to true in the database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsIsBeingAnswered(long questionId) {
+        return PutServerCommunication.markQuestionAsIsBeingAnswered(questionId);
+    }
+
+    /** Updates attribute "isBeingAnswered" of question
+     * corresponding to this id to false in the database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsIsNotBeingAnswered(long questionId) {
+        return PutServerCommunication.markQuestionAsIsNotBeingAnswered(questionId);
     }
 
     /** Makes POST request to server, to store new question in database.

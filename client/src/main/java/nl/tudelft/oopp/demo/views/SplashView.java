@@ -3,7 +3,6 @@ package nl.tudelft.oopp.demo.views;
 import java.io.IOException;
 import java.net.URL;
 
-import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -11,11 +10,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class SplashView extends MainView {
 
-    /**
+    /*
      * Font sizes for splash screen.
      */
     private DoubleProperty preBoxFontSize = new SimpleDoubleProperty(10);
@@ -40,6 +41,9 @@ public class SplashView extends MainView {
 
         // Set scene on primary stage
         primaryStage.setScene(scene);
+        AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
+        anchorPane.requestFocus();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         primaryStage.show();
 
         bindFonts(scene);

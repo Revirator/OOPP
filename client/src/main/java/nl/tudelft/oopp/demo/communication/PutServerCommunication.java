@@ -5,7 +5,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import javafx.scene.control.Alert;
-import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.data.User;
 
 public class PutServerCommunication extends ServerCommunication {
@@ -37,8 +36,7 @@ public class PutServerCommunication extends ServerCommunication {
      * @param code the room link as a String
      */
     public static void updateRoomStatus(String code) {
-        // Including the code in the body of the request and ..
-        // .. not in the URL might be better, but I couldn't get it to work.
+
         String url = "http://localhost:8080/rooms/update/" + code;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
@@ -93,6 +91,56 @@ public class PutServerCommunication extends ServerCommunication {
      */
     public static boolean markQuestionAsAnswered(long questionId) {
         String url = "http://localhost:8080/questions/markAnswered/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+    }
+
+    /** Updates attribute "isBeingAnswered" of question
+     * corresponding to this id to true in the database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsIsBeingAnswered(long questionId) {
+        String url = "http://localhost:8080/questions/markAsBeingAnswered/" + questionId;
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        }
+        return true;
+    }
+
+    /** Updates attribute "isBeingAnswered" of question
+     * corresponding to this id to false in the database.
+     * Makes PUT request to server. (QuestionController - QuestionService)
+     * @param questionId - id of question to be updated in database
+     * @return boolean - true if PUT operation succeeded, false otherwise.
+     */
+    public static boolean markQuestionAsIsNotBeingAnswered(long questionId) {
+        String url = "http://localhost:8080/questions/markAsNotBeingAnswered/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
