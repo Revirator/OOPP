@@ -2,10 +2,13 @@ package nl.tudelft.oopp.demo.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockConstruction;
 
 import com.sun.tools.javac.Main;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,13 +28,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.testfx.framework.junit.ApplicationTest;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class RoomControllerTest extends ApplicationTest {
 
-    private Room testRoom;
-    private ModeratorRoomController mrc;
-    private User user;
+    private final Room testRoom;
+    private final ModeratorRoomController mrc;
+    private final User user;
 
     /**
      * Constructor for this test.
@@ -45,10 +47,10 @@ public class RoomControllerTest extends ApplicationTest {
         mrc.setUser(user);
     }
 
-
     @Override
     public void start(Stage stage) throws Exception {
-        Parent mainNode = FXMLLoader.load(Main.class.getResource("moderatorRoom.fxml"));
+        Parent mainNode = FXMLLoader.load(Objects.requireNonNull(Main.class
+                .getResource("moderatorRoom.fxml")));
         stage.setScene(new Scene(mainNode));
         stage.show();
         stage.toFront();
@@ -78,11 +80,10 @@ public class RoomControllerTest extends ApplicationTest {
 
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.editQuestion(q.getId(), update);
-            }).thenReturn(true);
+            theMock.when(() -> ServerCommunication
+                    .editQuestion(q.getId(), update)).thenReturn(true);
 
-            assertEquals(mrc.editQuestion(q, update), true);
+            assertTrue(mrc.editQuestion(q, update));
             assertEquals(q.getText(), update);
         }
     }
@@ -94,12 +95,11 @@ public class RoomControllerTest extends ApplicationTest {
 
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.editQuestion(q.getId(), update);
-            }).thenReturn(false);
+            theMock.when(() -> ServerCommunication
+                    .editQuestion(q.getId(), update)).thenReturn(false);
 
-            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
-                assertEquals(mrc.editQuestion(q, update), false);
+            try (MockedConstruction<Alert> ignored = mockConstruction(Alert.class)) {
+                assertFalse(mrc.editQuestion(q, update));
                 assertEquals(q.getText(), "testQuestion");
             }
         }
@@ -111,11 +111,9 @@ public class RoomControllerTest extends ApplicationTest {
 
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.deleteQuestion(q.getId());
-            }).thenReturn(true);
+            theMock.when(() -> ServerCommunication.deleteQuestion(q.getId())).thenReturn(true);
 
-            assertEquals(mrc.deleteQuestion(q), true);
+            assertTrue(mrc.deleteQuestion(q));
         }
     }
 
@@ -125,12 +123,10 @@ public class RoomControllerTest extends ApplicationTest {
 
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.deleteQuestion(q.getId());
-            }).thenReturn(false);
+            theMock.when(() -> ServerCommunication.deleteQuestion(q.getId())).thenReturn(false);
 
-            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
-                assertEquals(mrc.deleteQuestion(q), false);
+            try (MockedConstruction<Alert> ignored = mockConstruction(Alert.class)) {
+                assertFalse(mrc.deleteQuestion(q));
             }
         }
     }
@@ -141,12 +137,10 @@ public class RoomControllerTest extends ApplicationTest {
         q.upvote();
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.deUpvoteQuestion(q.getId());
-            }).thenReturn(true);
+            theMock.when(() -> ServerCommunication.deUpvoteQuestion(q.getId())).thenReturn(true);
 
-            assertEquals(mrc.upvoteQuestion(q), true);
-            assertEquals(q.voted(), false);
+            assertTrue(mrc.upvoteQuestion(q));
+            assertFalse(q.voted());
         }
     }
 
@@ -156,13 +150,11 @@ public class RoomControllerTest extends ApplicationTest {
         q.upvote();
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.deUpvoteQuestion(q.getId());
-            }).thenReturn(false);
+            theMock.when(() -> ServerCommunication.deUpvoteQuestion(q.getId())).thenReturn(false);
 
-            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
-                assertEquals(mrc.upvoteQuestion(q), false);
-                assertEquals(q.voted(), true);
+            try (MockedConstruction<Alert> ignored = mockConstruction(Alert.class)) {
+                assertFalse(mrc.upvoteQuestion(q));
+                assertTrue(q.voted());
             }
         }
     }
@@ -173,12 +165,10 @@ public class RoomControllerTest extends ApplicationTest {
         q.deUpvote();
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.upvoteQuestion(q.getId());
-            }).thenReturn(true);
+            theMock.when(() -> ServerCommunication.upvoteQuestion(q.getId())).thenReturn(true);
 
-            assertEquals(mrc.upvoteQuestion(q), true);
-            assertEquals(q.voted(), true);
+            assertTrue(mrc.upvoteQuestion(q));
+            assertTrue(q.voted());
         }
     }
 
@@ -188,13 +178,11 @@ public class RoomControllerTest extends ApplicationTest {
         q.deUpvote();
         try (MockedStatic<ServerCommunication> theMock =
                      Mockito.mockStatic(ServerCommunication.class)) {
-            theMock.when(() -> {
-                ServerCommunication.upvoteQuestion(q.getId());
-            }).thenReturn(false);
+            theMock.when(() -> ServerCommunication.upvoteQuestion(q.getId())).thenReturn(false);
 
-            try (MockedConstruction<Alert> mc = mockConstruction(Alert.class)) {
-                assertEquals(mrc.upvoteQuestion(q), false);
-                assertEquals(q.voted(), false);
+            try (MockedConstruction<Alert> ignored = mockConstruction(Alert.class)) {
+                assertFalse(mrc.upvoteQuestion(q));
+                assertFalse(q.voted());
             }
         }
     }
@@ -208,8 +196,7 @@ public class RoomControllerTest extends ApplicationTest {
         try {
             mrc.setData(dummyUser, dummyRoom, dummyAppView);
         } catch (Exception e) {
-            // Empty catch block just to ignore
-            // UI issues during testing.
+            // Empty catch block just to ignore UI issues during testing.
         }
 
         assertEquals(mrc.getUser(), dummyUser);

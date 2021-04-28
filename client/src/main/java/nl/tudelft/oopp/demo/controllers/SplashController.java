@@ -6,8 +6,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,40 +26,33 @@ import nl.tudelft.oopp.demo.data.Student;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 import nl.tudelft.oopp.demo.views.StudentView;
 
-
 public class SplashController {
 
     @FXML
-    private TextField nickName;     // the value of the nickname text box
+    private TextField nickName;
     @FXML
-    private TextField link;     // the value of the link text box
+    private TextField link;
     @FXML
-    private TextField roomName;     //the value of the room name text box
+    private TextField roomName;
     @FXML
-    private AnchorPane anchor;      // the splash.fxml anchor pane
+    private AnchorPane anchor;
     @FXML
-    private DatePicker date;    // the value of date user enters
+    private DatePicker date;
     @FXML
-    private TextField hour;     // the value of hour user enters
+    private TextField hour;
     @FXML
-    private TextField ownerName; // the value of the name of the instant room owner
+    private TextField ownerName;
     @FXML
-    private CheckBox scheduledBox;  // the 'Scheduled room?' checkbox
-
+    private CheckBox scheduledBox;
 
     /**
      * Handles clicking the "join room" button.
      */
-    public void joinRoom(ActionEvent actionEvent) {
-
-        if (joinRoomSanitation(nickName.getText(), link.getText()) == true) {
-
+    public void joinRoom() {
+        if (joinRoomSanitation(nickName.getText(), link.getText())) {
             String code = link.getText();
             Room room = ServerCommunication.getRoom(code, true);
-
-            // Using alert
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
             if (room == null) {     // The room is null when the code is invalid
                 alert.setContentText("Invalid room link.");
                 link.clear();
@@ -95,19 +88,16 @@ public class SplashController {
                         }
                     }
                 } else {
-
                     Student student = new Student(nickName.getText(), room);
                     if (ServerCommunication.checkIfBanned(student)) {
                         Alert error = new Alert(Alert.AlertType.ERROR);
                         error.setContentText("You are banned from this lecture!");
                         error.show();
                     } else {
-
                         URL xmlUrl = getClass().getResource("/waitingRoom.fxml");
                         FXMLLoader loader = new FXMLLoader();
                         loader.setLocation(xmlUrl);
                         Parent root = null;
-
                         try {
                             root = loader.load();
                         } catch (IOException e) {
@@ -116,14 +106,13 @@ public class SplashController {
                             error.setContentText("Something went wrong! Could not load the room");
                             error.show();
                         }
-
                         Stage stage = (Stage) anchor.getScene().getWindow();
+                        assert root != null;
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
-                        stage.getIcons().add(new Image(getClass()
-                                .getResourceAsStream("/images/logo.png")));
+                        stage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                                .getResourceAsStream("/images/logo.png"))));
                         stage.show();
-
                         student = new Student(
                                 ServerCommunication.sendUser(student, room.getRoomId()),
                                 student.getNickname(),
@@ -131,9 +120,7 @@ public class SplashController {
                                 student.getIpAddress(),
                                 student.isBanned());
                         long studentId = student.getId();
-                        stage.setOnCloseRequest(e -> {
-                            ServerCommunication.removeUser(studentId);
-                        });
+                        stage.setOnCloseRequest(e -> ServerCommunication.removeUser(studentId));
                         WaitingRoomController waitingRoomController = loader.getController();
                         waitingRoomController.setData(student, room);
                         waitingRoomController.main(new String[0]);
@@ -143,18 +130,16 @@ public class SplashController {
         }
     }
 
-
     /**
      * Handles clicking the "create room" button.
      */
-    public void startRoom(ActionEvent actionEvent) {
+    public void startRoom() {
         if (scheduledBox.isSelected()) {
             scheduleRoom();
         } else {
             instantRoom();
         }
     }
-
 
     /**
      * Handles the check/uncheck action of the checkbox.
@@ -171,7 +156,6 @@ public class SplashController {
         }
     }
 
-
     /**
      * Called by startRoom when scheduledBox is unchecked.
      * Creates a room instantly.
@@ -185,7 +169,6 @@ public class SplashController {
             // create new room that's immediately active
             Room newRoom = new Room(roomName.getText(), LocalDateTime.now(), true);
             newRoom = ServerCommunication.makeRoom(newRoom);
-
             Stage primaryStage = (Stage) anchor.getScene().getWindow();
             Moderator moderator = new Moderator(ownerName.getText(), newRoom);
             moderator = new Moderator(
@@ -198,7 +181,6 @@ public class SplashController {
             loadRoomWithLinks(newRoom);
         }
     }
-
 
     /**
      * Called by startRoom when scheduledBox is checked.
@@ -220,10 +202,7 @@ public class SplashController {
             String strHour = hour.getText(0,2);
             String strMin = hour.getText(3,5);
             int intHour = Integer.parseInt(strHour);
-            System.out.println(intHour);    // debugging
             int intMin = Integer.parseInt(strMin);
-            System.out.println(intMin);     // debugging
-
             LocalTime localTime = LocalTime.of(intHour, intMin);
             LocalDateTime targetTime = LocalDateTime.of(localDate, localTime);
             // TODO: the room should not be created in this case!
@@ -233,13 +212,11 @@ public class SplashController {
                 alert.show();
                 return;
             }
-
             Room newRoom = new Room(roomName.getText(), targetTime, true);
             newRoom = ServerCommunication.makeRoom(newRoom);
             loadRoomWithLinks(newRoom);
         }
     }
-
 
     /**
      * Checks if the required user input for joining a room is proper.
@@ -248,9 +225,7 @@ public class SplashController {
      */
     public static boolean joinRoomSanitation(String name, String code) {
         boolean flag = true;
-
         Alert alert = new Alert(Alert.AlertType.ERROR);
-
         if (name.equals("") || code.equals("")) {
             alert.setContentText("Please enter both nickname and link.");
             flag = false;
@@ -259,16 +234,13 @@ public class SplashController {
                 || name.contains(",") || code.contains(",")) {
             alert.setContentText("The name or the link contains illegal characters.");
             flag = false;
-
         } else if (name.length() < 2 || name.length() > 20) {
             alert.setContentText("The name should be between 2 and 20 characters.");
             flag = false;
         }
-
         if (!flag) {
             alert.show();
         }
-
         return flag;
     }
 
@@ -285,15 +257,14 @@ public class SplashController {
             error.setContentText("Something went wrong! Could not load the links");
             error.show();
         }
-
         Stage newStage = new Stage();
+        assert root != null;
         Scene scene = new Scene(root);
         newStage.setScene(scene);
         AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
         anchorPane.requestFocus();
-        newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        newStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png"))));
         newStage.show();
-
         LinkRoomController linkRoomController = loader.getController();
         linkRoomController.setData(room);
         linkRoomController.main(new String[0]);

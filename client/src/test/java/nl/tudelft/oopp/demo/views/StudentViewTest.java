@@ -11,22 +11,19 @@ import javafx.collections.ObservableList;
 import nl.tudelft.oopp.demo.data.Question;
 import org.junit.jupiter.api.Test;
 
-
 public class StudentViewTest {
 
-    private StudentView studentView;
-    private Question questionA;
-    private Question questionB;
+    private final StudentView studentView;
+    private final Question questionA;
+    private final Question questionB;
 
     /**
      * Constructor for this test, initializes two questions.
      */
     public StudentViewTest() {
-
         this.studentView = new StudentView();
         questionA = new Question(7, "Question A", "Patrick");
         questionB = new Question(7, "Question B", "Patricia");
-
         questionA.setId(0);
         questionB.setId(1);
     }
@@ -35,9 +32,7 @@ public class StudentViewTest {
     public void testAddExistingQ() {
         ObservableList<Question> questionsBefore = FXCollections
                 .observableArrayList(List.of(questionA, questionB));
-
         studentView.setQuestions(questionsBefore);
-
         assertFalse(studentView.addQuestion(questionA));
     }
 
@@ -45,15 +40,10 @@ public class StudentViewTest {
     public void testAddQ() {
         ObservableList<Question> questionsBefore = FXCollections
                 .observableArrayList(List.of(questionA));
-
         studentView.setQuestions(questionsBefore);
-
         assertTrue(studentView.addQuestion(questionB));
-
         ObservableList<Question> questionsAfter = FXCollections
                 .observableArrayList(List.of(questionA, questionB));
-
         assertEquals(questionsAfter, studentView.getQuestions());
     }
-
 }

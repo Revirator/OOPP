@@ -22,6 +22,7 @@ import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.StudentView;
 
 public class StudentRoomController extends RoomController {
+
     @FXML
     private AnchorPane anchor;
 
@@ -50,7 +51,8 @@ public class StudentRoomController extends RoomController {
 
     private boolean questionAllowed;
 
-    /** Used in SplashController to pass the user and the room object.
+    /**
+     * Used in SplashController to pass the user and the room object.
      * Data injected by start() in StudentView.
      * @param user the student that is using the window
      * @param room the room corresponding to the code entered
@@ -61,9 +63,6 @@ public class StudentRoomController extends RoomController {
         super.setData(user, room, studentView);
         this.studentView = studentView;
         this.lectureName.setText(room.getRoomName());
-
-
-        // creates a service that allows a method to be called every timeframe
         ScheduledService<Boolean> serviceAllow = new ScheduledService<>() {
             @Override
             protected Task<Boolean> createTask() {
@@ -76,14 +75,13 @@ public class StudentRoomController extends RoomController {
                 };
             }
         };
-
-        // every 20 seconds, questionAllowed is set on true again
         serviceAllow.setPeriod(Duration.seconds(20));
         serviceAllow.setOnRunning(e -> questionAllowed = true);
         serviceAllow.start();
     }
 
-    /** Updates the room object and the user by calling the getRoom() ..
+    /**
+     * Updates the room object and the user by calling the getRoom() ..
      * .. and getStudent() methods in ServerCommunication.
      */
     @Override
@@ -122,7 +120,8 @@ public class StudentRoomController extends RoomController {
         }
     }
 
-    /** Callback method for "Submit" button in student room.
+    /**
+     * Callback method for "Submit" button in student room.
      * If the room is not active - the student sees an alert of type warning.
      * If the room is active but the question form is blank - ..
      * .. they see an alert of type error.
@@ -165,8 +164,8 @@ public class StudentRoomController extends RoomController {
         }
     }
 
-
-    /** Increments the peopleThinkingLectureIsTooSlow field in Room ..
+    /**
+     * Increments the peopleThinkingLectureIsTooSlow field in Room ..
      * .. both on the server and client side by one.
      */
     public void lectureTooSlow() {
@@ -189,13 +188,12 @@ public class StudentRoomController extends RoomController {
         }
     }
 
-    /** Increments the peopleThinkingLectureIsTooFast field in Room ..
+    /**
+     * Increments the peopleThinkingLectureIsTooFast field in Room ..
      * .. both on the server and client side by one.
      */
     public void lectureTooFast() {
-
         Room room = super.getRoom();
-
         if (!room.isActive()) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setContentText("The lecture is over! You cannot send feedback anymore!");
@@ -214,7 +212,8 @@ public class StudentRoomController extends RoomController {
         }
     }
 
-    /** Decrements either peopleThinkingLectureIsTooSlow or ..
+    /**
+     * Decrements either peopleThinkingLectureIsTooSlow or ..
      * .. peopleThinkingLectureIsTooFast field in Room ..
      * .. both on the server and client side by one ..
      * .. depending on which button was previously pressed.

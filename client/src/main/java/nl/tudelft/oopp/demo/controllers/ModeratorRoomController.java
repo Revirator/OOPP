@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -26,18 +26,13 @@ import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import nl.tudelft.oopp.demo.views.ModeratorView;
 
-
 public class ModeratorRoomController extends RoomController {
-
 
     @FXML
     private Button endLecture;
 
     @FXML
     private Label lectureName;
-
-    @FXML
-    private CheckBox zenMode;
 
     @FXML
     private Label tooSlowLabel;
@@ -83,16 +78,13 @@ public class ModeratorRoomController extends RoomController {
         if (room.getStudents().size() > 0) {
             tooSlowLabel.setText(room.getPeopleThinkingLectureIsTooSlow() * 100
                     / room.getStudents().size() + "%");
-
             if (Integer.parseInt(tooSlowLabel.getText().replace("%", "")) < 10) {
                 tooSlowLabel.setTextFill(Paint.valueOf("DARKGREEN"));
             } else {
                 tooSlowLabel.setTextFill(Paint.valueOf("RED"));
             }
-
             tooFastLabel.setText(room.getPeopleThinkingLectureIsTooFast() * 100
                     / room.getStudents().size() + "%");
-
             if (Integer.parseInt(tooFastLabel.getText().replace("%", "")) < 10) {
                 tooFastLabel.setTextFill(Paint.valueOf("DARKGREEN"));
             } else {
@@ -112,9 +104,7 @@ public class ModeratorRoomController extends RoomController {
      * .. and feedback are not processed.
      */
     public void endLecture() {
-
         Room room = super.getRoom();
-
         if (room == null || !room.isActive()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setContentText("The room does not exist or has ended already!");
@@ -142,9 +132,7 @@ public class ModeratorRoomController extends RoomController {
      * The supported formats are .txt and .md .
      */
     public void exportQuestions() {
-
         Room room = super.getRoom();
-
         if (room.isActive()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please wait until the lecture has ended to export questions!");
@@ -168,28 +156,24 @@ public class ModeratorRoomController extends RoomController {
             }
             List<Question> answeredQuestions = ServerCommunication
                     .getAnsweredQuestions(room.getRoomId());
-            for (int i = 0; i < answeredQuestions.size(); i++) {
-                printWriter.println(answeredQuestions.get(i).toString());
+            for (Question answeredQuestion : answeredQuestions) {
+                printWriter.println(answeredQuestion.toString());
             }
             printWriter.close();
         }
     }
 
-
-    /** Callback method for the "Zen Mode" button in Moderator Room.
+    /**
+     * Callback method for the "Zen Mode" button in Moderator Room.
      * Update in ModeratorQuestionCell makes the following buttons invisible: ..
      *  .. "edit", "answer", "mark answered", "delete"
      *  .. as well as answer text box
      */
     public void zenMode() {
-
-
         // zen mode becomes active
         if (!zenModeActive) {
             zenModeActive = true;
-
             moderatorView.bindZenCellFactory();
-
         } else {
             zenModeActive = false;
             moderatorView.bindCellFactory(this);
@@ -203,9 +187,7 @@ public class ModeratorRoomController extends RoomController {
      * @return true if successful, false if not
      */
     public boolean setAnswer(Question question, String answer) {
-
         if (answer.length() > 0) {
-
             if (!ServerCommunication.setAnswer(question.getId(), answer)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
@@ -217,7 +199,8 @@ public class ModeratorRoomController extends RoomController {
         return false;
     }
 
-    /** Opens another window that display the room codes ..
+    /**
+     * Opens another window that display the room codes ..
      * .. for students and moderators so that they can be copied.
      */
     public void showLinks() {
@@ -233,15 +216,14 @@ public class ModeratorRoomController extends RoomController {
             error.setContentText("Something went wrong! Could not load the links");
             error.show();
         }
-
         Stage newStage = new Stage();
+        assert root != null;
         Scene scene = new Scene(root);
         newStage.setScene(scene);
         AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
         anchorPane.requestFocus();
-        newStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        newStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png"))));
         newStage.show();
-
         LinkRoomController linkRoomController = loader.getController();
         linkRoomController.setData(super.getRoom());
         linkRoomController.main(new String[0]);

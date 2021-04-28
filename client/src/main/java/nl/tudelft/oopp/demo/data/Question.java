@@ -5,17 +5,18 @@ import java.time.LocalTime;
 public class Question {
 
     private long id;
-    private long room;
+    private final long room;
     private String text;
     private String answer;
-    private String owner;
-    private String time;
+    private final String owner;
+    private final String time;
     private Integer upvotes;
     private boolean voted;
-    private boolean isOwner;
+    private final boolean isOwner;
     private boolean beingAnswered;
 
-    /** Constructor with Room object (matches server-side Question entity).
+    /**
+     * Constructor with Room object (matches server-side Question entity).
      * @param room - Room where this question is asked. (FK)
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.
@@ -33,7 +34,8 @@ public class Question {
         this.beingAnswered = beingAnswered;
     }
 
-    /** Constructor with Room id, not object (testing purposes).
+    /**
+     * Constructor with Room id, not object (testing purposes).
      * @param room - ID of Room where this question is asked. (FK)
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.
@@ -50,7 +52,8 @@ public class Question {
         this.beingAnswered = false;
     }
 
-    /** Constructor with votes for testing purposes.
+    /**
+     * Constructor with votes for testing purposes.
      * @param id - PK of this question.
      * @param text - String containing question.
      * @param owner - nickname of person who asked this question.

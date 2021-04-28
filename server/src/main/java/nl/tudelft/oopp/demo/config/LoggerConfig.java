@@ -18,7 +18,6 @@ public class LoggerConfig {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.currentRequestAttributes())
                 .getRequest();
-
         String ip = request.getRemoteAddr();
         DemoApplication.logger.info(ip + " requested " + requested + ".");
     }
@@ -30,7 +29,6 @@ public class LoggerConfig {
      * @return the first integer in the string
      */
     public static int getFirstNumber(String text) {
-        int num = new Scanner(text).useDelimiter("& ").nextInt();
-        return num;
+        return new Scanner(text).useDelimiter("& ").nextInt();
     }
 }

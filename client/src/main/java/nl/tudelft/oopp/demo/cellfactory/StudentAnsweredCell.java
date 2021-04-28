@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.cellfactory;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -10,27 +9,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
-import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentAnsweredCell extends ListCell<Question> {
 
-    private AnchorPane anchorPane = new AnchorPane();
-    private GridPane gridPane = new GridPane();
-    private Question question;
-    private ObservableList<Question> answered;
-    private RoomController src;
+    private final AnchorPane anchorPane = new AnchorPane();
+    private final GridPane gridPane = new GridPane();
 
-    /** Initialized for each question by StudentView.
+    /**
+     * Initialized for each question by StudentView.
      * Constructor for student answer cell.
-     * @param answered ObservableList of all answered questions
      */
-    public StudentAnsweredCell(ObservableList<Question> answered, RoomController src) {
+    public StudentAnsweredCell() {
         super();
-
-        this.answered = answered;
-        this.src = src;
-
         // Create visual cell
         createCell();
     }
@@ -39,9 +30,10 @@ public class StudentAnsweredCell extends ListCell<Question> {
      * Creates a cell for answered questions.
      */
     private void createCell() {
-
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+
+        // Create column and row constraints
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
         columnZeroConstraints.setPrefWidth(330);
         columnZeroConstraints.setPercentWidth(90);
@@ -101,7 +93,6 @@ public class StudentAnsweredCell extends ListCell<Question> {
         AnchorPane.setLeftAnchor(gridPane, 10.0);
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
-
     }
 
     /**
@@ -111,7 +102,6 @@ public class StudentAnsweredCell extends ListCell<Question> {
      */
     @Override
     protected void updateItem(Question item, boolean empty) {
-
         // Update listview
         super.updateItem(item, empty);
 
@@ -120,10 +110,6 @@ public class StudentAnsweredCell extends ListCell<Question> {
             setGraphic(null);
             setText("");
         } else { // Non-empty list item
-
-            // Update question object
-            this.question = item;
-
             // Update all labels
             Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
             upVotesLabel.setText(item.getUpvotes() + " votes");
@@ -141,5 +127,4 @@ public class StudentAnsweredCell extends ListCell<Question> {
             setGraphic(anchorPane);
         }
     }
-
 }

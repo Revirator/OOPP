@@ -1,20 +1,17 @@
 package nl.tudelft.oopp.demo.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
-
 public class UserTest {
 
-    private User user1;
-    private User user2;
-    private Room room;
+    private final User user1;
+    private final User user2;
+    private final Room room;
 
     /**
      * Constructor for this test.
@@ -62,15 +59,9 @@ public class UserTest {
     }
 
     @Test
-    public void testNotInstance() {
-        String word = "word";
-        assertFalse(user1.equals(word));
-    }
-
-    @Test
     public void testSame() {
         User testUser = new User((long) 23, "User1", room);
-        assertTrue(user1.equals(testUser));
+        assertEquals(user1, testUser);
     }
 
 }

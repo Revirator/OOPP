@@ -11,13 +11,12 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-
 public class RoomTest {
 
-    private Room room1;
-    private Room room2;
-    private Room room3;
-    private LocalDateTime date;
+    private final Room room1;
+    private final Room room2;
+    private final Room room3;
+    private final LocalDateTime date;
 
     /**
      * Constructor for this test.
@@ -26,7 +25,6 @@ public class RoomTest {
         String dateString = "2021-04-04 19:20";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         date = LocalDateTime.parse(dateString, formatter);
-
         room1 = new Room(24, "studentLink", "moderatorLink", date,
                 "testRoom1", true, new ArrayList<>(), 43, 25);
         room2 = new Room("testRoom2", date, true);
@@ -110,16 +108,10 @@ public class RoomTest {
     }
 
     @Test
-    public void testNotInstance() {
-        String word = "word";
-        assertFalse(room1.equals(word));
-    }
-
-    @Test
     public void testSame() {
         Room testRoom = new Room(24, "studentLink", "moderatorLink", date,
                 "testRoom1", true, new ArrayList<>(), 43, 25);
-        assertTrue(room1.equals(testRoom));
+        assertEquals(room1, testRoom);
     }
 
     @Test

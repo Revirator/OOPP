@@ -12,15 +12,14 @@ import nl.tudelft.oopp.demo.data.Question;
 
 public class ZenQuestionCell extends ListCell<Question> {
 
-    private AnchorPane anchorPane = new AnchorPane();
-    private GridPane gridPane = new GridPane();
+    private final AnchorPane anchorPane = new AnchorPane();
+    private final GridPane gridPane = new GridPane();
 
     /**
      * Constructor for zen question cell.
      */
     public ZenQuestionCell() {
         super();
-
         // Create visual cell
         createCell();
     }
@@ -29,9 +28,10 @@ public class ZenQuestionCell extends ListCell<Question> {
      * Creates a visual moderator cell for questions.
      */
     private void createCell() {
-
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+
+        // Create column and row constraints
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
         columnZeroConstraints.setPercentWidth(85);
         ColumnConstraints columnOneConstraints = new ColumnConstraints();
@@ -87,7 +87,6 @@ public class ZenQuestionCell extends ListCell<Question> {
         AnchorPane.setLeftAnchor(gridPane, 10.0);
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
-
     }
 
     /**
@@ -97,18 +96,14 @@ public class ZenQuestionCell extends ListCell<Question> {
      */
     @Override
     protected void updateItem(Question item, boolean empty) {
-
         // Update listview
         super.updateItem(item, empty);
 
         // Empty list item
         if (empty || item == null) {
-
             setGraphic(null);
             setText("");
-
         } else { // Non-empty list item
-
             // Look for question and owner label
             Label questionLabel = (Label) gridPane.lookup("#questionLabel");
             Label ownerLabel = (Label) gridPane.lookup("#ownerLabel");
@@ -131,5 +126,4 @@ public class ZenQuestionCell extends ListCell<Question> {
             setGraphic(anchorPane);
         }
     }
-
 }

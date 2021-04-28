@@ -5,31 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
-
 
 public class QuestionTest {
 
-
-    private Question question1;
-    private Question question2;
-    private Question question3;
-    private Room activeRoom;
-    private Room endedRoom;
+    private final Question question1;
+    private final Question question2;
+    private final Question question3;
 
 
-    /** Initializes test Questions.
-     *
+    /**
+     * Initializes test Questions.
      */
     public QuestionTest() {
-        activeRoom = new Room(1, "Active room", LocalDateTime.now(), true);
-        endedRoom = new Room(2, "Ended lecture", LocalDateTime.now(), false);
         question1 = new Question(3, "What is the meaning of life?", "Pavel");
         question2 = new Question(4, "When are the grades out?", "Emke");
         question3 = new Question(5, "Can I revisit the lecture?", "Bora");
     }
-
 
     @Test
     public void testBasicConstructor() {
@@ -94,16 +86,10 @@ public class QuestionTest {
     }
 
     @Test
-    public void testNotInstance() {
-        String word = "word";
-        assertFalse(question1.equals(word));
-    }
-
-    @Test
     public void testSameQuestion() {
         Question questionA = new Question(123, 2, "New question", "Paul", 23, true);
         Question questionB = new Question(123, 2, "New question", "Paul", 23, true);
-        assertTrue(questionA.equals(questionB));
+        assertEquals(questionA, questionB);
     }
 
     @Test

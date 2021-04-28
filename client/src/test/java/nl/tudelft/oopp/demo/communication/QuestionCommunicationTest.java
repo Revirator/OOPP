@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.communication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
@@ -18,12 +19,11 @@ import org.junit.jupiter.api.Test;
 import org.mockserver.client.server.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
 
-
 public class QuestionCommunicationTest {
 
     private static ClientAndServer mockServer;
-    private Question questionA;
-    private Question questionB;
+    private final Question questionA;
+    private final Question questionB;
 
     /**
      * Constructor for this test.
@@ -77,11 +77,11 @@ public class QuestionCommunicationTest {
     @Test
     public void testGetQuestionsError() {
         mockServer.stop();
-        assertEquals(null, ServerCommunication.getQuestions(25));
+        assertNull(ServerCommunication.getQuestions(25));
     }
 
     @Test
-    public void testgetAnsQue() {
+    public void testGetAnsweredQuestion() {
         new MockServerClient("localhost", 8080)
             .when(
                     request()
@@ -97,7 +97,7 @@ public class QuestionCommunicationTest {
     }
 
     @Test
-    public void testgetAnsQueStatus() {
+    public void testGetAnsweredQuestionStatus() {
         new MockServerClient("localhost", 8080)
             .when(
                     request()
@@ -150,7 +150,7 @@ public class QuestionCommunicationTest {
     @Test
     public void deleteQuestionErrorTest() {
         mockServer.stop();
-        assertEquals(false, ServerCommunication.deleteQuestion(1));
+        assertFalse(ServerCommunication.deleteQuestion(1));
     }
 
     @Test
@@ -241,7 +241,7 @@ public class QuestionCommunicationTest {
 
     @Test
     public void testPostNullQ() {
-        assertEquals((long)-1, ServerCommunication.postQuestion(null));
+        assertEquals(-1, ServerCommunication.postQuestion(null));
     }
 
     @Test
@@ -259,7 +259,7 @@ public class QuestionCommunicationTest {
                     .withStatusCode(200)
                     .withBody("23")
             );
-        assertEquals((long) 23, ServerCommunication.postQuestion(questionA));
+        assertEquals(23, ServerCommunication.postQuestion(questionA));
     }
 
     @Test
@@ -276,13 +276,13 @@ public class QuestionCommunicationTest {
                     response()
                             .withStatusCode(400)
             );
-        assertEquals((long)-1, ServerCommunication.postQuestion(questionB));
+        assertEquals(-1, ServerCommunication.postQuestion(questionB));
     }
 
     @Test
     public void testPostQuestionError() {
         mockServer.stop();
-        assertEquals((long) -1, ServerCommunication.postQuestion(questionB));
+        assertEquals(-1, ServerCommunication.postQuestion(questionB));
     }
 
     @Test

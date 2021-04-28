@@ -69,7 +69,7 @@ public class LinkRoomController {
     /**
      * Getter for room
      * (Used for testing).
-     * @return
+     * @return the Room object
      */
     public Room getRoom() {
         return this.room;

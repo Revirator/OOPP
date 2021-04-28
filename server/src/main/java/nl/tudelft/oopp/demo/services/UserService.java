@@ -88,9 +88,9 @@ public class UserService {
      */
     public boolean checkIfBanned(long roomId, String ipAddress) {
         List<Student> studentList = roomRepository.getOne(roomId).getStudents().stream()
-                .filter(s -> s.isBanned()).collect(Collectors.toList());
+                .filter(Student::isBanned).collect(Collectors.toList());
         List<String> ipAddresses = studentList.stream()
-                .map(s -> s.getIpAddress()).collect(Collectors.toList());
+                .map(Student::getIpAddress).collect(Collectors.toList());
         return ipAddresses.contains(ipAddress);
     }
 

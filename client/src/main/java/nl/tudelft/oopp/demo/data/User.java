@@ -5,10 +5,11 @@ import java.util.Objects;
 public class User {
 
     private long id;
-    private String nickname;
+    private final String nickname;
     private Room room;
 
-    /** Initializes a new instance of a User with the parameters provided.
+    /**
+     * Initializes a new instance of a User with the parameters provided.
      * Used by ServerCommunication when updating the Student.
      * @param id the id of the user in the db
      * @param nickname the nickname of the user
@@ -41,7 +42,8 @@ public class User {
         this.room = room;
     }
 
-    /** Returns role type of this user.
+    /**
+     * Returns role type of this user.
      * @return String - "Student", "Moderator" or "User"
      */
     public String getRole() {

@@ -19,14 +19,13 @@ public class ServerCommunication {
 
     protected static final HttpClient client = HttpClient.newBuilder().build();
 
-
     protected static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>)
                 (json, typeOfT, context) -> LocalDateTime.parse(json.getAsString(),
                     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).create();
 
-
-    /** Retrieves a room from the server.
+    /**
+     * Retrieves a room from the server.
      * @param code room identification code
      * @param toLog indicates if the request should be logged
      * @return the body of the response from the server or null if the room does not exist.
@@ -44,7 +43,8 @@ public class ServerCommunication {
         return PostServerCommunication.makeRoom(room);
     }
 
-    /** Sends feedback to the server which is processed and the rooms are updated.
+    /**
+     * Sends feedback to the server which is processed and the rooms are updated.
      * @param url the students link connected to a room
      * @param feedback the feedback we want to send
      */
@@ -52,7 +52,8 @@ public class ServerCommunication {
         PutServerCommunication.sendFeedback(url, feedback);
     }
 
-    /** Sends a user to the server, who is saved in the DB ..
+    /**
+     * Sends a user to the server, who is saved in the DB ..
      * .. and added to the list of participants in the ..
      * .. corresponding room instance.
      * @param user the user to be saved in the DB
@@ -63,7 +64,8 @@ public class ServerCommunication {
         return PostServerCommunication.sendUser(user, roomID);
     }
 
-    /** Sends the ID of the user that needs to be removed from the DB.
+    /**
+     * Sends the ID of the user that needs to be removed from the DB.
      * @param userId the ID of the user
      * @return true if the user has been removed from the DB, false otherwise
      */
@@ -80,7 +82,8 @@ public class ServerCommunication {
         return GetServerCommunication.getStudents(roomID);
     }
 
-    /** Sends an id to the server.
+    /**
+     * Sends an id to the server.
      * The server return the student with the given id ..
      * .. or null if the student doesn't exist.
      * @param studentId the id of the student to be updated
@@ -90,7 +93,8 @@ public class ServerCommunication {
         return GetServerCommunication.getStudent(studentId);
     }
 
-    /** Sends the id of the student to be banned to the Server.
+    /**
+     * Sends the id of the student to be banned to the Server.
      * The banned field is updated to true and the student is kicked out of the lecture.
      * @param user the student to be banned
      */
@@ -98,7 +102,8 @@ public class ServerCommunication {
         PutServerCommunication.banStudent(user);
     }
 
-    /** Sends a request to the server to check if the user's IP is ..
+    /**
+     * Sends a request to the server to check if the user's IP is ..
      * .. in the list of banned IPs for this lecture.
      * @param user the student we want to check
      * @return true if the user is banned or there is a server error and false otherwise
@@ -135,14 +140,16 @@ public class ServerCommunication {
         return GetServerCommunication.getAnsweredQuestions(roomID);
     }
 
-    /** Sends a PUT request to the server to make a room inactive.
+    /**
+     * Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
      */
     public static void updateRoomStatus(String code) {
         PutServerCommunication.updateRoomStatus(code);
     }
 
-    /** Deletes question corresponding to this id from database.
+    /**
+     * Deletes question corresponding to this id from database.
      * Makes DELETE request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be deleted from database
      * @return boolean - true if DELETE operation succeeded, false otherwise.
@@ -151,7 +158,8 @@ public class ServerCommunication {
         return DeleteServerCommunication.deleteQuestion(questionId);
     }
 
-    /** Updates attribute "text" of question corresponding to this id in database.
+    /**
+     * Updates attribute "text" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
      * @return boolean - true if PUT operation succeeded, false otherwise.
@@ -160,7 +168,8 @@ public class ServerCommunication {
         return PutServerCommunication.editQuestion(questionId, update);
     }
 
-    /** Updates attribute "isAnswered" of question corresponding to this id in database.
+    /**
+     * Updates attribute "isAnswered" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
      * @return boolean - true if PUT operation succeeded, false otherwise.
@@ -169,7 +178,8 @@ public class ServerCommunication {
         return PutServerCommunication.markQuestionAsAnswered(questionId);
     }
 
-    /** Updates attribute "isBeingAnswered" of question
+    /**
+     * Updates attribute "isBeingAnswered" of question
      * corresponding to this id to true in the database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
@@ -179,7 +189,8 @@ public class ServerCommunication {
         return PutServerCommunication.markQuestionAsIsBeingAnswered(questionId);
     }
 
-    /** Updates attribute "isBeingAnswered" of question
+    /**
+     * Updates attribute "isBeingAnswered" of question
      * corresponding to this id to false in the database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
@@ -189,7 +200,8 @@ public class ServerCommunication {
         return PutServerCommunication.markQuestionAsIsNotBeingAnswered(questionId);
     }
 
-    /** Makes POST request to server, to store new question in database.
+    /**
+     * Makes POST request to server, to store new question in database.
      * Server will attach an id to this question (generated by db)
      * Handled by QuestionController.
      * @param newQuestion - new Question to be posted
@@ -199,8 +211,9 @@ public class ServerCommunication {
         return PostServerCommunication.postQuestion(newQuestion);
     }
 
-    /** Updates attribute "answer" of question corresponding to this id in database.
-     * Makes PUT request to server. (QuestionController - QuestionService)
+    /**
+     * Updates attribute "answer" of question corresponding to this id in database.
+     * Sends a PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to set answer of in database
      * @return boolean - true if PUT operation succeeded, false otherwise.
      */
@@ -208,15 +221,17 @@ public class ServerCommunication {
         return PutServerCommunication.setAnswer(questionId, answer);
     }
 
-    /** Increments the upvote amount in server after question is upvoted on client
-     * Makes PUT request to server to increment upvotes via QuestionController.
+    /**
+     * Increments the upvote amount in server after question is upvoted on client.
+     * Sends a PUT request to server to increment upvotes via QuestionController.
      * @param questionId - id of the question that will get its upvotes incremented
      */
     public static boolean upvoteQuestion(Long questionId) {
         return PutServerCommunication.upvoteQuestion(questionId);
     }
 
-    /** Undos incrementing the upvote amount in server after question is upvoted on client
+    /**
+     * Undoes incrementing the upvote amount in server after question is upvoted on client
      * Makes PUT request to server to undo incrementing upvotes via QuestionController.
      * @param questionId - id of the question that will get its upvotes decremented
      */

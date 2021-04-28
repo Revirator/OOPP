@@ -62,7 +62,7 @@ public class QuestionService {
      */
     public Long addNewQuestion(String payload) {
         String[] dataArray = payload.split("& ");
-        long roomId = Long.valueOf(dataArray[0]);
+        long roomId = Long.parseLong(dataArray[0]);
         String questionOwner = dataArray[1];
         String questionText = dataArray[2];
 

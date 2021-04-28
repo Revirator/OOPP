@@ -68,7 +68,7 @@ public class Student extends User {
             return false;
         }
         Student student = (Student) o;
-        return getId() == student.getId();
+        return getId().equals(student.getId());
     }
 
     @Override

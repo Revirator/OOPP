@@ -7,7 +7,6 @@ import javafx.scene.control.MultipleSelectionModel;
 
 public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
 
-
     /**
      * <p>Returns a <b>read-only</b> ObservableList of all selected indices. The
      * ObservableList will be updated  by the selection model to always reflect

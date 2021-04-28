@@ -112,7 +112,7 @@ public class RoomController {
     @GetMapping("/students/{roomId}")
     @ResponseBody
     public List<Student> getStudents(@PathVariable String roomId) {
-        Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
+        Room room = roomService.getRoomById(Integer.parseInt(roomId));
         return room.getStudents().stream().filter(s -> !s.isBanned()).collect(Collectors.toList());
     }
 
@@ -124,7 +124,7 @@ public class RoomController {
     @GetMapping("/moderators/{roomId}")
     @ResponseBody
     public List<Moderator> getModerators(@PathVariable String roomId) {
-        Room room = roomService.getRoomById((long)Integer.valueOf(roomId));
+        Room room = roomService.getRoomById(Integer.parseInt(roomId));
         return room.getModerators();
     }
 }

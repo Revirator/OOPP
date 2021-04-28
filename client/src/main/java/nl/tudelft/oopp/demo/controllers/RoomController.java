@@ -28,11 +28,9 @@ public abstract class RoomController {
      * @param appView - corresponding view to this controller (to add questions)
      */
     public void setData(User user, Room room, AppView appView) {
-
         this.user = user;
         this.room = room;
         this.appView = appView;
-
         // creates a service that allows a method to be called every timeframe
         ScheduledService<Boolean> service = new ScheduledService<>() {
             @Override
@@ -46,15 +44,12 @@ public abstract class RoomController {
                 };
             }
         };
-
-        // setting up and starting the thread
         service.setPeriod(Duration.seconds(1));
         service.setOnRunning(e -> {
             roomRefresher();
             questionRefresher();
             participantRefresher();
         });
-
         service.start();
     }
 
@@ -117,7 +112,8 @@ public abstract class RoomController {
         appView.updateParticipants(studentList, moderatorList);
     }
 
-    /** Updates the room object and the feedback by calling the getRoom() ..
+    /**
+     * Updates the room object and the feedback by calling the getRoom() ..
      * .. method in ServerCommunication.
      */
     public abstract void roomRefresher();
@@ -131,14 +127,12 @@ public abstract class RoomController {
      */
     public boolean editQuestion(Question questionToEdit, String update) {
         if (update.length() > 0) {
-
             if (!ServerCommunication.editQuestion(questionToEdit.getId(), update)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
                 alert.show();
                 return false;
             }
-
             questionToEdit.setText(update);
             return true;
         }
@@ -151,7 +145,6 @@ public abstract class RoomController {
      * @param questionToRemove - Question to be removed from database.
      */
     public boolean deleteQuestion(Question questionToRemove) {
-
         if (!ServerCommunication.deleteQuestion(questionToRemove.getId())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("Server error!");
@@ -167,10 +160,8 @@ public abstract class RoomController {
      * @return true if successful, false if not
      */
     public boolean upvoteQuestion(Question question) {
-
         // Check if user already voted on question
         if (question.voted()) {
-
             if (!ServerCommunication.deUpvoteQuestion(question.getId())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");
@@ -178,9 +169,7 @@ public abstract class RoomController {
                 return false;
             }
             question.deUpvote();
-
         } else {
-
             if (!ServerCommunication.upvoteQuestion(question.getId())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Server error!");

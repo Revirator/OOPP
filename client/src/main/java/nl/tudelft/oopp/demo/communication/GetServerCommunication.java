@@ -15,7 +15,8 @@ import nl.tudelft.oopp.demo.data.User;
 
 public class GetServerCommunication extends ServerCommunication {
 
-    /** Retrieves a room from the server.
+    /**
+     * Retrieves a room from the server.
      * @param code room identification code
      * @param toLog indicates if the request should be logged
      * @return the body of the response from the server or null if the room does not exist.
@@ -24,10 +25,8 @@ public class GetServerCommunication extends ServerCommunication {
         if (code.equals("")) {      // Some empty string check
             return null;
         }
-
         HttpRequest request;
         HttpResponse<String> response;
-
         if (toLog) {
             request = HttpRequest.newBuilder().GET()
                     .uri(URI.create("http://localhost:8080/rooms/" + code + "/log")).build();
@@ -43,6 +42,7 @@ public class GetServerCommunication extends ServerCommunication {
             e.printStackTrace();
             return null;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return null;
@@ -61,6 +61,7 @@ public class GetServerCommunication extends ServerCommunication {
                 .uri(URI.create("http://localhost:8080/rooms/students/" + roomID))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -75,7 +76,8 @@ public class GetServerCommunication extends ServerCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Student>>(){}.getType());
     }
 
-    /** Sends an id to the server.
+    /**
+     * Sends an id to the server.
      * The server return the student with the given id ..
      * .. or null if the student doesn't exist.
      * @param studentId the id of the student to be updated
@@ -85,12 +87,14 @@ public class GetServerCommunication extends ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/users/" + studentId))
                 .GET().build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return null;
@@ -109,12 +113,14 @@ public class GetServerCommunication extends ServerCommunication {
                 .uri(URI.create("http://localhost:8080/rooms/moderators/" + roomID))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return List.of();
@@ -133,6 +139,7 @@ public class GetServerCommunication extends ServerCommunication {
                 .uri(URI.create("http://localhost:8080/questions/" + roomID))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -144,7 +151,6 @@ public class GetServerCommunication extends ServerCommunication {
             System.out.println("Status: " + response.statusCode());
             return List.of();
         }
-
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
@@ -155,7 +161,6 @@ public class GetServerCommunication extends ServerCommunication {
      * @return the body of a get request to the server (list of questions).
      */
     public static List<Question> getAnsweredQuestions(long roomID) {
-
         HttpRequest request = HttpRequest.newBuilder().GET()
                 .uri(URI.create("http://localhost:8080/questions/answered/" + roomID))
                 .build();
@@ -172,11 +177,11 @@ public class GetServerCommunication extends ServerCommunication {
             System.out.println("Status: " + response.statusCode());
             return List.of();
         }
-
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
-    /** Sends a request to the server to check if the user's IP is ..
+    /**
+     * Sends a request to the server to check if the user's IP is ..
      * .. in the list of banned IPs for this lecture.
      * @param user the student we want to check
      * @return true if the user is banned or there is a server error and false otherwise
@@ -188,12 +193,14 @@ public class GetServerCommunication extends ServerCommunication {
                         + user.getRoom().getRoomId() + "/" + ((Student) user).getIpAddress()))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return true;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return true;

@@ -31,7 +31,7 @@ public class Moderator extends User {
             return false;
         }
         Moderator student = (Moderator) o;
-        return getId() == student.getId();
+        return getId().equals(student.getId());
     }
 
     @Override

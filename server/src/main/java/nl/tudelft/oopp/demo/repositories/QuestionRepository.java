@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.repositories;
 
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Question;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,5 +15,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findQuestionsByRoomRoomIdAndIsAnsweredOrderByTimeDesc(long room, Boolean bool);
 
     @Transactional
-    void deleteById(Long questionId);
+    void deleteById(@NotNull Long questionId);
 }

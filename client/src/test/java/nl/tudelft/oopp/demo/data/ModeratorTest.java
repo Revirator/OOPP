@@ -7,18 +7,16 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
-
 public class ModeratorTest {
 
-    private Moderator moderator1;
-    private Moderator moderator2;
-    private Room room;
+    private final Moderator moderator1;
+    private final Moderator moderator2;
 
     /**
      * Constructor for this test.
      */
     public ModeratorTest() {
-        room = new Room("testRoom", LocalDateTime.now(), true);
+        Room room = new Room("testRoom", LocalDateTime.now(), true);
         moderator1 = new Moderator((long) 25, "Mod1", room);
         moderator2 = new Moderator("Mod2", room);
     }

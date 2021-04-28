@@ -9,7 +9,8 @@ import nl.tudelft.oopp.demo.data.User;
 
 public class PutServerCommunication extends ServerCommunication {
 
-    /** Sends feedback to the server which is processed and the rooms are updated.
+    /**
+     * Sends feedback to the server which is processed and the rooms are updated.
      * @param url the students link connected to a room
      * @param feedback the feedback we want to send
      */
@@ -18,12 +19,14 @@ public class PutServerCommunication extends ServerCommunication {
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             Alert error = new Alert(Alert.AlertType.ERROR);
@@ -32,22 +35,24 @@ public class PutServerCommunication extends ServerCommunication {
         }
     }
 
-    /** Sends a PUT request to the server to make a room inactive.
+    /**
+     * Sends a PUT request to the server to make a room inactive.
      * @param code the room link as a String
      */
     public static void updateRoomStatus(String code) {
-
         String url = "http://localhost:8080/rooms/update/" + code;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(""))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             Alert error = new Alert(Alert.AlertType.ERROR);
@@ -56,7 +61,8 @@ public class PutServerCommunication extends ServerCommunication {
         }
     }
 
-    /** Updates attribute "text" of question corresponding to this id in database.
+    /**
+     * Updates attribute "text" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
      * @return boolean - true if PUT operation succeeded, false otherwise.
@@ -65,18 +71,19 @@ public class PutServerCommunication extends ServerCommunication {
         if (update.equals("")) {
             return false;
         }
-
         String url = "http://localhost:8080/questions/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(update))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return false;
@@ -84,7 +91,8 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
-    /** Updates attribute "isAnswered" of question corresponding to this id in database.
+    /**
+     * Updates attribute "isAnswered" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
      * @return boolean - true if PUT operation succeeded, false otherwise.
@@ -95,12 +103,14 @@ public class PutServerCommunication extends ServerCommunication {
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return false;
@@ -108,7 +118,8 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
-    /** Updates attribute "isBeingAnswered" of question
+    /**
+     * Updates attribute "isBeingAnswered" of question
      * corresponding to this id to true in the database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
@@ -120,12 +131,14 @@ public class PutServerCommunication extends ServerCommunication {
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return false;
@@ -133,7 +146,8 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
-    /** Updates attribute "isBeingAnswered" of question
+    /**
+     * Updates attribute "isBeingAnswered" of question
      * corresponding to this id to false in the database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to be updated in database
@@ -145,12 +159,14 @@ public class PutServerCommunication extends ServerCommunication {
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return false;
@@ -158,7 +174,8 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
-    /** Updates attribute "answer" of question corresponding to this id in database.
+    /**
+     * Updates attribute "answer" of question corresponding to this id in database.
      * Makes PUT request to server. (QuestionController - QuestionService)
      * @param questionId - id of question to set answer of in database
      * @return boolean - true if PUT operation succeeded, false otherwise.
@@ -167,18 +184,19 @@ public class PutServerCommunication extends ServerCommunication {
         if (answer.equals("")) {
             return false;
         }
-
         String url = "http://localhost:8080/questions/setanswer/" + questionId;
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
                 .PUT(HttpRequest.BodyPublishers.ofString(answer))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return false;
@@ -186,7 +204,8 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
-    /** Increments the upvote amount in server after question is upvoted on client
+    /**
+     * Increments the upvote amount in server after question is upvoted on client
      * Makes PUT request to server to increment upvotes via QuestionController.
      * @param questionId - id of the question that will get its upvotes incremented
      */
@@ -203,6 +222,7 @@ public class PutServerCommunication extends ServerCommunication {
             e.printStackTrace();
             return false;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return false;
@@ -210,7 +230,8 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
-    /** Undos incrementing the upvote amount in server after question is upvoted on client
+    /**
+     * Undoes incrementing the upvote amount in server after question is upvoted on client
      * Makes PUT request to server to undo incrementing upvotes via QuestionController.
      * @param questionId - id of the question that will get its upvotes decremented
      */
@@ -227,6 +248,7 @@ public class PutServerCommunication extends ServerCommunication {
             e.printStackTrace();
             return false;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return false;
@@ -234,7 +256,8 @@ public class PutServerCommunication extends ServerCommunication {
         return true;
     }
 
-    /** Sends the id of the student to be banned to the Server.
+    /**
+     * Sends the id of the student to be banned to the Server.
      * The banned field is updated to true and the student is kicked out of the lecture.
      * @param user the student to be banned
      */
@@ -244,12 +267,14 @@ public class PutServerCommunication extends ServerCommunication {
                 .uri(URI.create("http://localhost:8080/users/ban/" + user.getId()))
                 .build();
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
+
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }

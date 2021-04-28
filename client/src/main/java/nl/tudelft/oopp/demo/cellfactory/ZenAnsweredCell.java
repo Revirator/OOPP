@@ -12,15 +12,14 @@ import nl.tudelft.oopp.demo.data.Question;
 
 public class ZenAnsweredCell extends ListCell<Question> {
 
-    private AnchorPane anchorPane = new AnchorPane();
-    private GridPane gridPane = new GridPane();
+    private final AnchorPane anchorPane = new AnchorPane();
+    private final GridPane gridPane = new GridPane();
 
     /**
      * Constructor for moderator answer cell.
      */
     public ZenAnsweredCell() {
         super();
-
         // Create visual cell
         createCell();
     }
@@ -29,7 +28,10 @@ public class ZenAnsweredCell extends ListCell<Question> {
      * Creates a cell for answered questions.
      */
     private void createCell() {
+        // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+
+        // Create column and row constraints
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
         columnZeroConstraints.setPercentWidth(97);
         gridPane.getColumnConstraints().add(columnZeroConstraints);
@@ -89,18 +91,14 @@ public class ZenAnsweredCell extends ListCell<Question> {
      */
     @Override
     protected void updateItem(Question item, boolean empty) {
-
         // Update listview
         super.updateItem(item, empty);
 
         // Empty list item
         if (empty || item == null) {
-
             setGraphic(null);
             setText("");
-
         } else { // Non-empty list item
-
             Label questionLabel = (Label) gridPane.lookup("#questionLabel");
 
             // Check if exists

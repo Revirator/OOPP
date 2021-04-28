@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -22,47 +21,37 @@ import nl.tudelft.oopp.demo.data.Question;
 
 public class StudentQuestionCell extends ListCell<Question> {
 
-    private AnchorPane anchorPane = new AnchorPane();
-    private GridPane gridPane = new GridPane();
+    private final AnchorPane anchorPane = new AnchorPane();
+    private final GridPane gridPane = new GridPane();
     private Question question;
-    private ObservableList<Question> questions;
-    private ObservableList<Question> answered;
     private boolean editing;
-    private TextArea editableLabel;
-    private RoomController src;
+    private final TextArea editableLabel;
+    private final RoomController src;
 
-    /** Initialized for each question by StudentView.
+    /**
+     * Initialized for each question by StudentView.
      * Constructor for student question cell.
-     * @param questions ObservableList of the current questions
-     * @param answered ObservableList of all answered questions
      */
-    public StudentQuestionCell(ObservableList<Question> questions,
-                               ObservableList<Question> answered, RoomController src) {
-
+    public StudentQuestionCell(RoomController src) {
         super();
-
-        this.questions = questions;
-        this.answered = answered;
         this.editing = false;
         this.editableLabel = new TextArea();
         editableLabel.setPrefHeight(60);
         editableLabel.setPrefWidth(308);
         editableLabel.setWrapText(true);
         this.src = src;
-
         // Create visual cell
         createOwnerCell();
     }
-
-
 
     /**
      * Creates a cell with upvote and solved buttons, number of votes and the question.
      */
     private void createOwnerCell() {
-
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+
+        // Create column and row constraints
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
         columnZeroConstraints.setPrefWidth(330);
         columnZeroConstraints.setPercentWidth(90);
@@ -159,45 +148,24 @@ public class StudentQuestionCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
+        upVoteButton.setOnAction(event -> src.upvoteQuestion(this.question));
 
-        // Click event for upvote
-        upVoteButton.setOnAction(event -> {
-
-            src.upvoteQuestion(this.question);
-
-        });
-
-
-        // Click event for solved
         markAnsweredButton.setOnAction(event -> {
-
             if (this.question.isOwner()) {
-                // Next line marks the question as answered in the DB
                 ServerCommunication.markQuestionAsAnswered(question.getId());
-                answered.add(question);
-                questions.remove(question);
             }
         });
 
-
-        // Click event for delete
         deleteButton.setOnAction(event -> {
-
             if (this.question.isOwner()) {
                 src.deleteQuestion(this.question);
-                questions.remove(question);
             }
         });
 
-
-        // Click event for editing
         editQuestionButton.setOnAction(event -> {
-
             questionWrapper.getChildren().clear();
-
             // User presses "save changes"
             if (editing) {
-
                 src.editQuestion(
                         this.question, editableLabel.getText());
                 questionWrapper.getChildren().addAll(questionLabel,
@@ -208,7 +176,6 @@ public class StudentQuestionCell extends ListCell<Question> {
                 setButtonStyle(editQuestionButton, url);
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
-
             } else { // User presses "edit"
                 questionWrapper.getChildren().addAll(editableLabel,
                         editQuestionButton, markAnsweredButton, deleteButton);
@@ -222,8 +189,6 @@ public class StudentQuestionCell extends ListCell<Question> {
         });
     }
 
-
-
     /**
      * Updates the item in the ListView.
      * @param item updated item
@@ -231,18 +196,14 @@ public class StudentQuestionCell extends ListCell<Question> {
      */
     @Override
     protected void updateItem(Question item, boolean empty) {
-
         // Update listview
         super.updateItem(item, empty);
 
         // Empty list item
         if (empty || item == null) {
-
             setGraphic(null);
             setText("");
-
         } else { // Non-empty list item
-
             // Update question object
             this.question = item;
 
@@ -267,6 +228,7 @@ public class StudentQuestionCell extends ListCell<Question> {
             Button answerButton = (Button) gridPane.lookup("#AnswerButton");
             Button deleteButton = (Button) gridPane.lookup("#DeleteButton");
             Button editButton = (Button) gridPane.lookup("#EditButton");
+
             if (!this.question.isOwner()) {
                 answerButton.setVisible(false);
                 deleteButton.setVisible(false);

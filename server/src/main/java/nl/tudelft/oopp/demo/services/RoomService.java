@@ -45,7 +45,7 @@ public class RoomService {
 
         String roomName = dataArray[0];
         LocalDateTime startingTime = LocalDateTime.parse(dataArray[1]);
-        boolean active = Boolean.valueOf(dataArray[2]);
+        boolean active = Boolean.parseBoolean(dataArray[2]);
 
         Room updatedRoom = new Room(startingTime, roomName, active);
 
@@ -77,7 +77,7 @@ public class RoomService {
      */
     @Transactional
     public void updateRoomStatusByLink(String link) {
-        Room room = null;
+        Room room;
         if (link.contains("M")) {
             room = roomRepository.findFirstByModeratorLink(link);
         } else {

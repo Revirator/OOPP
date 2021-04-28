@@ -25,15 +25,14 @@ import org.mockserver.verify.VerificationTimes;
 public class UserCommunicationTest {
 
     private static ClientAndServer mockServer;
-    private Room room;
-    private Student student;
-    private Moderator mod;
+    private final Student student;
+    private final Moderator mod;
 
     /**
      * Constructor for this test.
      */
     public UserCommunicationTest() {
-        room = new Room(2, "testRoom", LocalDateTime.now(), true);
+        Room room = new Room(2, "testRoom", LocalDateTime.now(), true);
         student = new Student((long) 13, "testUser", room, "IpAddress", false);
         mod = new Moderator((long) 25, "testMod", room);
     }
@@ -83,7 +82,7 @@ public class UserCommunicationTest {
     @Test
     public void testGetStudentError() {
         mockServer.stop();
-        assertEquals(ServerCommunication.getStudent((long) 15), null);
+        assertNull(ServerCommunication.getStudent((long) 15));
     }
 
     @Test
@@ -121,7 +120,7 @@ public class UserCommunicationTest {
     @Test
     public void testGetStudentsError() {
         mockServer.stop();
-        assertEquals(ServerCommunication.getStudents(1), null);
+        assertNull(ServerCommunication.getStudents(1));
     }
 
     @Test
@@ -159,7 +158,7 @@ public class UserCommunicationTest {
     @Test
     public void testGetModeratorsError() {
         mockServer.stop();
-        assertEquals(ServerCommunication.getModerators(1), null);
+        assertNull(ServerCommunication.getModerators(1));
     }
 
     @Test
@@ -204,7 +203,7 @@ public class UserCommunicationTest {
     @Test
     public void testSendUserError() {
         mockServer.stop();
-        assertEquals((long) -1, ServerCommunication.sendUser(mod, 20));
+        assertEquals(-1, ServerCommunication.sendUser(mod, 20));
     }
 
     @Test

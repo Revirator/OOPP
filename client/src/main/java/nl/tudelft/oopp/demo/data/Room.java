@@ -7,23 +7,17 @@ import java.util.Objects;
 
 public class Room {
 
-    /*
-       these match the properties in Room entity on server
-       but we only include what we need on client
-       No setter necessary, since we don't update on client.
-    */
-
     private long roomId;
-    private String roomName;
+    private final String roomName;
     private String studentsLink;
     private String moderatorLink;
-    private LocalDateTime startingTime;
+    private final LocalDateTime startingTime;
     private boolean active;
-    private List<User> participants;
-    private List<Student> students;
-    private List<Moderator> moderators;
-    private int peopleThinkingLectureIsTooFast;
-    private int peopleThinkingLectureIsTooSlow;
+    private final List<User> participants;
+    private final List<Student> students;
+    private final List<Moderator> moderators;
+    private final int peopleThinkingLectureIsTooFast;
+    private final int peopleThinkingLectureIsTooSlow;
 
     /**
      * Room constructor.

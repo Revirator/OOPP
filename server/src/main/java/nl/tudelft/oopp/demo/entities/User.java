@@ -83,7 +83,7 @@ public abstract class User {
             return false;
         }
         User user = (User) o;
-        return getId() == user.getId();
+        return getId().equals(user.getId());
     }
 
     @Override

@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
 
-import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
@@ -25,29 +24,20 @@ import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorQuestionCell extends ListCell<Question> {
 
-    private AnchorPane anchorPane = new AnchorPane();
-    private GridPane gridPane = new GridPane();
+    private final AnchorPane anchorPane = new AnchorPane();
+    private final GridPane gridPane = new GridPane();
     private Question question;
-    private ObservableList<Question> questions;
-    private ObservableList<Question> answered;
-    private TextArea editableLabel;
+    private final TextArea editableLabel;
     private boolean editing;
-    private RoomController mrc;
-    private boolean startTyping;    // used for the 'Someone is answering...'
-
+    private final RoomController mrc;
+    private boolean startTyping; // used for the 'Someone is answering...'
 
     /**
      * Constructor for moderator question cell.
-     * @param questions ObservableList of current questions
-     * @param answered ObservableList of answered questions
+     * @param mrc The ModeratorRoomController corresponding to the window
      */
-    public ModeratorQuestionCell(ObservableList<Question> questions,
-                                 ObservableList<Question> answered, RoomController mrc) {
-
+    public ModeratorQuestionCell(RoomController mrc) {
         super();
-
-        this.questions = questions;
-        this.answered = answered;
         this.editableLabel = new TextArea();
         editableLabel.setPrefHeight(60);
         editableLabel.setPrefWidth(400);
@@ -66,6 +56,8 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+
+        // Create column constraints
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
         columnZeroConstraints.setPrefWidth(250);
         columnZeroConstraints.setPercentWidth(70);
@@ -142,12 +134,12 @@ public class ModeratorQuestionCell extends ListCell<Question> {
         gridPane.add(ownerLabel, 0, 0);
         gridPane.add(questionLabel, 0,1);
         gridPane.add(answerWrapper, 0,2);
-        gridPane.add(editDeleteWrapper, 1,2);
         gridPane.add(upVotesLabel, 1,0);
+        gridPane.add(editDeleteWrapper, 1,2);
 
         // Give background colours
-        gridPane.styleProperty().setValue("-fx-background-color: white");
-        anchorPane.styleProperty().setValue("-fx-background-color: #E5E5E5");
+        gridPane.setStyle("-fx-background-color: white");
+        anchorPane.setStyle("-fx-background-color: #E5E5E5");
 
         // Align grid pane
         gridPane.setAlignment(Pos.CENTER);
@@ -174,7 +166,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 };
             }
         };
-
         service.setPeriod(Duration.seconds(1));
 
         // When the service is done it sends a request
@@ -186,31 +177,25 @@ public class ModeratorQuestionCell extends ListCell<Question> {
 
         // Trigger event for every time something is entered in the answerBox
         answerBox.setOnKeyTyped(event -> {
-            if (startTyping == false) {
+            if (!startTyping) {
                 ServerCommunication.markQuestionAsIsBeingAnswered(question.getId());
                 startTyping = true;
                 service.restart();
             }
-
             // 2 seconds delay after the person has stopped writing
             service.setDelay(Duration.seconds(2));
         });
 
-
-        // Click event for the 'Edit' button
         editButton.setOnAction(event -> {
-
             if (this.question == null) {
                 return;
             }
 
             // User saves changes
             if (editing) {
-
                 // Send changes to server
                 mrc.editQuestion(
                         this.question, editableLabel.getText());
-
                 gridPane.getChildren().remove(editableLabel);
                 gridPane.add(questionLabel, 0, 1);
                 question.setText(editableLabel.getText());
@@ -220,9 +205,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 setButtonStyle(editButton, url);
                 questionLabel.setText(editableLabel.getText());
                 editing = false;
-
             } else { // User wants to make changes
-
                 gridPane.getChildren().remove(questionLabel);
                 gridPane.add(editableLabel, 0,1);
                 editButton.setTooltip(new Tooltip("Save Changes"));
@@ -231,49 +214,35 @@ public class ModeratorQuestionCell extends ListCell<Question> {
                 setButtonStyle(editButton, url);
                 editableLabel.setText(question.getText());
                 editing = true;
-
             }
         });
 
-        // Click event for the 'Mark answered' button
         answerButton.setOnAction(event -> {
-
             // Next line marks the question as answered in the DB
             ServerCommunication.markQuestionAsAnswered(question.getId());
 
             // The if is to submit the already written text before marking
             if (!answerBox.getText().equals("")) {
-
                 String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
-
                 ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
             }
-
             answerBox.clear();
         });
 
-        // Click event for the 'Reply' button
         replyButton.setOnAction(event -> {
-
             String answer = answerBox.getText() + " -" + mrc.getUser().getNickname();
 
             // Send answer to server to store in db
             ((ModeratorRoomController) mrc).setAnswer(this.question, answer);
-
             question.setAnswer(answer);
             answerBox.setPromptText(answer);
             answerBox.clear();
             answerBox.deselect();
         });
 
-        // Click event for the 'Delete' button
         deleteButton.setOnAction(event -> {
-
             // Send to server to delete from DB
             mrc.deleteQuestion(this.question);
-
-            // Remove question from list
-            questions.remove(question);
         });
     }
 
@@ -284,7 +253,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
      */
     @Override
     protected void updateItem(Question item, boolean empty) {
-
         // Update listview
         super.updateItem(item, empty);
 
@@ -295,7 +263,6 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             setText("");
 
         } else { // Non-empty list item
-
             // Update question object
             this.question = item;
 
@@ -304,11 +271,7 @@ public class ModeratorQuestionCell extends ListCell<Question> {
             Label ownerLabel = (Label) gridPane.lookup("#ownerLabel");
             Label upVotesLabel = (Label) gridPane.lookup("#upVotesLabel");
 
-            // Update question
-            if (questionLabel != null) {
-                questionLabel.setText(item.getText());
-            }
-
+            questionLabel.setText(item.getText());
             ownerLabel.setText(item.getOwner());
             upVotesLabel.setText(item.getUpvotes() + " Votes");
 

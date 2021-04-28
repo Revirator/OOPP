@@ -9,7 +9,7 @@ import nl.tudelft.oopp.demo.data.User;
 
 public class ParticipantCell extends ListCell<User> {
 
-    private GridPane gridPane = new GridPane();
+    private final GridPane gridPane = new GridPane();
 
     private User user;
 
@@ -30,7 +30,6 @@ public class ParticipantCell extends ListCell<User> {
         // Label: "Role, nickname"
         Label userName = new Label();
         userName.setId("userNameLabel");
-        userName.setAlignment(Pos.CENTER_LEFT);
 
         gridPane.add(userName, 0, 0);
 

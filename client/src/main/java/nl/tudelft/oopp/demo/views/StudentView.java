@@ -138,9 +138,9 @@ public class StudentView extends AppView {
         ListView<User> participantsListView = (ListView<User>) root.lookup("#participantsListView");
 
         questionListView.setCellFactory(param ->
-                new StudentQuestionCell(super.getQuestions(), super.getAnswered(), roomController));
+                new StudentQuestionCell(roomController));
         answeredListView.setCellFactory(param ->
-                new StudentAnsweredCell(super.getAnswered(), roomController));
+                new StudentAnsweredCell());
         participantsListView.setCellFactory(param -> new ParticipantCell());
     }
 

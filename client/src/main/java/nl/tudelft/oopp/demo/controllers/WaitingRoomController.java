@@ -30,7 +30,8 @@ public class WaitingRoomController {
     private User student;
     private Room room;
 
-    /** Used in SplashController to pass the user and the room object.
+    /**
+     * Used in SplashController to pass the user and the room object.
      * @param student the moderator that is using the window
      * @param room the room corresponding to the code entered
      */
@@ -39,7 +40,8 @@ public class WaitingRoomController {
         this.room = room;
     }
 
-    /** Loads the room information to the waiting room.
+    /**
+     * Loads the room information to the waiting room.
      * The waiting room is visible until the lecture starts.
      * @param args - Not used
      */
@@ -61,7 +63,8 @@ public class WaitingRoomController {
         }
     }
 
-    /** The method changes the view from the ..
+    /**
+     * The method changes the view from the ..
      * .. waiting room to the student room and ..
      * .. sets up the next controller.
      */

@@ -8,18 +8,14 @@ import nl.tudelft.oopp.demo.data.Room;
 import nl.tudelft.oopp.demo.data.User;
 import org.junit.jupiter.api.Test;
 
-
 class WaitingRoomControllerTest {
 
     @Test
     public void testSetData() {
         WaitingRoomController wrc = new WaitingRoomController();
-
         Room room = new Room("Room", LocalDateTime.now(), true);
         User user = new User("Pete", room);
-
         wrc.setData(user, room);
-
         assertEquals(room, wrc.getRoom());
         assertEquals(user, wrc.getStudent());
     }

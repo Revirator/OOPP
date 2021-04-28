@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.cellfactory;
 
 import java.net.URL;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -22,25 +21,21 @@ import nl.tudelft.oopp.demo.data.Question;
 
 public class ModeratorAnsweredCell extends ListCell<Question> {
 
-    private AnchorPane anchorPane = new AnchorPane();
-    private GridPane gridPane = new GridPane();
+    private final AnchorPane anchorPane = new AnchorPane();
+    private final GridPane gridPane = new GridPane();
     private Question question;
-    private ObservableList<Question> answered;
     private boolean editingQuestion;
     private boolean editingAnswer;
-    private TextArea editableQuestion;
-    private TextArea editableAnswer;
-    private RoomController mrc;
+    private final TextArea editableQuestion;
+    private final TextArea editableAnswer;
+    private final RoomController mrc;
 
     /**
      * Constructor for moderator answer cell.
-     * @param answered ObservableList of answered questions
+     * @param mrc The ModeratorRoomController corresponding to the window
      */
-    public ModeratorAnsweredCell(ObservableList<Question> answered,
-                                 RoomController mrc) {
+    public ModeratorAnsweredCell(RoomController mrc) {
         super();
-
-        this.answered = answered;
         editingAnswer = false;
         editingQuestion = false;
         editableAnswer = new TextArea();
@@ -61,9 +56,10 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
      * Creates a cell for answered questions.
      */
     private void createCell() {
-
         // Add grid pane to anchor pane
         anchorPane.getChildren().add(gridPane);
+
+        // Create column and row constraints
         ColumnConstraints columnZeroConstraints = new ColumnConstraints();
         columnZeroConstraints.setPrefWidth(330);
         columnZeroConstraints.setPercentWidth(90);
@@ -153,23 +149,17 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         AnchorPane.setBottomAnchor(gridPane, 10.0);
 
-        // Click events for buttons
-
         editQuestionButton.setOnAction(event -> {
-
             if (this.question == null) {
                 return;
             }
-
             questionWrapper.getChildren().clear();
 
             // User saves changes
             if (editingQuestion) {
-
                 // Send changes to server
                 mrc.editQuestion(
                         this.question, editableQuestion.getText());
-
                 questionWrapper.getChildren().addAll(questionLabel, editQuestionButton);
                 question.setText(editableQuestion.getText());
                 editQuestionButton.setTooltip(new Tooltip("Edit question"));
@@ -178,9 +168,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
                 setButtonStyle(editQuestionButton, url);
                 questionLabel.setText(editableQuestion.getText());
                 editingQuestion = false;
-
             } else { // User wants to make changes
-
                 questionWrapper.getChildren().addAll(editableQuestion, editQuestionButton);
                 editableQuestion.setText(question.getText());
                 editQuestionButton.setTooltip(new Tooltip("Save changes"));
@@ -188,24 +176,19 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
                 URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
                 setButtonStyle(editQuestionButton, url);
                 editingQuestion = true;
-
             }
         });
 
         editAnswerButton.setOnAction(event -> {
-
             if (this.question == null) {
                 return;
             }
-
             answerWrapper.getChildren().clear();
 
             // User saves changes
             if (editingAnswer) {
-
                 ((ModeratorRoomController) mrc).setAnswer(this.question,
                         editableAnswer.getText());
-
                 answerWrapper.getChildren().addAll(answerLabel, editAnswerButton);
                 question.setAnswer(editableAnswer.getText());
                 editAnswerButton.setTooltip(new Tooltip("Edit answer"));
@@ -214,9 +197,7 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
                 setButtonStyle(editAnswerButton, url);
                 answerLabel.setText("Answer: " + editableAnswer.getText());
                 editingAnswer = false;
-
             } else { // User wants to make changes
-
                 answerWrapper.getChildren().addAll(editableAnswer, editAnswerButton);
                 editableAnswer.setText(question.getAnswer());
                 editAnswerButton.setTooltip(new Tooltip("Save changes"));
@@ -224,19 +205,10 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
                 URL url = StudentQuestionCell.class.getResource("/images/checkGreen.png");
                 setButtonStyle(editAnswerButton, url);
                 editingAnswer = true;
-
             }
         });
 
-        deleteButton.setOnAction(event -> {
-
-            mrc.deleteQuestion(this.question);
-
-            // Remove question from list
-            answered.remove(question);
-
-        });
-
+        deleteButton.setOnAction(event -> mrc.deleteQuestion(this.question));
     }
 
     /**
@@ -246,44 +218,28 @@ public class ModeratorAnsweredCell extends ListCell<Question> {
      */
     @Override
     protected void updateItem(Question item, boolean empty) {
-
         // Update listview
         super.updateItem(item, empty);
 
         // Empty list item
         if (empty || item == null) {
-
             setGraphic(null);
             setText("");
-
         } else { // Non-empty list item
-
             // Update question object
             this.question = item;
 
             Label questionLabel = (Label) gridPane.lookup("#questionLabel");
-
-            // Check if exists
-            if (questionLabel != null) {
-                questionLabel.setText(item.getText());
-            }
-
+            questionLabel.setText(item.getText());
             Label ownerLabel = (Label) gridPane.lookup("#ownerLabel");
             ownerLabel.setText(item.getOwner());
-
             Label answerLabel = (Label) gridPane.lookup("#answerLabel");
-
-            // Check if exists
-            if (answerLabel != null) {
-                answerLabel.setText("Answer: " + item.getAnswer());
-            }
+            answerLabel.setText("Answer: " + item.getAnswer());
 
             // Show graphic representation
             setGraphic(anchorPane);
-
         }
     }
-
 
     private void setButtonStyle(Button button, URL path) {
         button.setStyle("-fx-background-image: url('" + path + "');"

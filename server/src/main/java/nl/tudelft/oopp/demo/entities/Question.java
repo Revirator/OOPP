@@ -150,7 +150,7 @@ public class Question {
             return false;
         }
         Question question1 = (Question) o;
-        return getId() == question1.getId();
+        return getId().equals(question1.getId());
     }
 
     @Override

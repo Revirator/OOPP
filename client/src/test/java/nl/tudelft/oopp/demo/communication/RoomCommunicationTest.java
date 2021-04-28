@@ -20,9 +20,8 @@ import org.mockserver.verify.VerificationTimes;
 public class RoomCommunicationTest {
 
     private static ClientAndServer mockServer;
-    private Room roomA;
-    private LocalDateTime dateTime;
-
+    private final Room roomA;
+    private final LocalDateTime dateTime;
 
     /**
      * Constructor for this test.
@@ -181,5 +180,4 @@ public class RoomCommunicationTest {
             VerificationTimes.once()
         );
     }
-
 }

@@ -32,7 +32,6 @@ public class H2Config {
         dataSource.setUrl(environment.getProperty("jdbc.url"));
         dataSource.setUsername(environment.getProperty("jdbc.user"));
         dataSource.setPassword(environment.getProperty("jdbc.pass"));
-
         return dataSource;
     }
 }
