@@ -222,7 +222,8 @@ public class ModeratorRoomController extends RoomController {
         newStage.setScene(scene);
         AnchorPane anchorPane = (AnchorPane) root.lookup("#anchor");
         anchorPane.requestFocus();
-        newStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png"))));
+        newStage.getIcons().add(new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/logo.png"))));
         newStage.show();
         LinkRoomController linkRoomController = loader.getController();
         linkRoomController.setData(super.getRoom());
